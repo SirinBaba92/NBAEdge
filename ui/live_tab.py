@@ -4,9 +4,13 @@ Tab "🏀 Spieltag" (Baustein 5, nur Anzeige): Spiele des aktuellen US-Spieltags
 Daten: data/live_feed.py (NBA.com-Scoreboard/Boxscore, ESPN nur als Fallback), Live-Zahlen aus data/live_feed.live_numbers_for_state (engine/live_model), Wetten aus
 data/live_feed.bets_live (data/day_bets_store). Keine Odds-API-Credits, keine anderen Abrufe als im Feed (dessen Zwischenspeicher: Scoreboard 15 s, Boxscore 30 s).
 
-Aktualisierung: Nur der Live-Teil laeuft in einem st.fragment mit run_every (30 s); er laedt die uebrige App nicht neu. Ein normaler App-Rerun (z. B. Klick in einem anderen Tab) ruft NICHT
-neu ab, ausser beim allerersten Laden. Knopf "Aktualisieren" ruft ab (der Feed haelt trotzdem seine Zwischenspeicher-Zeiten ein); Schalter "Automatisch aktualisieren" (Standard an)
-steuert nur den Abruf im 30-Sekunden-Takt: aus = der Takt zeichnet nur den letzten Stand neu. Sind alle Spiele beendet und ohne Fehler, wird nur alle 5 Minuten abgerufen.
+Aufbau (Baustein 6): Steuerung (Knopf, Schalter) -> Fragment "Kopf" (Statuszeile, Tagesuebersicht, Zahlen der Wetten) -> Bereich "Wetten eintragen" (ui/bet_entry.py, AUSSERHALB der
+Fragmente, damit der 30-Sekunden-Takt keine Auswahl zuruecksetzt) -> Fragment "Karten". Beide Fragmente laufen mit run_every (30 s), laden die uebrige App nicht neu und teilen sich den
+Feed (ein Abruf je Zwischenspeicher-Zeit); die Seitendaten werden je Datenstand nur einmal gebaut (get_page).
+
+Aktualisierung: Ein normaler App-Rerun (z. B. Klick in einem anderen Tab oder Speichern einer Wette) ruft NICHT neu ab, ausser beim allerersten Laden. Knopf "Aktualisieren" ruft ab (der Feed
+haelt trotzdem seine Zwischenspeicher-Zeiten ein); Schalter "Automatisch aktualisieren" (Standard an) steuert nur den Abruf im 30-Sekunden-Takt: aus = der Takt zeichnet nur den letzten Stand
+neu. Sind alle Spiele beendet und ohne Fehler, wird nur alle 5 Minuten abgerufen. Neu gespeicherte Wetten erscheinen sofort (Datei lesen, kein Netz).
 """
 from __future__ import annotations
 
@@ -89,6 +93,33 @@ def build_page(state, snapshots: dict | None = None, entries: dict | None = None
             "summary_data": summary, "numbers": numbers, "bet_rows": bet_rows}
 
 
+_page_cache: dict = {"key": None, "page": None}
+
+
+def _sig(path) -> tuple:
+    try:
+        st_ = path.stat()
+        return (st_.st_mtime_ns, st_.st_size)
+    except OSError:
+        return (None, None)
+
+
+def data_key(state) -> tuple:
+    """Datenstand fuer den Zwischenspeicher der Seite: Spiele (Stand, Phase, Besitze), Quelle und die Dateien mit Wetten, Schnappschuessen und Eintraegen."""
+    games = tuple((g.game_id, g.status, g.home_score, g.away_score, g.clock.phase, g.clock.seconds_left, g.source, g.possessions, g.box_error) for g in state.games)
+    return (state.day, state.fetched_at, state.source, state.error, games, _sig(ds.store_path()), _sig(projection_snapshots.snapshot_path()), market_lines.entries_signature())
+
+
+def get_page(state) -> dict:
+    """build_page mit Zwischenspeicher: beide Fragmente fragen dieselben Daten (nur die Statuszeile mit dem Alter wird jedes Mal neu gebaut)."""
+    key = data_key(state)
+    if _page_cache["key"] != key:
+        _page_cache.update(key=key, page=build_page(state))
+    page = dict(_page_cache["page"])
+    page["status"] = lc.render_status_html(state)
+    return page
+
+
 # ----------------------------------------------------------------------------------------------- Streamlit
 def _fragment_rerun() -> bool:
     try:
@@ -100,22 +131,21 @@ def _fragment_rerun() -> bool:
 
 
 @st.fragment(run_every=AUTO_SECONDS)
-def _live_fragment() -> None:
-    feed = lf.get_feed()
-    c1, c2, c3 = st.columns([1.1, 1.7, 4])
-    with c1:
-        clicked = st.button("Aktualisieren", key="sp_refresh", help="Ruft NBA.com ab (Scoreboard höchstens alle 15 s, Boxscore je Spiel höchstens alle 30 s).")
-    with c2:
-        auto = st.toggle("Automatisch aktualisieren", value=True, key="sp_auto", help="Aus: Der 30-Sekunden-Takt ruft nichts mehr ab und zeichnet nur den letzten Stand neu.")
-    with c3:
-        st.caption("Aktualisiert nur diesen Bereich alle 30 Sekunden, solange Spiele nicht beendet sind. Keine Odds-API-Credits.")
-    state = pick_state(feed, clicked, auto, _fragment_rerun())
-    page = build_page(state)
+def _live_head(auto: bool) -> None:
+    """Statuszeile, Tagesuebersicht, Zahlen der Wetten (alle 30 s, nur dieser Teil)."""
+    page = get_page(pick_state(lf.get_feed(), False, auto, _fragment_rerun()))
     st.markdown(lc.flat(page["status"]), unsafe_allow_html=True)
     st.markdown(lc.flat(page["overview"]), unsafe_allow_html=True)
     st.markdown(lc.flat(page["summary"]), unsafe_allow_html=True)
+
+
+@st.fragment(run_every=AUTO_SECONDS)
+def _live_cards(auto: bool) -> None:
+    """Eine Karte je Spiel (alle 30 s, nur dieser Teil)."""
+    state = pick_state(lf.get_feed(), False, auto, _fragment_rerun())
+    page = get_page(state)
     if not page["cards"]:
-        st.info("Noch keine Spielkarten: Für diesen Spieltag stehen keine Spiele im Scoreboard." if state.games == () else "Keine Spiele.")
+        st.info("Noch keine Spielkarten: Für diesen Spieltag stehen keine Spiele im Scoreboard.")
     for gid, html in page["cards"]:
         with st.container(key=f"sp_game_{gid}"):
             st.markdown(lc.flat(html), unsafe_allow_html=True)
@@ -128,4 +158,17 @@ def render_spieltag_tab() -> None:
     if OFFLINE_AUDIT_MODE:
         st.info("Offline-Prüfmodus: Der Spieltag-Tab ruft nichts ab.")
         return
-    _live_fragment()
+    feed = lf.get_feed()
+    c1, c2, c3 = st.columns([1.1, 1.7, 4])
+    with c1:
+        clicked = st.button("Aktualisieren", key="sp_refresh", help="Ruft NBA.com ab (Scoreboard höchstens alle 15 s, Boxscore je Spiel höchstens alle 30 s).")
+    with c2:
+        auto = st.toggle("Automatisch aktualisieren", value=True, key="sp_auto", help="Aus: Der 30-Sekunden-Takt ruft nichts mehr ab und zeichnet nur den letzten Stand neu.")
+    with c3:
+        st.caption("Status, Übersicht und Karten aktualisieren sich alle 30 Sekunden einzeln, solange Spiele nicht beendet sind. Keine Odds-API-Credits.")
+    if clicked:
+        feed.refresh()                                   # der Feed haelt seine Zwischenspeicher-Zeiten ein
+    _live_head(auto)
+    from ui.bet_entry import render_bet_entry
+    render_bet_entry()
+    _live_cards(auto)

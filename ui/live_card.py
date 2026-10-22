@@ -118,7 +118,7 @@ def merge_main_lines(market_lines: dict | None, anchor) -> tuple[dict, dict]:
 
 
 # ----------------------------------------------------------------------------------------------- Anzeigewerte
-def _bet_label(market: str, bet: dict, game) -> str:
+def bet_label(market: str, bet: dict, game) -> str:
     side, line = bet.get("side"), bet.get("line")
     if market == "winner":
         return f"{game.home_nick if side == 'home' else game.away_nick} gewinnt"
@@ -127,7 +127,7 @@ def _bet_label(market: str, bet: dict, game) -> str:
     return f"{'Over' if side == 'over' else 'Under'} {fmt_num(float(line))}"
 
 
-def _market_title(market: str, game) -> str:
+def market_title(market: str, game) -> str:
     if market == "team_total_home":
         return f"Team Total · {game.home_nick}"
     if market == "team_total_away":
@@ -136,7 +136,7 @@ def _market_title(market: str, game) -> str:
 
 
 def _bet_row(market: str, bet: dict, live, game) -> dict:
-    row = {"kind": "bet", "market": market, "title": _market_title(market, game), "label": _bet_label(market, bet, game), "tag": "Wette", "bet": bet}
+    row = {"kind": "bet", "market": market, "title": market_title(market, game), "label": bet_label(market, bet, game), "tag": "Wette", "bet": bet}
     detail = [f"Quote {fmt_money(bet.get('odds'))}", f"Einsatz {fmt_money(bet.get('stake'))}"]
     if live is None:
         row.update(status=None, left="kein Status", right="", pl=0, pr=0, color="grau", detail=" · ".join(detail))
@@ -163,7 +163,7 @@ def _line_row(market: str, game, numbers, lines: dict, src: dict) -> dict | None
     if line is None:
         return None
     p = pct(numbers.p_over_total(line) if market == "total" else numbers.p_over_team("home" if market == "team_total_home" else "away", line))
-    return {"kind": "line", "market": market, "title": _market_title(market, game), "label": fmt_num(float(line)), "tag": src.get(market),
+    return {"kind": "line", "market": market, "title": market_title(market, game), "label": fmt_num(float(line)), "tag": src.get(market),
             "left": f"Over {p} %", "right": f"{100 - p} % Under", "pl": p, "pr": 100 - p}
 
 

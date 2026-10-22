@@ -104,7 +104,7 @@ check("kein Abruf bei laden/auswaehlen/Alter pruefen (nur refresh ruft ab)", cal
 # ===================================================== B) Speicher: Spielerpunkte
 def pm_expanders(at):
     """Expander des Tabs Pre-Match Eingabe (nicht die Zeilen-Bloecke der Score-Projections-Karten)."""
-    return [x for x in at.expander if not any("pc-l" in m.value for m in x.markdown)]
+    return [x for x in at.expander if x.label != "Wetten eintragen" and not any("pc-l" in m.value for m in x.markdown)]   # ohne die Linien-Expander der Karten und den Bereich "Wetten eintragen" (Tab Spieltag)
 def mrow(rid=None, v="19", odds="2,50", b="Pinnacle"): return {"id": rid, "value": v, "odds": odds, "bookmaker": b}
 def lrow(rid=None, v="24,5", o="1,90", u="1,90", b="Pinnacle"): return {"id": rid, "value": v, "over_odds": o, "under_odds": u, "bookmaker": b}
 def blk(bid=None, pid=1001, name="Jalen Brunson", team=K, abbr="NYK", mode="milestones", rows=None): return {"block_id": bid, "person_id": pid, "name": name, "team": team, "team_abbreviation": abbr, "mode": mode, "rows": rows if rows is not None else [mrow()]}

@@ -34,7 +34,7 @@ K, P = "New York Knicks", "Philadelphia 76ers"
 
 def pm_expanders(at):
     """Expander des Tabs Pre-Match Eingabe (nicht die Zeilen-Bloecke der Score-Projections-Karten)."""
-    return [x for x in at.expander if not any("pc-l" in m.value for m in x.markdown)]
+    return [x for x in at.expander if x.label != "Wetten eintragen" and not any("pc-l" in m.value for m in x.markdown)]   # ohne die Linien-Expander der Karten und den Bereich "Wetten eintragen" (Tab Spieltag)
 def trow(rid="main", line="113,5", o="1,91", u="1,89", b="Pinnacle", d=None):
     return {"id": rid, "direction": d, "line": line, "over_odds": o, "under_odds": u, "bookmaker": b}
 def win(h="1,55", a="2,50", b="Betano"): return {"home_odds": h, "away_odds": a, "bookmaker": b}

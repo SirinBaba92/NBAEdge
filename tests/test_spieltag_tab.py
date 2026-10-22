@@ -177,8 +177,8 @@ check("bets_live-Zahlen = Tabelle (Gegenprobe ueber die Funktion)", lt.build_pag
 setup([row("N1", "Boston Celtics", "Miami Heat", 2, 3, "PT06M00.00S", hs=70, as_=65, start=FUT(2))], {"N1": box()})
 ds.set_bet(DAY, FUT(2), "Boston Celtics", "Miami Heat", "total", side="over", line=230.5, odds=1.9, stake=10)
 at = app().run(); cn = card(at, "N1")
-check("Spiel ohne Schnappschuss mit Wette: Stand ohne Chancen, NO_ANCHOR_NOTE, Wette mit Quote/Einsatz aber 'kein Status'", lf.NO_ANCHOR_NOTE in cn and "pc-bar-labels" not in cn and "Total: Over 230,5" in cn and "kein Status" in cn and "Quote 1,90 · Einsatz 10,00" in cn
-      and ">70<" in cn and ">65<" in cn and not problems(at))
+_cn_flags = [lf.NO_ANCHOR_NOTE in cn, "pc-bar-labels" not in cn, "Total: Over 230,5" in cn, "kein Status" in cn, "Quote 1,90 · Einsatz 10,00" in cn, ">70<" in cn, ">65<" in cn, not problems(at)]
+check("Spiel ohne Schnappschuss mit Wette: Stand ohne Chancen, NO_ANCHOR_NOTE, Wette mit Quote/Einsatz aber 'kein Status'", all(_cn_flags), str(_cn_flags) + " " + " | ".join(problems(at))[:300])
 check("Uebersicht: Wette ohne Status wird gezaehlt und erklaert", '1 Wette(n) ohne Status' in html(at) and re.search(r'lv-val ">1</div>', html(at)) is not None or "ohne Status" in html(at))
 
 # ================================================================= E) Fehlerzustand, Aktualisieren, Zwischenspeicher
