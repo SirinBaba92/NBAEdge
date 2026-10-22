@@ -310,6 +310,42 @@ check("beendetes Spiel verschwindet nach 24 Stunden wieder aus der Anzeige", len
 st = snap.record_snapshots([{"home_team": K, "away_team": P, "exp_spread": 1, "exp_total": 220, "home_score": 110, "away_score": 109}], {}, model=MODEL)
 check("Mock-Projektion ohne market_lines/Anpfiff: kein Schnappschuss, kein Absturz", st["locked"] == 1)
 
+# ========================================================= G2) sigmas_version (23.10.2026): Version 2 = Spread 13,2 / Total 18,6 / Team Total 11,6, Siegchance aus der Spread-Verteilung
+reset(); now = time.time(); start = iso(now + 6 * H); proj = make_proj(start=start)
+snap.record_snapshots([proj], {}, model=MODEL, now=now)
+key = proj["_line_inputs"]["entry_key"]; g = load_games(); v = g[key]["versions"][-1]
+check("Schnappschuss neu: sigmas_version \"2\" (im Inhalt und damit im Hash), Auswertungs-Helfer liest sie", v["sigmas_version"] == "2" and snap.sigmas_version_of(v) == "2")
+check("fehlendes Feld = Version \"1\" (alte Schnappschuesse), None/leer ebenso", snap.sigmas_version_of({"tables": {}}) == "1" and snap.sigmas_version_of(None) == "1" and snap.sigmas_version_of({"sigmas_version": None}) == "1")
+check("Projektion im Schnappschuss: Siegchance aus der Spread-Verteilung, Elo-Logistik als *_elo daneben (0,62 / 0,38 aus der Test-Eingabe)",
+      v["projection"]["home_win_prob"] == round(lp.win_prob_home(v["projection"]["exp_spread"]), 4) and v["projection"]["home_win_prob_elo"] == 0.62 and v["projection"]["away_win_prob_elo"] == 0.38)
+check("Karte im Schnappschuss traegt Quelle und Sigma (fuer den Hinweis nach dem Spielende)", g[key]["card"]["win_prob_source"] == "normal_spread" and g[key]["card"]["sigma_spread"] == 13.2)
+# Beginn: gestartetes Spiel bekommt keine neue Version (auch wenn sich die Sigmas geaendert haben) -> bleibt Version 1
+reset(); start_past = iso(now - 3 * H)
+old = make_proj(start=iso(now + 6 * H)); snap.record_snapshots([old], {}, model=MODEL, now=now)
+k_old = old["_line_inputs"]["entry_key"]
+data_old = json.loads(snap.snapshot_path().read_text()); ver = data_old["games"][k_old]["versions"][-1]
+for f in ("sigmas_version", "sigmas"):
+    ver.pop(f, None)
+ver["sigmas"] = {"spread": 10.5, "total": 18.0, "team_total": 12.5}; ver["hash"] = "alt"
+snap.snapshot_path().write_text(json.dumps(data_old)); snap._cache.update(sig=None, data=None)
+st = snap.record_snapshots([old], {}, model=MODEL, now=now + 7 * H)                  # Anpfiff liegt in der Vergangenheit: gesperrt
+gg = load_games()[k_old]
+check("begonnenes Spiel mit alter Version (ohne sigmas_version): keine neue Version, bleibt unveraendert Version 1 mit 10,5 / 18,0 / 12,5",
+      st["locked"] == 1 and len(gg["versions"]) == 1 and snap.sigmas_version_of(gg["versions"][-1]) == "1" and gg["versions"][-1]["sigmas"] == {"spread": 10.5, "total": 18.0, "team_total": 12.5})
+st = snap.record_snapshots([old], {}, model=MODEL, now=now)                           # vor dem Anpfiff: neue Version mit Version 2 (Hash geaendert)
+gg = load_games()[k_old]
+check("noch nicht begonnenes Spiel mit alter Version: neue Version \"2\" wird angehaengt, die alte bleibt erhalten", len(gg["versions"]) == 2 and snap.sigmas_version_of(gg["versions"][0]) == "1" and snap.sigmas_version_of(gg["versions"][1]) == "2")
+# Auswertung getrennt nach sigmas_version
+d1, d2 = art(21, 30), art(7, 10)
+for gid, game in d2["games"].items():
+    game["versions"][0]["sigmas_version"] = "2"
+both = {"games": {**{f"a{k}": v_ for k, v_ in d1["games"].items()}, **{f"b{k}": v_ for k, v_ in d2["games"].items()}}}
+check("eval_snapshots: collect nach Version (1: 30 Spiele, 2: 10 Spiele, ohne Angabe: 40)", ev.collect(both, "1")["games"] == 30 and ev.collect(both, "2")["games"] == 10 and ev.collect(both)["games"] == 40)
+txt = ev.render(both)
+check("eval_snapshots: je Version eine eigene Tabelle, nie gemischt (zwei Ueberschriften, keine zusammengefasste Tabelle)", txt.count("Auswertung der Schnappschuesse") == 2 and "Version 1 (Spread 10,5" in txt and "Version 2 (Spread 13,2" in txt and "nicht vergleichbar" not in txt)
+check("eval_snapshots --alle: zusaetzlich eine zusammengefasste Tabelle, gekennzeichnet", ev.render(both, mix=True).count("Auswertung der Schnappschuesse") == 3 and "nicht vergleichbar" in ev.render(both, mix=True))
+check("eval_snapshots: nur Version 1 vorhanden -> eine Tabelle", ev.render(art(21, 30)).count("Auswertung der Schnappschuesse") == 1)
+
 # ========================================================= H) Rahmen
 check("Pickle unveraendert (SHA)", sha(MODEL_PATH) == sha0)
 check("echte pre_match_entries.json und rosters.json unveraendert", all(((ROOT / "data" / n).read_bytes() if (ROOT / "data" / n).exists() else None) == v for n, v in real.items()))

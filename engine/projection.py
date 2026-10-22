@@ -4,6 +4,7 @@ from datetime import date, datetime
 from typing import Any
 
 from config.settings import ELO_TO_SPREAD_FACTOR
+from engine import line_probabilities as lp
 
 
 PLAYOFF_START_MONTH_DAY = (4, 15)
@@ -108,6 +109,7 @@ def compute_projection(
     home_score = round(home_score_float)
     away_score = round(away_score_float)
     final_total = home_score + away_score
+    win_p = lp.win_prob_home(round(exp_spread, 1))
 
     return {
         "home_team": home,
@@ -129,6 +131,13 @@ def compute_projection(
         "playoff_adjustment": playoff_adjustment,
         "home_bias_adjustment": round(home_bias, 1),
         "away_bias_adjustment": round(away_bias, 1),
-        "home_win_prob": pred["home_win_prob"],
-        "away_win_prob": pred["away_win_prob"],
+        # Siegchance und Spread aus derselben Verteilung (Variante A, sigmas_version 2): Normalverteilung um den ANGEZEIGTEN Spread (exp_spread, 1 Nachkommastelle,
+        # wie in den Spread-Tabellen) mit SPREAD_SIGMA. Die kalibrierte Elo-Logistik des Modells bleibt zur Nachvollziehbarkeit in *_elo erhalten.
+        "home_win_prob": round(win_p, 4),
+        "away_win_prob": round(1.0 - win_p, 4),
+        "home_win_prob_elo": pred["home_win_prob"],
+        "away_win_prob_elo": pred["away_win_prob"],
+        "win_prob_source": "normal_spread",
+        "sigma_spread": lp.SPREAD_SIGMA,
+        "sigmas_version": lp.SIGMAS_VERSION,
     }

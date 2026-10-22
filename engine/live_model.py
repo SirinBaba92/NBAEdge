@@ -11,8 +11,10 @@ Formeln (t = gespielte reguläre Sekunden, Anteile aus config.settings, kalibrie
   Verlaengerung: Die Vorab-Werte gelten inklusive Verlaengerung (Historie). Live zaehlt nur die AENDERUNG der Gleichstands-Wahrscheinlichkeit gegen den Anpfiff:
                 Mittel = Stand + Vorab * Rest + mu_OT * (p_gleich_jetzt - p_gleich_anpfiff * Rest). Beim Anpfiff ist der Zusatz null, nach einem Gleichstand
                 am Ende von Q4 kommt eine ganze Verlaengerung dazu (mu_OT = Vorab * 5/48 * 0,93). In der Verlaengerung rechnet dieselbe Formel mit 5 Minuten.
-  Sieger:       Die Normalverteilung liefert nicht exakt die kalibrierte Vorab-Wahrscheinlichkeit; deshalb wird einmal je Spiel eine "effektive Marge" bestimmt,
-                bei der die Formel beim Anpfiff genau home_win_prob ergibt (Bisektion). Nur der Sieger-Markt nutzt sie.
+  Sieger:       sigmas_version "2" (ab 23.10.2026): Die Vorab-Siegchance ist selbst die Normalverteilung um den Spread (engine.line_probabilities.win_prob_home). Live gilt dieselbe
+                Verteilung: P(Sieger Heim) = P(Marge am Ende > 0) = p_spread("home", 0), beim Anpfiff exakt gleich home_win_prob (Abweichung nur durch dessen Rundung auf 4 Stellen).
+                Aeltere Schnappschuesse (Version 1, Elo-Logistik): Die Normalverteilung liefert nicht exakt die kalibrierte Vorab-Wahrscheinlichkeit; deshalb wird einmal je Spiel
+                eine "effektive Marge" bestimmt, bei der die Formel (diskret, mit Gleichstand * Verlaengerungs-Sieger) beim Anpfiff genau home_win_prob ergibt (Bisektion).
   Anpfiff:      Mit Stand 0:0, t = 0, pace_mult = 1 und Faktoren 1,0 sind alle Werte gleich den Vorab-Funktionen (engine/line_probabilities.prob_above, spread_rows).
 Faktoren fuer Fouls/Bonus, Blowout und Ausfall eines Stars sind in Version 1 NEUTRAL (1,0) und werden mitgeschrieben (LiveProjection.factors).
 Spielende (FINAL): alle Wahrscheinlichkeiten ergeben sich aus dem tatsaechlichen Ergebnis (0 oder 1). Ganzzahlige Linien: Gleichstand mit der Linie zaehlt als NICHT gewonnen (keine Rueckzahlung modelliert).
@@ -50,13 +52,14 @@ class Anchor:
     sigma_total: float = TOTAL_SIGMA
     sigma_team: float = TEAM_TOTAL_SIGMA
     source: str = "schnappschuss"     # "schnappschuss" | "live_nachgerechnet" (Anker fehlt im Schnappschuss und wurde spaeter berechnet)
+    sigmas_version: str = "1"         # "2": home_win_prob = Normalverteilung um exp_spread mit sigma_spread (Siegchance und Spread aus derselben Verteilung); "1": Elo-Logistik
 
     @classmethod
     def from_snapshot(cls, version: dict, source: str = "schnappschuss") -> "Anchor":
         p, s = version["projection"], version.get("sigmas") or {}
         return cls(float(p["exp_total"]), float(p["exp_spread"]), float(p["home_score"]), float(p["away_score"]), float(p["home_win_prob"]),
                    sigma_spread=float(s.get("spread", SPREAD_SIGMA)), sigma_total=float(s.get("total", TOTAL_SIGMA)),
-                   sigma_team=float(s.get("team_total", TEAM_TOTAL_SIGMA)), source=source)
+                   sigma_team=float(s.get("team_total", TEAM_TOTAL_SIGMA)), source=source, sigmas_version=str(version.get("sigmas_version") or "1"))
 
 
 @dataclass(frozen=True)
@@ -166,6 +169,8 @@ class LiveProjection:
     pace_live: float | None
     pace_weight: float
     factors: dict = field(default_factory=dict)
+    sigmas_version: str = "1"
+    winner_mode: str = "effektive_marge"   # "gleiche_verteilung" (sigmas_version 2) | "effektive_marge" (aeltere Schnappschuesse mit Logistik-Siegchance)
 
     # --- Maerkte
     def p_over_total(self, line: float) -> float:
@@ -192,7 +197,10 @@ class LiveProjection:
     def p_winner(self, side: str) -> float:
         if self.final:
             return 1.0 if (self.home_pts > self.away_pts) == (side == "home") else 0.0
-        p = winner_prob_home(self.mean_reg_margin, self.sd_reg_margin, self.p_ot_home)
+        if self.winner_mode == "gleiche_verteilung":       # P(Marge am Ende > 0) aus derselben Verteilung wie der Spread bei Linie 0
+            p = _over(self.expected_margin, 0.0, self.sd_margin)
+        else:
+            p = winner_prob_home(self.mean_reg_margin, self.sd_reg_margin, self.p_ot_home)
         return p if side == "home" else 1.0 - p
 
     def to_dict(self) -> dict:
@@ -215,8 +223,10 @@ def project(anchor: Anchor, clock: gc.GameClock, home_pts: int, away_pts: int, p
     d, cur = H - A, H + A
     mu_t, mu_m, mu_h, mu_a = anchor.exp_total, anchor.exp_spread, anchor.home_score, anchor.away_score
     s_t, s_m, s_h, s_a = anchor.sigma_total, anchor.sigma_spread, anchor.sigma_team, anchor.sigma_team
-    eff = effective_margin(anchor.home_win_prob, s_m)
+    same_dist = anchor.sigmas_version != "1"                       # Siegchance aus derselben Normalverteilung wie der Spread (Version 2)
+    eff = mu_m if same_dist else effective_margin(anchor.home_win_prob, s_m)
     pot = p_ot_home(eff, s_m)
+    mode = "gleiche_verteilung" if same_dist else "effektive_marge"
     p0 = tie_mass(mu_m, s_m)                                       # Gleichstand beim Anpfiff (Normalverteilung, gleiche Formel wie live)
     ot = OT_SHARE * LIVE_OT_SCORING_FACTOR
     mult, pace_live, w, _ = pace_multiplier(poss, clock.elapsed_total_s, anchor.pace)
@@ -225,7 +235,7 @@ def project(anchor: Anchor, clock: gc.GameClock, home_pts: int, away_pts: int, p
 
     if clock.is_final:
         return LiveProjection(FORMULA_VERSION, anchor.source, clock.phase, True, H, A, float(cur), float(H), float(A), float(d), 0.0, 0.0, 0.0, 0.0,
-                              0.0, p0, pot, eff, 0.0, float(d), mult, pace_live, w, fd)
+                              0.0, p0, pot, eff, 0.0, float(d), mult, pace_live, w, fd, anchor.sigmas_version, mode)
 
     if clock.ot_number == 0:
         t = clock.elapsed_regulation_s
@@ -261,4 +271,4 @@ def project(anchor: Anchor, clock: gc.GameClock, home_pts: int, away_pts: int, p
         sd_reg_w = sd_ot
 
     return LiveProjection(FORMULA_VERSION, anchor.source, clock.phase, False, H, A, e_total, e_home, e_away, e_margin, sd_total, sd_home, sd_away, sd_margin,
-                          p_now, p0, pot, eff, sd_reg_w, mean_reg, mult, pace_live, w, fd)
+                          p_now, p0, pot, eff, sd_reg_w, mean_reg, mult, pace_live, w, fd, anchor.sigmas_version, mode)

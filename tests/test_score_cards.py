@@ -174,6 +174,17 @@ for flag in (False, True):
     check(f"SHOW_VALUE_BETS={flag}: 3 Karten in unveraenderter Reihenfolge (nach |Spread|)", len(cards) == 3 and [parse(c, p)["home_score"] for c, p in zip(cards, projs)] == [p["home_score"] for p in projs], f"{len(cards)} Karten")
     check(f"SHOW_VALUE_BETS={flag}: Karten-Zahlen == bisherige Anzeige aus den Projektionen", all(parse(c, p) == legacy(p) for c, p in zip(cards, projs)))
     check(f"SHOW_VALUE_BETS={flag}: Karten ohne Zeilenumbruch/Leerzeile", all("\n" not in c for c in cards))
+# ----------------------------------------------------------------- Hinweis "Siegchance und Spread aus derselben Verteilung" (sigmas_version 2, 23.10.2026)
+from engine.projection import compute_projection
+_p2 = compute_projection({"home_team": "New York Knicks", "away_team": "Philadelphia 76ers", "home_elo": 1560, "away_elo": 1500, "expected_total": 226.0, "home_win_prob": 0.62, "away_win_prob": 0.38}, game_date="2026-10-21")
+_vm2 = sc.build_card_vm(_p2)
+_h2 = flat_html(sc.render_card_html(_vm2))
+check("neue Projektion (Siegchance aus der Spread-Verteilung): Hinweis mit Sigma 13,2 im Kartenmodell und im HTML (genau einmal, unter dem Siegbalken)",
+      _vm2["win_note"] == "Siegchance und Spread aus derselben Verteilung (Sigma 13,2)" and _h2.count("Siegchance und Spread aus derselben Verteilung (Sigma 13,2)") == 1 and _h2.index("pc-bar-labels") < _h2.index("pc-winnote") < _h2.index("pc-model-wrap"))
+check("Siegbalken der Karte = round(Siegchance) aus der Spread-Verteilung (nicht die Elo-Logistik 62 %)", _vm2["home"]["pct"] == round(_p2["home_win_prob"] * 100) != 62 and _vm2["home"]["pct"] + _vm2["away"]["pct"] == 100)
+check("alte Projektion/Schnappschuss-Karte ohne win_prob_source: KEIN Hinweis (Siegchance stammte aus der Logistik)", sc.build_card_vm(cases[0])["win_note"] is None and "pc-winnote" not in flat_html(sc.render_card_html(sc.build_card_vm(cases[0]))))
+check("Hinweis nennt das Sigma der Projektion (z. B. 10,5 bei einer Version-1-Projektion mit gesetzter Quelle)", sc.build_card_vm({**_p2, "sigma_spread": 10.5})["win_note"] == "Siegchance und Spread aus derselben Verteilung (Sigma 10,5)")
+
 settings.SHOW_VALUE_BETS = False
 check("Pickle unveraendert", hashlib.sha256(MODEL_PATH.read_bytes()).hexdigest() == sha0)
 check("in KEINEM AppTest-Lauf dieser Datei: Streamlit-Exception oder der Satz 'was created with a default value ... Session State API'", not page_checks.bad, "; ".join(page_checks.bad[:2]))

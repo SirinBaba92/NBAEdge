@@ -224,7 +224,10 @@ def build_card_vm(proj: dict, entry: dict | None = None, tables: dict | None = N
         f"bias adj: H {proj['home_bias_adjustment']:+.1f} / A {proj['away_bias_adjustment']:+.1f}",
     ]
     origin, origin_warnings = origin_info(proj, h, a)
-    return {"home": h, "away": a, "fav": fav, "spread": sp, "total": tt, "warnings": warnings, "details": details,
+    win_note = None                                  # nur Projektionen mit Siegchance aus der Spread-Verteilung (sigmas_version 2); aeltere Schnappschuss-Karten: kein Hinweis
+    if proj.get("win_prob_source") == "normal_spread" and proj.get("sigma_spread"):
+        win_note = f"Siegchance und Spread aus derselben Verteilung (Sigma {fmt_num(float(proj['sigma_spread']))})"
+    return {"home": h, "away": a, "fav": fav, "spread": sp, "total": tt, "warnings": warnings, "details": details, "win_note": win_note,
             "origin": origin, "origin_warnings": origin_warnings, "lines": _line_blocks(proj, entry, h, a, tables, result)}
 
 
@@ -377,6 +380,7 @@ def render_card_html(vm: dict, logo_dir: Path | str | None = None) -> str:
         f'<div class="pc-bar" role="img" aria-label="Siegwahrscheinlichkeit {escape(a["nick"])} {a["pct"]} %, {escape(h["nick"])} {h["pct"]} %">'
         f'<div class="{away_seg}" style="width:{a["p"] * 100:.1f}%"></div>'
         f'<div class="{home_seg}" style="width:{h["p"] * 100:.1f}%"></div></div>',
+        f'<div class="pc-winnote">{escape(vm["win_note"])}</div>' if vm.get("win_note") else "",
         warn_html,
         '<div class="pc-model-wrap"><div class="pc-model">',
         _model_col("SPREAD", vm["spread"]),
@@ -415,6 +419,7 @@ def _css() -> str:
 .pc-seg-other {{ background:{P['bar_other']}; }}
 .pc-warnings {{ display:flex; flex-wrap:wrap; justify-content:center; gap:10px; max-width:1040px; margin:18px auto 0; }}
 .pc-origin {{ font-size:13px; color:{P['label']}; text-align:center; margin-top:16px; }}
+.pc-winnote {{ font-size:12px; color:{P['label']}; text-align:center; margin-top:8px; }}
 .pc-model-wrap {{ margin-top:28px; padding-top:24px; border-top:1px solid #2c3350; }}
 .pc-model {{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(32px,6vw,96px); max-width:780px; margin:0 auto; }}
 .pc-label {{ font-size:12px; letter-spacing:.16em; color:{P['label']}; margin-bottom:10px; }}

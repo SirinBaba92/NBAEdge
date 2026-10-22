@@ -7,11 +7,11 @@ Datei: data/tracking/projection_snapshots.json  (Ordner ueber NBAEDGE_TRACKING_D
        "game_date", "start_utc", "home", "away",
        "versions": [{"saved_at", "hash",
                      "model": {"file_mtime", "file_size", "sha1", "ratings_as_of"},
-                     "projection": {"exp_spread", "exp_total", "home_score", "away_score", "home_win_prob", "away_win_prob", "market_total", "market_spread"},
+                     "projection": {"exp_spread", "exp_total", "home_score", "away_score", "home_win_prob", "away_win_prob", "home_win_prob_elo", "away_win_prob_elo" (nur ab sigmas_version "2"), "market_total", "market_spread"},
                      "markets": {"spread"|"total"|"team_total_away"|"team_total_home": {"line", "source", "bookmaker", "line_at", "cache_line", "warn"}},
                      "tables": {"spread"|"total"|"team_away"|"team_home": {"kind", "source", "favorite", "derived", "note",
                                   "rows": [{"line", "p_left", "p_right", "predicted", "is_main"}]}},
-                     "sigmas": {...}, "pre_match_ref": {"entry_key", "<markt>": "<updated_at der Eingabe>"} | null}],
+                     "sigmas": {...}, "sigmas_version": "2" (fehlt = "1": Spread 10,5 / Total 18,0 / Team Total 12,5; Siegchance aus der Elo-Logistik), "pre_match_ref": {"entry_key", "<markt>": "<updated_at der Eingabe>"} | null}],
        "card": {...}       # Anzeigefelder der letzten Version (nur damit ein beendetes Spiel danach noch als Karte erscheint)
        "result": {"home_points", "away_points", "recorded_at", "source"} | null}}}
 Eine neue Version entsteht nur, wenn sich der Inhalt (Hash ohne Zeitstempel) gegenueber der letzten Version aendert und das Spiel noch nicht
@@ -224,15 +224,22 @@ def build_snapshot(proj: dict, entry: dict | None, model: dict) -> dict | None:
         "model": model,
         "projection": {"exp_spread": _num(proj.get("exp_spread")), "exp_total": _num(proj.get("exp_total")), "home_score": _num(proj.get("home_score")),
                        "away_score": _num(proj.get("away_score")), "home_win_prob": _num(proj.get("home_win_prob")), "away_win_prob": _num(proj.get("away_win_prob")),
+                       "home_win_prob_elo": _num(proj.get("home_win_prob_elo")), "away_win_prob_elo": _num(proj.get("away_win_prob_elo")),
                        "market_total": _num(proj.get("market_total")), "market_spread": _num(proj.get("market_spread"))},
         "markets": markets, "tables": out_tables,
         "sigmas": {"spread": lp.SPREAD_SIGMA, "total": lp.TOTAL_SIGMA, "team_total": lp.TEAM_TOTAL_SIGMA},
+        "sigmas_version": lp.SIGMAS_VERSION,
         "pre_match_ref": ref,
     }
 
 
 def content_hash(content: dict) -> str:
     return hashlib.sha1(json.dumps(content, sort_keys=True, ensure_ascii=False, default=str).encode("utf-8")).hexdigest()[:16]
+
+
+def sigmas_version_of(version: dict | None) -> str:
+    """Streuungs-Version einer gespeicherten Version: Feld sigmas_version, fehlt es: "1" (Spread 10,5 / Total 18,0 / Team Total 12,5, Siegchance aus der Elo-Logistik)."""
+    return str((version or {}).get("sigmas_version") or "1")
 
 
 def final_version(game: dict) -> dict | None:

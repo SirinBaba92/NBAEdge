@@ -137,6 +137,35 @@ an = lm.Anchor.from_snapshot(v)
 check("Anchor.from_snapshot: Werte und Sigmas aus dem Schnappschuss", an.exp_total == v["projection"]["exp_total"] and an.sigma_total == v["sigmas"]["total"] and an.source == "schnappschuss")
 check("Anchor 'live_nachgerechnet' kennzeichnet die Quelle", lm.Anchor.from_snapshot(v, "live_nachgerechnet").source == "live_nachgerechnet" and lm.project(lm.Anchor.from_snapshot(v, "live_nachgerechnet"), PRE, 0, 0).anchor_source == "live_nachgerechnet")
 
+
+# ----------------------------------------------------------------- sigmas_version 2: Siegchance aus derselben Verteilung wie der Spread
+from engine.line_probabilities import win_prob_home
+def anchor_v2(spread, total=230.0):
+    return lm.Anchor(total, spread, (total + spread) / 2, (total - spread) / 2, round(win_prob_home(spread), 4), sigmas_version="2")
+all_eq = True; all_sp = True
+for sp in (-12.0, -3.5, 0.0, 0.4, 5.0, 8.1, 15.0):
+    a2 = anchor_v2(sp)
+    t2 = lm.project(a2, PRE, 0, 0)
+    all_eq &= abs(t2.p_winner("home") - a2.home_win_prob) < 5e-5 and abs(t2.p_winner("home") - ND.cdf(sp / SPREAD_SIGMA)) < 1e-12
+    all_sp &= t2.p_winner("home") == t2.p_spread("home", 0.0) and t2.winner_mode == "gleiche_verteilung" and t2.sigmas_version == "2"
+check("Version 2: Sieger beim Anpfiff = gespeicherte Vorab-Siegchance (Rundung auf 4 Stellen) und = Phi(Spread / Sigma), 7 Spreads", all_eq)
+check("Version 2: Sieger = Spread-Wahrscheinlichkeit bei Linie 0 (exakt gleiche Zahl), Modus 'gleiche_verteilung'", all_sp)
+a2 = anchor_v2(8.1)
+same = True
+for clock_, h_, a_ in ((HALF, 62, 52), (Q(4, 180), 108, 108), (Q(4, 180), 112, 104), (B(2, "", 4, ""), 115, 115), (B(2, "OT 2:00", 5, "PT02M00.00S"), 120, 120), (Q(2, 360), 30, 40)):
+    pr = lm.project(a2, clock_, h_, a_)
+    same &= pr.p_winner("home") == pr.p_spread("home", 0.0) and abs(pr.p_winner("home") + pr.p_winner("away") - 1) < 1e-12
+check("Version 2: Sieger = Spread bei Linie 0 auch im Spiel (Halbzeit, Q4, Ende Q4, Verlaengerung)", same)
+check("Version 2: Total, Team Total und Spread beim Anpfiff weiter = Vorab-Funktionen", all(abs(lm.project(a2, PRE, 0, 0).p_over_total(L) - prob_above(230.0, L, TOTAL_SIGMA)) < 1e-12 for L in lines_t)
+      and all(abs(lm.project(a2, PRE, 0, 0).p_over_team("home", L) - prob_above(a2.home_score, L, TEAM_TOTAL_SIGMA)) < 1e-12 for L in lines_tt))
+check("Version 2: Ende Q4 mit Gleichstand: Sieger nahe 50-65 % (Verlaengerung offen), FINAL exakt 0/1", 0.5 < lm.project(a2, B(2, "", 4, ""), 115, 115).p_winner("home") < 0.65
+      and lm.project(a2, FINAL, 118, 109).p_winner("home") == 1.0 and lm.project(a2, FINAL, 100, 109).p_winner("home") == 0.0)
+check("Version 2: 10 Punkte vorn bei 5 s Rest: Sieger > 99,9 %", lm.project(a2, Q(4, 5), 112, 102).p_winner("home") > 0.999)
+check("Version 1 (Elo-Logistik) bleibt bei der effektiven Marge", lm.project(A, HALF, 62, 52).winner_mode == "effektive_marge" and lm.project(A, HALF, 62, 52).sigmas_version == "1")
+vtest = {"projection": {"exp_total": 230.0, "exp_spread": 8.1, "home_score": 119.0, "away_score": 111.0, "home_win_prob": 0.7303}, "sigmas": {"spread": 13.2, "total": 18.6, "team_total": 11.6}}
+check("Anchor.from_snapshot: sigmas_version 2 gelesen, fehlend = 1", lm.Anchor.from_snapshot({**vtest, "sigmas_version": "2"}).sigmas_version == "2" and lm.Anchor.from_snapshot(vtest).sigmas_version == "1")
+check("Anchor.from_snapshot mit Sigmas aus dem Schnappschuss (alte Version 10,5 / 18 / 12,5 bleibt moeglich)", lm.Anchor.from_snapshot({**vtest, "sigmas": {"spread": 10.5, "total": 18.0, "team_total": 12.5}}).sigma_spread == 10.5)
+
 # ----------------------------------------------------------------- Wettstatus: Grenzen 10 / 35 / 65
 S = bs.status_from_probability
 check("Grenzen: >65 % Auf Kurs, genau 65 % Offen", S(0.6500001) == bs.ON_TRACK and S(0.65) == bs.OPEN and S(0.80) == bs.ON_TRACK)

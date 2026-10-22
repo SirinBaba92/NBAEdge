@@ -1,12 +1,14 @@
 """
 Auswertung der Schnappschuesse (nur lesend, ohne Netz): Kalibrierungstabelle je Markt.
 
-  venv/bin/python analysis/eval_snapshots.py [Pfad/zu/projection_snapshots.json]
+  venv/bin/python analysis/eval_snapshots.py [--alle] [Pfad/zu/projection_snapshots.json]
 
 Liest je beendetem Spiel mit Ergebnis die letzte Version vor dem Anpfiff und wertet jede Zeile aus, die eine vorhergesagte (wahrscheinlichere) Seite hat:
 Trefferquote der vorhergesagten Seite je Stufe der vorhergesagten Wahrscheinlichkeit (50-60 %, 60-70 %, 70-80 %, 80-90 %, 90+ %), getrennt fuer alle
 Zeilen und nur fuer Hauptlinien. Push (ganzzahlige Linie, exakter Treffer) und 50 : 50 zaehlen nicht mit (Push wird separat genannt).
 Maerkte: Spread, Total, Team Total (Gast und Heim zusammen). Bei weniger als 30 Zeilen je Stufe: Hinweis "zu wenig Daten". Aendert nichts.
+Gruppiert nach sigmas_version der Schnappschuss-Version (fehlt das Feld: Version 1 mit Spread 10,5 / Total 18,0 / Team Total 12,5; ab 23.10.2026 Version 2 mit
+13,2 / 18,6 / 11,6): Prozentwerte verschiedener Versionen werden nie in einer Tabelle gemischt. Mit "--alle" zusaetzlich eine zusammengefasste Tabelle.
 """
 import json
 import sys
@@ -15,6 +17,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
+from data.projection_snapshots import sigmas_version_of
 from engine.line_probabilities import row_outcome
 
 MIN_ROWS = 30
@@ -22,14 +25,17 @@ BUCKETS = [(50, 60, "50-60 %"), (60, 70, "60-70 %"), (70, 80, "70-80 %"), (80, 9
 MARKETS = {"spread": ("Spread", ("spread",)), "total": ("Total", ("total",)), "team_total": ("Team Total", ("team_away", "team_home"))}
 
 
-def collect(data: dict) -> dict:
-    """{markt: [(p_vorhergesagt in %, getroffen True/False, ist_hauptlinie), ...]} plus Zaehler fuer Push. Nur beendete Spiele mit Ergebnis und Version."""
+def collect(data: dict, version: str | None = None) -> dict:
+    """{markt: [(p_vorhergesagt in %, getroffen True/False, ist_hauptlinie), ...]} plus Zaehler fuer Push. Nur beendete Spiele mit Ergebnis und Version.
+    version: nur Schnappschuesse mit dieser sigmas_version ("1", "2"); None = alle."""
     rows = {m: [] for m in MARKETS}
     push = {m: 0 for m in MARKETS}
     games = 0
     for g in (data.get("games") or {}).values():
         res, versions = g.get("result"), g.get("versions")
         if not res or not versions:
+            continue
+        if version is not None and sigmas_version_of(versions[-1]) != version:
             continue
         games += 1
         tables = versions[-1].get("tables") or {}
@@ -58,9 +64,17 @@ def table(entries: list) -> list[tuple]:
     return out
 
 
-def render(data: dict) -> str:
-    c = collect(data)
-    lines = [f"Auswertung der Schnappschuesse: {c['games']} beendete Spiele mit Ergebnis"]
+SIGMAS_TEXT = {"1": "Streuung Version 1 (Spread 10,5 / Total 18,0 / Team Total 12,5)", "2": "Streuung Version 2 (Spread 13,2 / Total 18,6 / Team Total 11,6)"}
+
+
+def versions_in(data: dict) -> list[str]:
+    return sorted({sigmas_version_of(g["versions"][-1]) for g in (data.get("games") or {}).values() if g.get("result") and g.get("versions")})
+
+
+def render_one(data: dict, version: str | None) -> str:
+    c = collect(data, version)
+    head = SIGMAS_TEXT.get(version, f"Streuung Version {version}") if version else "alle Versionen zusammen (nicht vergleichbar)"
+    lines = [f"Auswertung der Schnappschuesse: {c['games']} beendete Spiele mit Ergebnis | {head}"]
     if not c["games"]:
         lines.append("Noch keine beendeten Spiele mit Schnappschuss und Ergebnis.")
         return "\n".join(lines)
@@ -75,7 +89,20 @@ def render(data: dict) -> str:
     return "\n".join(lines)
 
 
+def render(data: dict, mix: bool = False) -> str:
+    """Eine Tabelle je sigmas_version (getrennt); mix=True haengt eine zusammengefasste Tabelle an."""
+    vs = versions_in(data)
+    if not vs:
+        return render_one(data, None)
+    parts = [render_one(data, v) for v in vs]
+    if mix and len(vs) > 1:
+        parts.append(render_one(data, None))
+    return "\n\n".join(parts)
+
+
 def main(argv) -> int:
+    mix = "--alle" in argv
+    argv = [a for a in argv if a != "--alle"]
     path = Path(argv[0]) if argv else None
     if path is None:
         from data.projection_snapshots import snapshot_path
@@ -83,7 +110,7 @@ def main(argv) -> int:
     if not path.exists():
         print(f"Keine Schnappschuss-Datei: {path}")
         return 1
-    print(render(json.loads(path.read_text(encoding="utf-8"))))
+    print(render(json.loads(path.read_text(encoding="utf-8")), mix=mix))
     return 0
 
 

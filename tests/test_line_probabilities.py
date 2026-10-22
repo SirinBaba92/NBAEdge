@@ -15,6 +15,7 @@ _nba_live.NBA_CACHE_SECONDS = 10 ** 6
 import data.market_lines as ml
 import data.pre_match_store as ps
 import engine.line_probabilities as lp
+from statistics import NormalDist
 import ui.score_cards as sc
 from models.elo import EloEngine, MODEL_PATH
 from engine.projection import compute_projection
@@ -34,7 +35,11 @@ iso = lambda ts: dt.datetime.fromtimestamp(ts, dt.timezone.utc).strftime("%Y-%m-
 K, P = "New York Knicks", "Philadelphia 76ers"
 
 # ===================================================== A) reine Rechenfunktionen
-check("Konstanten: Total 18,0, Team Total 12,5, Spread 10,5 (an die Siegwahrscheinlichkeit angepasst, Kommentar 'wird im Backtest kalibriert')", lp.TOTAL_SIGMA == 18.0 and lp.TEAM_TOTAL_SIGMA == 12.5 and lp.SPREAD_SIGMA == 10.5 and "Backtest kalibriert" in inspect.getsource(lp))
+check("Konstanten (23.10.2026, sigmas_version 2): Spread 13,2 / Total 18,6 / Team Total 11,6, Kommentar nennt analysis/sigma_check.py, Obergrenze (Marktmischung) und Nachmessen nach ca. 300 Spielen",
+      lp.SPREAD_SIGMA == 13.2 and lp.TOTAL_SIGMA == 18.6 and lp.TEAM_TOTAL_SIGMA == 11.6 and lp.SIGMAS_VERSION == "2"
+      and all(t in inspect.getsource(lp) for t in ("analysis/sigma_check.py", "Obergrenze", "300 beendeten Spielen", "sigmas_version", "10,5")))
+check("win_prob_home: Phi(Spread / Sigma), 50 % bei Spread 0, symmetrisch, begrenzt auf 3 bis 97 %", abs(lp.win_prob_home(0.0) - 0.5) < 1e-12 and abs(lp.win_prob_home(8.1) - NormalDist().cdf(8.1 / 13.2)) < 1e-12
+      and abs(lp.win_prob_home(8.1) + lp.win_prob_home(-8.1) - 1) < 1e-12 and lp.win_prob_home(60) == 0.97 and lp.win_prob_home(-60) == 0.03)
 check("50 % am Mittelwert (Total, Team Total, Spread-Linie = Projektion)", abs(lp.prob_above(231.5, 231.5, 18) - 0.5) < 1e-12 and lp.over_under_rows(231.5, [231.5], 231.5, 18)[0]["p_left"] == 50
       and lp.spread_rows(9.5, "home", [9.5], 9.5)[0]["p_left"] == 50 and lp.over_under_rows(231.5, [231.5], 231.5, 18)[0]["predicted"] is None)
 rows = lp.over_under_rows(231.5, [x + 0.5 for x in range(200, 260)], None, 18)
@@ -48,7 +53,7 @@ check("beide Seiten ergeben immer 100, ganze Zahlen, 1 bis 99", all(r["p_left"] 
 check("vorhergesagte Seite = hoehere Prozentzahl", all((r["predicted"] == "left") == (r["p_left"] > r["p_right"]) and (r["predicted"] == "right") == (r["p_right"] > r["p_left"]) for r in allrows))
 check("Over steht IMMER links, Under rechts (Over-Vorhersage 65 : 35, Under-Vorhersage 35 : 65)", lp.over_under_rows(240, [231.5], None, 18)[0]["p_left"] > 50 and lp.over_under_rows(220, [231.5], None, 18)[0]["p_left"] < 50)
 r = lp.spread_rows(9.6, "home", [0.5], None)[0]
-check("Spread: Gast links / Heim rechts; Heim-Favorit +9,6 bei Linie 0,5: Heim (rechts) ca. 80 %", r["p_right"] > 75 and r["p_left"] < 25 and r["predicted"] == "right", str(r))
+check("Spread: Gast links / Heim rechts; Heim-Favorit +9,6 bei Linie 0,5: Heim (rechts) ca. 75 % (Phi((9,6 - 0,5) / 13,2) = 75,5 %; bei Sigma 10,5 waren es 80 %)", r["p_right"] == 75 and r["p_left"] == 25 and r["predicted"] == "right", str(r))
 r = lp.spread_rows(9.6, "away", [0.5], None)[0]
 check("Gast-Favorit mit Projektion Heim +9,6 (Markt falsch herum): Heim bleibt rechts, Gast (Favorit) links nur 20 %", r["p_left"] < 25 and r["p_right"] > 75)
 # Staffel
@@ -71,14 +76,19 @@ for i in range(0, 30, 2):
         es = pr["exp_spread"]; fav = "home" if es >= 0 else "away"
         bar = lp.spread_rows(es, fav, [0.0], 0.0)[0]
         home_bar = bar["p_right"]                                     # Heim-Anteil des Spread-Balkens bei Linie 0
-        diffs.append(abs(home_bar - round(pred["home_win_prob"] * 100)))
-        if abs(es) > 3: implied.append(es / NormalDist().inv_cdf(pred["home_win_prob"]))
+        diffs.append(abs(home_bar - round(pr["home_win_prob"] * 100)))
+        if abs(es) > 3: implied.append(es / NormalDist().inv_cdf(pr["home_win_prob"]))
 import statistics
-check(f"Konsistenz mit dem Sieg-Balken: Spread-Balken bei Linie 0 weicht im Mittel {statistics.mean(diffs):.1f} Prozentpunkte (max. {max(diffs)}) vom Siegbalken ab (modellreine Projektion, {len(diffs)} Paarungen)", statistics.mean(diffs) <= 4.0 and max(diffs) <= 13,   # Schwelle nach dem Pickle-Update vom 21.10. (3 neue Spiele): vorher 2,15 / 7, jetzt 3,37 / 12; Streuung wird im Backtest kalibriert
-       f"Mittel {statistics.mean(diffs):.2f}, max {max(diffs)}")
-check("implizite Streuung der Siegwahrscheinlichkeit liegt zwischen 10 und 12,5 (Median)", 10 <= statistics.median(implied) <= 12.5, f"Median {statistics.median(implied):.1f}")
+check(f"Konsistenz mit dem Sieg-Balken (Variante A): Spread-Balken bei Linie 0 = Siegbalken der Karte (Abweichung hoechstens 1 Prozentpunkt durch Rundung, Mittel {statistics.mean(diffs):.2f}, max. {max(diffs)}; {len(diffs)} Paarungen, modellrein)",
+      max(diffs) <= 1 and statistics.mean(diffs) <= 0.1, f"Mittel {statistics.mean(diffs):.2f}, max {max(diffs)}")
+check("implizite Streuung der Siegchance der Karte = SPREAD_SIGMA 13,2 (Median, Rundung auf 4 Stellen)", 13.1 <= statistics.median(implied) <= 13.3, f"Median {statistics.median(implied):.2f}")
 ex = lp.spread_rows(9.6, "home", [0.0], 0.0)[0]
-check("Beispiel Raptors/Bulls: Modell-Spread 9,6, Siegwahrscheinlichkeit 79 % -> Balken bei Linie 0: Heim ca. 82 % (Abweichung <= 3 Punkte)", abs(ex["p_right"] - 79) <= 3, str(ex["p_right"]))
+check("Beispiel Raptors/Bulls: Modell-Spread 9,6 -> Siegchance Heim = Spread-Balken bei Linie 0 = Phi(9,6 / 13,2) = 77 % (vorher 79 % aus der Logistik, Balken 82 %)",
+      ex["p_right"] == round(lp.win_prob_home(9.6) * 100) == 77, str(ex["p_right"]))
+check("Karte (compute_projection): Siegchance aus der Spread-Verteilung, Elo-Logistik bleibt als *_elo erhalten, Quelle und Sigma im Ergebnis",
+      (lambda r: r["win_prob_source"] == "normal_spread" and r["sigma_spread"] == 13.2 and r["sigmas_version"] == "2" and r["home_win_prob_elo"] == 0.62 and r["away_win_prob_elo"] == 0.38
+       and r["home_win_prob"] == round(lp.win_prob_home(r["exp_spread"]), 4) and abs(r["home_win_prob"] + r["away_win_prob"] - 1) < 1e-9)(
+          compute_projection({"home_team": K, "away_team": P, "home_elo": 1560, "away_elo": 1500, "expected_total": 226.0, "home_win_prob": 0.62, "away_win_prob": 0.38}, game_date="2026-10-21")))
 
 # ===================================================== B) Tabellen einer Karte (build_line_tables)
 def fake_proj(spread_line=4.5, total_line=231.5, tt_away=None, tt_home=None, exp_spread=5.0, exp_total=232.0, hs=119, as_=113):

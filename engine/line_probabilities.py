@@ -14,16 +14,19 @@ from __future__ import annotations
 import math
 from statistics import NormalDist
 
-# Streuungen (Standardabweichung in Punkten). Vorlaeufig, wird im Backtest kalibriert.
-# SPREAD_SIGMA: so gewaehlt, dass der Spread-Balken bei Linie 0 zur Siegwahrscheinlichkeit der Karte passt. Die Siegwahrscheinlichkeit
-# (kalibrierte Regression auf ELO-Differenz/Form/Rest) und der Modell-Spread kommen aus derselben ELO-Differenz. Anpassung (21.10.2026):
-#   14 echte Spiele, modellrein:            beste Streuung 11,0 (RMS 1,5 Prozentpunkte; bei 12,0: 2,1)
-#   145 Paarungen aller Teams, modellrein:  beste Streuung 10,0 bis 10,5 (mittlere Abweichung 2,1; bei 11,0: 2,35; bei 12,0: 3,15)
-#   14 Spiele mit Marktmischung (25 % Markt im exp_spread): beste Streuung 9,7 (RMS 4,0), weil die Siegwahrscheinlichkeit rein aus dem Modell kommt.
-# Kompromiss: 10,5. Wird im Backtest kalibriert.
-SPREAD_SIGMA = 10.5
-TOTAL_SIGMA = 18.0
-TEAM_TOTAL_SIGMA = 12.5
+# Streuungen (Standardabweichung in Punkten), Stand 23.10.2026 (sigmas_version "2"). Quelle: analysis/sigma_check.py (Ergebnisse: analysis/results/sigma_check.json),
+# gemessen auf 10 777 Regular-Season-Spielen 2017-2025 (Nachbau der ELO-Engine, Walk-forward, Ereignis "Heim deckt / Over trifft", Linien um den Mittelwert):
+#   Spread      Log-Loss-Minimum 13,2 (95 %: 13,0 bis 13,6; Fenster a/b/c1/c2: 12,4 / 13,8 / 12,8 / 13,6); Fehler ~normal (Schiefe 0,01, Woelbung +0,46), vom Spread unabhaengig
+#   Total       18,6 (18,2 bis 19,0; Fenster 18,6 / 18,8 / 18,8 / 18,2); Schiefe +0,22; Prognose etwas zu eng (Steigung Ergebnis auf Prognose 1,11)
+#   Team Total  11,6 (11,4 bis 11,8; Fenster 11,6 / 11,8 / 11,6 / 11,4)
+# Vorher (sigmas_version "1"): Spread 10,5 (an die kalibrierte Logistik-Siegwahrscheinlichkeit angepasst, gegen die Ergebnisse zu klein: Kalibrierungs-Steigung 0,78),
+# Total 18,0, Team Total 12,5. Der Siegbalken kommt seit Version 2 aus derselben Normalverteilung wie der Spread (win_prob_home), nicht mehr aus der Logistik.
+# Hinweis: Gemessen fuer das reine Modell. Produktiv wird exp_total (Gewicht 0,32 bis 0,55) und exp_spread (0,25) mit der Marktlinie gemischt, das senkt den Fehler etwas:
+# die Werte sind eher eine Obergrenze. Nachmessen mit den Schnappschuessen nach ca. 300 beendeten Spielen (analysis/eval_snapshots.py).
+SPREAD_SIGMA = 13.2
+TOTAL_SIGMA = 18.6
+TEAM_TOTAL_SIGMA = 11.6
+SIGMAS_VERSION = "2"             # wird im Schnappschuss mitgespeichert; fehlt das Feld, gilt Version "1" (10,5 / 18,0 / 12,5)
 
 STAFFEL_STEP = 1.0
 STAFFEL_SPREAD_HALF = 2        # Spread: 5 Linien (Hauptlinie +- 2)
@@ -42,6 +45,13 @@ def round_half(value: float) -> float:
 def prob_above(mean: float, line: float, sigma: float) -> float:
     """P(X > line) fuer X ~ Normal(mean, sigma)."""
     return 1.0 - _ND.cdf((line - mean) / sigma)
+
+
+def win_prob_home(exp_spread: float, sigma: float = SPREAD_SIGMA) -> float:
+    """Siegwahrscheinlichkeit Heim = P(Marge > 0) bei Normalverteilung um den Spread-Mittelwert (positiv = Heim staerker) mit demselben Sigma wie der Spread-Balken.
+    Gleiche Verteilung wie spread_rows: der Siegbalken und der Spread-Balken bei Linie 0 stimmen exakt ueberein. Begrenzt auf [MIN_WIN_PROB, MAX_WIN_PROB] (config.settings)."""
+    from config.settings import MAX_WIN_PROB, MIN_WIN_PROB
+    return min(MAX_WIN_PROB, max(MIN_WIN_PROB, _ND.cdf(float(exp_spread) / sigma)))
 
 
 def percent_pair(p_left: float) -> tuple[int, int]:
