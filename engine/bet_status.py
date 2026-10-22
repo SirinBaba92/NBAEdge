@@ -106,3 +106,57 @@ def profit(bet: dict, status: BetStatus) -> float | None:
         return None
     stake = float(bet.get("stake") or 0)
     return round(stake * (float(bet["odds"]) - 1.0), 2) if status.won else -round(stake, 2)
+
+
+# ------------------------------------------------------------------------------ Spieler-Wetten (Punkte, "mindestens N Punkte", immer Over)
+P_WAITING, P_RUNNING, P_WON, P_LOST, P_DNP, P_UNSURE, P_NODATA = "wartet", "laeuft", "gewonnen", "verloren", "nicht_gespielt", "unsicher", "keine_daten"
+DNP_LABEL = "Nicht gespielt, Einsatz meist zurück, bitte prüfen"
+UNSURE_LABEL = "Spiel beendet, Spielerdaten älter als der Endstand: bitte prüfen"
+
+
+@dataclass(frozen=True)
+class PlayerBetStatus:
+    state: str                       # wartet | laeuft | gewonnen | verloren | nicht_gespielt | unsicher | keine_daten
+    label: str
+    color: str                       # gruen / gelb / orange / rot / grau
+    decided: bool                    # gewonnen oder verloren (nicht gespielt und unsicher sind NICHT entschieden)
+    won: bool | None
+    points: int | None               # aktuelle Punkte
+    needed: int | None               # noch noetige Punkte bis zum Meilenstein
+    minutes: float | None
+    fouls: int | None
+    player_status: str | None        # spielt | bank | nicht gespielt
+    probability: float | None = None  # Live-Chance: kommt in Baustein P4, das Feld ist vorbereitet
+
+
+def player_bet_status(bet: dict, player, started: bool, final: bool, complete: bool) -> PlayerBetStatus:
+    """Status einer Spieler-Wette (Meilenstein N = mindestens N Punkte). player: PlayerLive-aehnlich (points, minutes, fouls, status) oder None.
+    started/final: Spielzustand laut Scoreboard; complete: die Spielerpunkte sind aktuell (Boxscore-Teampunkte == Stand), sonst darf nach Spielende nichts als verloren gelten.
+    Gewonnen sofort bei Punkte >= N. Verloren erst nach Spielende und mit aktuellem Boxscore. Nicht gespielt: Spiel beendet und 0 Minuten (kein Gewinn, kein Verlust)."""
+    n = int(bet["milestone"])
+    if not started and not final:
+        return PlayerBetStatus(P_WAITING, WAITING, COLORS[WAITING], False, None, None, n, None, None, None)
+    if player is None:
+        if final and complete:
+            return PlayerBetStatus(P_DNP, DNP_LABEL, "grau", False, None, 0, n, 0.0, 0, "nicht gespielt")
+        label = "Keine Spielerdaten (Boxscore noch nicht geholt oder Spieler nicht im Boxscore)"
+        return PlayerBetStatus(P_NODATA, label, "grau", False, None, None, n, None, None, None)
+    pts, mins, fouls, pst = int(player.points), float(player.minutes), int(player.fouls), player.status
+    if pts >= n:
+        return PlayerBetStatus(P_WON, WON, COLORS[WON], True, True, pts, 0, mins, fouls, pst)
+    needed = n - pts
+    if final:
+        if not complete:
+            return PlayerBetStatus(P_UNSURE, UNSURE_LABEL, "orange", False, None, pts, needed, mins, fouls, pst)
+        if mins <= 0:
+            return PlayerBetStatus(P_DNP, DNP_LABEL, "grau", False, None, pts, needed, mins, fouls, "nicht gespielt")
+        return PlayerBetStatus(P_LOST, LOST, COLORS[LOST], True, False, pts, needed, mins, fouls, pst)
+    return PlayerBetStatus(P_RUNNING, f"Läuft: {pts} von {n} Punkten, noch {needed}", "gelb", False, None, pts, needed, mins, fouls, pst)
+
+
+def player_profit(bet: dict, status: PlayerBetStatus) -> float | None:
+    """Gewinn/Verlust nur fuer gewonnene oder verlorene Wetten mit Quote und Einsatz; nicht gespielt, unsicher, offen: None."""
+    if not status.decided or bet.get("odds") is None or bet.get("stake") is None:
+        return None
+    stake = float(bet["stake"])
+    return round(stake * (float(bet["odds"]) - 1.0), 2) if status.won else -round(stake, 2)

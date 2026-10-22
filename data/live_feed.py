@@ -64,6 +64,20 @@ def game_day_us(row: dict, fallback: str | None = None) -> str:
 
 # ----------------------------------------------------------------------------------------------- Datenklassen
 @dataclass(frozen=True)
+class PlayerLive:
+    """Ein Spieler aus dem schon geholten Boxscore (kein zusaetzlicher Abruf). Zuordnung ueber person_id (= personId des Boxscores = NBA-Personennummer)."""
+    person_id: int
+    name: str
+    side: str                          # "home" | "away"
+    tricode: str | None
+    points: int
+    minutes: float                     # gespielte Minuten (Zahl)
+    fouls: int
+    status: str                        # "spielt" (auf dem Feld) | "bank" (noch nicht oder gerade nicht auf dem Feld) | "nicht gespielt" (laut Boxscore inaktiv)
+    played: bool                       # hat bereits Spielzeit
+
+
+@dataclass(frozen=True)
 class GameView:
     game_id: str
     home: str                          # "Philadelphia 76ers"
@@ -87,6 +101,8 @@ class GameView:
     box_error: str | None = None
     source: str = SOURCE_NBA
     updated_at: float | None = None    # Zeitpunkt der Daten (Epoch)
+    players: tuple = ()                # PlayerLive aus dem letzten Boxscore (leer, solange keiner geholt wurde)
+    players_complete: bool = False     # Boxscore-Teampunkte == Scoreboard-Stand: die Spielerpunkte sind aktuell (wichtig fuer "verloren" nach Spielende)
 
     @property
     def running(self) -> bool:
@@ -135,6 +151,31 @@ class LiveNumbers:
 
     def p_over_team(self, side: str, line: float):
         return None if self.projection is None else self.projection.p_over_team(side, line)
+
+
+def _box_minutes(value) -> float:
+    m = re.fullmatch(r"PT(?:(\d+)M)?(?:(\d+(?:\.\d+)?)S)?", str(value or "").strip())
+    return (int(m.group(1) or 0) + float(m.group(2) or 0) / 60) if m else 0.0
+
+
+def players_from_box(game: dict) -> tuple:
+    """PlayerLive-Liste aus der Boxscore-Antwort (game = response['game']). Unlesbare Spieler werden uebersprungen."""
+    out = []
+    for side in ("home", "away"):
+        team = game.get(f"{side}Team") or {}
+        for p in team.get("players") or []:
+            try:
+                st = p.get("statistics") or {}
+                minutes = _box_minutes(st.get("minutes"))
+                on = str(p.get("oncourt")) == "1"
+                played = str(p.get("played")) == "1" or minutes > 0
+                inactive = str(p.get("status") or "ACTIVE").upper() == "INACTIVE"
+                status = "spielt" if on else "nicht gespielt" if inactive and not played else "bank"
+                out.append(PlayerLive(int(p["personId"]), str(p.get("name") or ""), side, team.get("teamTricode"), int(st.get("points") or 0), minutes,
+                                      int(st.get("foulsPersonal") or 0), status, played))
+            except (KeyError, TypeError, ValueError):
+                continue
+    return tuple(out)
 
 
 # ----------------------------------------------------------------------------------------------- Anzeigehilfen
@@ -285,7 +326,7 @@ class LiveFeed:
         self._lock = threading.RLock()
         self._backoff = _Backoff()
         self._games: dict[str, GameView] = {}
-        self._box: dict[str, dict] = {}                 # game_id -> {'at', 'poss', 'error', 'attempt'}
+        self._box: dict[str, dict] = {}                 # game_id -> {'at', 'poss', 'error', 'attempt', 'players', 'scores'}
         self._scoreboard_day: str | None = None
         self._last_ok: float | None = None              # letztes frisches NBA.com-Scoreboard
         self._fresh_at: float | None = None             # letzte frische Daten aus irgendeiner Quelle
@@ -395,7 +436,8 @@ class LiveFeed:
             home_nick=str(home.get("teamName") or ""), away_nick=str(away.get("teamName") or ""), home_tricode=home.get("teamTricode"), away_tricode=away.get("teamTricode"),
             day=game_day_us(row, self._scoreboard_day), start_utc=row.get("gameTimeUTC"), status=status_of(clock), status_text=status_text(clock), clock=clock, clock_label=clock_label(clock),
             home_score=int(home.get("score") or 0), away_score=int(away.get("score") or 0), home_periods=per(home), away_periods=per(away),
-            possessions=box.get("poss"), box_age_s=None, box_error=box.get("error"), source=SOURCE_NBA, updated_at=t)
+            possessions=box.get("poss"), box_age_s=None, box_error=box.get("error"), source=SOURCE_NBA, updated_at=t,
+            players=box.get("players") or (), players_complete=box.get("scores") == (int(home.get("score") or 0), int(away.get("score") or 0)))
 
     def _refresh_boxes(self, t: float) -> None:
         """Boxscore nur fuer laufende Spiele (Status 2 laut Scoreboard), je Spiel hoechstens alle 30 s, hoechstens 6 je Aufruf; nach einem Fehler gilt die gemeinsame Wartezeit."""
@@ -403,25 +445,29 @@ class LiveFeed:
         for g in due[:MAX_BOXES_PER_REFRESH]:
             if t < self._next_allowed:
                 break
-            entry = self._box.setdefault(g.game_id, {"at": None, "poss": None, "error": None, "attempt": float("-inf")})
+            entry = self._box.setdefault(g.game_id, {"at": None, "poss": None, "error": None, "attempt": float("-inf"), "players": (), "scores": None})
             entry["attempt"] = t
             res = self._get(NBA_BOXSCORE_URL.format(game_id=g.game_id), SOURCE_NBA)
-            poss = None
+            poss, players, scores = None, (), None
             if res.ok:
                 try:
                     game = res.data["game"]
                     poss = lm.Possessions(lm.possessions_from_stats(game["homeTeam"]["statistics"]), lm.possessions_from_stats(game["awayTeam"]["statistics"]))
-                except (KeyError, TypeError):
+                    players = players_from_box(game)                      # Spielerliste aus derselben Antwort, kein zusaetzlicher Abruf
+                    scores = (int(game["homeTeam"].get("score") or 0), int(game["awayTeam"].get("score") or 0))
+                except (KeyError, TypeError, ValueError):
                     res = _Res(200, None, _message(SOURCE_NBA, 200, "format"))
             if res.ok:
-                entry.update(at=t, poss=poss, error=None)
+                entry.update(at=t, poss=poss, error=None, players=players, scores=scores)
                 self._backoff.success()
                 self._next_allowed = float("-inf")
             else:
                 entry["error"] = res.error                           # letzter guter Boxscore bleibt, Alter waechst
                 if res.status != 200:                                # Verbindungs-/HTTP-Fehler (403, 429, Zeitueberschreitung ...): gemeinsame Pause fuer alle NBA.com-Abrufe
                     self._next_allowed = t + self._backoff.failure()   # (ein unlesbarer Boxscore EINES Spiels blockiert dagegen nicht das Scoreboard: neuer Versuch nach 30 s)
-            self._games[g.game_id] = replace(self._games[g.game_id], possessions=entry["poss"], box_error=entry["error"])
+            gv = self._games[g.game_id]
+            self._games[g.game_id] = replace(gv, possessions=entry["poss"], box_error=entry["error"], players=entry["players"] or (),
+                                             players_complete=entry["scores"] == (gv.home_score, gv.away_score))
 
     def _try_espn(self, t: float) -> None:
         """NBA.com-Scoreboard faellt aus: Stand/Uhr/Status der bekannten Spiele von ESPN, nur bei eindeutiger Zuordnung."""
@@ -445,7 +491,8 @@ class LiveFeed:
             old = self._games[gid]
             clock = gc.build_game_clock(e["status_code"], e["text"], e["period"], e["clock"])
             self._games[gid] = replace(old, clock=clock, status=status_of(clock), status_text=status_text(clock), clock_label=clock_label(clock),
-                                       home_score=e["home_score"], away_score=e["away_score"], source=SOURCE_ESPN, updated_at=t)
+                                       home_score=e["home_score"], away_score=e["away_score"], source=SOURCE_ESPN, updated_at=t,
+                                       players_complete=(self._box.get(gid) or {}).get("scores") == (e["home_score"], e["away_score"]))
         self._fresh_at, self._source = t, SOURCE_ESPN
         self._fallback_note = f"Stand, Uhr und Status von ESPN ({len(matched)} von {len(known)} Spielen zugeordnet); Boxscore/Tempo aus dem letzten NBA.com-Stand."
 
@@ -539,18 +586,25 @@ def find_game(state: FeedState, game_date: str, home: str, away: str) -> GameVie
     return None
 
 
-def bets_live(state: FeedState, snapshots: dict | None = None, day_bets: dict | None = None) -> list[dict]:
-    """Eigene Wetten des Spieltags mit Live-Status: [{'key', 'game' (GameView|None), 'numbers' (LiveNumbers|None), 'bets', 'lives' ({markt: BetLive}), 'note'}].
-    Ohne Schnappschuss: Wetten werden angezeigt, aber ohne Status (lives leer, note erklaert es). Spiel nicht im Scoreboard: game None."""
+def bets_live(state: FeedState, snapshots: dict | None = None, day_bets: dict | None = None, player_bets: dict | None = None) -> list[dict]:
+    """Eigene Wetten des Spieltags mit Live-Status: [{'key', 'game' (GameView|None), 'numbers' (LiveNumbers|None), 'bets', 'lives' ({markt: BetLive}), 'note',
+    'player_bets' ({person_id: Wette}), 'player_lives' ({person_id: BetLivePlayer})}]. Ohne Schnappschuss: Team-Wetten werden angezeigt, aber ohne Status (lives leer, note erklaert es);
+    Spieler-Wetten brauchen keinen Schnappschuss (Punkte aus dem Boxscore). Spiel nicht im Scoreboard: game None."""
     from data import day_bets_store as ds
     snaps = _load_snapshots() if snapshots is None else snapshots
+    team = ds.get_day_bets(state.day) if day_bets is None else day_bets
+    players = ds.get_day_player_bets(state.day) if player_bets is None else player_bets
     rows = []
-    for key, v in (ds.get_day_bets(state.day) if day_bets is None else day_bets).items():
+    keys = sorted(set(team) | set(players), key=lambda k: ((team.get(k) or players.get(k))["game"].get("start_utc") or "", k))
+    for key in keys:
+        v = team.get(key) or {"game": players[key]["game"], "bets": {}}
+        pbets = (players.get(key) or {}).get("player_bets", {})
         g = find_game(state, v["game"]["game_date"], v["game"]["home"], v["game"]["away"])
         if g is None:
-            rows.append({"key": key, "game": None, "numbers": None, "bets": v["bets"], "lives": {}, "note": "Spiel (noch) nicht im Scoreboard gefunden."})
+            rows.append({"key": key, "game": None, "numbers": None, "bets": v["bets"], "lives": {}, "note": "Spiel (noch) nicht im Scoreboard gefunden.", "player_bets": pbets, "player_lives": {}})
             continue
         nums = live_numbers(g, snaps)
-        lives = ds.evaluate_game_bets(v["bets"], nums.anchor, g.clock, g.home_score, g.away_score, g.possessions) if nums.has_anchor else {}
-        rows.append({"key": key, "game": g, "numbers": nums, "bets": v["bets"], "lives": lives, "note": nums.note})
+        lives = ds.evaluate_game_bets(v["bets"], nums.anchor, g.clock, g.home_score, g.away_score, g.possessions) if (nums.has_anchor and v["bets"]) else {}
+        plives = ds.evaluate_player_bets(pbets, g) if pbets else {}
+        rows.append({"key": key, "game": g, "numbers": nums, "bets": v["bets"], "lives": lives, "note": nums.note, "player_bets": pbets, "player_lives": plives})
     return rows

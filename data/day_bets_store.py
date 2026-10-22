@@ -20,6 +20,10 @@ Regeln
 - Linien: nur .5-Linien (Betano kennt keine ganzzahligen Linien). Quote und Einsatz sind optional; die Wette zaehlt auch ohne.
 - Schreiben: Temp-Datei + fsync + os.replace (atomar), Sperre gegen gleichzeitiges Schreiben (Thread-Sperre + flock auf day_bets.json.lock, wirkt auch zwischen Prozessen),
   Tageskopie in history/. Ist die Datei beschaedigt, wird sie NIE ueberschrieben: Sicherungskopie day_bets.corrupt-<Pruefsumme>.json, Fehler DayBetsError, nichts geaendert.
+- Spieler-Wetten (Markt "player_points", seit Dateiversion 2): je Spiel unter game["player_bets"] = {"<person_id>": Wette}, hoechstens EINE aktive Wette je Spieler, mehrere Spieler je Spiel.
+  Wette: {"market": "player_points", "active", "person_id", "name", "team", "milestone" (mindestens N Punkte), "side": "over", "odds", "stake", "odds_source", "odds_ref" ({"bookmaker",
+  "updated_at", "milestone"} | null), "placed_at", "updated_at", "removed_at", "revisions": [...]}. Dieselben Regeln (atomar, Sperre ab Anpfiff, Revisionen, Entfernen ohne Loeschen, Sicherung bei
+  beschaedigter Datei). Die Dateiversion wird nur auf 2 gesetzt, sobald eine Spieler-Wette existiert; reine Team-Wetten-Dateien bleiben Version 1. Version 1 und 2 sind lesbar.
 - Auswahl-Logik (reine Funktionen): nearest_half_line, line_choices, selectable_lines, main_lines_from_resolved, stored_odds, make_line_ref.
 - Verbindung zum Live-Modell: evaluate_game_bets / bet_live_status (engine/live_model + engine/bet_status), summarize fuer die Tagesuebersicht.
 """
@@ -42,9 +46,11 @@ from pathlib import Path
 from data import pre_match_store as store
 from data.pre_match_store import GameStartedError, OddsInputError, game_key, iso_now, normalize_start
 
-STORE_VERSION = 1
+STORE_VERSION = 2                 # 1: Team-Maerkte; 2: zusaetzlich Spieler-Wetten (game["player_bets"]); geschrieben wird 2 nur, wenn Spieler-Wetten existieren
 FORMAT = "nbaedge-day-bets"
 MARKETS = ("winner", "spread", "total", "team_total_home", "team_total_away")
+PLAYER_MARKET = "player_points"
+MAX_MILESTONE = 80
 MARKET_NAMES = {"winner": "Sieger", "spread": "Spread", "total": "Total", "team_total_home": "Team Total Heim", "team_total_away": "Team Total Gast"}
 SIDES = {"winner": ("home", "away"), "spread": ("home", "away"), "total": ("over", "under"), "team_total_home": ("over", "under"), "team_total_away": ("over", "under")}
 DEFAULT_SIDE = "over"             # Total und Team Total: ohne Angabe Over (meistens gewettet)
@@ -78,7 +84,7 @@ def _history_dir() -> Path:
 
 
 def _empty() -> dict:
-    return {"version": STORE_VERSION, "format": FORMAT, "updated_at": None, "games": {}}
+    return {"version": 1, "format": FORMAT, "updated_at": None, "games": {}}
 
 
 def _parse(path: Path) -> dict:
@@ -87,7 +93,7 @@ def _parse(path: Path) -> dict:
     if not isinstance(data, dict) or data.get("format") != FORMAT or not isinstance(data.get("games"), dict):
         raise ValueError("Struktur")
     for g in data["games"].values():
-        if not isinstance(g, dict) or not isinstance(g.get("bets"), dict):
+        if not isinstance(g, dict) or not isinstance(g.get("bets"), dict) or not isinstance(g.get("player_bets", {}), dict):
             raise ValueError("Struktur")
     return data
 
@@ -136,7 +142,6 @@ def _load_for_write() -> dict:
         raise DayBetsError(f"Die Datei day_bets.json ist beschädigt. Sicherungskopie: {backup.name}. Es wurde nichts geändert; bitte Datei prüfen oder verschieben.")
     if int(data.get("version", 0) or 0) > STORE_VERSION:
         raise DayBetsError("Die Datei day_bets.json stammt aus einer neueren Programmversion; es wurde nichts geändert.")
-    data["version"] = STORE_VERSION
     return data
 
 
@@ -173,6 +178,7 @@ class _WriteLock:
 
 def _write(data: dict, stamp: str, now: float) -> None:
     data["updated_at"] = stamp
+    data["version"] = 2 if any(g.get("player_bets") for g in data["games"].values()) else 1
     try:
         store._atomic_write(store_path(), data)
     except Exception as e:
@@ -519,12 +525,220 @@ def evaluate_game_bets(bets: dict, anchor, clock, home_pts: int, away_pts: int, 
     return {m: bet_live_status(b, proj, started) for m, b in bets.items()}
 
 
-def summarize(lives: list[BetLive]) -> dict:
+def summarize(lives: list) -> dict:
     """Tagesuebersicht: offene, gewonnene, verlorene Wetten, gesetzter Einsatz, Gewinn/Verlust nur der abgerechneten Wetten (mit Quote und Einsatz).
-    Entfernte Wetten zaehlen nicht. 'ohne_quote_oder_einsatz' nennt abgerechnete Wetten, die nicht in den Gewinn eingehen."""
+    Entfernte Wetten zaehlen nicht. 'ohne_quote_oder_einsatz' nennt abgerechnete Wetten, die nicht in den Gewinn eingehen.
+    Spieler-Wetten (BetLivePlayer, market 'player_points') zaehlen mit; 'nicht gespielt' ist weder offen noch gewonnen/verloren und geht nicht in den Gewinn ein, wird aber getrennt
+    ausgewiesen (zusaetzliche Schluessel 'nicht_gespielt' und 'einsatz_nicht_gespielt', nur wenn Spieler-Wetten dabei sind)."""
     act = [b for b in lives if b.state != "entfernt"]
+    dnp = [b for b in act if b.state == "nicht_gespielt"]
     settled = [b for b in act if b.decided]
-    return {"wetten": len(act), "offen": sum(1 for b in act if not b.decided), "gewonnen": sum(1 for b in act if b.decided and b.won), "verloren": sum(1 for b in act if b.decided and not b.won),
-            "einsatz": round(sum(b.stake or 0.0 for b in act), 2), "einsatz_abgerechnet": round(sum(b.stake or 0.0 for b in settled), 2),
-            "gewinn_verlust": round(sum(b.profit for b in settled if b.profit is not None), 2),
-            "ohne_quote_oder_einsatz": sum(1 for b in settled if b.profit is None)}
+    out = {"wetten": len(act), "offen": sum(1 for b in act if not b.decided and b.state != "nicht_gespielt"), "gewonnen": sum(1 for b in act if b.decided and b.won),
+           "verloren": sum(1 for b in act if b.decided and not b.won), "einsatz": round(sum(b.stake or 0.0 for b in act), 2),
+           "einsatz_abgerechnet": round(sum(b.stake or 0.0 for b in settled), 2), "gewinn_verlust": round(sum(b.profit for b in settled if b.profit is not None), 2),
+           "ohne_quote_oder_einsatz": sum(1 for b in settled if b.profit is None)}
+    if any(getattr(b, "market", None) == PLAYER_MARKET for b in act):
+        out["nicht_gespielt"] = len(dnp)
+        out["einsatz_nicht_gespielt"] = round(sum(b.stake or 0.0 for b in dnp), 2)
+    return out
+
+
+# ------------------------------------------------------------------------------ Spieler-Wetten: Speicher
+def _validate_player(person_id, name, team, milestone, odds, stake, odds_source, odds_ref) -> dict:
+    if isinstance(person_id, bool) or not isinstance(person_id, int) and not (isinstance(person_id, str) and person_id.strip().isdigit()):
+        raise BetInputError("Die Spieler-Nummer (person_id) fehlt oder ist ungültig.")
+    pid = int(person_id)
+    if pid <= 0:
+        raise BetInputError("Die Spieler-Nummer (person_id) ist ungültig.")
+    if not str(name or "").strip():
+        raise BetInputError("Der Spielername fehlt.")
+    if isinstance(milestone, bool) or not (isinstance(milestone, int) or (isinstance(milestone, float) and float(milestone).is_integer())
+                                           or (isinstance(milestone, str) and milestone.strip().isdigit())):
+        raise BetInputError("Der Meilenstein muss eine ganze Zahl sein (mindestens N Punkte).")
+    n = int(float(milestone))
+    if not 1 <= n <= MAX_MILESTONE:
+        raise BetInputError(f"Meilenstein außerhalb des plausiblen Bereichs (1 bis {MAX_MILESTONE}).")
+    odds, stake = parse_odds_optional(odds), parse_stake_input(stake)
+    if odds_source is not None and odds_source not in SOURCES:
+        raise BetInputError(f"Quelle der Quote muss {' oder '.join(SOURCES)} sein.")
+    if odds is None:
+        odds_source = None
+    elif odds_source is None:
+        odds_source = "manuell"
+    return {"person_id": pid, "name": str(name).strip(), "team": (str(team).strip() if team else None), "milestone": n, "side": "over", "odds": odds, "stake": stake,
+            "odds_source": odds_source, "odds_ref": _clean_line_ref(odds_ref)}
+
+
+_PLAYER_CORE = ("milestone", "odds", "stake", "odds_source", "name", "team")
+_PLAYER_STATE = ("active", "name", "team", "milestone", "side", "odds", "stake", "odds_source", "odds_ref", "placed_at", "updated_at", "removed_at")
+
+
+def _player_revision(bet: dict, reason: str, stamp: str) -> dict:
+    return {"reason": reason, "replaced_at": stamp, **{k: copy.deepcopy(bet.get(k)) for k in _PLAYER_STATE}}
+
+
+def set_player_bet(game_date: str, start_utc: str, home: str, away: str, person_id, name: str, team: str | None, milestone, odds=None, stake=None,
+                   odds_source: str | None = None, odds_ref: dict | None = None, now: float | None = None) -> dict:
+    """Spieler-Wette (mindestens N Punkte, immer Over) setzen oder aendern. Je Spieler hoechstens eine aktive Wette (eine neue ersetzt die alte, der alte Stand bleibt in revisions);
+    mehrere Spieler je Spiel sind moeglich. Rueckgabe {'status': 'saved'|'unchanged', 'key', 'bet'}. Wirft BetInputError, GameStartedError (ab Anpfiff), DayBetsError."""
+    now = now if now is not None else time.time()
+    new = _validate_player(person_id, name, team, milestone, odds, stake, odds_source, odds_ref)
+    start_norm = _check_editable(start_utc, now)
+    if not (str(home).strip() and str(away).strip() and re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(game_date))):
+        raise BetInputError("Spieldatum (JJJJ-MM-TT), Heim und Gast müssen angegeben sein.")
+    key = game_key(game_date, start_norm, home, away)
+    pid = str(new["person_id"])
+    with _WriteLock():
+        data = _load_for_write()
+        game = data["games"].setdefault(key, {"game_date": game_date, "start_utc": start_norm, "home": home, "away": away, "bets": {}})
+        bets = game.setdefault("player_bets", {})
+        old = bets.get(pid)
+        if old and old.get("active") and all(old.get(k) == new[k] for k in _PLAYER_CORE):
+            return {"status": "unchanged", "key": key, "bet": copy.deepcopy(old)}
+        stamp = iso_now(now)
+        revisions = list(old["revisions"]) if old else []
+        placed_at = stamp
+        if old and old.get("active"):
+            revisions.append(_player_revision(old, "geaendert", stamp))
+            placed_at = old["placed_at"]
+        bets[pid] = {"market": PLAYER_MARKET, "active": True, **new, "placed_at": placed_at, "updated_at": stamp, "removed_at": None, "revisions": revisions}
+        _write(data, stamp, now)
+        return {"status": "saved", "key": key, "bet": copy.deepcopy(bets[pid])}
+
+
+def remove_player_bet(game_date: str, start_utc: str, home: str, away: str, person_id, now: float | None = None) -> dict:
+    """Spieler-Wette entfernen (nicht loeschen). Rueckgabe {'status': 'removed'|'none', 'key', 'bet'}. Wirft GameStartedError ab Anpfiff."""
+    now = now if now is not None else time.time()
+    if isinstance(person_id, bool) or not str(person_id).strip().isdigit():
+        raise BetInputError("Die Spieler-Nummer (person_id) fehlt oder ist ungültig.")
+    start_norm = _check_editable(start_utc, now)
+    key = game_key(game_date, start_norm, home, away)
+    pid = str(int(person_id))
+    with _WriteLock():
+        data = _load_for_write()
+        bet = ((data["games"].get(key) or {}).get("player_bets") or {}).get(pid)
+        if not bet or not bet.get("active"):
+            return {"status": "none", "key": key, "bet": copy.deepcopy(bet) if bet else None}
+        stamp = iso_now(now)
+        bet["revisions"].append(_player_revision(bet, "entfernt", stamp))
+        bet.update(active=False, removed_at=stamp, updated_at=stamp)
+        _write(data, stamp, now)
+        return {"status": "removed", "key": key, "bet": copy.deepcopy(bet)}
+
+
+def get_player_bets_by_key(key: str, include_removed: bool = False) -> dict:
+    """{person_id (int): Wette} eines Spiels; standardmaessig nur aktive."""
+    g = load()["games"].get(key) or {}
+    return {int(pid): copy.deepcopy(b) for pid, b in (g.get("player_bets") or {}).items() if include_removed or b.get("active")}
+
+
+def get_day_player_bets(day: str, include_removed: bool = False) -> dict:
+    """Alle Spieler-Wetten eines US-Spieltags: {game_key: {'game': {...}, 'player_bets': {person_id: Wette}}}; Spiele ohne (aktive) Spieler-Wetten fehlen."""
+    out = {}
+    for key, g in load()["games"].items():
+        if g.get("game_date") != day:
+            continue
+        bets = {int(pid): copy.deepcopy(b) for pid, b in (g.get("player_bets") or {}).items() if include_removed or b.get("active")}
+        if bets:
+            out[key] = {"game": {k: g.get(k) for k in ("game_date", "start_utc", "home", "away")}, "player_bets": bets}
+    return out
+
+
+# ------------------------------------------------------------------------------ Spieler-Wetten: Auswahl (rein)
+def forecast_snapshot_path(day: str) -> Path:
+    return Path(os.environ.get("NBAEDGE_SNAPSHOT_DIR") or store.ROOT / "analysis" / "results" / "forecast_snapshots") / f"{day}.json"
+
+
+def load_forecast_snapshot(game_key_: str) -> dict | None:
+    """Prognose-Snapshot (analysis/print_player_forecast.py) dieses Spiels oder None. Nur lesen; defekte oder fehlende Datei: None."""
+    try:
+        d = json.loads(forecast_snapshot_path(game_key_.split("|", 1)[0]).read_text(encoding="utf-8"))
+        g = d["games"].get(game_key_)
+        return g if isinstance(g, dict) else None
+    except Exception:
+        return None
+
+
+def player_bet_options(game_key_: str, entries: dict | None = None, snapshot: dict | None = None, bets: dict | None = None) -> dict:
+    """Auswahl fuer die Oberflaeche: {'players': [{person_id, name, team, team_abbreviation, options: [{milestone, odds, bookmaker, bookmaker_percent, bookmaker_probability, updated_at,
+    model_raw, model_team}], current_bet, forecast_ok}], 'snapshot': True/False, 'snapshot_created_at', 'snapshot_note', 'warnings'}. Nur die eingelesenen Betano-Meilensteine sind waehlbar,
+    die Quote ist vorbelegt. Modell-Chancen (Anteil 0..1) nur mit Prognose-Snapshot; sonst None. bets: aktive Spieler-Wetten {person_id: Wette} (Standard: aus der Datei)."""
+    from engine import player_odds
+    entries = store.load()["entries"] if entries is None else entries
+    snap = load_forecast_snapshot(game_key_) if snapshot is None else snapshot
+    bets = get_player_bets_by_key(game_key_) if bets is None else bets
+    snap_players = {int(p["person_id"]): p for p in (snap or {}).get("players", [])}
+    stamps = {}
+    for b in store.active_player_blocks((entries or {}).get(game_key_)):
+        for l in store.player_lines(b):
+            stamps[(int(b["person_id"]), l.get("threshold"))] = l.get("updated_at")
+    players = []
+    for p in player_odds.game_player_odds(entries, game_key_):
+        sp = snap_players.get(int(p["person_id"])) or {}
+        raw, team = sp.get("p_ge_raw") or {}, sp.get("p_ge_adjusted") or {}
+        opts = [{"milestone": r["milestone"], "odds": r["odds"], "bookmaker": r["bookmaker"], "bookmaker_percent": r["percent"], "bookmaker_probability": r["probability"],
+                 "updated_at": stamps.get((int(p["person_id"]), r["milestone"])), "model_raw": raw.get(str(r["milestone"])), "model_team": team.get(str(r["milestone"]))} for r in p["rows"]]
+        players.append({"person_id": p["person_id"], "name": p["name"], "team": p["team"], "team_abbreviation": p.get("team_abbreviation"), "options": opts,
+                        "current_bet": bets.get(int(p["person_id"])), "forecast_ok": bool(sp.get("ok")), "warnings": p["warnings"]})
+    return {"players": players, "snapshot": snap is not None, "snapshot_created_at": (snap or {}).get("created_at"),
+            "snapshot_note": (snap or {}).get("note") or ("kein Prognose-Snapshot: keine Modell-Chancen" if snap is None else None), "warnings": []}
+
+
+def selectable_milestones(options: dict, person_id: int) -> list[int]:
+    """Waehlbare Meilensteine eines Spielers (nur die eingelesenen Betano-Linien)."""
+    for p in options["players"]:
+        if int(p["person_id"]) == int(person_id):
+            return [o["milestone"] for o in p["options"]]
+    return []
+
+
+def prefill_player_bet(options: dict, person_id: int, milestone: int) -> dict | None:
+    """Vorbelegung fuer eine Auswahl: {'odds', 'odds_source': 'gespeichert', 'odds_ref': {...}} oder None, wenn der Meilenstein nicht in der eingelesenen Liste steht."""
+    for p in options["players"]:
+        if int(p["person_id"]) == int(person_id):
+            for o in p["options"]:
+                if o["milestone"] == int(milestone):
+                    return {"odds": o["odds"], "odds_source": "gespeichert", "odds_ref": {"bookmaker": o["bookmaker"], "updated_at": o["updated_at"], "milestone": o["milestone"]}}
+    return None
+
+
+# ------------------------------------------------------------------------------ Spieler-Wetten: Live-Status
+@dataclass(frozen=True)
+class BetLivePlayer:
+    market: str                # immer "player_points"
+    person_id: int
+    name: str
+    milestone: int
+    odds: float | None
+    stake: float | None
+    label: str
+    color: str
+    state: str                 # wartet | laeuft | gewonnen | verloren | nicht_gespielt | unsicher | keine_daten | entfernt
+    decided: bool              # nur gewonnen/verloren
+    won: bool | None
+    profit: float | None       # nur gewonnen/verloren mit Quote und Einsatz
+    points: int | None
+    needed: int | None
+    minutes: float | None
+    fouls: int | None
+    player_status: str | None  # spielt | bank | nicht gespielt
+    probability: float | None  # Live-Chance: leer bis Baustein P4
+
+
+def evaluate_player_bets(bets: dict, game) -> dict:
+    """Status der Spieler-Wetten eines Spiels. bets: {person_id: Wette}, game: data.live_feed.GameView (mit players/players_complete). Zuordnung ueber person_id (Boxscore-personId).
+    Rueckgabe {person_id: BetLivePlayer}."""
+    from engine import bet_status as bs
+    by_id = {int(p.person_id): p for p in (getattr(game, "players", None) or ())}
+    started = bool(game.clock.is_live or game.clock.is_final)
+    final = bool(game.clock.is_final)
+    out = {}
+    for pid, bet in bets.items():
+        if not bet.get("active", True):
+            out[int(pid)] = BetLivePlayer(PLAYER_MARKET, int(pid), bet["name"], bet["milestone"], bet.get("odds"), bet.get("stake"), "Entfernt", "grau", "entfernt", False, None, None,
+                                          None, None, None, None, None, None)
+            continue
+        st = bs.player_bet_status(bet, by_id.get(int(pid)), started, final, bool(getattr(game, "players_complete", False)))
+        out[int(pid)] = BetLivePlayer(PLAYER_MARKET, int(pid), bet["name"], bet["milestone"], bet.get("odds"), bet.get("stake"), st.label, st.color, st.state, st.decided, st.won,
+                                      bs.player_profit(bet, st), st.points, st.needed, st.minutes, st.fouls, st.player_status, st.probability)
+    return out
