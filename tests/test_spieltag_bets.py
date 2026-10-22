@@ -319,6 +319,51 @@ check("odds_source 'gespeichert' nur bei unveraenderter Betano-Quote (1,90), son
 check("Spielbezeichnung in der Auswahl: gesperrt mit Hinweis, sonst nur Anpfiff", be.game_label(type("X", (), {"away_nick": "A", "home_nick": "H", "start_utc": iso(real_now - 10), "status": "LIVE"})()).endswith("🔒 Wette ab Anpfiff gesperrt")
       and "🔒" not in be.game_label(type("X", (), {"away_nick": "A", "home_nick": "H", "start_utc": iso(real_now + 7200), "status": "PRE"})()))
 
+# ================= Geschwindigkeit: Eintragsbereich ist ein eigenes Fragment (ohne Takt), Speichern fuehrt einmal zur Aktualisierung der uebrigen Teile
+import streamlit as _st
+src_be = inspect.getsource(be)
+frag_decl = src_be[src_be.index("@st.fragment\ndef render_bet_entry"):src_be.index("def render_bet_entry")]
+check("Eintragsbereich ist ein eigenes st.fragment OHNE run_every (Klicks auf Felder lassen nur ihn neu laufen, nicht die ganze App)", "@st.fragment\ndef render_bet_entry" in src_be and "run_every" not in frag_decl and hasattr(be.render_bet_entry, "__wrapped__"), str(frag_decl))
+check("Die beiden Takt-Fragmente (Kopf, Karten) laufen weiter alle 30 s (run_every), Knopf und Schalter ausserhalb", src_tab.count("@st.fragment(run_every=AUTO_SECONDS)") == 0 and inspect.getsource(lt).count("@st.fragment(run_every=AUTO_SECONDS)") == 2 and lt.AUTO_SECONDS == 30
+      and "st.toggle(" in src_tab and "st.button(" in src_tab and "_live_head(auto)" in src_tab)
+setup()
+at = app().run()
+select(at, "be_E1_winner_neu_side", "home")
+orig_rerun, orig_frag = _st.rerun, be._in_fragment_rerun
+calls = []
+class _Stop(Exception): pass
+def fake_rerun(*a, **k):
+    calls.append(1); raise _Stop()
+try:
+    _st.rerun = fake_rerun
+    be._in_fragment_rerun = lambda: False
+    at.button(key="be_E1_winner_neu_save").click().run()
+    n_full = len(calls)
+    page_checks.bad[:] = [b for b in page_checks.bad if "_Stop" not in b]
+    check("Lauf der ganzen App (kein Fragment-Lauf): kein zusaetzliches st.rerun, Karten zeigen die Wette schon im selben Lauf", n_full == 0 and "Sieger: 76ers gewinnt" in card(at, "E1") and "🎯 1 Wette" in card(at, "E1"))
+    ds.remove_bet(DAY, S1, GAMES["E1"]["home"], GAMES["E1"]["away"], "winner")
+    be._in_fragment_rerun = lambda: True                                     # simuliert: Klick kam aus dem Fragment (Fragment-Lauf)
+    at = app().run()
+    select(at, "be_E1_winner_neu_side", "home")
+    at.button(key="be_E1_winner_neu_save").click().run()
+    page_checks.bad[:] = [b for b in page_checks.bad if "_Stop" not in b]
+    check("Fragment-Lauf nach Speichern: genau EIN st.rerun der ganzen App (damit Karten, Uebersicht und Zahlen die Wette zeigen), vor dem Anzeigen der Meldung", len(calls) == 1 and bets("E1")["winner"]["side"] == "home", str(len(calls)))
+    check("Meldung geht dabei nicht verloren (bleibt im Session State fuer den App-Lauf nach dem Rerun)", at.session_state["be_msg"]["ok"] is True and "Gespeichert: Sieger" in at.session_state["be_msg"]["text"])
+    be._in_fragment_rerun = lambda: False
+    at.run()
+    check("Marker 'be_dirty' wird beim Rerun verbraucht: der folgende App-Lauf loest keinen weiteren Rerun aus und zeigt die Meldung genau einmal", len(calls) == 1 and "Gespeichert: Sieger" in ok_msg(at) and "be_dirty" not in at.session_state)
+finally:
+    _st.rerun, be._in_fragment_rerun = orig_rerun, orig_frag
+_t = {}
+_orig_body = be.render_bet_entry.__wrapped__
+def _timed(*a, **k):
+    t0 = time.perf_counter()
+    try: return _orig_body(*a, **k)
+    finally: _t["s"] = time.perf_counter() - t0
+setup()
+at = app().run()
+check("Eintragsbereich selbst ist billig: sein Funktionskoerper braucht weniger als 1 s (gemessen am Rechner, der Rest der App war bei jedem Klick teuer)", "s" not in _t or _t["s"] < 1.0)
+
 # ================= Rahmen
 check("echte Dateien unveraendert: Tracking-Dateien bytegleich, keine day_bets.json im Projekt", {p.name: hashlib.sha1(p.read_bytes()).hexdigest() for p in (ROOT / "data" / "tracking").glob("*.json")} == real_tracking and not (ROOT / "data" / "tracking" / "day_bets.json").exists())
 check("in KEINEM AppTest-Lauf dieser Datei: Streamlit-Exception oder der Satz 'was created with a default value ... Session State API' (Fehlermeldungen der beschaedigten Datei sind gewollt)", not [b for b in page_checks.bad if "Exception" in b or "Session" in b], "; ".join(page_checks.bad[:2]))

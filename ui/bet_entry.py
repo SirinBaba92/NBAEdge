@@ -1,7 +1,9 @@
 """
 Bereich "Wetten eintragen" im Tab "🏀 Spieltag" (Baustein 6): Wetten per Auswahl erfassen, speichern ueber data/day_bets_store.py. Kein Netzabruf, keine Odds-Credits.
 
-Der Bereich steht AUSSERHALB der 30-Sekunden-Fragmente des Tabs (ui/live_tab.py), damit die automatische Aktualisierung keine Auswahl zuruecksetzt. Reine Hilfsfunktionen
+Der Bereich steht AUSSERHALB der 30-Sekunden-Fragmente des Tabs (ui/live_tab.py), damit die automatische Aktualisierung keine Auswahl zuruecksetzt, und ist selbst ein
+st.fragment OHNE run_every: Klicks auf Auswahlfelder (Seite, Linie, Quote ...) lassen nur diesen Bereich neu laufen (statt der ganzen App mit allen Tabs; Messung vorher: ca. 2 s je Klick, davon
+Pre-Match-Tab 1,3 s, Eintragsbereich nur 0,04 s). Nach Speichern/Entfernen laeuft einmal die ganze App neu (st.rerun), damit Karten, Tagesuebersicht und Zahlen die Wette zeigen (nur Datei lesen, kein Netz). Reine Hilfsfunktionen
 (ohne Streamlit) stehen oben und sind in tests/test_spieltag_bets.py einzeln geprueft; die Streamlit-Darstellung unten ruft sie nur auf.
 
 Ablauf: Spiel waehlen (nur Spiele des aktuellen Spieltags; angepfiffene gesperrt, nur zur Ansicht) -> je Markt "keine Wette" / Seite -> Linie (Standard Hauptlinie, nur .5-Linien,
@@ -13,6 +15,8 @@ from __future__ import annotations
 import time
 from datetime import datetime
 from zoneinfo import ZoneInfo
+
+import streamlit as st
 
 from data import day_bets_store as ds
 from data import live_feed as lf
@@ -171,20 +175,19 @@ def game_label(game, now: float | None = None) -> str:
 
 # ----------------------------------------------------------------------------------------------- Knopf-Aktionen (laufen VOR dem Neuaufbau der Seite)
 def _set_msg(game, result: tuple[bool, str]) -> None:
-    import streamlit as st
     st.session_state["be_msg"] = {"ok": result[0], "text": result[1], "game": game.game_id}
+    if result[0]:
+        st.session_state["be_dirty"] = True          # Daten haben sich geaendert (oder wurden bestaetigt): Karten/Uebersicht muessen neu gebaut werden
 
 
 def _on_save(game, market: str, side: str, line_key, odds_key: str, stake_key: str, info, prefill) -> None:
     """Callback von 'Speichern': liest die Feldwerte aus dem Session State und speichert; danach baut sich die Seite mit dem neuen Stand und der Bestaetigung auf (kein st.rerun noetig)."""
-    import streamlit as st
     ss = st.session_state
     stake = ss.get(stake_key)
     _set_msg(game, save_market_bet(game, market, side, ss.get(line_key) if line_key else None, ss.get(odds_key), stake if stake else None, info, prefill))
 
 
 def _on_game_change() -> None:
-    import streamlit as st
     st.session_state["be_game_sel"] = st.session_state["be_game"]
 
 
@@ -247,9 +250,21 @@ def _market_form(st, game, market: str, bet: dict | None, ctx: dict) -> None:
             b2.button("Wette entfernen", key=f"{p}_remove", on_click=_on_remove, args=(game, market))
 
 
+def _in_fragment_rerun() -> bool:
+    """True, wenn dieser Lauf ein reiner Fragment-Lauf ist (Klick in einem Feld des Fragments), False bei einem Lauf der ganzen App."""
+    try:
+        from streamlit.runtime.scriptrunner import get_script_run_ctx
+        ctx = get_script_run_ctx()
+        return bool(ctx and ctx.fragment_ids_this_run)
+    except Exception:
+        return False
+
+
+@st.fragment
 def render_bet_entry() -> None:
-    """Bereich 'Wetten eintragen' (aufklappbar). Aufruf aus ui/live_tab.render_spieltag_tab, ausserhalb der Fragmente."""
-    import streamlit as st
+    """Bereich 'Wetten eintragen' (aufklappbar), ein eigenes Fragment ohne Takt. Aufruf aus ui/live_tab.render_spieltag_tab zwischen den beiden Takt-Fragmenten."""
+    if st.session_state.pop("be_dirty", False) and _in_fragment_rerun():
+        st.rerun()                                       # nach Speichern/Entfernen: ganze App einmal neu, damit Karten, Uebersicht und Zahlen die Wette zeigen (die Meldung bleibt dafuer erhalten)
     feed = lf.get_feed()
     state = feed.state()
     day_bets = ds.get_day_bets(state.day)
