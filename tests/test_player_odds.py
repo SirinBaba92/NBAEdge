@@ -69,9 +69,8 @@ if REAL.exists():
         check("Struktur: jede Zeile hat Meilenstein, Quote > 1, Prozent 1..99", all(1 < r["odds"] and 1 <= r["percent"] <= 99 and isinstance(r["milestone"], int) for v in res.values() for p in v for r in p["rows"]))
         check("Struktur: Zeilen aufsteigend je Spieler", all([r["milestone"] for r in p["rows"]] == sorted(r["milestone"] for r in p["rows"]) for v in res.values() for p in v))
         print(f"INFO echte Datei (Kopie): {games} Spiele, {players} Spieler, {lines} aktive Linien, {sum(len(p['warnings']) for v in res.values() for p in v)} Warnungen")
-        # Soll-Zahlen nur pruefen, wenn die Datei so noch vorliegt (Marker: genau diese Zahlen im Bestand beim Schreiben des Tests)
-        if lines == 1519 or players == 180:
-            check("Bestand 13 Spiele / 180 Spieler / 1.519 aktive Linien", (games, players, lines) == (13, 180, 1519), str((games, players, lines)))
+        # Die echte Datei waechst taeglich: keine festen Zahlen, nur Plausibilitaet (mindestens ein Spiel, Spieler und Linien)
+        check("echte Datei: Spiele, Spieler und Linien vorhanden und plausibel (Linien >= Spieler)", games >= 1 and players >= 1 and lines >= players, str((games, players, lines)))
 check("echte Datei nicht veraendert", (hashlib.sha1(REAL.read_bytes()).hexdigest() if REAL.exists() else None) == real_hash)
 
 print("\nALLES OK" if ok else "\nFEHLER")

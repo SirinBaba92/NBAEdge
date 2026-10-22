@@ -91,7 +91,7 @@ setup(ROWS, BOXES, SNAPS)
 at = app().run()
 labels = [t.label for t in at.tabs]
 check("Start der Seite: keine Exception, keine Warnung", not problems(at), " | ".join(problems(at))[:200])
-check("Tab '🏀 Spieltag' steht direkt neben dem bisherigen Live-Tab, der heisst jetzt '🔴 Live (alt)'", labels[:4] == ["📊 Score Projections", "🔴 Live (alt)", "🏀 Spieltag", "🎯 Live Bet Tracker"] and labels[-1].endswith("Pre-Match Eingabe") and len(labels) == 8, str(labels))
+check("Tab '🏀 Spieltag' steht direkt neben dem bisherigen Live-Tab, der heisst jetzt '🔴 Live (alt)'", labels[:4] == ["📊 Score Projections", "🔴 Live (alt)", "🏀 Spieltag", "🎯 Live Bet Tracker"] and labels[-1].endswith("Pre-Match Eingabe") and len(labels) == 9, str(labels))
 old = " ".join(m.value for m in at.tabs[labels.index("🔴 Live (alt)")].markdown)
 check("alter Tab unveraendert: Ueberschrift, Player-Props-Block, Live-Bet-Tracker-Tab mit Tabelle", "Live Projection Engine" in old and "Player Props Pre-Game" in old
       and any("Live Bet Tracker" in m.value for m in at.tabs[labels.index("🎯 Live Bet Tracker")].markdown))

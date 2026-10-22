@@ -99,7 +99,7 @@ def sidebar_state(at):
 
 at_f, labels_f, req_af = tabs(False)
 check("App ohne Fehler (False)", not at_f.exception, str([e.value for e in at_f.exception]))
-check("False: Tab 'Value Bets' fehlt, 8 Tabs (inkl. neuem Spieltag-Tab, Pre-Match Eingabe am Ende)", not any("Value Bets" in l for l in labels_f) and len(labels_f) == 8 and labels_f[-1].endswith("Pre-Match Eingabe"), str(labels_f))
+check("False: Tab 'Value Bets' fehlt, 9 Tabs (inkl. Spieltag- und Spieler-Tab, Pre-Match Eingabe am Ende)", not any("Value Bets" in l for l in labels_f) and len(labels_f) == 9 and labels_f[-1].endswith("Pre-Match Eingabe"), str(labels_f))
 check("False: erster App-Lauf fragt nur Totals/Spreads ab", req_af and set(req_af) == {"totals,spreads"}, str(req_af))
 # 'Last update' erscheint (wie schon vorher) erst nach dem ersten Lauf, daher ein Rerun ohne neue Abfrage
 at_f.run()
@@ -114,7 +114,7 @@ check("False: keine doppelten Trennlinien (2 statt 3)", sf["dividers"] == 2, str
 btn = [b for b in at_f.button if "Refresh" in b.label][0]; odds_markets_requested.clear(); btn.click(); at_f.run()
 check("False: 'Refresh Odds' fragt nur Totals/Spreads ab", set(odds_markets_requested) == {"totals,spreads"} and not at_f.exception, str(odds_markets_requested))
 at_t, labels_t, req_at = tabs(True)
-check("True: 9 Tabs inkl. 'Value Bets', beide Abfragen wie bisher", len(labels_t) == 9 and "🎯 Value Bets" in labels_t[0] and req_at[:2] == ["h2h", "totals,spreads"] and not at_t.exception, f"{labels_t} {req_at}")
+check("True: 10 Tabs inkl. 'Value Bets', beide Abfragen wie bisher", len(labels_t) == 10 and "🎯 Value Bets" in labels_t[0] and req_at[:2] == ["h2h", "totals,spreads"] and not at_t.exception, f"{labels_t} {req_at}")
 at_t.run()
 st_ = sidebar_state(at_t)
 check("True: alle Filter, 'Filters' und 'Sharp ref' sichtbar wie bisher",
