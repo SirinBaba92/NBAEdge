@@ -185,6 +185,14 @@ check("FINAL: Sieger Heim verloren, Verlust = -Einsatz", bs.evaluate_bet(bet_w, 
 check("FINAL: Over knapp verfehlt = Verloren; ganzzahlige Linie mit Gleichstand = nicht gewonnen", bs.evaluate_bet({"market": "total", "line": 210.0, "odds": 1.9, "stake": 5}, fin_w).label == bs.LOST and bs.evaluate_bet({"market": "total", "line": 209.5, "odds": 1.9, "stake": 5}, fin_w).label == bs.WON)
 check("Spread erst am Ende entschieden", bs.evaluate_bet({"market": "spread", "side": "home", "line": -3.5, "odds": 1.9, "stake": 5}, ov).decided is False and bs.evaluate_bet({"market": "spread", "side": "home", "line": 15.5, "odds": 1.9, "stake": 5}, fin_w).label == bs.WON)
 check("Team Total Heim/Gast: Entscheidung aus dem Teamstand", bs.evaluate_bet({"market": "team_total_away", "line": 59.5, "odds": 1.9, "stake": 5}, ov).label == bs.WON and bs.evaluate_bet({"market": "team_total_home", "line": 110.5, "odds": 1.9, "stake": 5}, ov).label != bs.WON)
+ub_t = {"market": "total", "side": "under", "line": 144.5, "odds": 2.0, "stake": 10}
+ub_h = {"market": "team_total_home", "side": "under", "line": 120.5, "odds": 1.9, "stake": 10}
+check("Under Total: Stand 145 > 144,5 -> sofort Verloren (Chance 0), Stand darunter: Chance = 1 - Over-Chance, nicht vorzeitig gewonnen", bs.evaluate_bet(ub_t, ov).label == bs.LOST and bs.evaluate_bet(ub_t, ov).probability == 0.0
+      and abs(bs.bet_probability(lm.project(A, Q(3, 400), 70, 60), ub_t) - (1 - lm.project(A, Q(3, 400), 70, 60).p_over_total(144.5))) < 1e-12 and not bs.evaluate_bet(ub_t, lm.project(A, Q(3, 400), 70, 60)).decided)
+check("Under: am Ende unter der Linie gewonnen (Gewinn = Einsatz * (Quote - 1)), darueber verloren; Linie erreicht (ganzzahlig) = nicht gewonnen", bs.evaluate_bet(ub_t, lm.project(A, FINAL, 80, 50)).label == bs.WON and bs.profit(ub_t, bs.evaluate_bet(ub_t, lm.project(A, FINAL, 80, 50))) == 10.0
+      and bs.evaluate_bet(ub_t, lm.project(A, FINAL, 100, 50)).label == bs.LOST and bs.evaluate_bet({**ub_t, "line": 130.0}, lm.project(A, FINAL, 80, 50)).label == bs.LOST)
+check("Under Team Total Gast/Heim: Entscheidung aus dem Teamstand", bs.evaluate_bet(ub_h, ov).label != bs.LOST and bs.evaluate_bet({**ub_h, "market": "team_total_away", "line": 59.5}, ov).label == bs.LOST
+      and bs.evaluate_bet({**ub_h, "market": "team_total_away", "line": 61.5}, lm.project(A, FINAL, 85, 60)).label == bs.WON)
 check("vor dem Anpfiff: Wartet auf Anpfiff mit Vorab-Chance", bs.evaluate_bet(bet_w, tip, started=False).label == bs.WAITING and abs(bs.evaluate_bet(bet_w, tip, started=False).probability - 0.7798) < 1e-9)
 try:
     bs.bet_probability(tip, {"market": "unbekannt"}); raised = False

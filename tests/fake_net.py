@@ -14,7 +14,7 @@ SPIELE = [("New York Knicks", "Philadelphia 76ers", -4.5, 232.0),
           ("Detroit Pistons", "Boston Celtics", 1.5, 219.8)]
 odds_markets_requested = []        # Markt-Parameter jedes Odds-API-Requests (aeltere Tests)
 state = {"commence_offsets": {}, "remaining": 452, "odds_status": 200, "odds_status_seq": [], "odds_calls": [], "bdl_calls": 0, "bdl_status": 200,
-         "nba_calls": 0, "scoreboard": []}
+         "nba_calls": 0, "scoreboard": [], "nba_status": 200, "board_date": None, "boxes": {}, "espn": {"events": []}, "espn_status": 200, "espn_calls": 0, "nba_urls": []}
 SECRET = "GEHEIMER-TESTKEY-123"
 
 
@@ -78,7 +78,8 @@ def fresh_env(remaining=452, odds_status=200):
     os.environ["ODDS_API_KEY"] = SECRET
     os.environ["NBAEDGE_AUTOMATION_LOG"] = str(tmp / "automation.log")
     state["commence_offsets"] = {}
-    state.update(remaining=remaining, odds_status=odds_status, odds_status_seq=[], odds_calls=[], bdl_calls=0, bdl_status=200, nba_calls=0, scoreboard=[])
+    state.update(remaining=remaining, odds_status=odds_status, odds_status_seq=[], odds_calls=[], bdl_calls=0, bdl_status=200, nba_calls=0, scoreboard=[],
+                 nba_status=200, board_date=None, boxes={}, espn={"events": []}, espn_status=200, espn_calls=0, nba_urls=[])
     odds_markets_requested.clear()
     import data.odds_client as oc, data.live_market as lm, data.nba_live as nl
     oc._mem.update(path=None, mtime=None, obj=None)
@@ -119,8 +120,22 @@ def install(spiele=SPIELE):
             return Resp({"data": [], "meta": {}})
         if "cdn.nba.com" in url:
             state["nba_calls"] += 1
+            state["nba_urls"].append(url)
+            if state["nba_status"] != 200:                                  # z. B. 403/429 fuer alle cdn.nba.com-Abrufe
+                return Resp({}, state["nba_status"])
             if "scoreboard" in url:
-                return Resp({"scoreboard": {"games": state["scoreboard"]}})
+                board = {"games": state["scoreboard"]}
+                if state["board_date"]:
+                    board["gameDate"] = state["board_date"]
+                return Resp({"scoreboard": board})
+            for gid, box in state["boxes"].items():                         # eigene Boxscores je game_id (Live-Feed-Tests)
+                if gid in url:
+                    return Resp({"game": box})
             return Resp({"game": {"homeTeam": {}, "awayTeam": {}, "actions": []}})
+        if "espn.com" in url:
+            state["espn_calls"] += 1
+            if state["espn_status"] != 200:
+                return Resp({}, state["espn_status"])
+            return Resp(state["espn"])
         raise AssertionError(f"unerlaubter Abruf: {url}")
     requests.get = fake_get

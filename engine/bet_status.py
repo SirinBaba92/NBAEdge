@@ -4,6 +4,7 @@ Wettstatus (Baustein 2): reine Funktionen ohne Streamlit und ohne I/O.
 Stufen (Grenzen aus config.settings): Gewonnen / Verloren (entschieden), sonst nach der Wahrscheinlichkeit, dass die Wette durchgeht:
   Auf Kurs  p > 65 %  (gruen)       Offen  35 % <= p <= 65 %  (gelb)       In Gefahr  10 % <= p < 35 %  (orange)       Kaum noch moeglich  p < 10 %  (rot)
 Vor dem Anpfiff: "Wartet auf Anpfiff". Gewonnen sofort bei Over (Total, Team Total), sobald der Stand die Linie uebersteigt; Spread und Sieger erst am Ende.
+Under (Total, Team Total): sofort VERLOREN, sobald der Stand die Linie erreicht oder uebersteigt (Punkte koennen nur zunehmen), gewonnen erst am Ende (Stand unter der Linie).
 Ganzzahlige Linien: Gleichstand mit der Linie zaehlt als nicht gewonnen (keine Rueckzahlung).
 """
 from __future__ import annotations
@@ -37,28 +38,46 @@ def status_from_probability(p: float) -> str:
     return HOPELESS
 
 
+_TEAM_TOTALS = {"total": None, "team_total_home": "home", "team_total_away": "away"}
+
+
+def _points(market: str, home_pts: int, away_pts: int) -> int:
+    return {"total": home_pts + away_pts, "team_total_home": home_pts, "team_total_away": away_pts}[market]
+
+
 def bet_probability(proj, bet: dict) -> float:
-    """Chance, dass die Wette durchgeht. bet: {'market', 'side' (home/away), 'line'}; Total und Team Total sind immer Over."""
+    """Chance, dass die Wette durchgeht. bet: {'market', 'side', 'line'}; Total und Team Total: side 'over' (Standard) oder 'under'."""
     m = bet["market"]
     if m == "winner":
         return proj.p_winner(bet["side"])
     if m == "spread":
         return proj.p_spread(bet["side"], float(bet["line"]))
-    if m == "total":
-        return proj.p_over_total(float(bet["line"]))
-    if m == "team_total_home":
-        return proj.p_over_team("home", float(bet["line"]))
-    if m == "team_total_away":
-        return proj.p_over_team("away", float(bet["line"]))
+    if m in _TEAM_TOTALS:
+        line = float(bet["line"])
+        if m == "total":
+            p_over = proj.p_over_total(line)
+        else:
+            p_over = proj.p_over_team(_TEAM_TOTALS[m], line)
+        if bet.get("side") == "under":
+            pts = _points(m, proj.home_pts, proj.away_pts)
+            if proj.final or pts >= line:                        # Under: nur bei Stand unter der Linie am Ende
+                return 1.0 if (proj.final and pts < line) else 0.0
+            return 1.0 - p_over
+        return p_over
     raise ValueError(f"unbekannter Markt: {m}")
 
 
 def decided_result(bet: dict, home_pts: int, away_pts: int, final: bool) -> bool | None:
-    """True/False, wenn die Wette entschieden ist, sonst None. Over (Total/Team Total): sofort gewonnen, sobald der Stand die Linie uebersteigt; sonst erst am Ende. Spread/Sieger: erst am Ende."""
+    """True/False, wenn die Wette entschieden ist, sonst None. Over (Total/Team Total): sofort gewonnen, sobald der Stand die Linie uebersteigt, sonst erst am Ende.
+    Under: sofort verloren, sobald der Stand die Linie erreicht, sonst erst am Ende gewonnen. Spread/Sieger: erst am Ende."""
     m = bet["market"]
-    if m in ("total", "team_total_home", "team_total_away"):
-        pts = {"total": home_pts + away_pts, "team_total_home": home_pts, "team_total_away": away_pts}[m]
-        if pts > float(bet["line"]):
+    if m in _TEAM_TOTALS:
+        pts, line = _points(m, home_pts, away_pts), float(bet["line"])
+        if bet.get("side") == "under":
+            if pts >= line:
+                return False
+            return True if final else None
+        if pts > line:
             return True
         return False if final else None
     if not final:

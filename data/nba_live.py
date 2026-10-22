@@ -4,27 +4,21 @@ import time
 
 import requests
 
+from data.nba_headers import detect_chrome_major, nba_headers
+
 NBA_SCOREBOARD_URL = (
     "https://cdn.nba.com/static/json/liveData/scoreboard/todaysScoreboard_00.json"
 )
 
-# Einziges Header-Set fuer alle NBA-Abrufe (Scoreboard, Boxscore, Play-by-Play).
-# Getestet am 20.10.2026 gegen cdn.nba.com (siehe unten): Nur diese drei Header sind noetig.
+# Einziges Header-Set fuer alle NBA-Abrufe (Scoreboard, Boxscore, Play-by-Play), seit 23.10.2026 aus data/nba_headers.py: Die Chrome-Hauptversion wird automatisch aus dem
+# installierten Browser gelesen (Chrome, sonst Brave/Chromium; nie unter dem Rueckfall dort) und veraltet damit nicht mehr.
+# Gemessen am 22.10.2026 gegen cdn.nba.com (Akamai): Nur diese drei Header sind noetig.
 #  - Origin UND Referer: ohne einen der beiden kommt HTTP 403.
-#  - User-Agent mit AKTUELLER Chrome-Version: Chrome/131 und Chrome/140 wurden mit 403 abgelehnt,
-#    Chrome/147 mit 200. Der Server prueft offenbar das Alter der Browser-Version.
-#    Kommt wieder 403, hier als Erstes NBA_CHROME_MAJOR auf die aktuelle Chrome-Version erhoehen.
+#  - User-Agent mit AKTUELLER Chrome-Version: Chrome/131, /140 und /144 wurden mit 403 abgelehnt, /147 und /150 mit 200; Safari- und Firefox-User-Agent ebenso 403.
+#    Kommt wieder 403, zuerst data/nba_headers.py (FALLBACK_MAJOR) pruefen.
 # Nicht noetig (getestet bzw. entfernt): Accept, Accept-Language, Sec-Fetch-*, Connection.
-NBA_CHROME_MAJOR = 147
-NBA_HEADERS = {
-    "User-Agent": (
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) "
-        f"Chrome/{NBA_CHROME_MAJOR}.0.0.0 Safari/537.36"
-    ),
-    "Origin": "https://www.nba.com",
-    "Referer": "https://www.nba.com/",
-}
+NBA_CHROME_MAJOR = detect_chrome_major()
+NBA_HEADERS = nba_headers(NBA_CHROME_MAJOR)
 
 NBA_TIMEOUT_SECONDS = 10
 NBA_CACHE_SECONDS = 20          # Ergebnisse UND Fehler so lange merken (Streamlit-Reruns)

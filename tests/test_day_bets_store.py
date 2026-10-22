@@ -68,7 +68,7 @@ ds.set_bet(*G, "team_total_home", line=118.5, stake=10, now=NOW)
 ds.set_bet(*G, "team_total_away", side="over", line=113.5, now=NOW)
 bets = ds.get_bets(*G)
 check("fuenf Maerkte gleichzeitig moeglich (Total und Team Totals Heim/Gast nebeneinander)", set(bets) == set(ds.MARKETS) and bets["total"]["line"] == 231.5 and bets["team_total_home"]["line"] == 118.5 and bets["team_total_away"]["line"] == 113.5)
-check("Total/Team Total sind immer Over, Spread mit Linie aus Sicht der gewaehlten Mannschaft", bets["total"]["side"] == "over" and bets["spread"]["side"] == "home" and bets["spread"]["line"] == -4.5)
+check("Total/Team Total ohne Seitenangabe = Over (Standard), Spread mit Linie aus Sicht der gewaehlten Mannschaft", bets["total"]["side"] == "over" and bets["spread"]["side"] == "home" and bets["spread"]["line"] == -4.5)
 check("Quote und Einsatz sind optional: Wette ohne beides zaehlt (Spread ohne Quote/Einsatz)", bets["spread"]["odds"] is None and bets["spread"]["stake"] is None and bets["spread"]["odds_source"] is None and bets["spread"]["active"])
 n_before = len(raw()["games"][key]["bets"])
 ds.set_bet(*G, "total", line=232.5, odds=1.95, now=NOW + 10)
@@ -124,10 +124,16 @@ check("Spread: ganzzahlig/0 abgelehnt, negative und positive .5 ok, Gast +4,5", 
       and ds.set_bet(*G, "spread", side="away", line="+4,5", now=NOW + 1)["bet"]["line"] == 4.5 and ds.set_bet(*G, "spread", side="home", line="−4,5", now=NOW + 2)["bet"]["line"] == -4.5)
 check("Bereiche: Total 100 bis 400, Team Total 40 bis 200, Spread bis 60", all(isinstance(raises(ds.BetInputError, ds.set_bet, *G, m, line=x, now=NOW), str) for m, x in (("total", 99.5), ("total", 400.5), ("team_total_home", 39.5), ("team_total_away", 200.5), ("spread", 60.5)))
       and ds.set_bet(*G, "total", line=100.5, now=NOW)["status"] == "saved" and ds.set_bet(*G, "spread", side="home", line=-59.5, now=NOW)["status"] == "saved")
-check("Seiten: Sieger/Spread nur home/away, Total/Team Total nur over (under abgelehnt), Sieger ohne Linie", isinstance(raises(ds.BetInputError, ds.set_bet, *G, "winner", side="over", now=NOW), str)
-      and isinstance(raises(ds.BetInputError, ds.set_bet, *G, "winner", side=None, now=NOW), str) and isinstance(raises(ds.BetInputError, ds.set_bet, *G, "total", side="under", line=231.5, now=NOW), str)
+check("Seiten: Sieger/Spread nur home/away, Total/Team Total over ODER under (home/away dort abgelehnt), Sieger ohne Linie, Sieger/Spread ohne Seite abgelehnt", isinstance(raises(ds.BetInputError, ds.set_bet, *G, "winner", side="over", now=NOW), str)
+      and isinstance(raises(ds.BetInputError, ds.set_bet, *G, "winner", side=None, now=NOW), str) and isinstance(raises(ds.BetInputError, ds.set_bet, *G, "spread", side=None, line=-4.5, now=NOW), str)
+      and isinstance(raises(ds.BetInputError, ds.set_bet, *G, "total", side="home", line=231.5, now=NOW), str) and isinstance(raises(ds.BetInputError, ds.set_bet, *G, "team_total_home", side="away", line=118.5, now=NOW), str)
       and isinstance(raises(ds.BetInputError, ds.set_bet, *G, "spread", side="over", line=-4.5, now=NOW), str) and isinstance(raises(ds.BetInputError, ds.set_bet, *G, "winner", side="home", line=1.5, now=NOW), str)
       and ds.set_bet(*G, "winner", side="home", line="", now=NOW)["bet"]["line"] is None)
+check("Under und Over bei Total und Team Total waehlbar (je Markt weiter nur eine Wette: Under ersetzt Over mit Revision)", ds.set_bet(*G, "total", side="over", line=231.5, now=NOW + 40)["bet"]["side"] == "over"
+      and ds.set_bet(*G, "total", side="under", line=231.5, now=NOW + 41)["bet"]["side"] == "under" and ds.get_bets(*G)["total"]["revisions"][-1]["side"] == "over"
+      and ds.set_bet(*G, "team_total_home", side="under", line=118.5, now=NOW + 42)["bet"]["side"] == "under" and ds.set_bet(*G, "team_total_away", side="over", line=113.5, now=NOW + 43)["bet"]["side"] == "over")
+check("Sieger und Spread weiter fuer home UND away waehlbar", ds.set_bet(*G, "winner", side="away", now=NOW + 44)["bet"]["side"] == "away" and ds.set_bet(*G, "spread", side="away", line=4.5, now=NOW + 45)["bet"]["side"] == "away"
+      and ds.SIDES == {"winner": ("home", "away"), "spread": ("home", "away"), "total": ("over", "under"), "team_total_home": ("over", "under"), "team_total_away": ("over", "under")})
 check("unbekannter Markt abgelehnt", isinstance(raises(ds.BetInputError, ds.set_bet, *G, "player_points", side="home", now=NOW), str) and isinstance(raises(ds.BetInputError, ds.remove_bet, *G, "xyz", now=NOW), str))
 check("Quote: 1,85 / 1.85 / 2 ok; <= 1, 1000+, Text abgelehnt; leer = keine Quote", [ds.set_bet(*G, "winner", side="home", odds=o, now=NOW + i)["bet"]["odds"] for i, o in enumerate(("1,85", "1.85", 2))] == [1.85, 1.85, 2.0]
       and all(isinstance(raises(ds.BetInputError, ds.set_bet, *G, "winner", side="home", odds=o, now=NOW), str) for o in (1.0, 0.5, "1000,5", "abc", "1,2,3"))
@@ -256,6 +262,8 @@ entry = {"markets": {ps.WINNER: {"home_odds": 1.55, "away_odds": 2.5, "bookmaker
                       ps.TEAM_TOTALS: {"home": {"lines": [{"id": "main", "active": True, "line": 118.5, "over_odds": 1.85, "under_odds": 1.95, "bookmaker": "Betano", "updated_at": "t4"}]}, "away": {"lines": []}}}}
 check("Quote aus dem Speicher: Sieger Heim/Gast", ds.stored_odds(entry, "winner", "home")["odds"] == 1.55 and ds.stored_odds(entry, "winner", "away")["odds"] == 2.5 and ds.stored_odds(entry, "winner", "home")["bookmaker"] == "Betano")
 check("Quote aus dem Speicher: Spread je Seite und Linie (entfernte Linie nicht)", ds.stored_odds(entry, "spread", "home", -4.5)["odds"] == 1.91 and ds.stored_odds(entry, "spread", "away", 4.5)["odds"] == 1.89 and ds.stored_odds(entry, "spread", "home", -5.5) is None and ds.stored_odds(entry, "spread", "home", -3.5) is None)
+check("Quote aus dem Speicher: Under-Quote bei Total und Team Total (Seite under)", ds.stored_odds(entry, "total", "under", 231.5)["odds"] == 1.92 and ds.stored_odds(entry, "team_total_home", "under", 118.5)["odds"] == 1.95
+      and ds.stored_odds(entry, "total", "over", 231.5)["odds"] == 1.9)
 check("Quote aus dem Speicher: Total und Team Total (Over), unbekannte Linie/Markt/Eintrag: None", ds.stored_odds(entry, "total", "over", 231.5)["odds"] == 1.9 and ds.stored_odds(entry, "total", "over", 232.5) is None and ds.stored_odds(entry, "team_total_home", "over", 118.5)["odds"] == 1.85
       and ds.stored_odds(entry, "team_total_away", "over", 113.5) is None and ds.stored_odds(None, "winner", "home") is None and ds.stored_odds(entry, "xyz", "home", 1.5) is None)
 
@@ -276,6 +284,14 @@ check("vor dem Anpfiff: Status 'Wartet auf Anpfiff' (grau) mit der Vorab-Chance;
 fin = ds.evaluate_game_bets(bets, anchor, FIN, 100, 112)
 check("Spielende 100:112: Sieger Heim verloren (-Einsatz), Total 144,5 gewonnen (Gewinn), Spread verloren, Team Total Heim 120,5 verloren, Gast gewonnen", fin["winner"].state == "verloren" and fin["winner"].profit == -20.0
       and fin["total"].state == "gewonnen" and fin["spread"].state == "verloren" and fin["team_total_home"].state == "verloren" and fin["team_total_home"].profit == -5.0 and fin["team_total_away"].state == "gewonnen" and fin["winner"].final)
+ub = {"total": mk("total", side="under", line=144.5, odds=2.0, stake=10), "team_total_home": mk("team_total_home", side="under", line=120.5, odds=1.9, stake=10)}
+lu = ds.evaluate_game_bets(ub, anchor, Q3, 85, 60)
+check("Live Under: Total Under 144,5 bei 145 Punkten sofort VERLOREN (Stand hat die Linie erreicht), Team Total Heim Under 120,5 offen", lu["total"].state == "verloren" and lu["total"].decided and lu["total"].probability == 0.0
+      and lu["total"].profit == -10.0 and lu["team_total_home"].state == "offen" and 0 < lu["team_total_home"].probability < 1)
+check("Live Under: Chance = 1 - Over-Chance", abs(lu["team_total_home"].probability + ds.evaluate_game_bets({"team_total_home": mk("team_total_home", side="over", line=120.5)}, anchor, Q3, 85, 60)["team_total_home"].probability - 1) < 1e-12)
+fu = ds.evaluate_game_bets(ub, anchor, FIN, 70, 60)
+check("Spielende 70:60: Total Under 144,5 gewonnen (130 Punkte), Team Total Heim Under 120,5 gewonnen; bei 100:112 verloren/gewonnen", fu["total"].state == "gewonnen" and fu["total"].profit == 10.0 and fu["team_total_home"].state == "gewonnen"
+      and ds.evaluate_game_bets(ub, anchor, FIN, 100, 112)["total"].state == "verloren" and ds.evaluate_game_bets(ub, anchor, FIN, 100, 112)["team_total_home"].state == "gewonnen")
 rem = ds.bet_live_status({**bets["winner"], "active": False}, lm.project(anchor, Q3, 85, 60))
 check("entfernte Wette: Status 'Entfernt', zaehlt nicht", rem.state == "entfernt" and rem.label == "Entfernt" and rem.probability is None and ds.summarize([rem])["wetten"] == 0)
 smry = ds.summarize(list(fin.values()))

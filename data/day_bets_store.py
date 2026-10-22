@@ -6,7 +6,7 @@ Datei: data/tracking/day_bets.json  (Ordner ueber NBAEDGE_TRACKING_DIR wie pre_m
    "games": {"<US-Spieldatum>|<Anpfiff UTC>|<Heim>|<Gast>": {        # Schluessel = pre_match_store.game_key
        "game_date", "start_utc", "home", "away",
        "bets": {"winner"|"spread"|"total"|"team_total_home"|"team_total_away": {
-           "market", "active": true|false, "side": "home"|"away"|"over", "line": 231.5 | null, "odds": 1.91 | null, "stake": 20.0 | null,
+           "market", "active": true|false, "side": "home"|"away" (Sieger, Spread) | "over"|"under" (Total, Team Total), "line": 231.5 | null, "odds": 1.91 | null, "stake": 20.0 | null,
            "odds_source": "gespeichert"|"manuell"|null, "line_ref": {"main_line", "chosen_line", "is_main", "source", "bookmaker", "at"} | null,
            "placed_at", "updated_at", "removed_at": null | "...",
            "revisions": [{"reason": "geaendert"|"entfernt", "replaced_at", "active", "side", "line", "odds", "stake", "odds_source", "line_ref",
@@ -16,7 +16,7 @@ Regeln
 - Hoechstens EINE Wette je Markt und Spiel; eine neue Wette im selben Markt ersetzt die alte (der alte Stand bleibt in revisions).
 - Entfernen loescht nichts: active = false, removed_at gesetzt, der letzte aktive Stand steht in revisions (reason "entfernt").
 - Sperre ab Anpfiff (start_utc, hier geprueft und nicht nur in der Oberflaeche): Setzen, Aendern und Entfernen wirft GameStartedError; unbekannter Anpfiff gilt als begonnen.
-- Seiten: Sieger und Spread "home"/"away" (bei Spread ist line die Linie aus Sicht der gewaehlten Mannschaft, z. B. Heim -4,5 oder Gast +4,5); Total und Team Total sind immer "over".
+- Seiten: Sieger und Spread "home"/"away" (bei Spread ist line die Linie aus Sicht der gewaehlten Mannschaft, z. B. Heim -4,5 oder Gast +4,5); Total und Team Total "over" oder "under" (ohne Angabe: over).
 - Linien: nur .5-Linien (Betano kennt keine ganzzahligen Linien). Quote und Einsatz sind optional; die Wette zaehlt auch ohne.
 - Schreiben: Temp-Datei + fsync + os.replace (atomar), Sperre gegen gleichzeitiges Schreiben (Thread-Sperre + flock auf day_bets.json.lock, wirkt auch zwischen Prozessen),
   Tageskopie in history/. Ist die Datei beschaedigt, wird sie NIE ueberschrieben: Sicherungskopie day_bets.corrupt-<Pruefsumme>.json, Fehler DayBetsError, nichts geaendert.
@@ -46,7 +46,8 @@ STORE_VERSION = 1
 FORMAT = "nbaedge-day-bets"
 MARKETS = ("winner", "spread", "total", "team_total_home", "team_total_away")
 MARKET_NAMES = {"winner": "Sieger", "spread": "Spread", "total": "Total", "team_total_home": "Team Total Heim", "team_total_away": "Team Total Gast"}
-SIDES = {"winner": ("home", "away"), "spread": ("home", "away"), "total": ("over",), "team_total_home": ("over",), "team_total_away": ("over",)}
+SIDES = {"winner": ("home", "away"), "spread": ("home", "away"), "total": ("over", "under"), "team_total_home": ("over", "under"), "team_total_away": ("over", "under")}
+DEFAULT_SIDE = "over"             # Total und Team Total: ohne Angabe Over (meistens gewettet)
 LINE_BOUNDS = {"spread": (0.5, 60.0), "total": (100.0, 400.0), "team_total_home": (40.0, 200.0), "team_total_away": (40.0, 200.0)}   # Betrag der Linie (Spread) bzw. Wertebereich
 SOURCES = ("gespeichert", "manuell")
 MAX_STAKE = 100_000.0
@@ -255,10 +256,10 @@ def _validate(market: str, side, line, odds, stake, odds_source, line_ref) -> di
     if market not in MARKETS:
         raise BetInputError(f"Unbekannter Markt: {market}.")
     allowed = SIDES[market]
-    if side is None and len(allowed) == 1:
-        side = allowed[0]
+    if side is None and DEFAULT_SIDE in allowed:
+        side = DEFAULT_SIDE
     if side not in allowed:
-        raise BetInputError(f"{MARKET_NAMES[market]}: Seite muss {' oder '.join(allowed)} sein" + (" (nur Over ist vorgesehen)." if allowed == ("over",) else "."))
+        raise BetInputError(f"{MARKET_NAMES[market]}: Seite muss {' oder '.join(allowed)} sein.")
     if market == "winner":
         if line not in (None, ""):
             raise BetInputError("Beim Sieger gibt es keine Linie.")
@@ -450,7 +451,7 @@ def main_lines_from_resolved(resolved: dict | None) -> dict:
 
 def stored_odds(entry: dict | None, market: str, side: str, line: float | None = None) -> dict | None:
     """Quote aus der gespeicherten Vorab-Eingabe (pre_match_entries, z. B. vom Betano-Import) fuer die gewaehlte Wette:
-    {'odds', 'bookmaker', 'updated_at'} oder None. Sieger: Heim/Gast-Quote; Spread: Linie der gewaehlten Mannschaft; Total/Team Total: Over-Quote der Linie."""
+    {'odds', 'bookmaker', 'updated_at'} oder None. Sieger: Heim/Gast-Quote; Spread: Linie der gewaehlten Mannschaft; Total/Team Total: Over- oder Under-Quote der Linie (side)."""
     if not entry:
         return None
     close = lambda a, b: a is not None and b is not None and abs(float(a) - float(b)) < 1e-9
@@ -465,10 +466,10 @@ def stored_odds(entry: dict | None, market: str, side: str, line: float | None =
         key = f"{side}_odds"
     elif market == "total":
         row = next((l for l in store.active_total_lines(entry) if close(l.get("line"), line)), None)
-        key = "over_odds"
+        key = "under_odds" if side == "under" else "over_odds"
     elif market in ("team_total_home", "team_total_away"):
         row = next((l for l in store.team_total_lines(entry, market.rsplit("_", 1)[1]) if close(l.get("line"), line)), None)
-        key = "over_odds"
+        key = "under_odds" if side == "under" else "over_odds"
     else:
         return None
     if row and row.get(key):
