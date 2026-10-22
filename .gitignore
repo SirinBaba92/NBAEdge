@@ -39,3 +39,5 @@ www.betano.de*
 NBAEdge_backup_*/
 NBAEdge_Backups/
 analysis/results/player_forecast_*.txt
+analysis/results/forecast_snapshots/
+analysis/results/eval_player_forecasts_*.txt
