@@ -240,6 +240,76 @@ with tempfile.TemporaryDirectory() as td:
     # nichts im Projektordner angelegt, nur im Temp-Ordner
     check("alle Dateien liegen im Zielordner, keine Temp-Reste", not [f for f in files(root) if ".tmp" in f], files(root)[:3])
 
+
+# ----------------------------------------------------------------- Beenden-Regel (A): aktueller US-Spieltag, 17:00-Wechsel, Obergrenze, --bis
+def berlin(y, m, d, hh, mm=0):
+    from zoneinfo import ZoneInfo
+    return datetime(y, m, d, hh, mm, tzinfo=ZoneInfo("Europe/Berlin")).timestamp()
+check("US-Spieltag: 16:59 Berlin = Vortag, 17:00 = heute", rl.current_us_day(berlin(2026, 10, 23, 16, 59)) == "2026-10-22" and rl.current_us_day(berlin(2026, 10, 23, 17, 0)) == "2026-10-23")
+check("US-Spieltag nachts um 01:00 Berlin = Vortag (Spiele des US-Tags laufen noch)", rl.current_us_day(berlin(2026, 10, 23, 1, 0)) == "2026-10-22")
+check("US-Spieltag am Tag der Zeitumstellung (25.10., Berlin)", rl.current_us_day(berlin(2026, 10, 25, 16, 59)) == "2026-10-24" and rl.current_us_day(berlin(2026, 10, 25, 17, 0)) == "2026-10-25")
+check("--bis: naechstes Vorkommen (heute, falls noch nicht erreicht)", rl.parse_until("07:00", berlin(2026, 10, 22, 18, 0)) == berlin(2026, 10, 23, 7, 0) and rl.parse_until("23:30", berlin(2026, 10, 22, 18, 0)) == berlin(2026, 10, 22, 23, 30))
+
+def mk(now_t, rows_, until=None, root=None):
+    n = Net(); n.t = now_t; n.rows = rows_
+    r = rl.Recorder(Path(root), fetch=n.fetch, now=n.now, sleep=n.sleep, log=lambda *_: None, headers={}, tracking_dir=Path(root) / "trk", pregame_path=Path(root) / "pg.json", model_path=Path(root) / "m.pkl", until=until)
+    return n, r
+def day_row(gid, day, status, period=4, clock="", text=""):
+    return row(gid, status, period, clock, text=text, et=f"{day}T19:00:00-04:00", utc=f"{day}T23:00:00Z", hs=100, as_=90)
+
+with tempfile.TemporaryDirectory() as td:
+    # Scoreboard zeigt noch den Vortag (21.10., alle beendet); es ist 18:00 Berlin am 22.10. -> aktueller Tag ist der 22.10.
+    t = berlin(2026, 10, 22, 18, 0)
+    n, r = mk(t, [day_row("A1", "2026-10-21", 3, text="Final"), day_row("A2", "2026-10-21", 3, text="Final")], root=td + "/a")
+    r.cycle()
+    check("Scoreboard zeigt noch den Vortag: kein Beenden", r.stop_reason() is None)
+    n.sleep(5 * 3600); r.cycle()
+    check("auch nach 5 Stunden ohne Spiel des aktuellen Tags: laeuft weiter", r.stop_reason() is None)
+    # Wechsel auf den neuen Tag: neues Spiel (22.10.) laeuft
+    n.t = berlin(2026, 10, 23, 1, 0); n.rows.append(day_row("B1", "2026-10-22", 2, 1, "PT10M00.00S"))
+    r.cycle()
+    check("Spiel des aktuellen Tags laeuft: kein Beenden", r.stop_reason() is None)
+    n.rows[-1] = day_row("B1", "2026-10-22", 3, text="Final"); n.t += 3 * 3600; r.cycle()
+    check("alle Spiele des Tags beendet, aber Zeitpunkt des Spielendes gerade erst: noch nicht beenden", r.stop_reason() is None)
+    n.t += 3 * 3600 - 30; r.cycle()
+    check("3 Stunden nach dem letzten Spielende: noch nicht ganz", r.stop_reason() is None)
+    n.t += 60; r.cycle()
+    check("3 Stunden ohne neues Spiel nach Spielende: Beenden mit Begruendung", r.stop_reason() and "3 Stunden" in r.stop_reason(), r.stop_reason())
+    n.rows.append(day_row("B2", "2026-10-22", 1, 0, ""))
+    n.t += 5; r.cycle()
+    check("neues Spiel des Tags erscheint nach Fristende: weiterlaufen", r.stop_reason() is None)
+
+with tempfile.TemporaryDirectory() as td:
+    # 17:00-Wechsel: alle Spiele des 22.10. sind beendet, dann wird es 17:01 am 23.10. -> aktueller Tag = 23.10., noch kein Spiel -> weiterlaufen
+    n, r = mk(berlin(2026, 10, 23, 8, 0), [day_row("C1", "2026-10-22", 3, text="Final")], root=td)
+    r.cycle(); n.t = berlin(2026, 10, 23, 12, 30); r.cycle()
+    check("08:00 bis 12:30: Spieltag 22.10. komplett beendet und 3 h vorbei -> Beenden erlaubt", r.stop_reason() is not None, r.stop_reason())
+    n.t = berlin(2026, 10, 23, 17, 1); r.cycle()
+    check("nach dem 17:00-Wechsel zaehlt der Vortag nicht mehr: weiterlaufen", r.stop_reason() is None, r.stop_reason())
+
+with tempfile.TemporaryDirectory() as td:
+    # Obergrenze 20 h: Scoreboard zeigt dauerhaft nur den Vortag
+    t = berlin(2026, 10, 22, 18, 0)
+    n, r = mk(t, [day_row("D1", "2026-10-21", 3, text="Final")], root=td)
+    r.cycle(); n.t = t + 20 * 3600 - 60; r.cycle()
+    check("kurz vor 20 h: laeuft", r.stop_reason() is None)
+    n.t = t + 20 * 3600 + 1; r.cycle()
+    check("nach 20 Stunden: Obergrenze beendet ihn", r.stop_reason() and "20 Stunden" in r.stop_reason(), r.stop_reason())
+    r.run  # run() nutzt dieselbe Regel; Ereignis "stop" mit Grund
+with tempfile.TemporaryDirectory() as td:
+    # --bis: harte Endzeit auch bei laufendem Spiel
+    t = berlin(2026, 10, 23, 5, 0)
+    n, r = mk(t, [day_row("E1", "2026-10-22", 2, 4, "PT01M00.00S")], until=berlin(2026, 10, 23, 7, 0), root=td)
+    r.cycle()
+    check("--bis noch nicht erreicht: laeuft", r.stop_reason() is None)
+    n.t = berlin(2026, 10, 23, 7, 0); r.cycle()
+    check("--bis erreicht: beendet, auch wenn ein Spiel laeuft", r.stop_reason() == "--bis erreicht")
+    # run() mit Schleife: bricht ab und schreibt ein stop-Ereignis mit Grund
+    n2, r2 = mk(berlin(2026, 10, 23, 6, 59), [day_row("E1", "2026-10-22", 2, 4, "PT01M00.00S")], until=berlin(2026, 10, 23, 7, 0), root=td + "/b")
+    r2.run()
+    stops = [e for e in lines(Path(td) / "b" / "2026-10-22" / "events.jsonl") if e["type"] == "stop"]
+    check("run(): beendet sich bei --bis und protokolliert den Grund", stops and stops[-1]["reason"] == "--bis erreicht", stops)
+
 check("Abrufe nur NBA.com-URLs", all(u.startswith("https://cdn.nba.com/") for u in net.calls))
 print("\nALLES OK" if ok else "\nFEHLER")
 sys.exit(0 if ok else 1)

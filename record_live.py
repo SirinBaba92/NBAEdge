@@ -3,6 +3,7 @@ Roh-Recorder fuer NBA-Live-Daten (nur cdn.nba.com, keine Odds-API-Credits, keine
 
 Start (Alias "aufzeichnen") oder:  venv/bin/python record_live.py          Beenden: Strg+C (sauber) oder  pkill -f record_live.py
 Optionen:  --einmal (ein Durchlauf, dann Ende)   --dir <Ordner> (statt NBAEDGE_LIVE_DIR)   --ohne-caffeinate
+           --bis HH:MM (harte Endzeit in deutscher Zeit; naechstes Vorkommen dieser Uhrzeit)
 
 Ablage (ausserhalb des Projekts, damit Ordner-Backups sie nicht mitnehmen):
   <NBAEDGE_LIVE_DIR oder ~/NBAEdge_live_history>/<US-Spieltag>/<game_id>/
@@ -15,7 +16,9 @@ Ablage (ausserhalb des Projekts, damit Ordner-Backups sie nicht mitnehmen):
 
 Regeln: Scoreboard alle 30 s, Boxscore je laufendem Spiel etwa jede Minute; bei 403/429/Timeout wird die Wartezeit verdoppelt (30 -> 60 -> ... max. 300 s),
 pro Durchlauf bricht der erste Fehler die weiteren Abrufe ab. Spiele, die schon laufen, werden sofort aufgezeichnet (Play-by-Play ist am Ende vollstaendig).
-Beendet sich selbst, wenn alle bekannten Spiele beendet sind und 3 Stunden lang kein neues Spiel erschien. Alle Dateien werden ueber Temp-Datei + os.replace geschrieben.
+Beendet sich selbst NUR, wenn (1) mindestens ein Spiel des aktuellen US-Spieltags gesehen wurde, (2) alle bekannten Spiele dieses Spieltags beendet sind und
+(3) danach 3 Stunden lang kein neues Spiel erschien. Der aktuelle US-Spieltag wechselt um 17:00 Uhr deutscher Zeit; zeigt das Scoreboard noch den Vortag, laeuft er weiter,
+hoechstens 20 Stunden (Obergrenze) bzw. bis --bis. Alle Dateien werden ueber Temp-Datei + os.replace geschrieben.
 """
 from __future__ import annotations
 
@@ -31,7 +34,7 @@ import signal
 import subprocess
 import sys
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -43,6 +46,9 @@ from data.nba_live import NBA_BOXSCORE_URL, NBA_PLAYBYPLAY_URL, NBA_SCOREBOARD_U
 from engine import game_clock as gc                           # noqa: E402
 
 ET = ZoneInfo("America/New_York")
+BERLIN = ZoneInfo("Europe/Berlin")
+DAY_SWITCH_HOUR = 17             # um 17:00 Uhr deutscher Zeit beginnt der naechste US-Spieltag
+MAX_RUNTIME_SECONDS = 20 * 3600  # Obergrenze der Laufzeit
 POLL_SECONDS = 30
 BOX_SECONDS = 60
 BOX_TOLERANCE = 5                 # Boxscore gilt ab 55 s als faellig (Takt 30 s)
@@ -70,6 +76,23 @@ def game_day_us(game: dict) -> str:
         return dt.astimezone(ET).strftime("%Y-%m-%d")
     except ValueError:
         return str(game.get("_scoreboard_date") or "unbekannt")
+
+
+def current_us_day(t: float) -> str:
+    """Aktueller US-Spieltag nach dem 17:00-Wechsel in Berliner Zeit: ab 17:00 gilt das Berliner Datum, davor der Vortag (Spiele des US-Tags D laufen bis ca. 6 Uhr am Folgetag)."""
+    b = datetime.fromtimestamp(t, BERLIN)
+    day = b.date() if b.hour >= DAY_SWITCH_HOUR else (b - timedelta(days=1)).date()
+    return day.isoformat()
+
+
+def parse_until(text: str, now: float) -> float:
+    """--bis HH:MM (Berliner Zeit) -> Epoch des naechsten Vorkommens dieser Uhrzeit (spaeter als jetzt)."""
+    hh, mm = (int(x) for x in str(text).strip().split(":", 1))
+    b = datetime.fromtimestamp(now, BERLIN)
+    target = b.replace(hour=hh, minute=mm, second=0, microsecond=0)
+    if target.timestamp() <= now:
+        target = (b + timedelta(days=1)).replace(hour=hh, minute=mm, second=0, microsecond=0)
+    return target.timestamp()
 
 
 def game_dir(root: Path, day: str, game_id: str) -> Path:
@@ -309,7 +332,7 @@ def build_context(row: dict, clock: gc.GameClock, day: str, first_seen: float, l
 # ----------------------------------------------------------------------------- Recorder
 class Recorder:
     def __init__(self, root: Path, fetch=None, now=time.time, sleep=time.sleep, log=print, headers: dict | None = None,
-                 tracking_dir: Path | None = None, pregame_path: Path | None = None, model_path: Path | None = None):
+                 tracking_dir: Path | None = None, pregame_path: Path | None = None, model_path: Path | None = None, until: float | None = None):
         self.root = Path(root)
         self.now, self.sleep, self.log = now, sleep, log
         self.headers = headers if headers is not None else nba_headers()
@@ -318,8 +341,9 @@ class Recorder:
         self.backoff = Backoff()
         self.games: dict[str, dict] = {}
         self.day = datetime.fromtimestamp(now(), ET).strftime("%Y-%m-%d")
-        t0 = now()
-        self.last_activity = t0                 # letzter Zeitpunkt mit neuem oder nicht beendetem Spiel
+        self.start_t = now()
+        self.until = until
+        self.last_today_activity: float | None = None    # letzter Zeitpunkt mit neuem oder nicht beendetem Spiel des AKTUELLEN US-Spieltags
         self.last_heartbeat = 0.0
         self.last_request = 0.0
         self._emitted: dict[str, tuple[str, float]] = {}
@@ -392,7 +416,6 @@ class Recorder:
             self.games[gid] = {"day": day, "dir": gdir, "first_seen": t, "phase_key": None, "last_box": 0.0, "compact": {},
                                "seen_live": False, "context": (gdir / "context.json").exists(),
                                "finalized": all((gdir / n).exists() for n in ("final_box.json.gz", "final_pbp.json.gz", "result.json"))}
-            self.last_activity = t
         return self.games[gid]
 
     def _handle_game(self, row: dict, t: float) -> bool:
@@ -402,8 +425,8 @@ class Recorder:
         seen = st["seen_live"]
         kind = classify_game(clock, seen, st["finalized"])
         st["compact"] = compact_game(row, clock)
-        if kind != "fertig":
-            self.last_activity = t
+        if st["day"] == current_us_day(t) and (self.last_today_activity is None or kind != "fertig"):
+            self.last_today_activity = t           # erstes Spiel des aktuellen Tags gesehen oder Spiel noch nicht abgeschlossen
         key = (clock.phase, clock.period)
         if st["phase_key"] != key:
             self.emit(st["day"], gid, {"type": "phase", "from": st["phase_key"][0] if st["phase_key"] else None, "clock_missing": clock.clock_missing, **st["compact"]})
@@ -455,10 +478,23 @@ class Recorder:
                                    "live": sum(1 for g in games if g["status"] == 2), "final": sum(1 for g in games if g["status"] == 3),
                                    "pre": sum(1 for g in games if g["status"] == 1)})
 
+    def stop_reason(self) -> str | None:
+        """Grund fuer das Beenden oder None. Regeln: harte Endzeit (--bis); Obergrenze 20 h; sonst nur wenn (1) ein Spiel des aktuellen US-Spieltags gesehen wurde,
+        (2) alle bekannten Spiele dieses Tags beendet sind und (3) danach 3 h lang kein neues Spiel erschien. Zeigt das Scoreboard noch den Vortag: weiterlaufen."""
+        t = self.now()
+        if self.until is not None and t >= self.until:
+            return "--bis erreicht"
+        if t - self.start_t >= MAX_RUNTIME_SECONDS:
+            return "Obergrenze von 20 Stunden Laufzeit erreicht"
+        today = [s for s in self.games.values() if s["day"] == current_us_day(t)]
+        if not today or any(s["compact"].get("status") != 3 for s in today):
+            return None
+        if self.last_today_activity is not None and t - self.last_today_activity >= IDLE_EXIT_SECONDS:
+            return "alle Spiele des Spieltags beendet, 3 Stunden ohne neues Spiel"
+        return None
+
     def should_stop(self) -> bool:
-        """Alle bekannten Spiele beendet (oder keine) und seit IDLE_EXIT_SECONDS kein neues oder nicht beendetes Spiel gesehen."""
-        done = all(s["compact"].get("status") == 3 for s in self.games.values())
-        return done and self.now() - self.last_activity >= IDLE_EXIT_SECONDS
+        return self.stop_reason() is not None
 
     def run(self, once: bool = False) -> None:
         self.emit(self.day, None, {"type": "start", "games": self.day_games(), "headers_user_agent": self.headers.get("User-Agent")})
@@ -467,9 +503,10 @@ class Recorder:
                 ok = self.cycle()
                 if once:
                     break
-                if self.should_stop():
-                    self.emit(self.day, None, {"type": "stop", "reason": "alle Spiele beendet, 3 h ohne neues Spiel", "games": self.day_games()})
-                    self.log("Alle Spiele beendet und 3 Stunden ohne neues Spiel: Ende.")
+                reason = self.stop_reason()
+                if reason:
+                    self.emit(self.day, None, {"type": "stop", "reason": reason, "games": self.day_games()})
+                    self.log(f"Ende: {reason}.")
                     break
                 self.sleep(self.backoff.wait if not ok else POLL_SECONDS)
         except KeyboardInterrupt:
@@ -483,6 +520,7 @@ def main(argv=None) -> int:
     ap.add_argument("--einmal", action="store_true", help="ein Durchlauf, dann Ende")
     ap.add_argument("--dir", help="Zielordner (sonst NBAEDGE_LIVE_DIR oder ~/NBAEdge_live_history)")
     ap.add_argument("--ohne-caffeinate", action="store_true")
+    ap.add_argument("--bis", metavar="HH:MM", help="harte Endzeit (deutsche Zeit), z. B. 07:00")
     args = ap.parse_args(argv)
     root = live_root(args.dir)
     lock = InstanceLock(root / ".recorder.lock")
@@ -494,7 +532,7 @@ def main(argv=None) -> int:
         caff = subprocess.Popen(["caffeinate", "-i", "-w", str(os.getpid())])        # haelt den Mac wach, endet mit diesem Prozess
     signal.signal(signal.SIGTERM, lambda *_: (_ for _ in ()).throw(KeyboardInterrupt()))
     try:
-        rec = Recorder(root)
+        rec = Recorder(root, until=parse_until(args.bis, time.time()) if args.bis else None)
         print(f"Recorder gestartet. Daten: {root}  (Beenden: Strg+C)  Chrome-UA: {rec.headers['User-Agent'].split('Chrome/')[1].split(' ')[0]}")
         rec.run(once=args.einmal)
     finally:
