@@ -1,7 +1,7 @@
 {
  "version": 1,
  "format": "nbaedge-projection-snapshots",
- "updated_at": "2026-10-22T16:28:04+02:00",
+ "updated_at": "2026-10-22T22:10:07+02:00",
  "games": {
   "2026-10-21|2026-10-21T23:30:00Z|Miami Heat|Minnesota Timberwolves": {
    "game_date": "2026-10-21",
@@ -13539,6 +13539,1166 @@
       "team_totals": "2026-10-22T16:27:53+02:00",
       "player_points": "2026-10-22T16:27:53+02:00"
      }
+    },
+    {
+     "saved_at": "2026-10-22T19:00:40+02:00",
+     "hash": "6e6da9ad70098250",
+     "model": {
+      "file_mtime": "2026-10-22T16:25:20+02:00",
+      "file_size": 736079,
+      "sha1": "65b91f14c0c34bae4d6bbdf5cac079114e4ddcf6",
+      "ratings_as_of": "2026-10-21"
+     },
+     "projection": {
+      "exp_spread": 2.8,
+      "exp_total": 233.0,
+      "home_score": 118.0,
+      "away_score": 115.0,
+      "home_win_prob": 0.584,
+      "away_win_prob": 0.416,
+      "home_win_prob_elo": 0.5474,
+      "away_win_prob_elo": 0.4526,
+      "market_total": 235.5,
+      "market_spread": 3.5
+     },
+     "markets": {
+      "spread": {
+       "line": 3.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-22T16:27:53+02:00",
+       "cache_line": 3.4,
+       "warn": false
+      },
+      "total": {
+       "line": 235.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-22T16:27:53+02:00",
+       "cache_line": 235.6,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": 116.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-22T16:27:53+02:00",
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": 119.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-22T16:27:53+02:00",
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": "eigene Eingabe",
+       "favorite": "home",
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 1.5,
+         "p_left": 46,
+         "p_right": 54,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 2.5,
+         "p_left": 49,
+         "p_right": 51,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 3.5,
+         "p_left": 52,
+         "p_right": 48,
+         "predicted": "left",
+         "is_main": true
+        },
+        {
+         "line": 4.5,
+         "p_left": 55,
+         "p_right": 45,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 5.5,
+         "p_left": 58,
+         "p_right": 42,
+         "predicted": "left",
+         "is_main": false
+        }
+       ]
+      },
+      "total": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 232.5,
+         "p_left": 51,
+         "p_right": 49,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 233.5,
+         "p_left": 49,
+         "p_right": 51,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 234.5,
+         "p_left": 47,
+         "p_right": 53,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 235.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": true
+        },
+        {
+         "line": 236.5,
+         "p_left": 43,
+         "p_right": 57,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 237.5,
+         "p_left": 40,
+         "p_right": 60,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 238.5,
+         "p_left": 38,
+         "p_right": 62,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 113.5,
+         "p_left": 55,
+         "p_right": 45,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 114.5,
+         "p_left": 52,
+         "p_right": 48,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 115.5,
+         "p_left": 48,
+         "p_right": 52,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 116.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": true
+        },
+        {
+         "line": 117.5,
+         "p_left": 41,
+         "p_right": 59,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 118.5,
+         "p_left": 38,
+         "p_right": 62,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 119.5,
+         "p_left": 35,
+         "p_right": 65,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 116.5,
+         "p_left": 55,
+         "p_right": 45,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 117.5,
+         "p_left": 52,
+         "p_right": 48,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 118.5,
+         "p_left": 48,
+         "p_right": 52,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 119.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": true
+        },
+        {
+         "line": 120.5,
+         "p_left": 41,
+         "p_right": 59,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 121.5,
+         "p_left": 38,
+         "p_right": 62,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 122.5,
+         "p_left": 35,
+         "p_right": 65,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": {
+      "entry_key": "2026-10-22|2026-10-22T23:00:00Z|Philadelphia 76ers|Cleveland Cavaliers",
+      "winner_incl_ot": "2026-10-22T16:27:53+02:00",
+      "spread": "2026-10-22T16:27:53+02:00",
+      "total": "2026-10-22T16:27:53+02:00",
+      "team_totals": "2026-10-22T16:27:53+02:00",
+      "player_points": "2026-10-22T16:27:53+02:00"
+     }
+    },
+    {
+     "saved_at": "2026-10-22T19:28:11+02:00",
+     "hash": "007503a59b119439",
+     "model": {
+      "file_mtime": "2026-10-22T16:25:20+02:00",
+      "file_size": 736079,
+      "sha1": "65b91f14c0c34bae4d6bbdf5cac079114e4ddcf6",
+      "ratings_as_of": "2026-10-21"
+     },
+     "projection": {
+      "exp_spread": 2.8,
+      "exp_total": 233.0,
+      "home_score": 118.0,
+      "away_score": 115.0,
+      "home_win_prob": 0.584,
+      "away_win_prob": 0.416,
+      "home_win_prob_elo": 0.5474,
+      "away_win_prob_elo": 0.4526,
+      "market_total": 237.5,
+      "market_spread": 3.5
+     },
+     "markets": {
+      "spread": {
+       "line": 3.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-22T19:01:51+02:00",
+       "cache_line": 3.4,
+       "warn": false
+      },
+      "total": {
+       "line": 237.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-22T19:01:51+02:00",
+       "cache_line": 235.6,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": 117.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-22T19:01:51+02:00",
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": 120.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-22T19:01:51+02:00",
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": "eigene Eingabe",
+       "favorite": "home",
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 1.5,
+         "p_left": 46,
+         "p_right": 54,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 2.5,
+         "p_left": 49,
+         "p_right": 51,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 3.5,
+         "p_left": 52,
+         "p_right": 48,
+         "predicted": "left",
+         "is_main": true
+        },
+        {
+         "line": 4.5,
+         "p_left": 55,
+         "p_right": 45,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 5.5,
+         "p_left": 58,
+         "p_right": 42,
+         "predicted": "left",
+         "is_main": false
+        }
+       ]
+      },
+      "total": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 234.5,
+         "p_left": 47,
+         "p_right": 53,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 235.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 236.5,
+         "p_left": 43,
+         "p_right": 57,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 237.5,
+         "p_left": 40,
+         "p_right": 60,
+         "predicted": "right",
+         "is_main": true
+        },
+        {
+         "line": 238.5,
+         "p_left": 38,
+         "p_right": 62,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 239.5,
+         "p_left": 36,
+         "p_right": 64,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 240.5,
+         "p_left": 34,
+         "p_right": 66,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 114.5,
+         "p_left": 52,
+         "p_right": 48,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 115.5,
+         "p_left": 48,
+         "p_right": 52,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 116.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 117.5,
+         "p_left": 41,
+         "p_right": 59,
+         "predicted": "right",
+         "is_main": true
+        },
+        {
+         "line": 118.5,
+         "p_left": 38,
+         "p_right": 62,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 119.5,
+         "p_left": 35,
+         "p_right": 65,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 120.5,
+         "p_left": 32,
+         "p_right": 68,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 117.5,
+         "p_left": 52,
+         "p_right": 48,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 118.5,
+         "p_left": 48,
+         "p_right": 52,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 119.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 120.5,
+         "p_left": 41,
+         "p_right": 59,
+         "predicted": "right",
+         "is_main": true
+        },
+        {
+         "line": 121.5,
+         "p_left": 38,
+         "p_right": 62,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 122.5,
+         "p_left": 35,
+         "p_right": 65,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 123.5,
+         "p_left": 32,
+         "p_right": 68,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": {
+      "entry_key": "2026-10-22|2026-10-22T23:00:00Z|Philadelphia 76ers|Cleveland Cavaliers",
+      "winner_incl_ot": "2026-10-22T16:27:53+02:00",
+      "spread": "2026-10-22T19:01:51+02:00",
+      "total": "2026-10-22T19:01:51+02:00",
+      "team_totals": "2026-10-22T19:01:51+02:00",
+      "player_points": "2026-10-22T19:01:51+02:00"
+     }
+    },
+    {
+     "saved_at": "2026-10-22T22:01:41+02:00",
+     "hash": "801098cd5767767a",
+     "model": {
+      "file_mtime": "2026-10-22T16:25:20+02:00",
+      "file_size": 736079,
+      "sha1": "65b91f14c0c34bae4d6bbdf5cac079114e4ddcf6",
+      "ratings_as_of": "2026-10-21"
+     },
+     "projection": {
+      "exp_spread": 2.8,
+      "exp_total": 233.0,
+      "home_score": 118.0,
+      "away_score": 115.0,
+      "home_win_prob": 0.584,
+      "away_win_prob": 0.416,
+      "home_win_prob_elo": 0.5474,
+      "away_win_prob_elo": 0.4526,
+      "market_total": 237.5,
+      "market_spread": 3.5
+     },
+     "markets": {
+      "spread": {
+       "line": 3.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-22T22:01:04+02:00",
+       "cache_line": 3.4,
+       "warn": false
+      },
+      "total": {
+       "line": 237.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-22T19:01:51+02:00",
+       "cache_line": 235.6,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": 117.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-22T22:01:04+02:00",
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": 120.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-22T22:01:04+02:00",
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": "eigene Eingabe",
+       "favorite": "home",
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 1.5,
+         "p_left": 46,
+         "p_right": 54,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 2.5,
+         "p_left": 49,
+         "p_right": 51,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 3.5,
+         "p_left": 52,
+         "p_right": 48,
+         "predicted": "left",
+         "is_main": true
+        },
+        {
+         "line": 4.5,
+         "p_left": 55,
+         "p_right": 45,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 5.5,
+         "p_left": 58,
+         "p_right": 42,
+         "predicted": "left",
+         "is_main": false
+        }
+       ]
+      },
+      "total": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 234.5,
+         "p_left": 47,
+         "p_right": 53,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 235.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 236.5,
+         "p_left": 43,
+         "p_right": 57,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 237.5,
+         "p_left": 40,
+         "p_right": 60,
+         "predicted": "right",
+         "is_main": true
+        },
+        {
+         "line": 238.5,
+         "p_left": 38,
+         "p_right": 62,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 239.5,
+         "p_left": 36,
+         "p_right": 64,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 240.5,
+         "p_left": 34,
+         "p_right": 66,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 114.5,
+         "p_left": 52,
+         "p_right": 48,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 115.5,
+         "p_left": 48,
+         "p_right": 52,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 116.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 117.5,
+         "p_left": 41,
+         "p_right": 59,
+         "predicted": "right",
+         "is_main": true
+        },
+        {
+         "line": 118.5,
+         "p_left": 38,
+         "p_right": 62,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 119.5,
+         "p_left": 35,
+         "p_right": 65,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 120.5,
+         "p_left": 32,
+         "p_right": 68,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 117.5,
+         "p_left": 52,
+         "p_right": 48,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 118.5,
+         "p_left": 48,
+         "p_right": 52,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 119.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 120.5,
+         "p_left": 41,
+         "p_right": 59,
+         "predicted": "right",
+         "is_main": true
+        },
+        {
+         "line": 121.5,
+         "p_left": 38,
+         "p_right": 62,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 122.5,
+         "p_left": 35,
+         "p_right": 65,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 123.5,
+         "p_left": 32,
+         "p_right": 68,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": {
+      "entry_key": "2026-10-22|2026-10-22T23:00:00Z|Philadelphia 76ers|Cleveland Cavaliers",
+      "winner_incl_ot": "2026-10-22T22:01:04+02:00",
+      "spread": "2026-10-22T22:01:04+02:00",
+      "total": "2026-10-22T22:01:04+02:00",
+      "team_totals": "2026-10-22T22:01:04+02:00",
+      "player_points": "2026-10-22T22:01:04+02:00"
+     }
+    },
+    {
+     "saved_at": "2026-10-22T22:10:07+02:00",
+     "hash": "f8f0305826012cbb",
+     "model": {
+      "file_mtime": "2026-10-22T16:25:20+02:00",
+      "file_size": 736079,
+      "sha1": "65b91f14c0c34bae4d6bbdf5cac079114e4ddcf6",
+      "ratings_as_of": "2026-10-21"
+     },
+     "projection": {
+      "exp_spread": 2.8,
+      "exp_total": 233.0,
+      "home_score": 118.0,
+      "away_score": 115.0,
+      "home_win_prob": 0.584,
+      "away_win_prob": 0.416,
+      "home_win_prob_elo": 0.5474,
+      "away_win_prob_elo": 0.4526,
+      "market_total": 237.5,
+      "market_spread": 3.5
+     },
+     "markets": {
+      "spread": {
+       "line": 3.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-22T22:09:31+02:00",
+       "cache_line": 2.5,
+       "warn": false
+      },
+      "total": {
+       "line": 237.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-22T22:09:31+02:00",
+       "cache_line": 236.9,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": 117.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-22T22:01:04+02:00",
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": 120.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-22T22:09:31+02:00",
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": "eigene Eingabe",
+       "favorite": "home",
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 1.5,
+         "p_left": 46,
+         "p_right": 54,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 2.5,
+         "p_left": 49,
+         "p_right": 51,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 3.5,
+         "p_left": 52,
+         "p_right": 48,
+         "predicted": "left",
+         "is_main": true
+        },
+        {
+         "line": 4.5,
+         "p_left": 55,
+         "p_right": 45,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 5.5,
+         "p_left": 58,
+         "p_right": 42,
+         "predicted": "left",
+         "is_main": false
+        }
+       ]
+      },
+      "total": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 234.5,
+         "p_left": 47,
+         "p_right": 53,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 235.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 236.5,
+         "p_left": 43,
+         "p_right": 57,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 237.5,
+         "p_left": 40,
+         "p_right": 60,
+         "predicted": "right",
+         "is_main": true
+        },
+        {
+         "line": 238.5,
+         "p_left": 38,
+         "p_right": 62,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 239.5,
+         "p_left": 36,
+         "p_right": 64,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 240.5,
+         "p_left": 34,
+         "p_right": 66,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 114.5,
+         "p_left": 52,
+         "p_right": 48,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 115.5,
+         "p_left": 48,
+         "p_right": 52,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 116.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 117.5,
+         "p_left": 41,
+         "p_right": 59,
+         "predicted": "right",
+         "is_main": true
+        },
+        {
+         "line": 118.5,
+         "p_left": 38,
+         "p_right": 62,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 119.5,
+         "p_left": 35,
+         "p_right": 65,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 120.5,
+         "p_left": 32,
+         "p_right": 68,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 117.5,
+         "p_left": 52,
+         "p_right": 48,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 118.5,
+         "p_left": 48,
+         "p_right": 52,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 119.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 120.5,
+         "p_left": 41,
+         "p_right": 59,
+         "predicted": "right",
+         "is_main": true
+        },
+        {
+         "line": 121.5,
+         "p_left": 38,
+         "p_right": 62,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 122.5,
+         "p_left": 35,
+         "p_right": 65,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 123.5,
+         "p_left": 32,
+         "p_right": 68,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": {
+      "entry_key": "2026-10-22|2026-10-22T23:00:00Z|Philadelphia 76ers|Cleveland Cavaliers",
+      "winner_incl_ot": "2026-10-22T22:01:04+02:00",
+      "spread": "2026-10-22T22:09:31+02:00",
+      "total": "2026-10-22T22:09:31+02:00",
+      "team_totals": "2026-10-22T22:09:31+02:00",
+      "player_points": "2026-10-22T22:09:31+02:00"
+     }
     }
    ],
    "card": {
@@ -13547,11 +14707,11 @@
     "home_score": 118,
     "away_score": 115,
     "exp_total": 233,
-    "blended_total_before_rounding": 232.6,
+    "blended_total_before_rounding": 233.3,
     "model_total": 231.3,
-    "market_total_used": 235.5,
+    "market_total_used": 237.5,
     "market_weight": 0.32,
-    "market_diff": 4.2,
+    "market_diff": 6.2,
     "lineup_warning": false,
     "model_spread": 2.6,
     "exp_spread": 2.8,
@@ -13561,74 +14721,79 @@
     "playoff_adjustment": 0.0,
     "home_bias_adjustment": 0.0,
     "away_bias_adjustment": 0.0,
-    "home_win_prob": 0.5474,
-    "away_win_prob": 0.4526,
+    "home_win_prob": 0.584,
+    "away_win_prob": 0.416,
+    "home_win_prob_elo": 0.5474,
+    "away_win_prob_elo": 0.4526,
+    "win_prob_source": "normal_spread",
+    "sigma_spread": 13.2,
+    "sigmas_version": "2",
     "game_date": "2026-10-22",
     "game_start": "2026-10-22T23:00:00.000Z",
     "game_status": "2026-10-22T23:00:00Z",
-    "market_total": 235.5,
+    "market_total": 237.5,
     "market_spread": 3.5,
-    "cache_market_total": 235.6,
-    "cache_market_spread": 3.4,
+    "cache_market_total": 236.9,
+    "cache_market_spread": 2.5,
     "market_source": "cache_vorab",
     "market_lines": {
      "spread": {
       "line": 3.5,
       "source": "eigene Eingabe",
       "bookmaker": "Betano",
-      "at": 1792679273.0,
-      "at_iso": "2026-10-22T16:27:53+02:00",
-      "cache_line": 3.4,
-      "cache_at": 1792679216.964391,
+      "at": 1792699771.0,
+      "at_iso": "2026-10-22T22:09:31+02:00",
+      "cache_line": 2.5,
+      "cache_at": 1792699514.748644,
       "cache_source": "cache_vorab",
       "own_line": 3.5,
-      "deviation": 0.1,
+      "deviation": 1.0,
       "warn": false
      },
      "total": {
-      "line": 235.5,
+      "line": 237.5,
       "source": "eigene Eingabe",
       "bookmaker": "Betano",
-      "at": 1792679273.0,
-      "at_iso": "2026-10-22T16:27:53+02:00",
-      "cache_line": 235.6,
-      "cache_at": 1792679216.964391,
+      "at": 1792699771.0,
+      "at_iso": "2026-10-22T22:09:31+02:00",
+      "cache_line": 236.9,
+      "cache_at": 1792699514.748644,
       "cache_source": "cache_vorab",
-      "own_line": 235.5,
-      "deviation": 0.1,
+      "own_line": 237.5,
+      "deviation": 0.6,
       "warn": false
      },
      "team_total_away": {
-      "line": 116.5,
+      "line": 117.5,
       "source": "eigene Eingabe",
       "bookmaker": "Betano",
-      "at": 1792679273.0,
-      "at_iso": "2026-10-22T16:27:53+02:00",
+      "at": 1792699264.0,
+      "at_iso": "2026-10-22T22:01:04+02:00",
       "cache_line": null,
       "cache_at": null,
       "cache_source": null,
-      "own_line": 116.5,
+      "own_line": 117.5,
       "deviation": null,
       "warn": false
      },
      "team_total_home": {
-      "line": 119.5,
+      "line": 120.5,
       "source": "eigene Eingabe",
       "bookmaker": "Betano",
-      "at": 1792679273.0,
-      "at_iso": "2026-10-22T16:27:53+02:00",
+      "at": 1792699771.0,
+      "at_iso": "2026-10-22T22:09:31+02:00",
       "cache_line": null,
       "cache_at": null,
       "cache_source": null,
-      "own_line": 119.5,
+      "own_line": 120.5,
       "deviation": null,
       "warn": false
      }
     },
     "total_over_odds": 1.89,
     "total_under_odds": 1.9,
-    "spread_home_odds": 1.92,
-    "spread_away_odds": 1.9,
+    "spread_home_odds": 1.9,
+    "spread_away_odds": 1.91,
     "home_team_total": null,
     "away_team_total": null
    },
@@ -15046,6 +16211,1166 @@
       "team_totals": "2026-10-22T16:27:58+02:00",
       "player_points": "2026-10-22T16:27:58+02:00"
      }
+    },
+    {
+     "saved_at": "2026-10-22T19:00:40+02:00",
+     "hash": "e669eecbff5119df",
+     "model": {
+      "file_mtime": "2026-10-22T16:25:20+02:00",
+      "file_size": 736079,
+      "sha1": "65b91f14c0c34bae4d6bbdf5cac079114e4ddcf6",
+      "ratings_as_of": "2026-10-21"
+     },
+     "projection": {
+      "exp_spread": 7.4,
+      "exp_total": 237.0,
+      "home_score": 122.0,
+      "away_score": 115.0,
+      "home_win_prob": 0.7125,
+      "away_win_prob": 0.2875,
+      "home_win_prob_elo": 0.7066,
+      "away_win_prob_elo": 0.2934,
+      "market_total": 235.5,
+      "market_spread": 8.5
+     },
+     "markets": {
+      "spread": {
+       "line": 8.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-22T16:27:58+02:00",
+       "cache_line": 8.3,
+       "warn": false
+      },
+      "total": {
+       "line": 235.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-22T16:27:58+02:00",
+       "cache_line": 235.8,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": 113.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-22T16:27:58+02:00",
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": 122.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-22T16:27:58+02:00",
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": "eigene Eingabe",
+       "favorite": "home",
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 6.5,
+         "p_left": 47,
+         "p_right": 53,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 7.5,
+         "p_left": 50,
+         "p_right": 50,
+         "predicted": null,
+         "is_main": false
+        },
+        {
+         "line": 8.5,
+         "p_left": 53,
+         "p_right": 47,
+         "predicted": "left",
+         "is_main": true
+        },
+        {
+         "line": 9.5,
+         "p_left": 56,
+         "p_right": 44,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 10.5,
+         "p_left": 59,
+         "p_right": 41,
+         "predicted": "left",
+         "is_main": false
+        }
+       ]
+      },
+      "total": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 232.5,
+         "p_left": 60,
+         "p_right": 40,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 233.5,
+         "p_left": 57,
+         "p_right": 43,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 234.5,
+         "p_left": 55,
+         "p_right": 45,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 235.5,
+         "p_left": 53,
+         "p_right": 47,
+         "predicted": "left",
+         "is_main": true
+        },
+        {
+         "line": 236.5,
+         "p_left": 51,
+         "p_right": 49,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 237.5,
+         "p_left": 49,
+         "p_right": 51,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 238.5,
+         "p_left": 47,
+         "p_right": 53,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 110.5,
+         "p_left": 65,
+         "p_right": 35,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 111.5,
+         "p_left": 62,
+         "p_right": 38,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 112.5,
+         "p_left": 59,
+         "p_right": 41,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 113.5,
+         "p_left": 55,
+         "p_right": 45,
+         "predicted": "left",
+         "is_main": true
+        },
+        {
+         "line": 114.5,
+         "p_left": 52,
+         "p_right": 48,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 115.5,
+         "p_left": 48,
+         "p_right": 52,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 116.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 119.5,
+         "p_left": 59,
+         "p_right": 41,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 120.5,
+         "p_left": 55,
+         "p_right": 45,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 121.5,
+         "p_left": 52,
+         "p_right": 48,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 122.5,
+         "p_left": 48,
+         "p_right": 52,
+         "predicted": "right",
+         "is_main": true
+        },
+        {
+         "line": 123.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 124.5,
+         "p_left": 41,
+         "p_right": 59,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 125.5,
+         "p_left": 38,
+         "p_right": 62,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": {
+      "entry_key": "2026-10-22|2026-10-23T01:30:00Z|Oklahoma City Thunder|Denver Nuggets",
+      "winner_incl_ot": "2026-10-22T16:27:58+02:00",
+      "spread": "2026-10-22T16:27:58+02:00",
+      "total": "2026-10-22T16:27:58+02:00",
+      "team_totals": "2026-10-22T16:27:58+02:00",
+      "player_points": "2026-10-22T16:27:58+02:00"
+     }
+    },
+    {
+     "saved_at": "2026-10-22T19:28:11+02:00",
+     "hash": "eedd90b3f2e26b4d",
+     "model": {
+      "file_mtime": "2026-10-22T16:25:20+02:00",
+      "file_size": 736079,
+      "sha1": "65b91f14c0c34bae4d6bbdf5cac079114e4ddcf6",
+      "ratings_as_of": "2026-10-21"
+     },
+     "projection": {
+      "exp_spread": 7.4,
+      "exp_total": 237.0,
+      "home_score": 122.0,
+      "away_score": 115.0,
+      "home_win_prob": 0.7125,
+      "away_win_prob": 0.2875,
+      "home_win_prob_elo": 0.7066,
+      "away_win_prob_elo": 0.2934,
+      "market_total": 236.5,
+      "market_spread": 8.5
+     },
+     "markets": {
+      "spread": {
+       "line": 8.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-22T19:02:31+02:00",
+       "cache_line": 8.3,
+       "warn": false
+      },
+      "total": {
+       "line": 236.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-22T19:02:31+02:00",
+       "cache_line": 235.8,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": 114.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-22T19:02:31+02:00",
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": 122.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-22T16:27:58+02:00",
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": "eigene Eingabe",
+       "favorite": "home",
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 6.5,
+         "p_left": 47,
+         "p_right": 53,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 7.5,
+         "p_left": 50,
+         "p_right": 50,
+         "predicted": null,
+         "is_main": false
+        },
+        {
+         "line": 8.5,
+         "p_left": 53,
+         "p_right": 47,
+         "predicted": "left",
+         "is_main": true
+        },
+        {
+         "line": 9.5,
+         "p_left": 56,
+         "p_right": 44,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 10.5,
+         "p_left": 59,
+         "p_right": 41,
+         "predicted": "left",
+         "is_main": false
+        }
+       ]
+      },
+      "total": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 233.5,
+         "p_left": 57,
+         "p_right": 43,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 234.5,
+         "p_left": 55,
+         "p_right": 45,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 235.5,
+         "p_left": 53,
+         "p_right": 47,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 236.5,
+         "p_left": 51,
+         "p_right": 49,
+         "predicted": "left",
+         "is_main": true
+        },
+        {
+         "line": 237.5,
+         "p_left": 49,
+         "p_right": 51,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 238.5,
+         "p_left": 47,
+         "p_right": 53,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 239.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 111.5,
+         "p_left": 62,
+         "p_right": 38,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 112.5,
+         "p_left": 59,
+         "p_right": 41,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 113.5,
+         "p_left": 55,
+         "p_right": 45,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 114.5,
+         "p_left": 52,
+         "p_right": 48,
+         "predicted": "left",
+         "is_main": true
+        },
+        {
+         "line": 115.5,
+         "p_left": 48,
+         "p_right": 52,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 116.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 117.5,
+         "p_left": 41,
+         "p_right": 59,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 119.5,
+         "p_left": 59,
+         "p_right": 41,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 120.5,
+         "p_left": 55,
+         "p_right": 45,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 121.5,
+         "p_left": 52,
+         "p_right": 48,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 122.5,
+         "p_left": 48,
+         "p_right": 52,
+         "predicted": "right",
+         "is_main": true
+        },
+        {
+         "line": 123.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 124.5,
+         "p_left": 41,
+         "p_right": 59,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 125.5,
+         "p_left": 38,
+         "p_right": 62,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": {
+      "entry_key": "2026-10-22|2026-10-23T01:30:00Z|Oklahoma City Thunder|Denver Nuggets",
+      "winner_incl_ot": "2026-10-22T16:27:58+02:00",
+      "spread": "2026-10-22T19:02:31+02:00",
+      "total": "2026-10-22T19:02:31+02:00",
+      "team_totals": "2026-10-22T19:02:31+02:00",
+      "player_points": "2026-10-22T19:02:31+02:00"
+     }
+    },
+    {
+     "saved_at": "2026-10-22T22:01:41+02:00",
+     "hash": "eb6c0d0f7dec28cd",
+     "model": {
+      "file_mtime": "2026-10-22T16:25:20+02:00",
+      "file_size": 736079,
+      "sha1": "65b91f14c0c34bae4d6bbdf5cac079114e4ddcf6",
+      "ratings_as_of": "2026-10-21"
+     },
+     "projection": {
+      "exp_spread": 7.4,
+      "exp_total": 237.0,
+      "home_score": 122.0,
+      "away_score": 115.0,
+      "home_win_prob": 0.7125,
+      "away_win_prob": 0.2875,
+      "home_win_prob_elo": 0.7066,
+      "away_win_prob_elo": 0.2934,
+      "market_total": 236.5,
+      "market_spread": 8.5
+     },
+     "markets": {
+      "spread": {
+       "line": 8.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-22T19:02:31+02:00",
+       "cache_line": 8.3,
+       "warn": false
+      },
+      "total": {
+       "line": 236.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-22T22:01:11+02:00",
+       "cache_line": 235.8,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": 114.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-22T22:01:11+02:00",
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": 122.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-22T22:01:11+02:00",
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": "eigene Eingabe",
+       "favorite": "home",
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 6.5,
+         "p_left": 47,
+         "p_right": 53,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 7.5,
+         "p_left": 50,
+         "p_right": 50,
+         "predicted": null,
+         "is_main": false
+        },
+        {
+         "line": 8.5,
+         "p_left": 53,
+         "p_right": 47,
+         "predicted": "left",
+         "is_main": true
+        },
+        {
+         "line": 9.5,
+         "p_left": 56,
+         "p_right": 44,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 10.5,
+         "p_left": 59,
+         "p_right": 41,
+         "predicted": "left",
+         "is_main": false
+        }
+       ]
+      },
+      "total": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 233.5,
+         "p_left": 57,
+         "p_right": 43,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 234.5,
+         "p_left": 55,
+         "p_right": 45,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 235.5,
+         "p_left": 53,
+         "p_right": 47,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 236.5,
+         "p_left": 51,
+         "p_right": 49,
+         "predicted": "left",
+         "is_main": true
+        },
+        {
+         "line": 237.5,
+         "p_left": 49,
+         "p_right": 51,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 238.5,
+         "p_left": 47,
+         "p_right": 53,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 239.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 111.5,
+         "p_left": 62,
+         "p_right": 38,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 112.5,
+         "p_left": 59,
+         "p_right": 41,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 113.5,
+         "p_left": 55,
+         "p_right": 45,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 114.5,
+         "p_left": 52,
+         "p_right": 48,
+         "predicted": "left",
+         "is_main": true
+        },
+        {
+         "line": 115.5,
+         "p_left": 48,
+         "p_right": 52,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 116.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 117.5,
+         "p_left": 41,
+         "p_right": 59,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 119.5,
+         "p_left": 59,
+         "p_right": 41,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 120.5,
+         "p_left": 55,
+         "p_right": 45,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 121.5,
+         "p_left": 52,
+         "p_right": 48,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 122.5,
+         "p_left": 48,
+         "p_right": 52,
+         "predicted": "right",
+         "is_main": true
+        },
+        {
+         "line": 123.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 124.5,
+         "p_left": 41,
+         "p_right": 59,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 125.5,
+         "p_left": 38,
+         "p_right": 62,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": {
+      "entry_key": "2026-10-22|2026-10-23T01:30:00Z|Oklahoma City Thunder|Denver Nuggets",
+      "winner_incl_ot": "2026-10-22T22:01:11+02:00",
+      "spread": "2026-10-22T22:01:11+02:00",
+      "total": "2026-10-22T22:01:11+02:00",
+      "team_totals": "2026-10-22T22:01:11+02:00",
+      "player_points": "2026-10-22T22:01:11+02:00"
+     }
+    },
+    {
+     "saved_at": "2026-10-22T22:10:07+02:00",
+     "hash": "a87bde6902f0486b",
+     "model": {
+      "file_mtime": "2026-10-22T16:25:20+02:00",
+      "file_size": 736079,
+      "sha1": "65b91f14c0c34bae4d6bbdf5cac079114e4ddcf6",
+      "ratings_as_of": "2026-10-21"
+     },
+     "projection": {
+      "exp_spread": 7.2,
+      "exp_total": 237.0,
+      "home_score": 122.0,
+      "away_score": 115.0,
+      "home_win_prob": 0.7073,
+      "away_win_prob": 0.2927,
+      "home_win_prob_elo": 0.7066,
+      "away_win_prob_elo": 0.2934,
+      "market_total": 236.7,
+      "market_spread": 7.5
+     },
+     "markets": {
+      "spread": {
+       "line": 7.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-22T22:09:53+02:00",
+       "cache_line": 8.2,
+       "warn": false
+      },
+      "total": {
+       "line": 236.7,
+       "source": "Cache",
+       "bookmaker": null,
+       "line_at": "2026-10-22T22:05:14+02:00",
+       "cache_line": 236.7,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": 114.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-22T22:09:53+02:00",
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": 122.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-22T22:09:53+02:00",
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": "eigene Eingabe",
+       "favorite": "home",
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 5.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 6.5,
+         "p_left": 48,
+         "p_right": 52,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 7.5,
+         "p_left": 51,
+         "p_right": 49,
+         "predicted": "left",
+         "is_main": true
+        },
+        {
+         "line": 8.5,
+         "p_left": 54,
+         "p_right": 46,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 9.5,
+         "p_left": 57,
+         "p_right": 43,
+         "predicted": "left",
+         "is_main": false
+        }
+       ]
+      },
+      "total": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 233.5,
+         "p_left": 57,
+         "p_right": 43,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 234.5,
+         "p_left": 55,
+         "p_right": 45,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 235.5,
+         "p_left": 53,
+         "p_right": 47,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 236.5,
+         "p_left": 51,
+         "p_right": 49,
+         "predicted": "left",
+         "is_main": true
+        },
+        {
+         "line": 237.5,
+         "p_left": 49,
+         "p_right": 51,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 238.5,
+         "p_left": 47,
+         "p_right": 53,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 239.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 111.5,
+         "p_left": 62,
+         "p_right": 38,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 112.5,
+         "p_left": 59,
+         "p_right": 41,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 113.5,
+         "p_left": 55,
+         "p_right": 45,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 114.5,
+         "p_left": 52,
+         "p_right": 48,
+         "predicted": "left",
+         "is_main": true
+        },
+        {
+         "line": 115.5,
+         "p_left": 48,
+         "p_right": 52,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 116.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 117.5,
+         "p_left": 41,
+         "p_right": 59,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 119.5,
+         "p_left": 59,
+         "p_right": 41,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 120.5,
+         "p_left": 55,
+         "p_right": 45,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 121.5,
+         "p_left": 52,
+         "p_right": 48,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 122.5,
+         "p_left": 48,
+         "p_right": 52,
+         "predicted": "right",
+         "is_main": true
+        },
+        {
+         "line": 123.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 124.5,
+         "p_left": 41,
+         "p_right": 59,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 125.5,
+         "p_left": 38,
+         "p_right": 62,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": {
+      "entry_key": "2026-10-22|2026-10-23T01:30:00Z|Oklahoma City Thunder|Denver Nuggets",
+      "winner_incl_ot": "2026-10-22T22:01:11+02:00",
+      "spread": "2026-10-22T22:09:53+02:00",
+      "total": "2026-10-22T22:09:53+02:00",
+      "team_totals": "2026-10-22T22:09:53+02:00",
+      "player_points": "2026-10-22T22:09:53+02:00"
+     }
     }
    ],
    "card": {
@@ -15054,67 +17379,72 @@
     "home_score": 122,
     "away_score": 115,
     "exp_total": 237,
-    "blended_total_before_rounding": 236.8,
+    "blended_total_before_rounding": 237.2,
     "model_total": 237.4,
-    "market_total_used": 235.5,
+    "market_total_used": 236.7,
     "market_weight": 0.32,
-    "market_diff": 1.9,
+    "market_diff": 0.7,
     "lineup_warning": false,
     "model_spread": 7.1,
-    "exp_spread": 7.4,
-    "market_spread_used": 8.5,
+    "exp_spread": 7.2,
+    "market_spread_used": 7.5,
     "spread_market_weight": 0.25,
     "is_playoff": false,
     "playoff_adjustment": 0.0,
     "home_bias_adjustment": 0.0,
     "away_bias_adjustment": 0.0,
-    "home_win_prob": 0.7066,
-    "away_win_prob": 0.2934,
+    "home_win_prob": 0.7073,
+    "away_win_prob": 0.2927,
+    "home_win_prob_elo": 0.7066,
+    "away_win_prob_elo": 0.2934,
+    "win_prob_source": "normal_spread",
+    "sigma_spread": 13.2,
+    "sigmas_version": "2",
     "game_date": "2026-10-22",
     "game_start": "2026-10-23T01:30:00.000Z",
     "game_status": "2026-10-23T01:30:00Z",
-    "market_total": 235.5,
-    "market_spread": 8.5,
-    "cache_market_total": 235.8,
-    "cache_market_spread": 8.3,
+    "market_total": 236.7,
+    "market_spread": 7.5,
+    "cache_market_total": 236.7,
+    "cache_market_spread": 8.2,
     "market_source": "cache_vorab",
     "market_lines": {
      "spread": {
-      "line": 8.5,
+      "line": 7.5,
       "source": "eigene Eingabe",
       "bookmaker": "Betano",
-      "at": 1792679278.0,
-      "at_iso": "2026-10-22T16:27:58+02:00",
-      "cache_line": 8.3,
-      "cache_at": 1792679216.964391,
+      "at": 1792699793.0,
+      "at_iso": "2026-10-22T22:09:53+02:00",
+      "cache_line": 8.2,
+      "cache_at": 1792699514.748644,
       "cache_source": "cache_vorab",
-      "own_line": 8.5,
-      "deviation": 0.2,
+      "own_line": 7.5,
+      "deviation": 0.7,
       "warn": false
      },
      "total": {
-      "line": 235.5,
-      "source": "eigene Eingabe",
-      "bookmaker": "Betano",
-      "at": 1792679278.0,
-      "at_iso": "2026-10-22T16:27:58+02:00",
-      "cache_line": 235.8,
-      "cache_at": 1792679216.964391,
+      "line": 236.7,
+      "source": "Cache",
+      "bookmaker": "",
+      "at": 1792699514.748644,
+      "at_iso": null,
+      "cache_line": 236.7,
+      "cache_at": 1792699514.748644,
       "cache_source": "cache_vorab",
-      "own_line": 235.5,
-      "deviation": 0.3,
+      "own_line": 236.5,
+      "deviation": null,
       "warn": false
      },
      "team_total_away": {
-      "line": 113.5,
+      "line": 114.5,
       "source": "eigene Eingabe",
       "bookmaker": "Betano",
-      "at": 1792679278.0,
-      "at_iso": "2026-10-22T16:27:58+02:00",
+      "at": 1792699793.0,
+      "at_iso": "2026-10-22T22:09:53+02:00",
       "cache_line": null,
       "cache_at": null,
       "cache_source": null,
-      "own_line": 113.5,
+      "own_line": 114.5,
       "deviation": null,
       "warn": false
      },
@@ -15122,8 +17452,8 @@
       "line": 122.5,
       "source": "eigene Eingabe",
       "bookmaker": "Betano",
-      "at": 1792679278.0,
-      "at_iso": "2026-10-22T16:27:58+02:00",
+      "at": 1792699793.0,
+      "at_iso": "2026-10-22T22:09:53+02:00",
       "cache_line": null,
       "cache_at": null,
       "cache_source": null,
@@ -15132,10 +17462,10 @@
       "warn": false
      }
     },
-    "total_over_odds": 1.89,
-    "total_under_odds": 1.9,
-    "spread_home_odds": 1.91,
-    "spread_away_odds": 1.91,
+    "total_over_odds": 1.9,
+    "total_under_odds": 1.89,
+    "spread_home_odds": 1.92,
+    "spread_away_odds": 1.9,
     "home_team_total": null,
     "away_team_total": null
    },

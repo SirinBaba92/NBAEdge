@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "format": "nbaedge-day-bets",
+  "updated_at": "2026-10-22T22:15:47+02:00",
+  "games": {
+    "2026-10-22|2026-10-22T23:00:00Z|Philadelphia 76ers|Cleveland Cavaliers": {
+      "game_date": "2026-10-22",
+      "start_utc": "2026-10-22T23:00:00Z",
+      "home": "Philadelphia 76ers",
+      "away": "Cleveland Cavaliers",
+      "bets": {
+        "winner": {
+          "market": "winner",
+          "active": true,
+          "side": "home",
+          "line": null,
+          "odds": 1.67,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "line_ref": null,
+          "placed_at": "2026-10-22T22:04:24+02:00",
+          "updated_at": "2026-10-22T22:04:24+02:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      }
+    },
+    "2026-10-22|2026-10-23T01:30:00Z|Oklahoma City Thunder|Denver Nuggets": {
+      "game_date": "2026-10-22",
+      "start_utc": "2026-10-23T01:30:00Z",
+      "home": "Oklahoma City Thunder",
+      "away": "Denver Nuggets",
+      "bets": {
+        "winner": {
+          "market": "winner",
+          "active": true,
+          "side": "home",
+          "line": null,
+          "odds": 1.33,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "line_ref": null,
+          "placed_at": "2026-10-22T22:13:08+02:00",
+          "updated_at": "2026-10-22T22:13:08+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "team_total_away": {
+          "market": "team_total_away",
+          "active": true,
+          "side": "over",
+          "line": 111.5,
+          "odds": 1.55,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "line_ref": {
+            "main_line": 114.5,
+            "chosen_line": 111.5,
+            "is_main": false,
+            "source": "eigene Eingabe",
+            "bookmaker": "Betano",
+            "at": "2026-10-22T22:09:53+02:00"
+          },
+          "placed_at": "2026-10-22T22:15:47+02:00",
+          "updated_at": "2026-10-22T22:15:47+02:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      }
+    }
+  }
+}
