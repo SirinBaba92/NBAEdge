@@ -128,7 +128,7 @@ PAIRS = {"New York Knicks": "Philadelphia 76ers", "San Antonio Spurs": "Oklahoma
 tmp = games_setup({"New York Knicks": 3 * H, "San Antonio Spurs": 3 * H, "Detroit Pistons": -600})
 at = app().run()
 labels = [t.label for t in at.tabs]
-check("Tab 'Pre-Match Eingabe' steht am Ende, die anderen Tabs unveraendert in der Reihenfolge", not at.exception and labels[-1].endswith("Pre-Match Eingabe") and labels[:-1] == ["📊 Score Projections", "🔴 Live Projection", "🎯 Live Bet Tracker", "📰 Lineup News", "📅 History", "📈 ELO Rankings"], str(labels))
+check("Tab 'Pre-Match Eingabe' steht am Ende, die anderen Tabs unveraendert in der Reihenfolge", not at.exception and labels[-1].endswith("Pre-Match Eingabe") and labels[:-1] == ["📊 Score Projections", "🔴 Live (alt)", "🏀 Spieltag", "🎯 Live Bet Tracker", "📰 Lineup News", "📅 History", "📈 ELO Rankings"], str(labels))
 html = pm_html(at)
 check("Karten fuer dieselben 3 Spiele wie Score Projections (Teams, Reihenfolge nach Anpfiff)", html.count("AWAY") == 3 and all(n in html for n in ("Knicks", "Spurs", "Pistons", "76ers", "Thunder", "Celtics")) and len(at.session_state["projections"]) == 3)
 check("Karte nutzt Kartenkopf und Logos aus score_cards (pc-head, eingebettete SVG-Logos), Anpfiff in Berliner Zeit", html.count('class="pc-head"') == 3 and "data:image/svg+xml" in html and re.search(r"(Mo|Di|Mi|Do|Fr|Sa|So) \d\d\.\d\d\. · \d\d:\d\d Uhr", html))

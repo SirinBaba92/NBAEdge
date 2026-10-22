@@ -419,7 +419,8 @@ class LiveFeed:
                 self._next_allowed = float("-inf")
             else:
                 entry["error"] = res.error                           # letzter guter Boxscore bleibt, Alter waechst
-                self._next_allowed = t + self._backoff.failure()
+                if res.status != 200:                                # Verbindungs-/HTTP-Fehler (403, 429, Zeitueberschreitung ...): gemeinsame Pause fuer alle NBA.com-Abrufe
+                    self._next_allowed = t + self._backoff.failure()   # (ein unlesbarer Boxscore EINES Spiels blockiert dagegen nicht das Scoreboard: neuer Versuch nach 30 s)
             self._games[g.game_id] = replace(self._games[g.game_id], possessions=entry["poss"], box_error=entry["error"])
 
     def _try_espn(self, t: float) -> None:

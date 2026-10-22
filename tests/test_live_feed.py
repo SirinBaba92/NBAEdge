@@ -214,6 +214,13 @@ check("nach Boxscore-Fehler gilt die gemeinsame Pause (30 s): bis dahin auch kei
 net.box_status = 200; net.reset(); feed.refresh(T0 + 60)
 check("danach wieder Abrufe; Boxscore-Erfolg loescht den Box-Fehler", net.count("board") == 1 and net.count("box") == 1 and feed.state(T0 + 60).games[0].box_error is None and feed.state(T0 + 60).games[0].box_age_s == 0)
 
+# Boxscore mit unerwartetem Format (gueltiges JSON, aber ohne Teamwerte): nur dieses Spiel meldet den Fehler, KEINE gemeinsame Pause, Scoreboard laeuft weiter
+net = Net(); net.rows = [row("K2"), row("K3", home=("Boston", "Celtics", "BOS"), away=("Miami", "Heat", "MIA"))]; net.boxes = {"K2": {"homeTeam": {}, "awayTeam": {}}, "K3": box()}
+feed = feed_with(net); s = feed.refresh(T0)
+check("Boxscore mit unerwartetem Format (K2): Fehlermeldung am Spiel, Besitze leer; anderes Spiel (K3) mit Besitzen; Scoreboard-Zustand ohne Fehler", {g.game_id: (g.possessions is not None, g.box_error is not None) for g in s.games} == {"K2": (False, True), "K3": (True, False)} and s.error is None and not s.stale and s.backoff_s == 0)
+net.reset(); feed.refresh(T0 + 15)
+check("danach keine gemeinsame Pause: Scoreboard nach 15 s wieder dran", net.count("board") == 1)
+
 # ----------------------------------------------------------------- Spieltag noch Vortag auf dem Scoreboard (zwischen 17:00 und der Freischaltung)
 net = Net(); net.rows = [row("L1", status=3, period=4, clock="", text="Final", day="2026-10-21", start="2026-10-22T02:00:00Z")]; net.board_day = "2026-10-21"
 feed = feed_with(net, berlin(2026, 10, 22, 17, 30)); s = feed.refresh(berlin(2026, 10, 22, 17, 30))

@@ -160,7 +160,7 @@ for flag in (False, True):
     at = AppTest.from_file(str(ROOT / "app.py"), default_timeout=120).run()
     labels = [t.label for t in at.tabs]
     sp_idx = [i for i, l in enumerate(labels) if "Score Projections" in l][0]
-    check(f"SHOW_VALUE_BETS={flag}: keine Exception, Tabs ({len(labels)}) wie zuvor", not at.exception and len(labels) == (8 if flag else 7) and labels[-1].endswith("Pre-Match Eingabe") and labels[-2].endswith("ELO Rankings"), str(labels))
+    check(f"SHOW_VALUE_BETS={flag}: keine Exception, Tabs ({len(labels)}) wie zuvor", not at.exception and len(labels) == (9 if flag else 8) and labels[-1].endswith("Pre-Match Eingabe") and labels[-2].endswith("ELO Rankings"), str(labels))
     cards = [m.value for m in at.tabs[sp_idx].markdown if 'class="pc-card' in m.value]
     # Elementbaum: feste Reihenfolge nach Spiel-Schluessel (stabile Expander-Zustaende); sichtbar sortiert CSS (order) nach |Spread|
     projs_dom = sorted(at.session_state["projections"], key=lambda x: str((x.get("_line_inputs") or {}).get("entry_key") or x["home_team"]))

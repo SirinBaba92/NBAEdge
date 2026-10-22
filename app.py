@@ -62,6 +62,7 @@ from engine.live_context import build_live_context
 from engine.live_bet_tracker import get_live_bet_status
 from engine.possessions import empty_possessions_default
 from ui.live_dashboard import format_clock, render_live_trading_dashboard
+from ui.live_tab import render_spieltag_tab
 from ui.pre_match_tab import render_pre_match_tab
 from ui.score_cards import CARD_CSS, build_card_vm, render_card_html, render_line_expanders
 from config.settings import (
@@ -633,7 +634,8 @@ filtered_bets = [
 
 _tab_labels = [
     "📊 Score Projections",
-    "🔴 Live Projection",
+    "🔴 Live (alt)",
+    "🏀 Spieltag",
     "🎯 Live Bet Tracker",
     "📰 Lineup News",
     "📅 History",
@@ -641,10 +643,10 @@ _tab_labels = [
     "✍️ Pre-Match Eingabe",
 ]
 if SHOW_VALUE_BETS:
-    tab1, tab2, tab3, live_bet_tab, tab4, tab5, tab6, tab_pre_match = st.tabs(["🎯 Value Bets"] + _tab_labels)
+    tab1, tab2, tab3, tab_spieltag, live_bet_tab, tab4, tab5, tab6, tab_pre_match = st.tabs(["🎯 Value Bets"] + _tab_labels)
 else:
     tab1 = None  # Tab Value Bets ausgeblendet (config/settings.py: SHOW_VALUE_BETS)
-    tab2, tab3, live_bet_tab, tab4, tab5, tab6, tab_pre_match = st.tabs(_tab_labels)
+    tab2, tab3, tab_spieltag, live_bet_tab, tab4, tab5, tab6, tab_pre_match = st.tabs(_tab_labels)
 
 if tab1 is not None:
     with tab1:
@@ -769,6 +771,9 @@ with tab2:
                 with st.container(key=f"sc_game_{_fh}"):
                     st.markdown(flat_html(render_card_html(_fvm)), unsafe_allow_html=True)
                     render_line_expanders(_fvm, _fh)
+
+with tab_spieltag:
+    render_spieltag_tab()
 
 with tab3:
     st.markdown("## 🔴 Live Projection Engine")
