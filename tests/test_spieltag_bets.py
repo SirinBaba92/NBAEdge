@@ -28,7 +28,11 @@ def check(name, cond, info=""):
     ok &= bool(cond)
     print(("PASS " if cond else "FAIL ") + name + (f"  [{info}]" if info else ""))
 
-real_tracking = {p.name: hashlib.sha1(p.read_bytes()).hexdigest() for p in (ROOT / "data" / "tracking").glob("*.json")}
+def real_snapshot():
+    """Hash aller echten Dateien, die der Test nie beschreiben darf (data/tracking/*.json inkl. day_bets.json, pregame_lines.json); fehlende Datei = fehlt im Ergebnis."""
+    files = list((ROOT / "data" / "tracking").glob("*.json")) + [ROOT / "data" / "pregame_lines.json"]
+    return {p.name: hashlib.sha1(p.read_bytes()).hexdigest() for p in files if p.exists()}
+real_tracking = real_snapshot()                       # direkt vor dem Testlauf
 real_now = time.time()
 DAY = lf.current_us_day(real_now)
 iso = lambda ts: time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(ts))
@@ -365,7 +369,7 @@ at = app().run()
 check("Eintragsbereich selbst ist billig: sein Funktionskoerper braucht weniger als 1 s (gemessen am Rechner, der Rest der App war bei jedem Klick teuer)", "s" not in _t or _t["s"] < 1.0)
 
 # ================= Rahmen
-check("echte Dateien unveraendert: Tracking-Dateien bytegleich, keine day_bets.json im Projekt", {p.name: hashlib.sha1(p.read_bytes()).hexdigest() for p in (ROOT / "data" / "tracking").glob("*.json")} == real_tracking and not (ROOT / "data" / "tracking" / "day_bets.json").exists())
+check("echte Dateien vom Test nicht angefasst: Tracking-Dateien inkl. day_bets.json, pregame_lines.json (Hash vorher = nachher, fehlende Datei bleibt fehlend)", real_snapshot() == real_tracking)
 check("in KEINEM AppTest-Lauf dieser Datei: Streamlit-Exception oder der Satz 'was created with a default value ... Session State API' (Fehlermeldungen der beschaedigten Datei sind gewollt)", not [b for b in page_checks.bad if "Exception" in b or "Session" in b], "; ".join(page_checks.bad[:2]))
 print("\nErgebnis:", "ALLE TESTS BESTANDEN" if ok else "FEHLER")
 sys.exit(0 if ok else 1)

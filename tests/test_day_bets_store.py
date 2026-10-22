@@ -9,6 +9,7 @@ os.chdir(ROOT); sys.path.insert(0, str(ROOT))
 REAL_DIR = ROOT / "data" / "tracking"
 real_file = REAL_DIR / "day_bets.json"
 real_before = real_file.read_bytes() if real_file.exists() else None
+real_lock = REAL_DIR / "day_bets.json.lock"; real_lock_before = real_lock.exists()      # die echte App legt sie im Betrieb selbst an
 TMP = tempfile.TemporaryDirectory()
 os.environ["NBAEDGE_TRACKING_DIR"] = TMP.name
 from data import day_bets_store as ds
@@ -303,6 +304,6 @@ check("gespeicherte Wetten passen zur Statuslogik (set_bet -> get_bets -> evalua
 
 # ----------------------------------------------------------------- Rahmen
 check("das echte data/tracking/day_bets.json wurde nicht angelegt/veraendert", (real_file.read_bytes() if real_file.exists() else None) == real_before)
-check("Temp-Ordner wurde benutzt (Datei liegt dort), im echten Ordner keine Sperrdatei angelegt", path.parent == Path(TMP.name) and not (REAL_DIR / "day_bets.json.lock").exists())
+check("Temp-Ordner wurde benutzt (Datei liegt dort), im echten Ordner keine Sperrdatei neu angelegt oder entfernt", path.parent == Path(TMP.name) and real_lock.exists() == real_lock_before)
 print("\nALLES OK" if ok else "\nFEHLER")
 sys.exit(0 if ok else 1)

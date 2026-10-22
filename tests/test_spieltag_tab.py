@@ -29,7 +29,11 @@ def check(name, cond, info=""):
     ok &= bool(cond)
     print(("PASS " if cond else "FAIL ") + name + (f"  [{info}]" if info else ""))
 
-real_tracking = {p.name: hashlib.sha1(p.read_bytes()).hexdigest() for p in (ROOT / "data" / "tracking").glob("*.json")}
+def real_snapshot():
+    """Hash aller echten Dateien, die der Test nie beschreiben darf (data/tracking/*.json inkl. day_bets.json, pregame_lines.json); fehlende Datei = fehlt im Ergebnis."""
+    files = list((ROOT / "data" / "tracking").glob("*.json")) + [ROOT / "data" / "pregame_lines.json"]
+    return {p.name: hashlib.sha1(p.read_bytes()).hexdigest() for p in files if p.exists()}
+real_tracking = real_snapshot()                       # direkt vor dem Testlauf
 real_now = time.time()
 DAY = lf.current_us_day(real_now)                               # Spieltag laut Uhr: unabhaengig von der echten Uhrzeit des Testlaufs
 iso = lambda ts: time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(ts))
@@ -275,7 +279,7 @@ check("Kontrast: Gewinn (gruen) und Verlust (rot) Zahlen gegen die Kartenflaeche
 check("Balkenfarben der Wett-Zeilen sind unterscheidbar vom neutralen Balkenrest (Kontrast >= 1,6 : 1 gegen #3b4560)", all(ratio(v["bar"], PALETTE["bar_other"]) >= 1.6 for k, v in lc.STATUS.items() if k in ("gruen", "gelb", "orange", "rot")))
 check("Stylesheet: Status-Klassen fuer alle sechs Farben", all(f".lv-st-{k}" in lc.LIVE_CSS for k in ("gruen", "gelb", "orange", "rot", "grau", "blau")))
 check("Namen werden maskiert (kein HTML aus Teamnamen)", "&lt;b&gt;" in lc.render_status_html(type("S", (), {"error": None, "stale": False, "status_line": "<b>x</b>", "notice": None, "fallback_note": None, "other_day_games": ()})()))
-check("nichts ins Projekt geschrieben: echte Tracking-Dateien unveraendert, keine day_bets.json im Projekt", {p.name: hashlib.sha1(p.read_bytes()).hexdigest() for p in (ROOT / "data" / "tracking").glob("*.json")} == real_tracking and not (ROOT / "data" / "tracking" / "day_bets.json").exists())
+check("nichts ins Projekt geschrieben: keine echte Datei veraendert oder neu angelegt (Tracking-Dateien inkl. day_bets.json, pregame_lines.json: Hash vorher = nachher)", real_snapshot() == real_tracking)
 check("in KEINEM AppTest-Lauf dieser Datei: Streamlit-Exception oder der Satz 'was created with a default value ... Session State API'", not page_checks.bad, "; ".join(page_checks.bad[:2]))
 print("\nErgebnis:", "ALLE TESTS BESTANDEN" if ok else "FEHLER")
 sys.exit(0 if ok else 1)

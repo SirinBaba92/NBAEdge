@@ -32,7 +32,11 @@ iso = lambda ts: time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(ts))
 T0 = berlin(2026, 10, 23, 1, 0)                                      # Berlin 01:00 -> US-Spieltag 2026-10-22
 DAY = "2026-10-22"
 START_NIGHT = "2026-10-22T23:00:00Z"
-real_tracking = {p.name: hashlib.sha1(p.read_bytes()).hexdigest() for p in (ROOT / "data" / "tracking").glob("*.json")}
+def real_snapshot():
+    """Hash aller echten Dateien, die der Test nie beschreiben darf (data/tracking/*.json inkl. day_bets.json, pregame_lines.json); fehlende Datei = fehlt im Ergebnis."""
+    files = list((ROOT / "data" / "tracking").glob("*.json")) + [ROOT / "data" / "pregame_lines.json"]
+    return {p.name: hashlib.sha1(p.read_bytes()).hexdigest() for p in files if p.exists()}
+real_tracking = real_snapshot()                       # direkt vor dem Testlauf
 
 # ----------------------------------------------------------------- Attrappe fuer den Abruf
 class R:
@@ -360,7 +364,7 @@ def hit():
         errs.append(repr(e))
 ths = [threading.Thread(target=hit) for _ in range(8)]; [t.start() for t in ths]; [t.join() for t in ths]
 check("8 Threads (mehrere Browser-Sitzungen) fragen gleichzeitig: genau 1 Scoreboard + 2 Boxscores, keine Ausnahme", not errs and net.count("board") == 1 and net.count("box") == 2, f"{net.kinds()} {errs}")
-check("nur lesend: echte Tracking-Dateien unveraendert, keine day_bets.json im Projekt angelegt", {p.name: hashlib.sha1(p.read_bytes()).hexdigest() for p in (ROOT / "data" / "tracking").glob("*.json")} == real_tracking and not (ROOT / "data" / "tracking" / "day_bets.json").exists())
+check("nur lesend: der Test hat keine echte Datei veraendert oder neu angelegt (Tracking-Dateien inkl. day_bets.json, pregame_lines.json: Hash vorher = nachher)", real_snapshot() == real_tracking)
 
 print("\nALLES OK" if ok else "\nFEHLER")
 sys.exit(0 if ok else 1)
