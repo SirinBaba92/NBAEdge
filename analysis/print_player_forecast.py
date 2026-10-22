@@ -3,7 +3,7 @@ Druckt die Spieler-Punkte-Prognose (engine/player_forecast.py) gegen die Betano-
 
 Aufruf:  venv/bin/python analysis/print_player_forecast.py [Spieltag JJJJ-MM-TT | game_key]       (ohne Angabe: der neueste Spieltag mit Spielerquoten)
 Je Spiel und Spieler: erwartete Minuten (Spanne), erwartete Punkte, dann je Meilenstein Quote, Buchmacher-Chance (inkl. Marge), Modell-Chance und Differenz in Prozentpunkten.
-Zeilen, in denen das Modell mindestens 5 Prozentpunkte ueber dem Buchmacher liegt, sind mit "◀" markiert. Sortiert nach Team und erwarteten Punkten.
+Mit Teamabgleich (P6b): Summe der Spieler an den Teampunkten des Spielmodells ausgerichtet; Differenz bezieht sich auf "Modell Team"; ◀ ab 5 PP ueber, ▼ ab 5 PP unter dem Buchmacher. Sortiert nach Team und erwarteten Punkten.
 Die Ausgabe wird zusaetzlich nach analysis/results/player_forecast_<Tag>.txt geschrieben (nicht im Repository).
 """
 from __future__ import annotations
@@ -42,10 +42,20 @@ def render_game(key: str, entries: dict) -> list[str]:
     res = pf.forecast_game_players(key, entries)
     ctx = res["context"]
     L = [f"=== {key.split('|')[3]} @ {key.split('|')[2]}  ({key.split('|')[1][:16].replace('T', ' ')} UTC) ==="]
-    L.append(f"Spielmodell: Spread {ctx['exp_spread']:+.1f} (positiv = Heim stärker), Total {ctx['exp_total']:.1f}" if ctx["found"] else
-             "Spielmodell: KEIN Schnappschuss, Spread 0 angenommen")
+    L.append(f"Spielmodell: Spread {ctx['exp_spread']:+.1f} (positiv = Heim stärker), Total {ctx['exp_total']:.1f}, Teampunkte Heim {ctx['home_score']:.1f} / Gast {ctx['away_score']:.1f}" if ctx["found"] else
+             "Spielmodell: KEIN Schnappschuss, Spread 0 angenommen, kein Teamabgleich")
+    for team, t in res["teams"].items():
+        if t.get("matched"):
+            mins = f", Minuten {t['minutes_before']:.0f} → {t['minutes_after']:.0f}" if abs(t["minutes_before"] - t["minutes_after"]) > 0.5 else f", Minuten {t['minutes_before']:.0f}"
+            nh = f", ohne Verlauf (10 Min., Liga-Schnitt): {', '.join(t['no_history'])}" if t["no_history"] else ""
+            L.append(f"Team {team}: Spieler-Summe {t['player_sum']:.1f} → Teampunkte {t['team_points']:.1f}, Faktor {t['factor']:.2f} (Rotation {t['members']} Spieler{mins}){nh}")
+            for n in (t.get("note"), t.get("minutes_note")):
+                if n:
+                    L.append(f"  ! {n}")
+        else:
+            L.append(f"Team {team}: {t.get('note') or 'kein Teamabgleich'}")
     players = res["players"]
-    players.sort(key=lambda p: (p["team"] or "", -(p["forecast"].get("expected_points") or -1), p["name"]))
+    players.sort(key=lambda p: (p["team"] or "", -(p["forecast"].get("expected_points_adjusted") or p["forecast"].get("expected_points") or -1), p["name"]))
     team = None
     for p in players:
         fc = p["forecast"]
@@ -58,14 +68,15 @@ def render_game(key: str, entries: dict) -> list[str]:
         m = fc["minutes"]
         tags = f"  [{', '.join(fc['quality'])}]" if fc["quality"] else ""
         used = "/".join(f"{n}" for n in fc["games_used"].values())
-        L.append(f"  {p['name']}: Minuten {m['mean']:.1f} ({m['low']:.0f}–{m['high']:.0f}), Punkte {fc['expected_points']:.1f}, Spiele {used}{tags}")
+        L.append(f"  {p['name']}: Minuten {m['mean']:.1f} → {fc['minutes_adjusted']:.1f} ({m['low']:.0f}–{m['high']:.0f}), Punkte roh {fc['expected_points_raw']:.1f} → Team {fc['expected_points_adjusted']:.1f}, Spiele {used}{tags}")
         for r in p["rows"]:
-            model = fc["p_ge"].get(r["milestone"])
-            if model is None:
+            raw, adj = fc["p_ge_raw"].get(r["milestone"]), fc["p_ge_adjusted"].get(r["milestone"])
+            if raw is None or adj is None:
                 continue
-            diff = model * 100 - r["percent"]
-            L.append(f"      {r['milestone']:>2}+  Quote {r['odds']:5.2f} ({r['bookmaker'] or '-'})  Buchmacher {r['percent']:>3}%  Modell {model*100:>5.1f}%  {diff:+5.1f} PP" + ("  ◀" if diff >= MARK_PP else ""))
-        for w in fc["warnings"] + p["warnings"]:
+            diff = adj * 100 - r["percent"]
+            mark = "  ◀" if diff >= MARK_PP else "  ▼" if diff <= -MARK_PP else ""
+            L.append(f"      {r['milestone']:>2}+  Quote {r['odds']:5.2f} ({r['bookmaker'] or '-'})  Buchmacher {r['percent']:>3}%  Modell roh {raw*100:>5.1f}%  Modell Team {adj*100:>5.1f}%  {diff:+5.1f} PP{mark}")
+        for w in fc["warnings"] + p["warnings"] + ([fc["team_note"]] if fc.get("team_note") else []):
             L.append(f"      ! {w}")
     return L
 
@@ -92,7 +103,7 @@ def main(argv=None) -> int:
     return 0
 
 
-MARGIN_NOTE = f"Buchmacher = {po.MARGIN_LABEL}; Modell = P(Punkte ≥ Meilenstein) ohne Ausfälle, Gegner und Tempo. ◀ = Modell mindestens {MARK_PP:g} Prozentpunkte über dem Buchmacher."
+MARGIN_NOTE = f"Buchmacher = {po.MARGIN_LABEL}; Modell = P(Punkte ≥ Meilenstein) ohne Ausfälle, Gegner und Tempo. Differenz = Modell Team minus Buchmacher; ◀ = Modell mindestens {MARK_PP:g} Prozentpunkte über dem Buchmacher, ▼ = mindestens {MARK_PP:g} darunter."
 
 if __name__ == "__main__":
     sys.exit(main())
