@@ -263,7 +263,9 @@ def render_game_card_html(vm: dict, logo_dir=None) -> str:
 # ----------------------------------------------------------------------------------------------- HTML: Statuszeile, Uebersicht, Zahlen
 def render_status_html(state) -> str:
     """Statuszeile des Feeds: Quelle, Alter der Daten, Fehlertext. Bei Fehler deutlich sichtbar (gelb bei ESPN-Fallback, rot bei veralteten Daten), letzte gute Werte bleiben angezeigt."""
-    if state.error is None:
+    if state.error is None and getattr(state, "freeze_note", None):
+        kind, icon = "warn", "⚠"
+    elif state.error is None:
         kind, icon = "ok", "●"
     elif not state.stale:
         kind, icon = "warn", "⚠"
