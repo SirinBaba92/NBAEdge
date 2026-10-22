@@ -1,0 +1,34 @@
+# Umgebung und Geheimnisse
+venv/
+.env
+.env.*
+!.env.example
+.claude/
+
+# Python / macOS
+__pycache__/
+*.pyc
+.DS_Store
+
+# Modell und wechselnde Daten (nicht im Repository)
+data/elo_model.pkl
+data/model_history/
+data/market_history/
+data/odds_cache.json
+data/upcoming_cache.json
+data/live_history/
+
+# Tageskopien (Git haelt die Historie selbst)
+data/tracking/history/
+
+# Logs und persoenliche Eingabeprotokolle
+*.log
+eingabe_protokoll.txt
+
+# Mitschnitte und Zugangsdaten (Sicherheitsnetz)
+*.har
+www.betano.de*
+
+# Sicherungen
+NBAEdge_backup_*/
+NBAEdge_Backups/

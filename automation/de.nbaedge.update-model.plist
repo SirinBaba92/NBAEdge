@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>de.nbaedge.update-model</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/baranalturk/Desktop/NBAEdge/venv/bin/python</string>
+        <string>/Users/baranalturk/Desktop/NBAEdge/update_model.py</string>
+    </array>
+
+    <!-- die App und die Skripte nutzen relative Pfade (data/..., .env) -->
+    <key>WorkingDirectory</key>
+    <string>/Users/baranalturk/Desktop/NBAEdge</string>
+
+    <!-- täglich 08:00 (lokale Systemzeit des Macs) -->
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>8</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+
+    <key>RunAtLoad</key>
+    <false/>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PYTHONUNBUFFERED</key>
+        <string>1</string>
+        <key>TZ</key>
+        <string>Europe/Berlin</string>
+    </dict>
+
+    <key>StandardOutPath</key>
+    <string>/Users/baranalturk/Desktop/NBAEdge/data/automation_update_model.out.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/baranalturk/Desktop/NBAEdge/data/automation_update_model.err.log</string>
+</dict>
+</plist>

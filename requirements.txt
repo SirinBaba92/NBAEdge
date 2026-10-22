@@ -1,0 +1,10 @@
+streamlit==1.45.0
+pandas==2.2.3
+numpy==2.2.5
+requests==2.32.3
+scikit-learn==1.6.1
+plotly==6.0.1
+scipy==1.15.3
+python-dotenv==1.1.0
+schedule==1.2.2
+nba_api==1.11.4
