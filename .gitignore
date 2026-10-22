@@ -16,6 +16,7 @@ data/model_history/
 data/market_history/
 data/odds_cache.json
 data/upcoming_cache.json
+data/cache/player_games_*.json
 data/live_history/
 
 # Tageskopien (Git haelt die Historie selbst)
