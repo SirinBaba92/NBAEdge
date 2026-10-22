@@ -21,6 +21,11 @@ data/live_history/
 # Tageskopien (Git haelt die Historie selbst)
 data/tracking/history/
 
+# Sperrdateien und Sicherungen beschaedigter Dateien im Tracking-Ordner
+data/tracking/*.lock
+data/tracking/*.corrupt-*
+data/tracking/*.tmp
+
 # Logs und persoenliche Eingabeprotokolle
 *.log
 eingabe_protokoll.txt
