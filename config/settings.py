@@ -44,3 +44,24 @@ ODDS_CREDITS_WARN_YELLOW = 100           # Sidebar: gelb unter 100, rot unter 50
 ODDS_FAILURE_BACKOFF_SECONDS = 300       # nach einem Fehler 5 Min. kein automatischer Wiederholungsversuch
 ODDS_LIVE_AUTO_TTL_SECONDS = 300         # nur bei eingeschaltetem Auto-Refresh der Live-Linien: Cache-Alter, ab dem neu abgefragt wird
 UPCOMING_GAMES_TTL_SECONDS = 10 * 60     # BallDontLie: kommende Spiele 10 Min. zwischenspeichern (Rate-Limit)
+
+# --- Live-Modell (engine/live_model.py). Kalibriert mit analysis/live_calibration.py (Ergebnisse: analysis/results/live_calibration.json, Stand 22.10.2026).
+# Viertelpunkte: 10 777 Regular-Season-Spiele 2017-2025, Vorab-Prognose wie die Engine. Tempo: 11 aufgezeichnete Spiele (~/NBAEdge_live_history), noch wenig Daten.
+LIVE_OT_MINUTES = 5
+LIVE_OT_SCORING_FACTOR = 0.93            # Punkte der 1. Verlaengerung (beide Teams) 21,7 gegen 23,4 nach Total * 5/48
+# Erwarteter Anteil der Punkte bzw. der Marge bis Ende Viertel 0 (Anpfiff), 1, 2, 3, 4; innerhalb eines Viertels linear in der Zeit
+LIVE_SHARE_POINTS = (0.0, 0.2533, 0.5057, 0.7575, 1.0)
+LIVE_SHARE_MARGIN = (0.0, 0.3295, 0.5902, 0.8592, 1.0)   # Favoriten bauen ihren Vorsprung frueh auf und geben ihn spaeter (Garbage Time) teils ab
+# Anteil der Vorab-Varianz, der zu Beginn des Viertels 1, 2, 3, 4 und am Ende (0) noch offen ist (gemessen; entspricht Restzeit-Anteil, bei der Marge etwas mehr)
+LIVE_VAR_REST_TOTAL = (1.0, 0.7288, 0.4937, 0.2421, 0.0)
+LIVE_VAR_REST_MARGIN = (1.0, 0.8292, 0.6077, 0.3218, 0.0)
+LIVE_VAR_REST_TEAM = (1.0, 0.7595, 0.5206, 0.2616, 0.0)
+# Tempo (Besitze je Team und 48 Minuten = FGA + 0,44 FTA - OREB + TOV). P0: Mittel der 11 Spiele (105,4, Standardfehler 1,3); K: Pseudo-Besitze der Bayes-Mischung
+# n / (n + K) (aus den Daten nicht schaetzbar: Varianz zwischen den Spielen ~0 bis 4 gegen 56 Varianz innerhalb; K = Besitze je Viertel * 56 / (4 bis 9) = 150 bis 340).
+LIVE_PACE_P0 = 105.0
+LIVE_PACE_K = 150.0
+LIVE_PACE_MULT_CLIP = (0.90, 1.10)
+# Wettstatus (engine/bet_status.py): Auf Kurs ueber 65 %, Offen 35 bis 65 %, In Gefahr unter 35 %, Kaum noch moeglich unter 10 %
+LIVE_STATUS_ON_TRACK = 0.65
+LIVE_STATUS_DANGER = 0.35
+LIVE_STATUS_HOPELESS = 0.10

@@ -1,0 +1,168 @@
+{
+ "teil_a_viertelpunkte": {
+  "n_spiele": 10777,
+  "saisons": "2017-2025 (Regular Season)",
+  "vorab_streuung": {
+   "spread_sd": 13.891854406136964,
+   "spread_konstante": 10.5,
+   "total_sd": 18.845499691353083,
+   "total_konstante": 18.0,
+   "team_total_sd": 11.726541808062946,
+   "team_total_konstante": 12.5,
+   "mittlerer_fehler": {
+    "spread": -0.03866307863736808,
+    "total": 0.2979345796724475
+   }
+  },
+  "anteil_bis_viertel": {
+   "punkte_total": [
+    0.2533269383190062,
+    0.5056767528067893,
+    0.7574916636915164,
+    1.0
+   ],
+   "marge_regression_auf_vorab": [
+    0.3294673692902376,
+    0.590167843232398,
+    0.8592371469549108,
+    1.0
+   ],
+   "steigung_marge_ende_reg": 0.9917106083921583,
+   "hinweis": "Anteil nach Viertel 1, 2, 3, 4; Total: Mittelwert der Punkte, Marge: Steigung der Marge bis dahin auf die Vorab-Marge geteilt durch die Steigung am Ende"
+  },
+  "regulaere_punkte": {
+   "mittel_total": 223.25702885775263,
+   "mittel_vorab_total": 224.23412443489562,
+   "ot_punkte_je_spiel_mittel": 1.2750301568154403,
+   "anteil_spiele_mit_ot": 0.05251925396678111
+  },
+  "regulaer_gegen_vorab_total": -0.9770955771429929,
+  "streuung_rest": {
+   "total": {
+    "sd_vorab_regulaer": 18.008866014154208,
+    "punkte": [
+     {
+      "nach_viertel": 1,
+      "r_zeit": 0.75,
+      "r_punkte_anteil": 0.7466730616809938,
+      "var_verhaeltnis": 0.7288175256229795,
+      "sd": 15.374314847347017,
+      "sd_verhaeltnis_zu_wurzel_r": 0.9857772064876726
+     },
+     {
+      "nach_viertel": 2,
+      "r_zeit": 0.5,
+      "r_punkte_anteil": 0.49432324719321075,
+      "var_verhaeltnis": 0.4936535343416813,
+      "sd": 12.653116080355684,
+      "sd_verhaeltnis_zu_wurzel_r": 0.993633266695194
+     },
+     {
+      "nach_viertel": 3,
+      "r_zeit": 0.25,
+      "r_punkte_anteil": 0.24250833630848356,
+      "var_verhaeltnis": 0.24211795394637578,
+      "sd": 8.8613494725149,
+      "sd_verhaeltnis_zu_wurzel_r": 0.9841096563826123
+     }
+    ],
+    "alpha": 1.0247512918928574
+   },
+   "marge": {
+    "sd_vorab_regulaer": 13.849890561333408,
+    "punkte": [
+     {
+      "nach_viertel": 1,
+      "r_zeit": 0.75,
+      "r_punkte_anteil": 0.6705326307097623,
+      "var_verhaeltnis": 0.8291581120360694,
+      "sd": 12.611449893003108,
+      "sd_verhaeltnis_zu_wurzel_r": 1.0514485956914041
+     },
+     {
+      "nach_viertel": 2,
+      "r_zeit": 0.5,
+      "r_punkte_anteil": 0.409832156767602,
+      "var_verhaeltnis": 0.6077164617502977,
+      "sd": 10.796844387535648,
+      "sd_verhaeltnis_zu_wurzel_r": 1.1024667448501997
+     },
+     {
+      "nach_viertel": 3,
+      "r_zeit": 0.25,
+      "r_punkte_anteil": 0.14076285304508918,
+      "var_verhaeltnis": 0.3217691343422265,
+      "sd": 7.85630857011298,
+      "sd_verhaeltnis_zu_wurzel_r": 1.1344939565149326
+     }
+    ],
+    "alpha": 0.7931762504074649
+   },
+   "heim_punkte": {
+    "sd_vorab_regulaer": 11.402119771160217,
+    "punkte": [
+     {
+      "nach_viertel": 1,
+      "r_zeit": 0.75,
+      "r_punkte_anteil": 0.7460145196245663,
+      "var_verhaeltnis": 0.759530840774378,
+      "sd": 9.937068994415226,
+      "sd_verhaeltnis_zu_wurzel_r": 1.0063338351159474
+     },
+     {
+      "nach_viertel": 2,
+      "r_zeit": 0.5,
+      "r_punkte_anteil": 0.49374469522797126,
+      "var_verhaeltnis": 0.5205583006361377,
+      "sd": 8.226598208235696,
+      "sd_verhaeltnis_zu_wurzel_r": 1.020351214666928
+     },
+     {
+      "nach_viertel": 3,
+      "r_zeit": 0.25,
+      "r_punkte_anteil": 0.24198742511515992,
+      "var_verhaeltnis": 0.26157423800208585,
+      "sd": 5.831537638882966,
+      "sd_verhaeltnis_zu_wurzel_r": 1.022886578271679
+     }
+    ],
+    "alpha": 0.9620518568493112
+   }
+  },
+  "gleichstand_nach_q4": {
+   "empirisch": 0.05251925396678111,
+   "normal_mit_sigma_10_5": 0.03314336754769247,
+   "normal_mit_regulaerer_sd": 0.026516897105951707,
+   "regulaere_sd_marge": 13.849890561333408
+  },
+  "verlaengerung": {
+   "punkte_beide_teams_erste_ot_mittel": 21.65547703180212,
+   "punkte_beide_teams_ot_gesamt_mittel": 24.2773851590106,
+   "erwartet_nach_vorab_total_mal_5_48": 23.357721295301626,
+   "anteil_ot_mit_zweiter_ot": 0.1166077738515901
+  }
+ },
+ "teil_b_tempo": {
+  "n_spiele": 11,
+  "pace_je_48_mittel": 105.36181818181818,
+  "pace_je_48_sd_zwischen_spielen": 4.245095565901473,
+  "pace_je_48_se": 1.2799444719360555,
+  "viertel_pace_var_innerhalb": 55.95558787878789,
+  "viertel_pace_var_zwischen_geschaetzt": 0.0,
+  "besitze_je_team_und_viertel": 24.51090909090909,
+  "K_aus_daten": null,
+  "pace_boxscore_je_spiel": [
+   108.6,
+   102.9,
+   112.5,
+   104.6,
+   103.8,
+   112.5,
+   103.9,
+   106.5,
+   100.7,
+   100.0,
+   103.0
+  ]
+ }
+}
