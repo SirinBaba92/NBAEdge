@@ -37,6 +37,7 @@ ESPN_SECONDS = 30.0
 BACKOFF_START, BACKOFF_MAX = 30, 300
 TIMEOUT_SECONDS = 10
 MAX_BOXES_PER_REFRESH = 6
+FINAL_MAX_TRIES = 5                  # nach Spielende: so oft hoechstens einen Boxscore holen, der dem Endstand noch nicht entspricht
 ESPN_URL = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard"
 START_TOLERANCE_SECONDS = 3 * 3600   # Anpfiff NBA.com gegen ESPN darf so weit auseinanderliegen
 SOURCE_NBA, SOURCE_ESPN = "NBA.com", "ESPN"
@@ -460,30 +461,71 @@ class LiveFeed:
             possessions=box.get("poss"), box_age_s=None, box_error=box.get("error"), source=SOURCE_NBA, updated_at=t,
             players=box.get("players") or (), players_complete=box.get("scores") == (int(home.get("score") or 0), int(away.get("score") or 0)))
 
+    @staticmethod
+    def _parse_box(game: dict) -> tuple:
+        """(Ballbesitze, Spielerliste, (Heim-, Gast-Punkte), Spielzeit des Boxscores oder None) aus einer Boxscore-Antwort (response['game']). Wirft KeyError/TypeError/ValueError bei Formatfehlern."""
+        poss = lm.Possessions(lm.possessions_from_stats(game["homeTeam"]["statistics"]), lm.possessions_from_stats(game["awayTeam"]["statistics"]))
+        players = players_from_box(game)                              # Spielerliste aus derselben Antwort, kein zusaetzlicher Abruf
+        scores = (int(game["homeTeam"].get("score") or 0), int(game["awayTeam"].get("score") or 0))
+        bclock = None
+        if game.get("period") is not None:                            # Spielzeit des Boxscores (kann neuer sein als das Scoreboard)
+            bclock = gc.build_game_clock(game.get("gameStatus"), game.get("gameStatusText"), game.get("period"), game.get("gameClock"))
+        return poss, players, scores, bclock
+
+    def _recorder_final(self, day: str, gid: str) -> dict | None:
+        """final_box.json.gz des Recorders (NUR LESEN, kein Netz), falls vorhanden: ~/NBAEdge_live_history (oder NBAEDGE_LIVE_DIR)/<Tag>/<game_id>/. Unlesbar oder fehlend: None."""
+        import gzip, json, os
+        from pathlib import Path
+        root = Path(os.environ.get("NBAEDGE_LIVE_DIR") or Path.home() / "NBAEdge_live_history")
+        try:
+            return json.loads(gzip.decompress((root / day / gid / "final_box.json.gz").read_bytes()).decode("utf-8")).get("game")
+        except Exception:
+            return None
+
     def _refresh_boxes(self, t: float) -> None:
-        """Boxscore nur fuer laufende Spiele (Status 2 laut Scoreboard), je Spiel hoechstens alle 30 s, hoechstens 6 je Aufruf; nach einem Fehler gilt die gemeinsame Wartezeit."""
-        due = [g for g in self._games.values() if g.clock.is_live and t - (self._box.get(g.game_id) or {}).get("attempt", float("-inf")) >= BOX_SECONDS]
-        for g in due[:MAX_BOXES_PER_REFRESH]:
+        """Boxscore fuer laufende Spiele (Status 2 laut Scoreboard), je Spiel hoechstens alle 30 s, hoechstens 6 je Aufruf; nach einem Fehler gilt die gemeinsame Wartezeit.
+        Final-Abruf: Ist ein Spiel beendet, wird GENAU EIN weiterer Boxscore geholt (danach nie wieder), damit die Spielerpunkte dem Endstand entsprechen (players_complete); vorher wird, falls vorhanden,
+        die Datei final_box.json.gz des Recorders gelesen (kein Netz). Bei einem Fehler neuer Versuch nach der gemeinsamen Wartezeit, bis es klappt; stimmt der Boxscore noch nicht mit dem Endstand
+        ueberein (Boxscore hinkt), hoechstens FINAL_MAX_TRIES Versuche im Abstand von BOX_SECONDS."""
+        def info(gid):
+            return self._box.get(gid) or {}
+        live_due = [g for g in self._games.values() if g.clock.is_live and t - info(g.game_id).get("attempt", float("-inf")) >= BOX_SECONDS]
+        final_due = [g for g in self._games.values() if g.clock.is_final and not info(g.game_id).get("final_done") and info(g.game_id).get("final_tries", 0) < FINAL_MAX_TRIES
+                     and t - info(g.game_id).get("attempt", float("-inf")) >= BOX_SECONDS]
+        for g in (live_due + final_due)[:MAX_BOXES_PER_REFRESH]:
+            entry = self._box.setdefault(g.game_id, {"at": None, "poss": None, "error": None, "attempt": float("-inf"), "players": (), "scores": None, "clock": None, "final_done": False, "final_tries": 0})
+            gv = self._games[g.game_id]
+            final = gv.clock.is_final
+            if final:                                                  # 1. Recorder-Datei (nur lesen), 2. ein Abruf bei NBA.com
+                rec = self._recorder_final(gv.day, g.game_id)
+                if rec is not None:
+                    try:
+                        poss, players, scores, bclock = self._parse_box(rec)
+                        if scores == (gv.home_score, gv.away_score):
+                            entry.update(at=t, poss=poss, error=None, players=players, scores=scores, clock=bclock, final_done=True, attempt=t)
+                            self._games[g.game_id] = replace(gv, possessions=poss, box_error=None, players=players, players_complete=True)
+                            continue
+                    except (KeyError, TypeError, ValueError):
+                        pass
             if t < self._next_allowed:
                 break
-            entry = self._box.setdefault(g.game_id, {"at": None, "poss": None, "error": None, "attempt": float("-inf"), "players": (), "scores": None, "clock": None})
             entry["attempt"] = t
             res = self._get(NBA_BOXSCORE_URL.format(game_id=g.game_id), SOURCE_NBA)
             poss, players, scores, bclock = None, (), None, None
             if res.ok:
                 try:
-                    game = res.data["game"]
-                    poss = lm.Possessions(lm.possessions_from_stats(game["homeTeam"]["statistics"]), lm.possessions_from_stats(game["awayTeam"]["statistics"]))
-                    players = players_from_box(game)                      # Spielerliste aus derselben Antwort, kein zusaetzlicher Abruf
-                    scores = (int(game["homeTeam"].get("score") or 0), int(game["awayTeam"].get("score") or 0))
-                    if game.get("period") is not None:                       # Spielzeit des Boxscores (kann neuer sein als das Scoreboard)
-                        bclock = gc.build_game_clock(game.get("gameStatus"), game.get("gameStatusText"), game.get("period"), game.get("gameClock"))
+                    poss, players, scores, bclock = self._parse_box(res.data["game"])
                 except (KeyError, TypeError, ValueError):
                     res = _Res(200, None, _message(SOURCE_NBA, 200, "format"))
             if res.ok:
                 entry.update(at=t, poss=poss, error=None, players=players, scores=scores, clock=bclock)
                 self._backoff.success()
                 self._next_allowed = float("-inf")
+                if final:
+                    if scores == (gv.home_score, gv.away_score):
+                        entry["final_done"] = True
+                    else:
+                        entry["final_tries"] = entry.get("final_tries", 0) + 1       # Boxscore hinkt dem Endstand noch hinterher: spaeter noch einmal
             else:
                 entry["error"] = res.error                           # letzter guter Boxscore bleibt, Alter waechst
                 if res.status != 200:                                # Verbindungs-/HTTP-Fehler (403, 429, Zeitueberschreitung ...): gemeinsame Pause fuer alle NBA.com-Abrufe

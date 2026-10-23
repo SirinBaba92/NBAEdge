@@ -349,7 +349,7 @@ FN["board_date"] = DAY; FN["boxes"] = {"R1": box()}
 before = FN["nba_calls"]
 f_default = lf.LiveFeed(now=lambda: T0)
 sd = f_default.refresh(T0)
-check("fake_net: 2 Spiele, 1 Boxscore (R1), 2 Abrufe bei cdn.nba.com", [g.game_id for g in sd.games] == ["R1", "R2"] and FN["nba_calls"] - before == 2 and sd.source == "NBA.com" and sd.games[0].possessions is not None and not sd.stale, str(FN["nba_urls"][-3:]))
+check("fake_net: 2 Spiele, Boxscore des laufenden Spiels (R1) und der eine Final-Abruf des beendeten (R2), 3 Abrufe bei cdn.nba.com", [g.game_id for g in sd.games] == ["R1", "R2"] and FN["nba_calls"] - before == 3 and sd.source == "NBA.com" and sd.games[0].possessions is not None and not sd.stale, str(FN["nba_urls"][-3:]))
 FN["nba_status"] = 403
 sd = f_default.refresh(T0 + 15)
 check("fake_net: 403 -> Fehlerzustand mit letztem Stand", sd.error_status == 403 and len(sd.games) == 2 and sd.stale and FN["espn_calls"] >= 1)

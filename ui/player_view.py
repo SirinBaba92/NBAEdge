@@ -43,10 +43,10 @@ def quality_text(player: dict) -> str:
     return " | ".join(parts)
 
 
-def build_table_model(entry: dict, mode: str = "team", sort: str = "team") -> dict:
+def build_table_model(entry: dict, mode: str = "team", sort: str = "team", bets: dict | None = None) -> dict:
     """Anzeigewerte aus einem Snapshot-Eintrag (ein Spiel). mode: 'team' (Teamabgleich) oder 'raw'; sort: 'team' | 'minutes' | 'diff'.
     Rueckgabe {'players': [{person_id, name, team, abbr, ok, minutes, points, tooltip, rows: [{n, odds, bookmaker, buch_pct, model_pct, diff, mark}], max_diff}], 'mode', 'sort'}.
-    Die Differenz wird aus ungerundeten Werten gerechnet (Modell minus Buchmacher-Chance inkl. Marge, in Prozentpunkten)."""
+    Die Differenz wird aus ungerundeten Werten gerechnet (Modell minus Buchmacher-Chance inkl. Marge, in Prozentpunkten). bets: aktive Spieler-Wetten {person_id: Wette} (Marker am Namen)."""
     team_mode = mode != "raw"
     players = []
     for p in entry.get("players", []):
@@ -64,7 +64,8 @@ def build_table_model(entry: dict, mode: str = "team", sort: str = "team") -> di
             points = p["expected_points_adjusted"] if team_mode else p["expected_points_raw"]
         diffs = [abs(r["diff"]) for r in rows if r["diff"] is not None]
         players.append({"person_id": p["person_id"], "name": p["name"], "team": p.get("team"), "abbr": p.get("team_abbreviation") or "", "ok": bool(p.get("ok")),
-                        "minutes": minutes, "points": points, "tooltip": quality_text(p), "rows": rows, "max_diff": max(diffs) if diffs else -1.0})
+                        "minutes": minutes, "points": points, "tooltip": quality_text(p), "rows": rows, "max_diff": max(diffs) if diffs else -1.0,
+                        "bet": (bets or {}).get(int(p["person_id"]))})
     if sort == "minutes":
         players.sort(key=lambda p: (-(p["minutes"] if p["minutes"] is not None else -1), p["name"]))
     elif sort == "diff":
@@ -97,6 +98,9 @@ def render_table_html(model: dict) -> str:
     body = []
     for p in model["players"]:
         sym = f"<span class='pl-q' title='{escape(p['tooltip'], quote=True)}'>⚠</span>" if p["tooltip"] else ""
+        if p.get("bet"):
+            b = p["bet"]
+            sym += f" <span class='pl-bet-mark' title='Meine Wette: mindestens {b['milestone']} Punkte'>🎯 {b['milestone']}+{'' if b.get('odds') is None else ' @ ' + fmt_num(b['odds'], 2)}</span>"
         n = max(1, len(p["rows"]))
         first = (f"<td class='l pl-name' rowspan='{n}'>{escape(p['name'])} {sym}</td><td class='l' rowspan='{n}'>{escape(p['abbr'] or '')}</td>"
                  f"<td rowspan='{n}'>{fmt_min(p['minutes'])}</td><td rowspan='{n}'>{fmt_min(p['points'])}</td>")
@@ -136,9 +140,64 @@ def _css() -> str:
 .pl-none {{ text-align:left; color:{P['label']}; font-size:13px; }}
 .pl-diff {{ color:{P['text_soft']}; }}
 .pl-diff.pl-mark {{ color:{P['chip_yellow_text']}; font-weight:700; }}
+.pl-bet-mark {{ font-size:12px; color:{P['chip_blue_text']}; background:{P['chip_blue_bg']}; border:1px solid {P['chip_blue_border']}; border-radius:6px; padding:0 6px; white-space:nowrap; }}
+.pl-bet {{ box-sizing:border-box; max-width:1400px; margin:8px 0; padding:12px 16px; border-radius:14px; background:#1d2338; box-shadow:inset 3px 0 0 {P['chip_blue_border']}; border:1px solid #2c3350; }}
+.pl-bet-head {{ display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }}
+.pl-bet-name {{ font-size:17px; font-weight:700; color:{P['text']}; }}
+.pl-bet-team {{ font-size:13px; font-weight:400; color:{P['label']}; }}
+.pl-bet-line {{ font-size:14px; color:{P['text_soft']}; margin-top:4px; font-variant-numeric:tabular-nums; }}
 .pl-m {{ display:inline-block; min-width:1.2em; text-align:center; background:{P['chip_yellow_bg']}; border:1px solid {P['chip_yellow_border']}; border-radius:6px; font-size:12px; padding:0 4px; }}
 </style>
 """
+
+
+# ----------------------------------------------------------------------------------------------- Meine Spieler-Wetten (Stufe 2)
+def bet_summary_html(summary: dict) -> str:
+    """Tagessumme der Spieler-Wetten (Wetten, offen, gewonnen, verloren, nicht gespielt, Einsatz, Gewinn/Verlust nur abgerechnet). Kacheln wie im Tab Spieltag (lv-tile)."""
+    if not summary or not summary.get("wetten"):
+        return "<div class='lv-sum lv-sum-empty'>Für diesen Spieltag sind noch keine Spieler-Wetten gespeichert.</div>"
+    gv = summary["gewinn_verlust"]
+    tiles = [("Wetten", str(summary["wetten"]), ""), ("Offen", str(summary["offen"]), ""), ("Gewonnen", str(summary["gewonnen"]), ""), ("Verloren", str(summary["verloren"]), ""),
+             ("Nicht gespielt", str(summary.get("nicht_gespielt", 0)), ""), ("Einsatz", fmt_num(summary["einsatz"], 2), ""),
+             ("Gewinn / Verlust (abgerechnet)", fmt_num(gv, 2, signed=True), "lv-pos" if gv > 0 else "lv-neg" if gv < 0 else "")]
+    html = "".join(f"<div class='lv-tile'><div class='pc-label'>{escape(k.upper())}</div><div class='lv-val {c}'>{escape(v)}</div></div>" for k, v, c in tiles)
+    notes = []
+    if summary.get("nicht_gespielt"):
+        notes.append(f"{summary['nicht_gespielt']} Wette(n) mit nicht gespieltem Spieler (Einsatz {fmt_num(summary.get('einsatz_nicht_gespielt', 0), 2)}): zählen weder als gewonnen noch als verloren, nicht im Gewinn; bitte beim Buchmacher prüfen")
+    if summary.get("ohne_quote_oder_einsatz"):
+        notes.append(f"{summary['ohne_quote_oder_einsatz']} abgerechnete Wette(n) ohne Quote oder Einsatz zählen nicht im Gewinn")
+    note = f"<div class='lv-hint'>{escape('; '.join(notes))}</div>" if notes else ""
+    return f"<div class='lv-sum'><div class='lv-tiles'>{html}</div>{note}</div>"
+
+
+def bet_card_html(bet: dict, live, game_label: str, game_clock_label: str | None = None, score: str | None = None) -> str:
+    """Karte einer Spieler-Wette: Spieler, Meilenstein, Quote, Einsatz, Status (Text + Farbe), Punkte/noch noetig/Minuten/Fouls, Gewinn/Verlust. live: BetLivePlayer oder None (kein Status)."""
+    n = bet["milestone"]
+    title = f"{escape(bet['name'])}" + (f" <span class='pl-bet-team'>{escape(bet['team'])}</span>" if bet.get("team") else "")
+    money = lambda v: "—" if v is None else fmt_num(float(v), 2)
+    line1 = f"Spiel {escape(game_label)} · mindestens {n} Punkte (Over {fmt_num(n - 0.5, 1)}) · Quote {money(bet.get('odds'))} · Einsatz {money(bet.get('stake'))}"
+    if live is None:
+        chip, color, detail = "Kein Status (Spiel nicht im Scoreboard)", "grau", ""
+    else:
+        chip, color = live.label, live.color
+        parts = []
+        if live.points is not None:
+            parts.append(f"Punkte {live.points} von {n}" + (f", noch {live.needed}" if live.needed else ""))
+        if live.minutes is not None:
+            parts.append(f"{fmt_num(live.minutes, 1)} Min")
+        if live.fouls is not None:
+            parts.append(f"{live.fouls} Fouls")
+        if live.player_status:
+            parts.append(live.player_status)
+        if score:
+            parts.append(f"Spielstand {score}" + (f" ({game_clock_label})" if game_clock_label else ""))
+        if live.probability is not None:
+            parts.append(f"Live-Chance {int(live.probability * 100 + 0.5)} % (ungeprüft)")
+        if live.profit is not None:
+            parts.append(f"Gewinn/Verlust {fmt_num(live.profit, 2, signed=True)}")
+        detail = " · ".join(escape(x) for x in parts)
+    return (f"<div class='pl-bet'><div class='pl-bet-head'><span class='pl-bet-name'>{title}</span><span class='lv-st lv-st-{color}'>{escape(chip)}</span></div>"
+            f"<div class='pl-bet-line'>{line1}</div>" + (f"<div class='pl-bet-line'>{detail}</div>" if detail else "") + "</div>")
 
 
 PLAYER_CSS = _css()

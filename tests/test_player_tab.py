@@ -18,6 +18,15 @@ from data import pre_match_store as ps
 from engine import player_snapshots as psn
 from ui import player_tab as pt
 from ui import player_view as pv
+from data import live_feed as lf
+
+class _NoNet:
+    """Attrappe: der Live-Feed des Tabs darf im Test nie ins Netz (leeres Scoreboard)."""
+    class R:
+        status_code = 200
+        def json(self): return {"scoreboard": {"gameDate": "2026-10-22", "games": []}}
+    def get(self, url, **kw): return self.R()
+lf._feed = lf.LiveFeed(http_get=_NoNet().get)
 
 ok = True
 def check(name, cond, info=""):
