@@ -44,6 +44,7 @@ SOURCE_NBA, SOURCE_ESPN = "NBA.com", "ESPN"
 SOURCE_BOX_SUB, SOURCE_ESPN_SUB = "NBA.com-Boxscore (Ersatz)", "ESPN (Ersatz)"
 FREEZE_SECONDS = 90.0                # laeuft das Spiel laut Scoreboard, aber Uhr UND Stand sind so lange unveraendert: Verdacht auf eingefrorene Daten
 BOX_FRESH_SECONDS = 75.0             # ein Boxscore darf hoechstens so alt sein, um das eingefrorene Scoreboard zu ersetzen
+LAG_WARN_SECONDS = 120.0            # Rueckstand des Scoreboards (Spielzeit), ab dem die Statuszeile gelb wird
 NEWER_SECONDS = 2.0                  # eine Ersatzquelle gilt als neuer, wenn ihre Spielzeit mindestens so viele Sekunden weiter ist (oder mehr Punkte / Spielende)
 STALE_NOTE = "Daten veraltet: NBA.com liefert seit über 90 Sekunden denselben Stand und keine Ersatzquelle ist erreichbar. Keine Chancen und kein Wett-Status auf diesen Werten."
 NO_ANCHOR_NOTE = "Kein Schnappschuss vor dem Anpfiff für dieses Spiel: keine Chancen (die Hochrechnung braucht die Vorab-Prognose als Anker)."
@@ -349,6 +350,8 @@ class LiveFeed:
         self._sig: dict[str, tuple] = {}                # game_id -> (Signatur aus Status/Periode/Uhr/Stand des Scoreboards, seit wann unveraendert)
         self._raw: dict[str, GameView] = {}             # game_id -> Ansicht genau wie vom Scoreboard geliefert (vor einer Ersatzquelle)
         self._freeze_note: str | None = None
+        self._lag_note: str | None = None
+        self._lag_warn = False
         self._espn_sub_at = float("-inf")
         self._espn_sub: tuple = ({}, None)              # (zugeordnete ESPN-Spiele, Fehlergrund) vom letzten Ersatz-Abruf
 
@@ -470,6 +473,11 @@ class LiveFeed:
         bclock = None
         if game.get("period") is not None:                            # Spielzeit des Boxscores (kann neuer sein als das Scoreboard)
             bclock = gc.build_game_clock(game.get("gameStatus"), game.get("gameStatusText"), game.get("period"), game.get("gameClock"))
+            try:
+                if bclock.status == 3 and int(game.get("period") or 0) < gc.REG_PERIODS:
+                    bclock = None                                         # "beendet" vor dem 4. Viertel ist nicht plausibel: Spielzeit des Boxscores nicht verwenden
+            except (TypeError, ValueError):
+                bclock = None
         return poss, players, scores, bclock
 
     def _recorder_final(self, day: str, gid: str) -> dict | None:
@@ -564,30 +572,59 @@ class LiveFeed:
     # -- eingefrorenes Scoreboard
     @staticmethod
     def _newer(clock, scores, raw: GameView) -> bool:
-        """Ist der Stand (Spielzeit, Spielende, Punkte) einer Ersatzquelle weiter als das Scoreboard?"""
+        """Ist der Stand einer Ersatzquelle (ESPN) weiter als das Scoreboard? (Spielzeit, Spielende, Punkte)"""
         if clock.status > raw.clock.status:
-            return True                                                  # z. B. Boxscore/ESPN: Spiel beendet, Scoreboard noch "laeuft"
+            return True                                                  # z. B. ESPN: Spiel beendet, Scoreboard noch "laeuft"
         if clock.status == 2 and raw.clock.status == 2 and clock.elapsed_total_s >= raw.clock.elapsed_total_s + NEWER_SECONDS:
             return True
         return sum(scores) > raw.home_score + raw.away_score and clock.elapsed_total_s >= raw.clock.elapsed_total_s
 
+    @staticmethod
+    def _box_newer(clock, scores, raw: GameView) -> bool:
+        """Boxscore gegen Scoreboard, IMMER bei laufenden Spielen: neuer, wenn seine Periode spaeter ist, bei gleicher Periode die Restzeit kuerzer, bei gleicher Zeit die Gesamtpunkte hoeher.
+        Voraussetzung: die Punkte sind plausibel (kein Team hat weniger Punkte als im Scoreboard). Spielende nur, wenn der Boxscore 'beendet' meldet UND die Punkte plausibel sind
+        (Verlaengerung/Viertel 4 oder spaeter, kein Gleichstand, zusammen mindestens 120 Punkte)."""
+        if scores[0] < raw.home_score or scores[1] < raw.away_score:
+            return False                                                 # Punkte duerfen nie zurueckgehen: nicht vermischen
+        if clock.status == 3:
+            return clock.period >= gc.REG_PERIODS and scores[0] != scores[1] and sum(scores) >= 120
+        if clock.status != 2 or raw.clock.status != 2:
+            return False
+        if clock.period != raw.clock.period:
+            return clock.period > raw.clock.period
+        if clock.seconds_left != raw.clock.seconds_left:
+            return clock.seconds_left < raw.clock.seconds_left
+        return sum(scores) > raw.home_score + raw.away_score
+
     def _check_frozen(self, t: float) -> None:
-        """Einfrier-Erkennung: laeuft ein Spiel laut Scoreboard (Uhr laeuft), aber Uhr UND Stand sind seit mehr als FREEZE_SECONDS unveraendert, gilt es als eingefroren, WENN eine Ersatzquelle
-        weiter ist: 1. Boxscore von NBA.com (schon geholt), 2. ESPN. Ist keine Ersatzquelle weiter (echte Spielunterbrechung) oder sind die Pausen (Viertelpause, Halbzeit, Verlaengerungspause) im Gang,
-        gibt es keinen Alarm. Ist keine Ersatzquelle erreichbar, bleibt der Verdacht: data_stale (keine Chancen/Wettstatus darauf). Die Rohwerte des Scoreboards werden nie veraendert."""
+        """Quellenwahl fuer laufende Spiele (Stand, Uhr, Periode kommen immer aus EINER Quelle, nie gemischt):
+        1. IMMER der Boxscore von NBA.com (alle 30 s ohnehin geholt), wenn er neuer ist als das Scoreboard (_box_newer): das Scoreboard bewegt sich manchmal in kleinen Spruengen und hinkt
+           Spielminuten hinterher, ohne je lange still zu stehen. Statuszeile: dezent "Scoreboard hinkt ca. mm:ss hinterher", gelb ab LAG_WARN_SECONDS Rueckstand.
+        2. Einfrier-Erkennung (zusaetzlich): laeuft ein Spiel laut Scoreboard (Uhr laeuft), aber Uhr UND Stand sind seit mehr als FREEZE_SECONDS unveraendert und der Boxscore fehlt oder ist nicht
+           brauchbar (nicht frisch/Fehler): ESPN als Zweitersatz. Ein frischer Boxscore, der NICHT weiter ist, bedeutet eine echte Unterbrechung (kein Alarm, kein ESPN-Abruf). Pausen (Viertelpause,
+           Halbzeit, Verlaengerungspause) loesen nichts aus. Ist keine Ersatzquelle erreichbar: data_stale (keine Chancen/Wettstatus darauf). Die Rohwerte des Scoreboards bleiben unveraendert."""
+        mmss = lambda sec: f"{int(sec) // 60:02d}:{int(sec) % 60:02d}"
+        sub_notes, lag_info = [], []                                      # sub_notes: (seit, raw, Quelle|None); lag_info: (Rueckstand in Spielsekunden, raw)
+        done = set()
+        for gid, raw in self._raw.items():
+            e = self._box.get(gid) or {}
+            bclock = e.get("clock")
+            if (raw.clock.is_live and bclock is not None and e.get("at") is not None and t - e["at"] <= BOX_FRESH_SECONDS and e.get("scores") is not None
+                    and self._box_newer(bclock, e["scores"], raw)):
+                since = t - self._sig[gid][1] if gid in self._sig else 0.0
+                frozen = since if since >= FREEZE_SECONDS else None
+                self._substitute(gid, raw, bclock, e["scores"], SOURCE_BOX_SUB, frozen, t)
+                done.add(gid)
+                if frozen is not None:
+                    sub_notes.append((since, raw, SOURCE_BOX_SUB))
+                lag_info.append((max(0.0, bclock.elapsed_total_s - raw.clock.elapsed_total_s) if bclock.status == 2 else None, raw))
         suspects = {gid: t - self._sig[gid][1] for gid, raw in self._raw.items()
-                    if gid in self._sig and raw.clock.is_live and raw.clock.running and t - self._sig[gid][1] >= FREEZE_SECONDS}
-        notes, need_espn = [], []
+                    if gid not in done and gid in self._sig and raw.clock.is_live and raw.clock.running and t - self._sig[gid][1] >= FREEZE_SECONDS}
+        need_espn = []
         for gid, since in suspects.items():
             raw, e = self._raw[gid], self._box.get(gid) or {}
-            bclock = e.get("clock")
-            if bclock is not None and e.get("at") is not None and t - e["at"] <= BOX_FRESH_SECONDS and e.get("scores") is not None:
-                if self._newer(bclock, e["scores"], raw):
-                    self._substitute(gid, raw, bclock, e["scores"], SOURCE_BOX_SUB, since, t)
-                    notes.append((since, raw, SOURCE_BOX_SUB))
-                    continue
-                if t - e["at"] <= BOX_SECONDS + 10:                        # frischer Boxscore ist NICHT weiter: echte Unterbrechung, kein Alarm
-                    continue
+            if e.get("clock") is not None and e.get("at") is not None and t - e["at"] <= BOX_SECONDS + 10 and e.get("scores") is not None:
+                continue                                                  # frischer Boxscore ist NICHT weiter: echte Unterbrechung, kein Alarm
             need_espn.append(gid)
         if need_espn:
             if t - self._espn_sub_at >= ESPN_SECONDS:
@@ -603,20 +640,26 @@ class LiveFeed:
                 raw, since, e = self._raw[gid], suspects[gid], matched.get(gid)
                 if e is None:                                              # keine Ersatzquelle: Daten nicht verwenden
                     self._games[gid] = replace(self._games[gid], frozen_since_s=since, data_stale=True)
-                    notes.append((since, raw, None))
+                    sub_notes.append((since, raw, None))
                     continue
                 eclock = gc.build_game_clock(e["status_code"], e["text"], e["period"], e["clock"])
                 if self._newer(eclock, (e["home_score"], e["away_score"]), raw):
                     self._substitute(gid, raw, eclock, (e["home_score"], e["away_score"]), SOURCE_ESPN_SUB, since, t)
-                    notes.append((since, raw, SOURCE_ESPN_SUB))
-        mmss = lambda s: f"{int(s) // 60:02d}:{int(s) % 60:02d}"
-        if notes:
-            since, raw, src = max(notes, key=lambda n: n[0])
+                    sub_notes.append((since, raw, SOURCE_ESPN_SUB))
+        if sub_notes:
+            since, raw, src = max(sub_notes, key=lambda n: n[0])
             who = f"{raw.away_nick} @ {raw.home_nick}"
             self._freeze_note = (f"NBA.com-Daten eingefroren seit {mmss(since)} ({who}): Stand, Uhr und Periode von {src}" if src
                                  else f"NBA.com-Daten möglicherweise eingefroren seit {mmss(since)} ({who}), keine Ersatzquelle erreichbar: Daten veraltet")
         else:
             self._freeze_note = None
+        lags = [(lag, raw) for lag, raw in lag_info if lag is not None]
+        if lags and not self._freeze_note:
+            lag, raw = max(lags, key=lambda n: n[0])
+            self._lag_note = f"Scoreboard hinkt ca. {mmss(lag)} hinterher ({raw.away_nick} @ {raw.home_nick}): Stand und Uhr vom NBA.com-Boxscore"
+            self._lag_warn = lag >= LAG_WARN_SECONDS
+        else:
+            self._lag_note, self._lag_warn = None, False
 
     def _substitute(self, gid: str, raw: GameView, clock, scores: tuple, source: str, since: float, t: float) -> None:
         """Stand, Uhr, Periode und Status einer Ersatzquelle statt des eingefrorenen Scoreboards uebernehmen (Rohwerte bleiben in self._raw)."""
@@ -646,6 +689,8 @@ class LiveFeed:
             line = f"{self._source or SOURCE_NBA} · aktuell (vor {int(age)} s)" if age is not None else "Noch keine Daten abgerufen."
             if self._freeze_note:
                 line += f" · ⚠ {self._freeze_note}"
+            elif self._lag_note:
+                line += f" · {'⚠ ' if self._lag_warn else ''}{self._lag_note}"
         elif self._source == SOURCE_ESPN and not stale:
             line = f"Quelle ESPN (nur Stand, Uhr, Status) · NBA.com gestört: {err['message']} · Stand vor {int(age)} s"
         elif age is None:
@@ -655,7 +700,7 @@ class LiveFeed:
         return FeedState(day=day, games=games, other_day_games=other, source=self._source, fetched_at=self._fresh_at, age_s=age, stale=stale, stale_since_s=age if stale else None,
                          error=None if err is None else err["message"], error_status=None if err is None else err["status"], error_ref="" if err is None else err["ref"], retry_in_s=retry,
                          backoff_s=self._backoff.wait, scoreboard_day=self._scoreboard_day, notice=notice, fallback_note=self._fallback_note, status_line=line,
-                         freeze_note=self._freeze_note if err is None else None)
+                         freeze_note=(self._freeze_note or (self._lag_note if self._lag_warn else None)) if err is None else None)
 
 
 _feed: LiveFeed | None = None

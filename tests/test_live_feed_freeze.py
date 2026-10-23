@@ -71,7 +71,7 @@ g = lambda s: s.games[0]
 # --- A) Scoreboard eingefroren, Boxscore weiter
 net = Net()
 feed, s = run(net, 60)
-check("bis 60 s: noch kein Alarm (Quelle NBA.com, Rohwerte 9:7 Q1 7:45, keine Notiz)", g(s).source == "NBA.com" and (g(s).away_score, g(s).home_score) == (9, 7) and s.freeze_note is None and g(s).frozen_since_s is None, s.status_line)
+check("ab dem ersten Abruf gilt der neuere Boxscore (allgemeine Regel); bis 90 s noch KEINE Einfrier-Meldung, sondern die Rueckstands-Zeile", g(s).source == lf.SOURCE_BOX_SUB and s.freeze_note is not None and "Scoreboard hinkt" in s.status_line and "eingefroren" not in s.status_line, s.status_line)
 feed, s = run(net, 120, start=T0 + 75, feed=feed)
 G = g(s)
 check("nach > 90 s: Stand, Uhr, Periode vom Boxscore (Q1 3:38, 23:13), Quelle 'NBA.com-Boxscore (Ersatz)'", G.source == lf.SOURCE_BOX_SUB and (G.away_score, G.home_score) == (23, 13) and G.clock.seconds_left == 218 and G.clock.period == 1 and G.clock_label == "Q1 3:38", f"{G.source} {G.clock_label}")
