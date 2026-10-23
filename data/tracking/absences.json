@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "format": "nbaedge-absences",
+  "updated_at": "2026-10-23T03:40:21+02:00",
+  "days": {
+    "2026-10-22": {
+      "2026-10-22|2026-10-23T01:30:00Z|Oklahoma City Thunder|Denver Nuggets": {
+        "out": {
+          "1631124": {
+            "name": "Julian Strawther",
+            "team": "Denver Nuggets",
+            "set_at": "2026-10-23T03:40:21+02:00"
+          },
+          "1642260": {
+            "name": "Nikola Topić",
+            "team": "Oklahoma City Thunder",
+            "set_at": "2026-10-23T03:40:21+02:00"
+          },
+          "1642923": {
+            "name": "Otega Oweh",
+            "team": "Oklahoma City Thunder",
+            "set_at": "2026-10-23T03:40:21+02:00"
+          },
+          "1642850": {
+            "name": "Thomas Sorber",
+            "team": "Oklahoma City Thunder",
+            "set_at": "2026-10-23T03:40:21+02:00"
+          }
+        },
+        "doubtful": {
+          "1642461": {
+            "name": "Spencer Jones",
+            "team": "Denver Nuggets",
+            "set_at": "2026-10-23T03:40:21+02:00"
+          }
+        },
+        "updated_at": "2026-10-23T03:40:21+02:00",
+        "history": [
+          {
+            "at": "2026-10-23T03:40:21+02:00",
+            "out": [
+              1631124,
+              1642260,
+              1642850,
+              1642923
+            ],
+            "doubtful": [
+              1642461
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

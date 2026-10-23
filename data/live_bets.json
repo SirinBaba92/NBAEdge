@@ -1,7 +1,57 @@
 [
   {
-    "player": "John Collins",
+    "player": "James Harden",
     "bet_type": "points_over",
-    "line": 12.5
+    "line": 15.5
+  },
+  {
+    "player": "Jaylen Brown",
+    "bet_type": "points_over",
+    "line": 18.5
+  },
+  {
+    "player": "Joel Embiid",
+    "bet_type": "points_over",
+    "line": 19.5
+  },
+  {
+    "player": "Lebron James",
+    "bet_type": "points_over",
+    "line": 13.5
+  },
+  {
+    "player": "VJ Edgecombe",
+    "bet_type": "points_over",
+    "line": 8.5
+  },
+  {
+    "player": "Cameron Johnson",
+    "bet_type": "points_over",
+    "line": 10.5
+  },
+  {
+    "player": "Christian Braun",
+    "bet_type": "points_over",
+    "line": 8.5
+  },
+  {
+    "player": "Marvin Bagley III",
+    "bet_type": "points_over",
+    "line": 3.5
+  },
+  {
+    "player": "Shai Gilgeous-Alexander",
+    "bet_type": "points_over",
+    "line": 27.5
+  },
+  {
+    "player": "Chet Holmgren",
+    "bet_type": "points_over",
+    "line": 11.5
+  },
+  {
+    "player": "Ajay Mitchell",
+    "bet_type": "points_over",
+    "line": 8.5
   }
 ]
