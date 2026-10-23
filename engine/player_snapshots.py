@@ -94,3 +94,70 @@ def create_for_game(key: str, entries: dict, new: bool = False, now: datetime | 
     res = pf.forecast_game_players(key, entries)
     entry = build_snapshot_entry(key, entries, res, now)
     return save_snapshot(key.split("|", 1)[0], key, entry, new), entry
+
+
+# ----------------------------------------------------------------------------- Varianten mit Ausfaellen (Stufe 4)
+# Neuberechnung "fehlt" als EIGENER Stand: analysis/results/forecast_snapshots/<Tag>.absences.json (der urspruengliche Snapshot <Tag>.json wird nie angefasst; das Muster der Auswerte-Skripte
+# "????-??-??.json" passt nicht auf diese Datei). Format: {"version": 1, "day", "games": {game_key: [Variante, ...]}}, Variante = {"created_at", "out": [{person_id, name, team}], "doubtful": [...],
+# "base_created_at" (Zeitpunkt des Original-Snapshots oder None), "entry": <Snapshot-Eintrag im gleichen Format wie im Original>}. Eine Variante mit gleicher Ausfallliste wie die letzte wird nicht noch einmal geschrieben.
+def variants_path(day: str) -> Path:
+    return snapshot_dir() / f"{day}.absences.json"
+
+
+def load_variants(game_key: str) -> list[dict]:
+    """Alle Varianten eines Spiels (aelteste zuerst); fehlende oder defekte Datei: []."""
+    try:
+        d = json.loads(variants_path(game_key.split("|", 1)[0]).read_text(encoding="utf-8"))
+        v = d["games"].get(game_key)
+        return v if isinstance(v, list) else []
+    except Exception:
+        return []
+
+
+def latest_variant(game_key: str, out_ids: set | None = None, doubtful_ids: set | None = None) -> dict | None:
+    """Letzte Variante des Spiels; mit out_ids/doubtful_ids nur, wenn deren Ausfallliste genau dieser Auswahl entspricht, sonst None."""
+    vs = load_variants(game_key)
+    if not vs:
+        return None
+    v = vs[-1]
+    if out_ids is None:
+        return v
+    same = {int(p["person_id"]) for p in v["out"]} == {int(x) for x in out_ids} and {int(p["person_id"]) for p in v["doubtful"]} == {int(x) for x in (doubtful_ids or ())}
+    return v if same else None
+
+
+def create_variant(key: str, entries: dict, out: list[dict], doubtful: list[dict], now: datetime | None = None) -> tuple[str, dict]:
+    """Prognose mit Ausfaellen rechnen und als Variante speichern. out/doubtful: [{'person_id', 'name', 'team'}]. Rueckgabe ('geschrieben' | 'unveraendert', Variante).
+    Ohne Schnappschuss des Spielmodells (keine Teampunkte) keine Neuberechnung: ValueError."""
+    now = now or datetime.now(timezone.utc)
+    ctx = pf.context_for_game(key)
+    if not ctx["found"]:
+        raise ValueError("Ohne Schnappschuss des Spielmodells (Teampunkte) ist keine Neuberechnung mit Ausfällen möglich.")
+    out_ids, dbt_ids = {int(p["person_id"]) for p in out}, {int(p["person_id"]) for p in doubtful}
+    last = latest_variant(key, out_ids, dbt_ids)
+    if last is not None:
+        return "unveraendert", last
+    res = pf.forecast_game_players(key, entries, absent_ids=out_ids)
+    entry = build_snapshot_entry(key, entries, res, now)
+    for p in entry["players"]:
+        if int(p["person_id"]) in dbt_ids:
+            p["quality"] = list(p.get("quality") or []) + ["fraglich"]
+            p["warnings"] = list(p.get("warnings") or []) + ["fraglich: die Prognose gilt, wenn der Spieler spielt (keine Neuberechnung für „fraglich“)"]
+        if int(p["person_id"]) in out_ids:
+            p["warnings"] = list(p.get("warnings") or []) + ["fehlt (manuell eingetragen)"]
+    base = None
+    try:
+        base = json.loads((snapshot_dir() / f"{key.split('|', 1)[0]}.json").read_text(encoding="utf-8"))["games"].get(key, {}).get("created_at")
+    except Exception:
+        pass
+    variant = {"created_at": now.astimezone().isoformat(timespec="seconds"), "out": [dict(p) for p in out], "doubtful": [dict(p) for p in doubtful], "base_created_at": base, "entry": entry}
+    path = variants_path(key.split("|", 1)[0])
+    data = {"version": 1, "day": key.split("|", 1)[0], "games": {}}
+    if path.exists():
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except ValueError:
+            raise RuntimeError(f"{path} ist nicht lesbar, nichts überschrieben")
+    data["games"].setdefault(key, []).append(variant)
+    _atomic_json(path, data)
+    return "geschrieben", variant

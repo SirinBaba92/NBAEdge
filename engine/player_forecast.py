@@ -234,6 +234,11 @@ BENCH_SCALE_MIN, BENCH_SCALE_MAX = 0.3, 1.0
 MINUTES_CAP = 42.0                # Obergrenze je Spieler im Sonderfall (proportionale Skalierung)
 F_MIN, F_MAX = 0.6, 1.4
 NO_HISTORY_MINUTES = 10.0
+# Ausfaelle (Stufe 4, "fehlt"): Die Minuten eines ausgefallenen Spielers werden auf die uebrigen Spieler des Teams verteilt, proportional zu deren erwarteten Minuten (Exponent 1,0: wer mehr spielt,
+# bekommt mehr), hoechstens ABSENCE_MINUTES_CAP Minuten je Spieler (der Rest verteilt sich auf die anderen). Danach rueckt der naechste Spieler in die Rotation (Rang 1 bis 10 neu nach Minuten),
+# die Minutenverteilung der Rotation (distribute_minutes) und der Teamabgleich laufen wie gewohnt. Die Wuerfe/Punkte des Ausgefallenen gehen dabei ueber den Teamabgleich (feste Teampunkte des
+# Spielmodells, Faktor f steigt) anteilig nach den erwarteten Punkten an die Mitspieler; eine eigene Nutzungsrate gibt es noch nicht. "Fraglich" aendert die Rechnung nicht (nur Hinweis).
+ABSENCE_MINUTES_CAP = 40.0
 FALLBACK_LEAGUE_PPM = 0.49
 _league_ppm_cache: dict = {}
 
@@ -283,11 +288,11 @@ def distribute_minutes(minutes: list[float]) -> tuple[list[float], str]:
     return scale_minutes(list(minutes)), f"Sonderfall: {why}, alle Rotationsspieler proportional auf {TEAM_MINUTES:g} Minuten (höchstens {MINUTES_CAP:g})"
 
 
-def team_match(team: str, is_home: bool, ctx: dict, day: str, extra_ids: dict | None = None) -> dict:
+def team_match(team: str, is_home: bool, ctx: dict, day: str, extra_ids: dict | None = None, absent_ids: set | None = None) -> dict:
     """Teamabgleich fuer ein Team (Verfahren siehe oben). Rueckgabe: {'info': {...Team-Kennzahlen...}, 'adjusted': {person_id: Prognose mit Abgleich (nur Rotation)},
     'raw': {person_id: rohe Prognose}, 'rank': {person_id: Rang nach erwarteten Minuten}}. Ohne Schnappschuss oder Teampunkte: kein Abgleich (Hinweis "kein Teamabgleich")."""
     info = {"team": team, "matched": False, "note": "kein Teamabgleich", "team_points": None, "player_sum": None, "player_sum_scaled": None, "factor": None, "factor_applied": None,
-            "strong": False, "minutes_before": None, "minutes_after": None, "members": 0, "rotation": [], "out_of_rotation": [], "no_history": [], "minutes_note": "", "minutes_new": {}}
+            "strong": False, "minutes_before": None, "minutes_after": None, "members": 0, "rotation": [], "out_of_rotation": [], "no_history": [], "minutes_note": "", "minutes_new": {}, "absent": [], "freed_minutes": 0.0}
     team_points = ctx.get("home_score") if is_home else ctx.get("away_score")
     if not ctx.get("found") or team_points is None:
         return {"info": info, "adjusted": {}, "raw": {}, "rank": {}}
@@ -299,13 +304,25 @@ def team_match(team: str, is_home: bool, ctx: dict, day: str, extra_ids: dict | 
         people.setdefault(int(pid), name)
     spread = ctx["exp_spread"]
     cands = []                                     # {'pid', 'name', 'fc' (roh) | None, 'minutes'}
+    absent_ids = {int(x) for x in (absent_ids or ())}
+    freed = 0.0
     for pid, name in people.items():
         fc = forecast_player(pid, day, home=is_home, exp_spread=spread, exp_total=ctx.get("exp_total"), name=name)
+        if pid in absent_ids:                                  # fehlt: nicht in die Rotation, seine Minuten werden verteilt
+            info["absent"].append(name)
+            if fc["ok"] and fc["minutes"]["mean"] >= TEAM_MIN_MINUTES:
+                freed += fc["minutes"]["mean"]
+            continue
         if fc["ok"]:
             if fc["minutes"]["mean"] >= TEAM_MIN_MINUTES:
                 cands.append({"pid": pid, "name": name, "fc": fc, "minutes": fc["minutes"]["mean"]})
         else:
             cands.append({"pid": pid, "name": name, "fc": None, "minutes": NO_HISTORY_MINUTES})
+    if freed > 0 and cands:
+        mins = [m["minutes"] for m in cands]
+        for m, nm in zip(cands, scale_minutes(mins, target=sum(mins) + freed, cap=ABSENCE_MINUTES_CAP)):
+            m["minutes"] = nm
+    info["freed_minutes"] = freed
     cands.sort(key=lambda m: (-m["minutes"], m["name"]))
     rotation, rest = cands[:ROTATION_SIZE], cands[ROTATION_SIZE:]
     info["members"] = len(rotation)
@@ -346,10 +363,10 @@ def team_match(team: str, is_home: bool, ctx: dict, day: str, extra_ids: dict | 
     return {"info": info, "adjusted": adjusted, "raw": raw, "rank": rank}
 
 
-def forecast_game_players(game_key: str, entries: dict, history_games=None) -> dict:
+def forecast_game_players(game_key: str, entries: dict, history_games=None, absent_ids: set | None = None) -> dict:
     """Alle Spieler mit Betano-Meilensteinen eines Spiels (engine/player_odds.py) samt Prognose und Teamabgleich.
     Rueckgabe {'context', 'teams': {Teamname: Kennzahlen}, 'players': [{odds-Spieler..., 'forecast': {...}}]}. Spieler ausserhalb der Rotation (Rang 11+) bleiben roh. Jede Prognose traegt zusaetzlich expected_points_raw / _adjusted und
-    p_ge_raw / p_ge_adjusted (ohne Abgleich oder bei fehlendem Schnappschuss sind beide gleich; Hinweis in 'team_note')."""
+    absent_ids: manuell als "fehlt" eingetragene Spieler (Stufe 4): ihre Minuten gehen an die Mitspieler, sie selbst haben keine Prognose (Grund "fehlt"). p_ge_raw / p_ge_adjusted (ohne Abgleich oder bei fehlendem Schnappschuss sind beide gleich; Hinweis in 'team_note')."""
     from engine import player_odds
     ctx = context_for_game(game_key)
     day = game_key.split("|", 1)[0]
@@ -358,11 +375,15 @@ def forecast_game_players(game_key: str, entries: dict, history_games=None) -> d
     for team in sorted({p["team"] for p in odds_players if p["team"]}):
         is_home = (team == ctx["home"]) if ctx["home"] else None
         ids = {p["person_id"]: p["name"] for p in odds_players if p["team"] == team}
-        teams[team] = team_match(team, bool(is_home), ctx, day, ids) if is_home is not None else \
+        teams[team] = team_match(team, bool(is_home), ctx, day, ids, absent_ids) if is_home is not None else \
             {"info": {"team": team, "matched": False, "note": "kein Teamabgleich", "team_points": None, "factor": None}, "adjusted": {}, "raw": {}}
     out = []
     for p in odds_players:
         is_home = (p["team"] == ctx["home"]) if ctx["home"] else None
+        if absent_ids and int(p["person_id"]) in {int(x) for x in absent_ids}:
+            out.append({**p, "forecast": {"person_id": int(p["person_id"]), "name": p["name"], "before_date": day, "status": UNVERIFIED, "ok": False, "reason": "fehlt (manuell eingetragen)",
+                                          "quality": ["fehlt"], "warnings": []}})
+            continue
         fc = forecast_player(p["person_id"], day, home=is_home, exp_spread=ctx["exp_spread"], exp_total=ctx["exp_total"], name=p["name"])
         t = teams.get(p["team"]) or {"info": {"matched": False, "note": "kein Teamabgleich"}, "adjusted": {}, "rank": {}}
         if fc["ok"]:

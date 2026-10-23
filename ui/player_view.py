@@ -43,7 +43,7 @@ def quality_text(player: dict) -> str:
     return " | ".join(parts)
 
 
-def build_table_model(entry: dict, mode: str = "team", sort: str = "team", bets: dict | None = None, live: dict | None = None) -> dict:
+def build_table_model(entry: dict, mode: str = "team", sort: str = "team", bets: dict | None = None, live: dict | None = None, absences: dict | None = None) -> dict:
     """Anzeigewerte aus einem Snapshot-Eintrag (ein Spiel). mode: 'team' (Teamabgleich) oder 'raw'; sort: 'team' | 'minutes' | 'diff'.
     Rueckgabe {'players': [{person_id, name, team, abbr, ok, minutes, points, tooltip, rows: [{n, odds, bookmaker, buch_pct, model_pct, diff, mark}], max_diff}], 'mode', 'sort'}.
     Die Differenz wird aus ungerundeten Werten gerechnet (Modell minus Buchmacher-Chance inkl. Marge, in Prozentpunkten). bets: aktive Spieler-Wetten {person_id: Wette} (Marker am Namen). live: {person_id: {'points', 'minutes', 'fouls', 'status', 'chances': {N: Anteil}, 'notes': [...], 'out': bool}} fuer laufende Spiele (Spalten 'Jetzt' und 'Live')."""
@@ -66,6 +66,9 @@ def build_table_model(entry: dict, mode: str = "team", sort: str = "team", bets:
         players.append({"person_id": p["person_id"], "name": p["name"], "team": p.get("team"), "abbr": p.get("team_abbreviation") or "", "ok": bool(p.get("ok")),
                         "minutes": minutes, "points": points, "tooltip": quality_text(p), "rows": rows, "max_diff": max(diffs) if diffs else -1.0,
                         "bet": (bets or {}).get(int(p["person_id"])), "live": (live or {}).get(int(p["person_id"]))})
+        mark_abs = ("fehlt" if int(p["person_id"]) in (absences or {}).get("out", {}) else "fraglich" if int(p["person_id"]) in (absences or {}).get("doubtful", {}) else "")
+        if mark_abs:
+            players[-1]["tooltip"] = (players[-1]["tooltip"] + " | " if players[-1]["tooltip"] else "") + f"Ausfall-Auswahl: {mark_abs} (siehe „Ausfälle“; die Tabelle zeigt weiter den ursprünglichen Snapshot)"
     if sort == "minutes":
         players.sort(key=lambda p: (-(p["minutes"] if p["minutes"] is not None else -1), p["name"]))
     elif sort == "diff":
@@ -217,6 +220,56 @@ def bet_card_html(bet: dict, live, game_label: str, game_clock_label: str | None
     note_html = f"<div class='pl-bet-line pl-bet-note'>⚠ {escape('; '.join(notes))}</div>" if notes else ""
     return (f"<div class='pl-bet'><div class='pl-bet-head'><span class='pl-bet-name'>{title}</span><span class='lv-st lv-st-{color}'>{escape(chip)}</span></div>"
             f"<div class='pl-bet-line'>{line1}</div>" + (f"<div class='pl-bet-line'>{detail}</div>" if detail else "") + note_html + "</div>")
+
+
+# ----------------------------------------------------------------------------------------------- Ausfaelle (Stufe 4): Vergleich ursprünglich gegen neu
+def build_compare_model(base: dict | None, variant: dict, mode: str = "team") -> dict:
+    """Vergleich des urspruenglichen Snapshots (base, darf None sein) mit der Variante mit Ausfaellen (Eintrag im Snapshot-Format). Je Spieler der Variante: Minuten/Punkte alt und neu,
+    je Meilenstein Quote, Buchmacher, Modell alt und neu, Aenderung (neu minus alt) und Differenz neu gegen Buchmacher (Prozentpunkte, Markierung wie in der Tabelle)."""
+    old = build_table_model(base, mode, "team")["players"] if base else []
+    new = build_table_model(variant, mode, "team")["players"]
+    old_by = {p["person_id"]: p for p in old}
+    out = []
+    for p in new:
+        o = old_by.get(p["person_id"])
+        rows = []
+        for r in p["rows"]:
+            ro = next((x for x in (o["rows"] if o else []) if x["n"] == r["n"]), None)
+            delta = None if (ro is None or ro["model_pct"] is None or r["model_pct"] is None) else r["model_pct"] - ro["model_pct"]
+            rows.append({**r, "model_old_pct": None if ro is None else ro["model_pct"], "delta": delta})
+        flag = "fehlt" if "fehlt" in (p["tooltip"] or "") and not p["ok"] else ("fraglich" if "fraglich" in (p["tooltip"] or "") else "")
+        out.append({**p, "rows": rows, "minutes_old": None if o is None else o["minutes"], "points_old": None if o is None else o["points"], "flag": flag})
+    return {"players": out, "mode": mode}
+
+
+def render_compare_html(model: dict) -> str:
+    head = ("<thead><tr><th class='l'>Spieler</th><th class='l'>Team</th><th>Min<small> alt → neu</small></th><th>Pkt<small> alt → neu</small></th><th>Meilenstein</th><th>Quote</th>"
+            f"<th>Buchmacher<small> inkl. Marge</small></th><th>Modell alt<small> {UNVERIFIED.lower()}</small></th><th>Modell neu<small> {UNVERIFIED.lower()}</small></th><th>Änderung<small> PP</small></th>"
+            "<th>Differenz neu<small> PP</small></th></tr></thead>")
+    pair = lambda a, b: f"{fmt_min(a)} → {fmt_min(b)}"
+    body = []
+    for p in model["players"]:
+        n = max(1, len(p["rows"]))
+        tag = {"fehlt": " <span class='pl-m'>fehlt</span>", "fraglich": " <span class='pl-m'>fraglich</span>"}.get(p["flag"], "")
+        sym = f" <span class='pl-q' title='{escape(p['tooltip'], quote=True)}'>⚠</span>" if p["tooltip"] else ""
+        first = (f"<td class='l pl-name' rowspan='{n}'>{escape(p['name'])}{tag}{sym}</td><td class='l' rowspan='{n}'>{escape(p['abbr'] or '')}</td>"
+                 f"<td rowspan='{n}'>{pair(p['minutes_old'], p['minutes'])}</td><td rowspan='{n}'>{pair(p['points_old'], p['points'])}</td>")
+        trs = []
+        for i, r in enumerate(p["rows"] or [None]):
+            cells = first if i == 0 else ""
+            if r is None:
+                cells += "<td colspan='7' class='pl-none'>keine Meilensteine eingelesen</td>"
+            else:
+                old_t = "–" if r["model_old_pct"] is None else f"{r['model_old_pct']} %"
+                new_t = "–" if r["model_pct"] is None else f"{r['model_pct']} %"
+                dl = "–" if r["delta"] is None else fmt_num(r["delta"], 0, signed=True)
+                diff = "–" if r["diff"] is None else fmt_num(r["diff"], 1, signed=True)
+                mark = f" <span class='pl-m'>{r['mark']}</span>" if r["mark"] else ""
+                cells += (f"<td>{r['n']}+</td><td>{fmt_num(r['odds'], 2)}</td><td>{r['buch_pct']} %</td><td>{old_t}</td><td>{new_t}</td><td>{dl}</td>"
+                          f"<td class='pl-diff{' pl-mark' if r['mark'] else ''}'>{diff}{mark}</td>")
+            trs.append(f"<tr class='{'pl-first' if i == 0 else ''}'>{cells}</tr>")
+        body.append("<tbody class='pl-p'>" + "".join(trs) + "</tbody>")
+    return f"<div class='pl-wrap'><table class='pl-table'>{head}{''.join(body)}</table></div>"
 
 
 PLAYER_CSS = _css()

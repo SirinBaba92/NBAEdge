@@ -25,6 +25,8 @@ from engine import player_snapshots as psn
 from ui import live_tab as lt
 from ui import player_view as pv
 from ui.live_card import LIVE_CSS, flat
+from data import absences_store as ab
+from ui.player_absence import render_absences
 from ui.player_bet_entry import render_player_bet_entry
 from ui.score_cards import CARD_CSS
 
@@ -175,7 +177,7 @@ def _snapshot_notes(entry: dict) -> None:
 
 def _render_table(key: str, entry: dict, mode: str, sort: str, state) -> None:
     game = game_for_key(state, key)
-    model = pv.build_table_model(entry, mode, sort, ds.get_player_bets_by_key(key), live_table_data(game, entry))
+    model = pv.build_table_model(entry, mode, sort, ds.get_player_bets_by_key(key), live_table_data(game, entry), ab.get(key))
     if game is not None and game.clock.is_live:
         score = f"{game.away_score} : {game.home_score} ({game.clock_label}, Abstand {abs(game.home_score - game.away_score)})"
         extra = " · Stand von " + game.source if game.source != "NBA.com" else ""
@@ -214,6 +216,7 @@ def _forecast_view() -> None:
     if msg:
         (st.success if msg[0] == "ok" else st.error)(msg[1])
     entry = ds.load_forecast_snapshot(key)
+    mode = "team"
     if entry is None:
         st.info("Für dieses Spiel gibt es noch keinen Prognose-Snapshot." + (" Das Spiel hat bereits begonnen: ein jetzt erstellter Snapshot ist nur eingeschränkt aussagekräftig." if started(key) else ""))
         st.button("Prognose jetzt erstellen", key=f"pl_create_{key}", on_click=_create_clicked, args=(key,),
@@ -233,6 +236,7 @@ def _forecast_view() -> None:
         st.caption(f"◀ Modell mindestens {pv.fmt_num(pv.MARK_PP, 0)} Prozentpunkte über dem Buchmacher, ▼ darunter. Differenz = Modell minus Buchmacher-Chance (inkl. Marge), aus ungerundeten Werten. "
                    "⚠ bewegt man die Maus darüber: Datenqualität und Hinweise. 🎯 = meine Wette.")
     render_player_bet_entry(key, entries)
+    render_absences(key, entries, entry, mode)
 
 
 def render_player_tab() -> None:

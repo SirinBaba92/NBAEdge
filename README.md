@@ -84,7 +84,8 @@ Die Datei `.env` liegt im Projektordner. **Niemals veröffentlichen oder in ein 
 | **🎯 Value Bets** | Vergleicht die Modell-Wahrscheinlichkeit mit den Quoten der Buchmacher und zeigt Wetten mit positivem Erwartungswert (EV) samt Kelly-Einsatz. Gruppiert nach Spiel |
 | **📊 Score Projections** | Projizierter Endstand pro Spiel (Home/Away), Spread und Total, verglichen mit den Markt-Linien. Warnung, wenn Modell und Markt stark abweichen (mögliche Verletzung prüfen) |
 | **🔴 Live Projection** | Live-Analyse laufender Spiele: Team-Total-Projektion, Quarter Over/Under, Quarter Team Total, Player Props (Pre-Game), Live-Bet-Log. Quelle `LIVE` (NBA-Daten) oder `MOCK` (Testdaten, mit Replay-Modus) |
-| **🎯 Live Bet Tracker** | Eigene „Points Over“-Wetten auf Spieler eintragen und live gegen die Boxscore-Punkte verfolgen |
+| **🎯 Live Bet Tracker** | Eigene „Points Over“-Wetten auf Spieler eintragen und live gegen die Boxscore-Punkte verfolgen (alt) |
+| **🏃 Spieler** | Spieler-Punkte (Over „mindestens N“, Betano-Meilensteine): Prognose gegen die Buchmacher-Chance (UNGEPRÜFT), eigene Spieler-Wetten eintragen und live verfolgen (Status, Live-Chance), Ausfälle (fehlt/fraglich) mit Neuberechnung |
 | **📰 Lineup News** | Aktuelle Verletzungs-/Lineup-News je Team (nur mit `NEWS_API_KEY`) |
 | **📅 History** | Vergleicht vergangene Projektionen mit echten Ergebnissen (1–14 Tage), zeigt Hit Rate, Team-Bias-Tracking, CSV-Download und die Self-Correction |
 | **📈 ELO Rankings** | Balkendiagramm der Team-ELO-Werte |
@@ -296,8 +297,22 @@ Das Skript fragt „Model already exists. Retrain? [y/N]“ – mit `y` bestäti
 - **Saisonpause:** Zwischen Juni und Oktober gibt es keine Spiele. Dann sind Value Bets, Projektionen, History und der Live-Tab (`LIVE`) leer, und der Live-Tab meldet `403 Forbidden` von der NBA-Adresse. Das ist normal. Zum Testen die Quelle **MOCK** wählen.
 - **Live-Bet-Tracker** liest `data/live_bets.json` mit relativem Pfad. Die App deshalb immer **aus dem Projektordner** starten (`cd ~/Desktop/NBAEdge`).
 - **Live-Bet-Tracker** unterstützt aktuell nur den Typ `points_over`.
+- **Spieler-Tab ist UNGEPRÜFT:** Prognose, Teamabgleich und Live-Chance (Version `live-1`) sind noch nicht gegen Ergebnisse geprüft (Auswertung: `venv/bin/python analysis/eval_player_forecasts.py <Tag>`, braucht die Snapshots und beendete Spiele). Die Markierungen ◀/▼ sind keine Wettempfehlung. Ausfälle von Mitspielern, Gegner und Tempo kennt die Prognose nur, soweit du „fehlt“ einträgst.
+- **NBA.com-Scoreboard kann hinterherhinken oder einfrieren** (Vorfall 23.10.2026): der Live-Feed nimmt dann den Boxscore (oder ESPN) als Ersatzquelle und sagt es in der Statuszeile. Der Recorder nutzt weiter nur das Scoreboard für Phasen; hängt es bis zum Spielende, fehlen `final_box`/`result.json` (die Boxscore-Reihe bleibt vollständig).
 - **Lineup-Warnung**: Weicht das Modell um 10+ Punkte vom Markt-Total ab, fehlt meist ein Spieler im Modell. Vor einer Wette Verletzungen prüfen.
 - **Backtest-Trefferquote**: Frühere Versionen zeigten „57,8 %“ in der Sidebar. Dieser Wert war fest eingetragen und ist in der aktuellen Version nicht mehr enthalten. Die tatsächliche Trefferquote zeigt der Tab **History**.
+
+---
+
+## ✅ To-do (Stand 23.10.2026)
+
+- **Backtest der Spieler-Prognose** (eigener Baustein): Snapshots der Spieltage sammeln und mit `analysis/eval_player_forecasts.py` auswerten, bevor das Wort „ungeprüft“ fällt; historischen Spread je Spiel für den Rückblick ergänzen.
+- **Live-Chance `live-1` prüfen und kalibrieren** (Foul-, Blowout- und Ausfall-Abschläge sind feste Annahmen); bei Änderung neue Versionsnummer (`live-2`).
+- **Nutzungsrate statt gleichmäßigem Teamfaktor:** Der Teamabgleich verteilt Punkte gleichmäßig; Stars bekommen dadurch zu wenig (Beispiel Mitchell). Auch die Verteilung bei „fehlt“ nutzt nur Minuten und den Teamfaktor.
+- **Gegner-Verteidigung und Tempo** in der Spieler-Prognose; Einsatzwahrscheinlichkeit (spielt der Spieler überhaupt?) und Verletzungsliste als Datenquelle statt Handeingabe.
+- **Recorder:** Phasen nicht nur aus dem Scoreboard ableiten (Boxscore als zweite Quelle), damit `final_box`/`result.json` auch bei hängendem Scoreboard entstehen.
+- **Spieler-Tab:** Karten-Reihenfolge der Spiele nach Anpfiff im Tab, Teamfaktoren-Hinweise kürzer; „Live Bet Tracker“ (alt) und das CSV-Protokoll stilllegen, sobald der Spieler-Tab sich bewährt.
+- Tests, die echte Tracking-Dateien vor/nach vergleichen, schlagen an, wenn die App währenddessen schreibt: Gesamtlauf der Tests möglichst bei geschlossener App.
 
 ---
 
@@ -315,6 +330,7 @@ Das Skript fragt „Model already exists. Retrain? [y/N]“ – mit `y` bestäti
 
 | Datum | Änderung |
 |---|---|
+| 23.10.2026 | **Spieler-Tab (P1–P9) und Live-Feed:** (1) `engine/player_odds.py` Buchmacher-Chance aus Betano-Meilensteinen (1/Quote, inkl. Marge); (2) `data/player_history.py` lokaler Spielverlauf je Saison (`data/cache/player_games_<Saison>.json`, ein Abruf je Saison, Recorder-Boxscores als Ergänzung); (3) `engine/player_forecast.py` Punkte-Prognose (Minuten, Blowout-Kurve aus 2025-26, Verteilung, Teamabgleich Rotation 10) und Skripte `analysis/print_player_forecast.py` / `analysis/eval_player_forecasts.py` (Prognose-Snapshots `analysis/results/forecast_snapshots/<Tag>.json`, einmal je Spiel); (4) Spieler-Wetten im Wett-Speicher (`player_points`, Dateiversion 2 nur bei Spieler-Wetten), Status, Spielerliste im Live-Feed; (5) neuer Tab **🏃 Spieler** (Stufen 1–4: Prognose-Ansicht, Meine Spieler-Wetten und Eingabe, Live-Bewertung `engine/player_live.py` live-1, Ausfälle `data/absences_store.py` mit Neuberechnung als eigenem Stand `<Tag>.absences.json`); (6) Live-Feed: Final-Abruf nach Spielende (ein Boxscore, `players_complete`), Einfrier-Erkennung und Quellenwahl „immer die neuere Quelle“ (Boxscore gegen Scoreboard, ESPN als Zweitersatz, Statuszeile „Scoreboard hinkt hinterher“) nach dem Vorfall vom 23.10. 01:20 Uhr. **Alle Prognosen und Chancen sind UNGEPRÜFT.** Tests: `test_player_*`, `test_live_feed_*`, `test_eval_player_forecasts`; Regeln 69–86 in `DESIGN_REGELN.md` |
 | 21.10.2026 | Schritt 9b: (1) Korrektur 9a: eigene Linien gelten auch für laufende/beendete Spiele (Vorab-Linien), Cache für gestartete Spiele nur die gespeicherte Vorab-Linie; (2) Score Projections: unter jeder Karte vier Expander SPREAD / TOTAL / TEAM TOTAL Gast / Heim mit Wahrscheinlichkeits-Balken je Linie (`engine/line_probabilities.py`, reine Anzeige, Normalverteilung, eigene Linien oder feste Staffel); (3) Fund im echten Browser: der erste Rerun nach dem Laden baute alle Tab-Inhalte neu auf (Expander wieder zu) – behoben durch `_boot_slot` in `app.py` (gilt auch für die Expander der Pre-Match Eingabe aus Schritt 8); Tests `test_line_probabilities.py`, `browser_score_check.py` |
 | 21.10.2026 | Schritt 9b-2: Zeilen der Expander größer (16 px, Balken 14 px, ≥ 44 px) und einheitliche Hervorhebung: wahrscheinlichere Seite orange mit Plakette (Over/Under, Gast/Heim), andere gedämpft, 50 : 50 ohne Plakette; schmale Ansicht zweizeilig (< 1200 px); Fund: Expander-Zustand wanderte bei geänderter Kartenreihenfolge zum falschen Spiel – behoben mit festem Container je Spiel + CSS-`order`; Test in `browser_score_check.py` |
 | 21.10.2026 | Schritt 9c: Plaketten mit weißer Fettschrift (Hintergrund `#ea580c`, Kontrast 3,56 : 1); Schnappschuss der Projektion vor dem Anpfiff (`data/projection_snapshots.py`, `data/tracking/projection_snapshots.json`, nur bei geändertem Inhalt, ab Anpfiff gesperrt); Endergebnis durch `update_model.py` (Fehler → `WARN`, Modell-Update läuft weiter) bzw. aus `upcoming_cache.json`; Chips „eingetreten / nicht eingetreten / Push“ in den Expander-Zeilen beendeter Spiele (Karte aus dem Schnappschuss, 24 Std.); Auswertung `analysis/eval_snapshots.py`; Tests `test_snapshots.py`, `browser_score_check.py` erweitert |
