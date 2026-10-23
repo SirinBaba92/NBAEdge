@@ -1,6 +1,8 @@
 """Gemeinsame Seitenpruefung fuer AppTest-Tests: JEDER AppTest-Lauf wird auf Streamlit-Exceptions und auf den Streamlit-Satz
 'was created with a default value but also had its value set via the Session State API' geprueft (Zusammenfassung am Ende
 der Testdatei ueber page_checks.bad). Vor jedem Lauf wird Streamlits 'einmal pro Prozess'-Merker zurueckgesetzt."""
+import os as _os
+_os.environ.setdefault("NBAEDGE_ALL_TABS", "1")      # bestehende Tests sehen alle Tabs gleichzeitig (st.tabs); die lazy Navigation prueft tests/test_lazy_tabs.py
 from streamlit.elements.lib import policies
 from streamlit.testing.v1 import AppTest
 

@@ -644,14 +644,33 @@ _tab_labels = [
     "📈 ELO Rankings",
     "✍️ Pre-Match Eingabe",
 ]
-if SHOW_VALUE_BETS:
-    tab1, tab2, tab3, tab_spieltag, live_bet_tab, tab_spieler, tab4, tab5, tab6, tab_pre_match = st.tabs(["🎯 Value Bets"] + _tab_labels)
+# Navigation: Standard ist ein Auswahlelement, das nur den AKTIVEN Bereich rechnet (st.tabs fuehrt immer ALLE Tabs aus: jeder Klick ausserhalb eines Fragments liess z. B. den schweren Pre-Match-Tab
+# mit den Spielerbloecken aller Spiele mitlaufen, und die 30-s-Takte unsichtbarer Tabs liefen weiter). NBAEDGE_ALL_TABS=1 stellt die alten st.tabs wieder her (Pruefungen/Tests, die alle Tabs sehen).
+LAZY_TABS = os.environ.get("NBAEDGE_ALL_TABS") != "1"
+_all_tab_labels = (["🎯 Value Bets"] if SHOW_VALUE_BETS else []) + _tab_labels
+if LAZY_TABS:
+    _active_tab = st.radio("Bereich", _all_tab_labels, horizontal=True, key="main_tab", label_visibility="collapsed")
+    _tab_containers = {}
 else:
-    tab1 = None  # Tab Value Bets ausgeblendet (config/settings.py: SHOW_VALUE_BETS)
-    tab2, tab3, tab_spieltag, live_bet_tab, tab_spieler, tab4, tab5, tab6, tab_pre_match = st.tabs(_tab_labels)
+    _active_tab = None
+    _tab_containers = dict(zip(_all_tab_labels, st.tabs(_all_tab_labels)))
 
-if tab1 is not None:
-    with tab1:
+
+def tab_body(label: str):
+    """Ersatz fuer 'with tab:'  ->  'for _ in tab_body("Name"):'  (gleicher Einrueckungsstand). Lazy: der Rumpf laeuft nur, wenn der Bereich aktiv ist; sonst Streamlit-Tab wie frueher."""
+    if LAZY_TABS:
+        if _active_tab == label:
+            yield
+    else:
+        with _tab_containers[label]:
+            yield
+
+
+# Live-Daten des alten Tabs 'Live (alt)' fuer den alten 'Live Bet Tracker': ist 'Live (alt)' nicht aktiv, gilt der Stand vom letzten Besuch dieses Tabs (Session State)
+live_context = {"live_boxscore": st.session_state.get("alt_live_boxscore") or {}}
+
+if SHOW_VALUE_BETS:
+    for _ in tab_body("🎯 Value Bets"):
         c1, c2 = st.columns([3, 1])
         with c1:
             st.markdown("## 🏀 Value Bet Scanner")
@@ -735,7 +754,7 @@ if tab1 is not None:
                                 unsafe_allow_html=True,
                             )
 
-with tab2:
+for _ in tab_body("📊 Score Projections"):
     st.markdown("## 📊 Score Projections")
     st.caption(
         "Endprojektion = Modell + Vegas-Mischung + Playoff-Modifikator + gespeicherte Team-Bias-Korrektur."
@@ -774,13 +793,13 @@ with tab2:
                     st.markdown(flat_html(render_card_html(_fvm)), unsafe_allow_html=True)
                     render_line_expanders(_fvm, _fh)
 
-with tab_spieltag:
+for _ in tab_body("🏀 Spieltag"):
     render_spieltag_tab()
 
-with tab_spieler:
+for _ in tab_body("🏃 Spieler"):
     render_player_tab()
 
-with tab3:
+for _ in tab_body("🔴 Live (alt)"):
     st.markdown("## 🔴 Live Projection Engine")
 
     live_source_options = ["MOCK"] if OFFLINE_AUDIT_MODE else ["LIVE", "MOCK"]
@@ -950,6 +969,7 @@ with tab3:
         st.caption(f"Live/Replay Analyse übersprungen: {e}")
         live_context = build_live_context(None, live_source)
 
+    st.session_state["alt_live_boxscore"] = live_context.get("live_boxscore") or {}
     default_quarter = int(live_context.get("quarter") or 1)
     default_clock = live_context.get("clock") or "12:00"
     default_home_points = int(live_context.get("score_home") or 0)
@@ -2094,8 +2114,10 @@ with tab3:
                 )
             st.success("Live Bet gespeichert.")
 
-with live_bet_tab:
+for _ in tab_body("🎯 Live Bet Tracker"):
     st.markdown("## 🎯 Live Bet Tracker")
+    if LAZY_TABS:
+        st.caption("Die Live-Punkte stammen vom letzten Besuch des Bereichs „🔴 Live (alt)“ (nur dort wird das Spiel gewählt und der Boxscore geholt). Neuer und genauer: Bereich „🏃 Spieler“.")
 
     with open("data/live_bets.json", "r", encoding="utf-8") as f:
         bets = json.load(f)
@@ -2137,7 +2159,7 @@ with live_bet_tab:
         )
     )
 
-with tab4:
+for _ in tab_body("📰 Lineup News"):
     st.markdown("## 📰 Lineup / Injury News")
     st.caption(
         "Optional: funktioniert automatisch, wenn NEWS_API_KEY in deiner .env steht. Ohne Key bleibt es leer, aber die Lineup-Warnung aus Vegas-Differenzen funktioniert weiter."
@@ -2172,7 +2194,7 @@ with tab4:
                 st.markdown(f"[Artikel öffnen]({a['url']})")
             st.divider()
 
-with tab5:
+for _ in tab_body("📅 History"):
     st.markdown("## 📅 History / Accuracy / Self-Correction")
     days_back = st.slider("Wie viele Tage zurück laden?", 1, 14, 4)
     yday_games = fetch_completed_games(days_back)
@@ -2341,7 +2363,7 @@ with tab5:
                 "text/csv",
             )
 
-with tab6:
+for _ in tab_body("📈 ELO Rankings"):
     st.markdown("## 📈 Team ELO Rankings")
     if engine:
         elo_data = [
@@ -2374,7 +2396,7 @@ with tab6:
         )
         st.plotly_chart(fig, use_container_width=True)
 
-with tab_pre_match:
+for _ in tab_body("✍️ Pre-Match Eingabe"):
     render_pre_match_tab(st.session_state.projections)
 
 render_odds_status(odds_status_slot)

@@ -2,6 +2,8 @@
 install() ersetzt requests.get; jede nicht vorgesehene URL loest einen Fehler aus.
 fresh_env() legt fuer Odds-Cache, Odds-Log und BallDontLie-Cache ein leeres Temp-Verzeichnis an
 (das Projekt-data/ bleibt unberuehrt) und setzt alle Zaehler zurueck."""
+import os as _os
+_os.environ.setdefault("NBAEDGE_ALL_TABS", "1")      # bestehende Tests sehen alle Tabs gleichzeitig (st.tabs); die lazy Navigation prueft tests/test_lazy_tabs.py
 import datetime as dt
 import os
 import tempfile

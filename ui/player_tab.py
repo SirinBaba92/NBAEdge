@@ -32,6 +32,7 @@ from ui.score_cards import CARD_CSS
 
 BERLIN = ZoneInfo("Europe/Berlin")
 AUTO_SECONDS = 30
+TABLE_WINDOW = 5.0                 # Standardansicht der Spielertabelle: Meilensteine bis so viele Punkte neben der erwarteten Punktzahl
 
 
 # ----------------------------------------------------------------------------------------------- Logik (ohne Streamlit testbar)
@@ -73,15 +74,64 @@ def create_snapshot(key: str, entries: dict) -> tuple[str, dict]:
     return psn.create_for_game(key, entries)
 
 
+# ----------------------------------------------------------------------------------------------- Zwischenspeicher (gemeinsame Rechnungen)
+_MEMO: dict = {}
+MEMO_MAX = 24
+
+
+def _sig(path) -> tuple:
+    try:
+        st_ = path.stat()
+        return (st_.st_mtime_ns, st_.st_size)
+    except OSError:
+        return (None, None)
+
+
+def memo(name: str, key, fn):
+    """Kleiner Zwischenspeicher je Name: gleicher Schluessel = gleiches Ergebnis (Rechnungen sind rein). Hoechstens MEMO_MAX Eintraege je Name, aelteste fliegen raus."""
+    bucket = _MEMO.setdefault(name, {})
+    if key in bucket:
+        return bucket[key]
+    val = fn()
+    bucket[key] = val
+    while len(bucket) > MEMO_MAX:
+        bucket.pop(next(iter(bucket)))
+    return val
+
+
+def cached_entries() -> dict:
+    """Pre-Match-Eintraege (data/tracking/pre_match_entries.json, ca. 3 MB) nur neu lesen, wenn sich die Datei aendert. NICHT veraendern."""
+    return memo("entries", _sig(store.store_path()), lambda: store.load()["entries"])
+
+
+def cached_games_with_players(entries: dict) -> list[str]:
+    return memo("games", _sig(store.store_path()), lambda: games_with_players(entries))
+
+
+def cached_snapshot(key: str):
+    """Prognose-Snapshot eines Spiels, nur neu gelesen, wenn sich die Datei aendert. NICHT veraendern."""
+    return memo("snapshot", (key, _sig(ds.forecast_snapshot_path(key.split("|", 1)[0]))), lambda: ds.load_forecast_snapshot(key))
+
+
+def game_signature(game) -> tuple:
+    """Alles, wovon Live-Rechnungen eines Spiels abhaengen (Stand, Uhr, Spielerwerte, Datenzustand): bleibt es gleich, bleibt auch das Ergebnis gleich."""
+    if game is None:
+        return ("kein Spiel",)
+    return (game.game_id, game.home_score, game.away_score, game.clock.phase, game.clock.period, game.clock.seconds_left, bool(getattr(game, "data_stale", False)), game.source,
+            tuple((p.person_id, p.points, p.minutes, p.fouls, p.status, int(p.idle_s)) for p in game.players))
+
+
 def player_bet_rows(state, day_player_bets: dict) -> list[dict]:
     """Spieler-Wetten des Spieltags mit Live-Status: [{'key', 'game' (GameView|None), 'info' (Spieldaten der Wette), 'bets' {person_id: Wette}, 'lives' {person_id: BetLivePlayer}}], nach Anpfiff.
     Spiel nicht im Scoreboard: game None, lives leer (Wetten bleiben sichtbar, ohne Status). Nur lesend."""
     rows = []
     for key, v in sorted(day_player_bets.items(), key=lambda kv: (kv[1]["game"].get("start_utc") or "", kv[0])):
         g = lf.find_game(state, v["game"]["game_date"], v["game"]["home"], v["game"]["away"])
-        snap = ds.load_forecast_snapshot(key)
+        snap = cached_snapshot(key)
         pre = {int(p["person_id"]): p for p in (snap or {}).get("players", [])}
-        rows.append({"key": key, "game": g, "info": v["game"], "bets": v["player_bets"], "lives": ds.evaluate_player_bets(v["player_bets"], g, pre) if g is not None else {}})
+        lives = memo("bet_lives", (key, game_signature(g), repr(sorted((pid, b.get("milestone"), b.get("active", True)) for pid, b in v["player_bets"].items())), id(snap)),
+                     lambda: ds.evaluate_player_bets(v["player_bets"], g, pre)) if g is not None else {}
+        rows.append({"key": key, "game": g, "info": v["game"], "bets": v["player_bets"], "lives": lives})
     return rows
 
 
@@ -91,9 +141,9 @@ def game_for_key(state, key: str):
     return lf.find_game(state, d, home, away)
 
 
-def live_table_data(game, entry: dict) -> dict:
+def live_table_data(game, entry: dict, shown: dict | None = None) -> dict:
     """Live-Werte je Spieler des Snapshots fuer die Tabelle: {person_id: {'points', 'minutes', 'fouls', 'status', 'chances': {N: Anteil}, 'notes', 'out'}}. Nur fuer laufende Spiele mit
-    Spielerliste und nicht auf veralteten Daten, sonst {}. Rechnet engine/player_live.live_chance (UNGEPRUEFT)."""
+    Spielerliste und nicht auf veralteten Daten, sonst {}. Rechnet engine/player_live.live_chance (UNGEPRUEFT). shown: {person_id: {Meilensteine}} - nur diese Zeilen werden gerechnet (Standard: alle)."""
     from engine import player_live as plive
     if game is None or not game.clock.is_live or getattr(game, "data_stale", False) or not game.players:
         return {}
@@ -105,6 +155,8 @@ def live_table_data(game, entry: dict) -> dict:
             continue
         chances, notes, is_out = {}, [], False
         for q in sp.get("quotes") or []:
+            if shown is not None and q["milestone"] not in shown.get(int(sp["person_id"]), ()):
+                continue
             try:
                 lc_ = plive.live_chance(q["milestone"], pl, game.clock, game.home_score, game.away_score, sp)
             except Exception:
@@ -175,14 +227,21 @@ def _snapshot_notes(entry: dict) -> None:
         st.markdown("<div class='pl-info'>Teamabgleich: " + " &nbsp;|&nbsp; ".join(pv.escape(x) for x in lines) + "</div>", unsafe_allow_html=True)
 
 
-def _render_table(key: str, entry: dict, mode: str, sort: str, state) -> None:
+def _render_table(key: str, entry: dict, mode: str, sort: str, state, show_all: bool = False) -> None:
     game = game_for_key(state, key)
-    model = pv.build_table_model(entry, mode, sort, ds.get_player_bets_by_key(key), live_table_data(game, entry), ab.get(key))
+    window = None if show_all else TABLE_WINDOW
+    absences = ab.get(key)
+    model = pv.build_table_model(entry, mode, sort, ds.get_player_bets_by_key(key), None, absences, window)
+    shown = pv.shown_milestones(model)
+    live = memo("live_table", (key, id(entry), mode, window, game_signature(game), repr(sorted((k, tuple(sorted(v))) for k, v in shown.items()))), lambda: live_table_data(game, entry, shown))
+    pv.attach_live(model, live)
     if game is not None and game.clock.is_live:
         score = f"{game.away_score} : {game.home_score} ({game.clock_label}, Abstand {abs(game.home_score - game.away_score)})"
         extra = " · Stand von " + game.source if game.source != "NBA.com" else ""
         st.markdown(f"<div class='pl-info'>Spiel läuft: {pv.escape(game.away_nick)} {pv.escape(score)} {pv.escape(extra)}. Live-Chance = Chance auf den Meilenstein aus Restzeit, erwarteten Minuten (Fouls, Blowout) und Punkten je Minute: UNGEPRÜFT (Version {plive_version()}).</div>", unsafe_allow_html=True)
     st.markdown(flat(pv.render_table_html(model)), unsafe_allow_html=True)
+    if model["hidden_rows"]:
+        st.caption(f"Standardansicht: Meilensteine um die erwartete Punktzahl (±{TABLE_WINDOW:g}) und eigene Wetten; {model['hidden_rows']} weitere Zeilen ausgeblendet („Alle Meilensteine anzeigen“ schaltet sie ein).")
 
 
 def plive_version() -> str:
@@ -191,17 +250,17 @@ def plive_version() -> str:
 
 
 @st.fragment(run_every=AUTO_SECONDS)
-def _table_live(key: str, entry: dict, mode: str, sort: str) -> None:
+def _table_live(key: str, entry: dict, mode: str, sort: str, show_all: bool = False) -> None:
     """Tabelle eines LAUFENDEN Spiels: alle 30 s neu (gemeinsamer Feed), mit Spalten 'Jetzt' und 'Live'."""
     state = lt.pick_state(lf.get_feed(), False, st.session_state.get("sp_auto", True), lt._fragment_rerun())
-    _render_table(key, entry, mode, sort, state)
+    _render_table(key, entry, mode, sort, state, show_all)
 
 
 @st.fragment
 def _forecast_view() -> None:
     """Prognose-Ansicht (Fragment ohne Takt): Spiel waehlen, Tabelle, Umschalter und Sortierung."""
-    entries = store.load()["entries"]
-    days = days_with_players(entries)
+    entries = cached_entries()
+    days = sorted({k.split('|', 1)[0] for k in cached_games_with_players(entries)})
     if not days:
         st.info("Noch keine Spielerquoten gespeichert. Sie kommen aus dem Tab „Pre-Match Eingabe“ (Markt Spielerpunkte / Betano-Import).")
         return
@@ -209,13 +268,13 @@ def _forecast_view() -> None:
     day_default = default_day(days)
     with c1:
         day = st.selectbox("Spieltag", days, index=days.index(day_default), key="pl_day")
-    keys = [k for k in games_with_players(entries) if k.startswith(day + "|")]
+    keys = [k for k in cached_games_with_players(entries) if k.startswith(day + "|")]
     with c2:
         key = st.selectbox("Spiel", keys, format_func=game_label, key=f"pl_game_{day}")
     msg = st.session_state.pop("pl_msg", None)
     if msg:
         (st.success if msg[0] == "ok" else st.error)(msg[1])
-    entry = ds.load_forecast_snapshot(key)
+    entry = cached_snapshot(key)
     mode = "team"
     if entry is None:
         st.info("Für dieses Spiel gibt es noch keinen Prognose-Snapshot." + (" Das Spiel hat bereits begonnen: ein jetzt erstellter Snapshot ist nur eingeschränkt aussagekräftig." if started(key) else ""))
@@ -223,16 +282,18 @@ def _forecast_view() -> None:
                   help="Rechnet die Prognose für dieses Spiel (ca. 10 Sekunden, kein Netzabruf) und speichert sie einmalig als Snapshot.")
     else:
         _snapshot_notes(entry)
-        o1, o2 = st.columns(2)
+        o1, o2, o3 = st.columns([1, 1, 1])
+        with o3:
+            show_all = st.toggle("Alle Meilensteine anzeigen", value=False, key="pl_all", help=f"Aus: nur Meilensteine um die erwartete Punktzahl (±{TABLE_WINDOW:g}) und eigene Wetten (kleinere, schnellere Tabelle).")
         with o1:
             mode = st.radio("Modell", list(pv.MODES), format_func=pv.MODES.get, horizontal=True, key="pl_mode", help="Teamabgleich: Summe der Spieler an den Teampunkten des Spielmodells ausgerichtet. roh: Einzelprognose ohne Abgleich.")
         with o2:
             sort = st.radio("Sortierung", list(pv.SORTS), format_func=pv.SORTS.get, horizontal=True, key="pl_sort")
         game = game_for_key(lf.get_feed().state(), key)
         if game is not None and game.clock.is_live:
-            _table_live(key, entry, mode, sort)                          # laufendes Spiel: Tabelle mit Live-Spalten im 30-s-Takt
+            _table_live(key, entry, mode, sort, show_all)                # laufendes Spiel: Tabelle mit Live-Spalten im 30-s-Takt
         else:
-            _render_table(key, entry, mode, sort, lf.get_feed().state())
+            _render_table(key, entry, mode, sort, lf.get_feed().state(), show_all)
         st.caption(f"◀ Modell mindestens {pv.fmt_num(pv.MARK_PP, 0)} Prozentpunkte über dem Buchmacher, ▼ darunter. Differenz = Modell minus Buchmacher-Chance (inkl. Marge), aus ungerundeten Werten. "
                    "⚠ bewegt man die Maus darüber: Datenqualität und Hinweise. 🎯 = meine Wette.")
     render_player_bet_entry(key, entries)

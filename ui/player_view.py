@@ -43,10 +43,10 @@ def quality_text(player: dict) -> str:
     return " | ".join(parts)
 
 
-def build_table_model(entry: dict, mode: str = "team", sort: str = "team", bets: dict | None = None, live: dict | None = None, absences: dict | None = None) -> dict:
+def build_table_model(entry: dict, mode: str = "team", sort: str = "team", bets: dict | None = None, live: dict | None = None, absences: dict | None = None, window: float | None = None) -> dict:
     """Anzeigewerte aus einem Snapshot-Eintrag (ein Spiel). mode: 'team' (Teamabgleich) oder 'raw'; sort: 'team' | 'minutes' | 'diff'.
     Rueckgabe {'players': [{person_id, name, team, abbr, ok, minutes, points, tooltip, rows: [{n, odds, bookmaker, buch_pct, model_pct, diff, mark}], max_diff}], 'mode', 'sort'}.
-    Die Differenz wird aus ungerundeten Werten gerechnet (Modell minus Buchmacher-Chance inkl. Marge, in Prozentpunkten). bets: aktive Spieler-Wetten {person_id: Wette} (Marker am Namen). live: {person_id: {'points', 'minutes', 'fouls', 'status', 'chances': {N: Anteil}, 'notes': [...], 'out': bool}} fuer laufende Spiele (Spalten 'Jetzt' und 'Live')."""
+    Die Differenz wird aus ungerundeten Werten gerechnet (Modell minus Buchmacher-Chance inkl. Marge, in Prozentpunkten). bets: aktive Spieler-Wetten {person_id: Wette} (Marker am Namen). window: Standardansicht verkleinert die Tabelle: je Spieler nur die Meilensteine mit |N - erwartete Punkte| <= window plus die Meilensteine eigener Wetten (None = alle; Spieler ohne Prognose zeigen alle). live: {person_id: {'points', 'minutes', 'fouls', 'status', 'chances': {N: Anteil}, 'notes': [...], 'out': bool}} fuer laufende Spiele (Spalten 'Jetzt' und 'Live')."""
     team_mode = mode != "raw"
     players = []
     for p in entry.get("players", []):
@@ -62,10 +62,16 @@ def build_table_model(entry: dict, mode: str = "team", sort: str = "team", bets:
         else:
             minutes = p["minutes_adjusted"] if team_mode else p["minutes"]["mean"]
             points = p["expected_points_adjusted"] if team_mode else p["expected_points_raw"]
+        hidden = 0
+        if window is not None and p.get("ok"):
+            center = p["expected_points_adjusted"] if team_mode else p["expected_points_raw"]
+            bet_n = {int(b["milestone"]) for b in [(bets or {}).get(int(p["person_id"]))] if b}
+            keep = [r for r in rows if abs(r["n"] - center) <= window or r["n"] in bet_n]
+            hidden, rows = len(rows) - len(keep), keep
         diffs = [abs(r["diff"]) for r in rows if r["diff"] is not None]
         players.append({"person_id": p["person_id"], "name": p["name"], "team": p.get("team"), "abbr": p.get("team_abbreviation") or "", "ok": bool(p.get("ok")),
                         "minutes": minutes, "points": points, "tooltip": quality_text(p), "rows": rows, "max_diff": max(diffs) if diffs else -1.0,
-                        "bet": (bets or {}).get(int(p["person_id"])), "live": (live or {}).get(int(p["person_id"]))})
+                        "bet": (bets or {}).get(int(p["person_id"])), "live": (live or {}).get(int(p["person_id"])), "hidden_rows": hidden})
         mark_abs = ("fehlt" if int(p["person_id"]) in (absences or {}).get("out", {}) else "fraglich" if int(p["person_id"]) in (absences or {}).get("doubtful", {}) else "")
         if mark_abs:
             players[-1]["tooltip"] = (players[-1]["tooltip"] + " | " if players[-1]["tooltip"] else "") + f"Ausfall-Auswahl: {mark_abs} (siehe „Ausfälle“; die Tabelle zeigt weiter den ursprünglichen Snapshot)"
@@ -75,7 +81,20 @@ def build_table_model(entry: dict, mode: str = "team", sort: str = "team", bets:
         players.sort(key=lambda p: (-p["max_diff"], p["name"]))
     else:
         players.sort(key=lambda p: (p["team"] or "", -(p["minutes"] if p["minutes"] is not None else -1), p["name"]))
-    return {"players": players, "mode": mode, "sort": sort, "live": bool(live)}
+    return {"players": players, "mode": mode, "sort": sort, "live": bool(live), "window": window, "hidden_rows": sum(p["hidden_rows"] for p in players)}
+
+
+def shown_milestones(model: dict) -> dict:
+    """{person_id: {Meilensteine}} der angezeigten Zeilen (damit die Live-Chancen nur dafuer gerechnet werden)."""
+    return {p["person_id"]: {r["n"] for r in p["rows"]} for p in model["players"]}
+
+
+def attach_live(model: dict, live: dict | None) -> dict:
+    """Live-Werte nachtraeglich in ein fertiges Tabellenmodell eintragen (Spalten 'Jetzt' und 'Live')."""
+    for p in model["players"]:
+        p["live"] = (live or {}).get(int(p["person_id"]))
+    model["live"] = bool(live)
+    return model
 
 
 def team_lines(entry: dict) -> list[str]:
