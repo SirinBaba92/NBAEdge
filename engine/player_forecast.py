@@ -120,6 +120,16 @@ def blowout_factor(base_minutes: float, team_spread: float = 0.0) -> float:
     return _expected_factor(role, float(team_spread), SPREAD_SIGMA) / _REF[role]
 
 
+def blowout_factor_live(base_minutes: float, margin: float, remaining_seconds: float) -> float:
+    """Live-Erwartungsfaktor fuer die Gesamtminuten (gleiche gemessene Kurve BLOWOUT_CURVE wie vor dem Spiel): Der Endabstand ist Normal(aktueller Abstand, Streuung der Restzeit),
+    Streuung = SPREAD_SIGMA * sqrt(Restzeit / 48 Min.), mindestens 0,5. margin = Punktabstand (Betrag zaehlt). Bank: 1,0. UNGEPRUEFT."""
+    role = role_for_minutes(base_minutes)
+    if role not in BLOWOUT_CURVE:
+        return 1.0
+    sigma = max(0.5, SPREAD_SIGMA * math.sqrt(max(0.0, remaining_seconds) / (TEAM_MINUTES * 60.0 / 5.0)))
+    return _expected_factor(role, float(margin), sigma) / _REF[role]
+
+
 # ----------------------------------------------------------------------------- Kontext aus dem Schnappschuss
 def context_for_game(game_key: str) -> dict:
     """Spread/Total/Teampunkte des Spielmodells aus dem letzten Schnappschuss des Spiels (nur lesen). {'found', 'exp_spread' (positiv = Heim staerker), 'exp_total',

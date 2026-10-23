@@ -77,8 +77,40 @@ def player_bet_rows(state, day_player_bets: dict) -> list[dict]:
     rows = []
     for key, v in sorted(day_player_bets.items(), key=lambda kv: (kv[1]["game"].get("start_utc") or "", kv[0])):
         g = lf.find_game(state, v["game"]["game_date"], v["game"]["home"], v["game"]["away"])
-        rows.append({"key": key, "game": g, "info": v["game"], "bets": v["player_bets"], "lives": ds.evaluate_player_bets(v["player_bets"], g) if g is not None else {}})
+        snap = ds.load_forecast_snapshot(key)
+        pre = {int(p["person_id"]): p for p in (snap or {}).get("players", [])}
+        rows.append({"key": key, "game": g, "info": v["game"], "bets": v["player_bets"], "lives": ds.evaluate_player_bets(v["player_bets"], g, pre) if g is not None else {}})
     return rows
+
+
+def game_for_key(state, key: str):
+    """Spiel des Live-Feeds zu einem game_key (Spieltag + Spitznamen), sonst None."""
+    d, _, home, away = key.split("|")[:4]
+    return lf.find_game(state, d, home, away)
+
+
+def live_table_data(game, entry: dict) -> dict:
+    """Live-Werte je Spieler des Snapshots fuer die Tabelle: {person_id: {'points', 'minutes', 'fouls', 'status', 'chances': {N: Anteil}, 'notes', 'out'}}. Nur fuer laufende Spiele mit
+    Spielerliste und nicht auf veralteten Daten, sonst {}. Rechnet engine/player_live.live_chance (UNGEPRUEFT)."""
+    from engine import player_live as plive
+    if game is None or not game.clock.is_live or getattr(game, "data_stale", False) or not game.players:
+        return {}
+    by_id = {int(p.person_id): p for p in game.players}
+    out = {}
+    for sp in entry.get("players", []):
+        pl = by_id.get(int(sp["person_id"]))
+        if pl is None:
+            continue
+        chances, notes, is_out = {}, [], False
+        for q in sp.get("quotes") or []:
+            try:
+                lc_ = plive.live_chance(q["milestone"], pl, game.clock, game.home_score, game.away_score, sp)
+            except Exception:
+                continue
+            chances[q["milestone"]] = lc_.probability
+            notes, is_out = list(lc_.notes), is_out or lc_.out
+        out[int(sp["person_id"])] = {"points": pl.points, "minutes": pl.minutes, "fouls": pl.fouls, "status": pl.status, "chances": chances, "notes": notes, "out": is_out}
+    return out
 
 
 def bets_summary(rows: list[dict]) -> dict:
@@ -141,6 +173,28 @@ def _snapshot_notes(entry: dict) -> None:
         st.markdown("<div class='pl-info'>Teamabgleich: " + " &nbsp;|&nbsp; ".join(pv.escape(x) for x in lines) + "</div>", unsafe_allow_html=True)
 
 
+def _render_table(key: str, entry: dict, mode: str, sort: str, state) -> None:
+    game = game_for_key(state, key)
+    model = pv.build_table_model(entry, mode, sort, ds.get_player_bets_by_key(key), live_table_data(game, entry))
+    if game is not None and game.clock.is_live:
+        score = f"{game.away_score} : {game.home_score} ({game.clock_label}, Abstand {abs(game.home_score - game.away_score)})"
+        extra = " · Stand von " + game.source if game.source != "NBA.com" else ""
+        st.markdown(f"<div class='pl-info'>Spiel läuft: {pv.escape(game.away_nick)} {pv.escape(score)} {pv.escape(extra)}. Live-Chance = Chance auf den Meilenstein aus Restzeit, erwarteten Minuten (Fouls, Blowout) und Punkten je Minute: UNGEPRÜFT (Version {plive_version()}).</div>", unsafe_allow_html=True)
+    st.markdown(flat(pv.render_table_html(model)), unsafe_allow_html=True)
+
+
+def plive_version() -> str:
+    from engine import player_live as plive
+    return plive.LIVE_VERSION
+
+
+@st.fragment(run_every=AUTO_SECONDS)
+def _table_live(key: str, entry: dict, mode: str, sort: str) -> None:
+    """Tabelle eines LAUFENDEN Spiels: alle 30 s neu (gemeinsamer Feed), mit Spalten 'Jetzt' und 'Live'."""
+    state = lt.pick_state(lf.get_feed(), False, st.session_state.get("sp_auto", True), lt._fragment_rerun())
+    _render_table(key, entry, mode, sort, state)
+
+
 @st.fragment
 def _forecast_view() -> None:
     """Prognose-Ansicht (Fragment ohne Takt): Spiel waehlen, Tabelle, Umschalter und Sortierung."""
@@ -171,8 +225,11 @@ def _forecast_view() -> None:
             mode = st.radio("Modell", list(pv.MODES), format_func=pv.MODES.get, horizontal=True, key="pl_mode", help="Teamabgleich: Summe der Spieler an den Teampunkten des Spielmodells ausgerichtet. roh: Einzelprognose ohne Abgleich.")
         with o2:
             sort = st.radio("Sortierung", list(pv.SORTS), format_func=pv.SORTS.get, horizontal=True, key="pl_sort")
-        model = pv.build_table_model(entry, mode, sort, ds.get_player_bets_by_key(key))
-        st.markdown(flat(pv.render_table_html(model)), unsafe_allow_html=True)
+        game = game_for_key(lf.get_feed().state(), key)
+        if game is not None and game.clock.is_live:
+            _table_live(key, entry, mode, sort)                          # laufendes Spiel: Tabelle mit Live-Spalten im 30-s-Takt
+        else:
+            _render_table(key, entry, mode, sort, lf.get_feed().state())
         st.caption(f"◀ Modell mindestens {pv.fmt_num(pv.MARK_PP, 0)} Prozentpunkte über dem Buchmacher, ▼ darunter. Differenz = Modell minus Buchmacher-Chance (inkl. Marge), aus ungerundeten Werten. "
                    "⚠ bewegt man die Maus darüber: Datenqualität und Hinweise. 🎯 = meine Wette.")
     render_player_bet_entry(key, entries)

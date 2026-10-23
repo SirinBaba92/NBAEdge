@@ -82,6 +82,8 @@ class PlayerLive:
     fouls: int
     status: str                        # "spielt" (auf dem Feld) | "bank" (noch nicht oder gerade nicht auf dem Feld) | "nicht gespielt" (laut Boxscore inaktiv)
     played: bool                       # hat bereits Spielzeit
+    idle_s: float = 0.0                # Spielzeit (Sekunden) seit seinem letzten Einsatz, 0 = auf dem Feld oder noch nie gespielt (aus dem Verlauf der Boxscores, Live-Bewertung P4)
+    reason: str = ""                   # Grund laut Boxscore, falls nicht im Einsatz (notPlayingReason/-Description), sonst leer
 
 
 @dataclass(frozen=True)
@@ -182,7 +184,7 @@ def players_from_box(game: dict) -> tuple:
                 inactive = str(p.get("status") or "ACTIVE").upper() == "INACTIVE"
                 status = "spielt" if on else "nicht gespielt" if inactive and not played else "bank"
                 out.append(PlayerLive(int(p["personId"]), str(p.get("name") or ""), side, team.get("teamTricode"), int(st.get("points") or 0), minutes,
-                                      int(st.get("foulsPersonal") or 0), status, played))
+                                      int(st.get("foulsPersonal") or 0), status, played, 0.0, str(p.get("notPlayingReason") or p.get("notPlayingDescription") or "")))
             except (KeyError, TypeError, ValueError):
                 continue
     return tuple(out)
@@ -480,6 +482,23 @@ class LiveFeed:
                 bclock = None
         return poss, players, scores, bclock
 
+    @staticmethod
+    def _with_idle(entry: dict, players: tuple, bclock, gv: GameView) -> tuple:
+        """idle_s je Spieler: Spielzeit seit seiner letzten Minutenaenderung (aus dem Verlauf der Boxscores dieses Spiels; Beginn der Messung = erster Boxscore). Auf dem Feld oder ohne
+        Einsatz: 0. Dient der Erkennung von Ausfaellen im Spiel (engine/player_live.py)."""
+        elapsed = (bclock.elapsed_total_s if bclock is not None else gv.clock.elapsed_total_s)
+        last = entry.setdefault("last_change", {})                                      # person_id -> (Minuten, Spielzeit der letzten Aenderung)
+        out = []
+        for p in players:
+            prev = last.get(p.person_id)
+            if prev is None or prev[0] != p.minutes or p.status == "spielt":
+                last[p.person_id] = (p.minutes, elapsed)
+                idle = 0.0
+            else:
+                idle = max(0.0, elapsed - prev[1]) if p.played else 0.0
+            out.append(replace(p, idle_s=idle))
+        return tuple(out)
+
     def _recorder_final(self, day: str, gid: str) -> dict | None:
         """final_box.json.gz des Recorders (NUR LESEN, kein Netz), falls vorhanden: ~/NBAEdge_live_history (oder NBAEDGE_LIVE_DIR)/<Tag>/<game_id>/. Unlesbar oder fehlend: None."""
         import gzip, json, os
@@ -526,6 +545,7 @@ class LiveFeed:
                 except (KeyError, TypeError, ValueError):
                     res = _Res(200, None, _message(SOURCE_NBA, 200, "format"))
             if res.ok:
+                players = self._with_idle(entry, players, bclock, gv)
                 entry.update(at=t, poss=poss, error=None, players=players, scores=scores, clock=bclock)
                 self._backoff.success()
                 self._next_allowed = float("-inf")

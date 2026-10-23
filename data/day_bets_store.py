@@ -722,13 +722,17 @@ class BetLivePlayer:
     minutes: float | None
     fouls: int | None
     player_status: str | None  # spielt | bank | nicht gespielt
-    probability: float | None  # Live-Chance: leer bis Baustein P4
+    probability: float | None  # Live-Chance (engine/player_live.py, UNGEPRUEFT); None, wenn nicht laufend oder nicht berechenbar
+    live_notes: tuple = ()     # Hinweise zur Live-Chance (Foulprobleme, Blowout, Ausfall im Spiel, fehlende Prognose)
+    live_out: bool = False     # Spieler ausgeschieden/inaktiv bzw. Verdacht auf Ausfall im Spiel
 
 
-def evaluate_player_bets(bets: dict, game) -> dict:
+def evaluate_player_bets(bets: dict, game, pre: dict | None = None) -> dict:
     """Status der Spieler-Wetten eines Spiels. bets: {person_id: Wette}, game: data.live_feed.GameView (mit players/players_complete). Zuordnung ueber person_id (Boxscore-personId).
-    Rueckgabe {person_id: BetLivePlayer}."""
+    pre: {person_id: Spieler aus dem Prognose-Snapshot} fuer die Live-Chance (engine/player_live.py); ohne pre rechnet sie mit allgemeinen Annahmen (Hinweis). Die Live-Chance gibt es nur,
+    solange das Spiel laeuft und die Wette offen ist, und nie auf eingefrorenen Daten (game.data_stale). Rueckgabe {person_id: BetLivePlayer}."""
     from engine import bet_status as bs
+    from engine import player_live as plive
     by_id = {int(p.person_id): p for p in (getattr(game, "players", None) or ())}
     started = bool(game.clock.is_live or game.clock.is_final)
     final = bool(game.clock.is_final)
@@ -738,7 +742,15 @@ def evaluate_player_bets(bets: dict, game) -> dict:
             out[int(pid)] = BetLivePlayer(PLAYER_MARKET, int(pid), bet["name"], bet["milestone"], bet.get("odds"), bet.get("stake"), "Entfernt", "grau", "entfernt", False, None, None,
                                           None, None, None, None, None, None)
             continue
-        st = bs.player_bet_status(bet, by_id.get(int(pid)), started, final, bool(getattr(game, "players_complete", False)))
+        player = by_id.get(int(pid))
+        st = bs.player_bet_status(bet, player, started, final, bool(getattr(game, "players_complete", False)))
+        prob, notes, is_out = st.probability, (), False
+        if st.state == "laeuft" and player is not None and not getattr(game, "data_stale", False):
+            try:
+                lc_ = plive.live_chance(bet["milestone"], player, game.clock, game.home_score, game.away_score, (pre or {}).get(int(pid)))
+                prob, notes, is_out = lc_.probability, lc_.notes, lc_.out
+            except Exception:
+                prob, notes = None, ("Live-Chance nicht berechenbar",)
         out[int(pid)] = BetLivePlayer(PLAYER_MARKET, int(pid), bet["name"], bet["milestone"], bet.get("odds"), bet.get("stake"), st.label, st.color, st.state, st.decided, st.won,
-                                      bs.player_profit(bet, st), st.points, st.needed, st.minutes, st.fouls, st.player_status, st.probability)
+                                      bs.player_profit(bet, st), st.points, st.needed, st.minutes, st.fouls, st.player_status, prob, tuple(notes), bool(is_out))
     return out

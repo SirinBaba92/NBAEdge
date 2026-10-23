@@ -43,10 +43,10 @@ def quality_text(player: dict) -> str:
     return " | ".join(parts)
 
 
-def build_table_model(entry: dict, mode: str = "team", sort: str = "team", bets: dict | None = None) -> dict:
+def build_table_model(entry: dict, mode: str = "team", sort: str = "team", bets: dict | None = None, live: dict | None = None) -> dict:
     """Anzeigewerte aus einem Snapshot-Eintrag (ein Spiel). mode: 'team' (Teamabgleich) oder 'raw'; sort: 'team' | 'minutes' | 'diff'.
     Rueckgabe {'players': [{person_id, name, team, abbr, ok, minutes, points, tooltip, rows: [{n, odds, bookmaker, buch_pct, model_pct, diff, mark}], max_diff}], 'mode', 'sort'}.
-    Die Differenz wird aus ungerundeten Werten gerechnet (Modell minus Buchmacher-Chance inkl. Marge, in Prozentpunkten). bets: aktive Spieler-Wetten {person_id: Wette} (Marker am Namen)."""
+    Die Differenz wird aus ungerundeten Werten gerechnet (Modell minus Buchmacher-Chance inkl. Marge, in Prozentpunkten). bets: aktive Spieler-Wetten {person_id: Wette} (Marker am Namen). live: {person_id: {'points', 'minutes', 'fouls', 'status', 'chances': {N: Anteil}, 'notes': [...], 'out': bool}} fuer laufende Spiele (Spalten 'Jetzt' und 'Live')."""
     team_mode = mode != "raw"
     players = []
     for p in entry.get("players", []):
@@ -65,14 +65,14 @@ def build_table_model(entry: dict, mode: str = "team", sort: str = "team", bets:
         diffs = [abs(r["diff"]) for r in rows if r["diff"] is not None]
         players.append({"person_id": p["person_id"], "name": p["name"], "team": p.get("team"), "abbr": p.get("team_abbreviation") or "", "ok": bool(p.get("ok")),
                         "minutes": minutes, "points": points, "tooltip": quality_text(p), "rows": rows, "max_diff": max(diffs) if diffs else -1.0,
-                        "bet": (bets or {}).get(int(p["person_id"]))})
+                        "bet": (bets or {}).get(int(p["person_id"])), "live": (live or {}).get(int(p["person_id"]))})
     if sort == "minutes":
         players.sort(key=lambda p: (-(p["minutes"] if p["minutes"] is not None else -1), p["name"]))
     elif sort == "diff":
         players.sort(key=lambda p: (-p["max_diff"], p["name"]))
     else:
         players.sort(key=lambda p: (p["team"] or "", -(p["minutes"] if p["minutes"] is not None else -1), p["name"]))
-    return {"players": players, "mode": mode, "sort": sort}
+    return {"players": players, "mode": mode, "sort": sort, "live": bool(live)}
 
 
 def team_lines(entry: dict) -> list[str]:
@@ -93,8 +93,9 @@ def fmt_min(x) -> str:
 
 def render_table_html(model: dict) -> str:
     """HTML-Tabelle: Spieler | Team | Min | Pkt | Meilenstein | Quote | Buchmacher | Modell | Differenz. Ein <tbody> je Spieler."""
-    head = ("<thead><tr><th class='l'>Spieler</th><th class='l'>Team</th><th>Min</th><th>Pkt</th><th>Meilenstein</th><th>Quote</th><th>Buchmacher<small> inkl. Marge</small></th>"
-            f"<th>Modell<small> {UNVERIFIED.lower()}</small></th><th>Differenz<small> PP</small></th></tr></thead>")
+    is_live = bool(model.get("live"))
+    head = ("<thead><tr><th class='l'>Spieler</th><th class='l'>Team</th>" + ("<th>Jetzt<small> Pkt · Min · Fouls</small></th>" if is_live else "") + "<th>Min</th><th>Pkt</th><th>Meilenstein</th><th>Quote</th><th>Buchmacher<small> inkl. Marge</small></th>"
+            f"<th>Modell<small> {UNVERIFIED.lower()}</small></th><th>Differenz<small> PP</small></th>" + (f"<th>Live<small> {UNVERIFIED.lower()}</small></th>" if is_live else "") + "</tr></thead>")
     body = []
     for p in model["players"]:
         sym = f"<span class='pl-q' title='{escape(p['tooltip'], quote=True)}'>⚠</span>" if p["tooltip"] else ""
@@ -102,20 +103,34 @@ def render_table_html(model: dict) -> str:
             b = p["bet"]
             sym += f" <span class='pl-bet-mark' title='Meine Wette: mindestens {b['milestone']} Punkte'>🎯 {b['milestone']}+{'' if b.get('odds') is None else ' @ ' + fmt_num(b['odds'], 2)}</span>"
         n = max(1, len(p["rows"]))
-        first = (f"<td class='l pl-name' rowspan='{n}'>{escape(p['name'])} {sym}</td><td class='l' rowspan='{n}'>{escape(p['abbr'] or '')}</td>"
+        lv = p.get("live")
+        now_cell = ""
+        if is_live:
+            if lv:
+                tip = escape("; ".join(lv.get("notes") or []), quote=True)
+                warn = f" <span class='pl-q' title='{tip}'>⚠</span>" if lv.get("notes") else ""
+                now_cell = f"<td rowspan='{n}'>{lv['points']} · {fmt_num(lv['minutes'], 1)} · {lv['fouls']}{warn}</td>"
+            else:
+                now_cell = f"<td rowspan='{n}'>–</td>"
+        first = (f"<td class='l pl-name' rowspan='{n}'>{escape(p['name'])} {sym}</td><td class='l' rowspan='{n}'>{escape(p['abbr'] or '')}</td>" + now_cell +
                  f"<td rowspan='{n}'>{fmt_min(p['minutes'])}</td><td rowspan='{n}'>{fmt_min(p['points'])}</td>")
         trs = []
         rows = p["rows"] or [None]
         for i, r in enumerate(rows):
             cells = first if i == 0 else ""
             if r is None:
-                cells += "<td colspan='5' class='pl-none'>keine Meilensteine eingelesen</td>"
+                cells += f"<td colspan='{6 if is_live else 5}' class='pl-none'>keine Meilensteine eingelesen</td>"
             else:
                 diff = "–" if r["diff"] is None else fmt_num(r["diff"], 1, signed=True)
                 cls = " pl-mark" if r["mark"] else ""
                 mark = f" <span class='pl-m'>{r['mark']}</span>" if r["mark"] else ""
                 model_txt = "–" if r["model_pct"] is None else f"{r['model_pct']} %"
-                cells += (f"<td>{r['n']}+</td><td>{fmt_num(r['odds'], 2)}</td><td>{r['buch_pct']} %</td><td>{model_txt}</td><td class='pl-diff{cls}'>{diff}{mark}</td>")
+                live_cell = ""
+                if is_live:
+                    ch = (lv or {}).get("chances", {}).get(r["n"])
+                    reached = lv is not None and lv["points"] >= r["n"]
+                    live_cell = "<td class='pl-live'>" + ("erreicht" if reached else "–" if ch is None else f"{pct_int(ch)} %") + "</td>"
+                cells += (f"<td>{r['n']}+</td><td>{fmt_num(r['odds'], 2)}</td><td>{r['buch_pct']} %</td><td>{model_txt}</td><td class='pl-diff{cls}'>{diff}{mark}</td>" + live_cell)
             trs.append(f"<tr class='{'pl-first' if i == 0 else ''}'>{cells}</tr>")
         body.append("<tbody class='pl-p'>" + "".join(trs) + "</tbody>")
     return f"<div class='pl-wrap'><table class='pl-table'>{head}{''.join(body)}</table></div>"
@@ -145,7 +160,9 @@ def _css() -> str:
 .pl-bet-head {{ display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }}
 .pl-bet-name {{ font-size:17px; font-weight:700; color:{P['text']}; }}
 .pl-bet-team {{ font-size:13px; font-weight:400; color:{P['label']}; }}
+.pl-bet-note {{ color:{P['chip_yellow_text']}; }}
 .pl-bet-line {{ font-size:14px; color:{P['text_soft']}; margin-top:4px; font-variant-numeric:tabular-nums; }}
+.pl-live {{ color:{P['text']}; font-weight:600; }}
 .pl-m {{ display:inline-block; min-width:1.2em; text-align:center; background:{P['chip_yellow_bg']}; border:1px solid {P['chip_yellow_border']}; border-radius:6px; font-size:12px; padding:0 4px; }}
 </style>
 """
@@ -196,8 +213,10 @@ def bet_card_html(bet: dict, live, game_label: str, game_clock_label: str | None
         if live.profit is not None:
             parts.append(f"Gewinn/Verlust {fmt_num(live.profit, 2, signed=True)}")
         detail = " · ".join(escape(x) for x in parts)
+    notes = [n for n in (getattr(live, "live_notes", ()) or ())] if live is not None else []
+    note_html = f"<div class='pl-bet-line pl-bet-note'>⚠ {escape('; '.join(notes))}</div>" if notes else ""
     return (f"<div class='pl-bet'><div class='pl-bet-head'><span class='pl-bet-name'>{title}</span><span class='lv-st lv-st-{color}'>{escape(chip)}</span></div>"
-            f"<div class='pl-bet-line'>{line1}</div>" + (f"<div class='pl-bet-line'>{detail}</div>" if detail else "") + "</div>")
+            f"<div class='pl-bet-line'>{line1}</div>" + (f"<div class='pl-bet-line'>{detail}</div>" if detail else "") + note_html + "</div>")
 
 
 PLAYER_CSS = _css()
