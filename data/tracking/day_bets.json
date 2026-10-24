@@ -1,7 +1,7 @@
 {
   "version": 2,
   "format": "nbaedge-day-bets",
-  "updated_at": "2026-10-23T02:12:44+02:00",
+  "updated_at": "2026-10-24T03:42:32+02:00",
   "games": {
     "2026-10-22|2026-10-22T23:00:00Z|Philadelphia 76ers|Cleveland Cavaliers": {
       "game_date": "2026-10-22",
@@ -233,6 +233,2137 @@
           },
           "placed_at": "2026-10-23T02:12:44+02:00",
           "updated_at": "2026-10-23T02:12:44+02:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      }
+    },
+    "2026-10-23|2026-10-23T23:00:00Z|Indiana Pacers|Dallas Mavericks": {
+      "game_date": "2026-10-23",
+      "start_utc": "2026-10-23T23:00:00Z",
+      "home": "Indiana Pacers",
+      "away": "Dallas Mavericks",
+      "bets": {
+        "winner": {
+          "market": "winner",
+          "active": true,
+          "side": "home",
+          "line": null,
+          "odds": 1.36,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "line_ref": null,
+          "placed_at": "2026-10-23T22:39:58+02:00",
+          "updated_at": "2026-10-23T22:39:58+02:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      },
+      "player_bets": {
+        "1642843": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1642843,
+          "name": "Cooper Flagg",
+          "team": "Dallas Mavericks",
+          "milestone": 22,
+          "side": "over",
+          "odds": 1.38,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T20:28:27+02:00",
+            "milestone": 22
+          },
+          "placed_at": "2026-10-23T23:12:13+02:00",
+          "updated_at": "2026-10-23T23:12:13+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1630230": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1630230,
+          "name": "Naji Marshall",
+          "team": "Dallas Mavericks",
+          "milestone": 11,
+          "side": "over",
+          "odds": 1.37,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T20:28:27+02:00",
+            "milestone": 11
+          },
+          "placed_at": "2026-10-23T23:12:22+02:00",
+          "updated_at": "2026-10-23T23:12:22+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1629023": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1629023,
+          "name": "P.J. Washington",
+          "team": "Dallas Mavericks",
+          "milestone": 10,
+          "side": "over",
+          "odds": 1.38,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T16:10:38+02:00",
+            "milestone": 10
+          },
+          "placed_at": "2026-10-23T23:12:31+02:00",
+          "updated_at": "2026-10-23T23:12:31+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1631108": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1631108,
+          "name": "Max Christie",
+          "team": "Dallas Mavericks",
+          "milestone": 8,
+          "side": "over",
+          "odds": 1.33,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T20:28:27+02:00",
+            "milestone": 8
+          },
+          "placed_at": "2026-10-23T23:13:02+02:00",
+          "updated_at": "2026-10-23T23:13:02+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "202681": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 202681,
+          "name": "Kyrie Irving",
+          "team": "Dallas Mavericks",
+          "milestone": 17,
+          "side": "over",
+          "odds": 1.36,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T22:44:45+02:00",
+            "milestone": 17
+          },
+          "placed_at": "2026-10-23T23:13:23+02:00",
+          "updated_at": "2026-10-23T23:13:23+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1630169": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1630169,
+          "name": "Tyrese Haliburton",
+          "team": "Indiana Pacers",
+          "milestone": 16,
+          "side": "over",
+          "odds": 1.34,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T20:28:27+02:00",
+            "milestone": 16
+          },
+          "placed_at": "2026-10-23T23:13:47+02:00",
+          "updated_at": "2026-10-23T23:13:47+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1627783": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1627783,
+          "name": "Pascal Siakam",
+          "team": "Indiana Pacers",
+          "milestone": 22,
+          "side": "over",
+          "odds": 1.45,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T22:44:45+02:00",
+            "milestone": 22
+          },
+          "placed_at": "2026-10-23T23:14:54+02:00",
+          "updated_at": "2026-10-23T23:14:54+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1629614": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1629614,
+          "name": "Andrew Nembhard",
+          "team": "Indiana Pacers",
+          "milestone": 13,
+          "side": "over",
+          "odds": 1.44,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T22:44:45+02:00",
+            "milestone": 13
+          },
+          "placed_at": "2026-10-23T23:15:11+02:00",
+          "updated_at": "2026-10-23T23:15:11+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1630174": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1630174,
+          "name": "Aaron Nesmith",
+          "team": "Indiana Pacers",
+          "milestone": 10,
+          "side": "over",
+          "odds": 1.32,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T22:44:45+02:00",
+            "milestone": 10
+          },
+          "placed_at": "2026-10-23T23:15:18+02:00",
+          "updated_at": "2026-10-23T23:15:18+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1626162": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1626162,
+          "name": "Kelly Oubre Jr.",
+          "team": "Indiana Pacers",
+          "milestone": 8,
+          "side": "over",
+          "odds": 1.3,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T22:44:45+02:00",
+            "milestone": 8
+          },
+          "placed_at": "2026-10-23T23:15:34+02:00",
+          "updated_at": "2026-10-23T23:15:34+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1630167": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1630167,
+          "name": "Obi Toppin",
+          "team": "Indiana Pacers",
+          "milestone": 9,
+          "side": "over",
+          "odds": 1.33,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T22:44:45+02:00",
+            "milestone": 9
+          },
+          "placed_at": "2026-10-23T23:15:42+02:00",
+          "updated_at": "2026-10-23T23:15:42+02:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      }
+    },
+    "2026-10-23|2026-10-23T23:00:00Z|Washington Wizards|Toronto Raptors": {
+      "game_date": "2026-10-23",
+      "start_utc": "2026-10-23T23:00:00Z",
+      "home": "Washington Wizards",
+      "away": "Toronto Raptors",
+      "bets": {
+        "winner": {
+          "market": "winner",
+          "active": true,
+          "side": "away",
+          "line": null,
+          "odds": 1.31,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "line_ref": null,
+          "placed_at": "2026-10-23T22:40:24+02:00",
+          "updated_at": "2026-10-23T22:40:24+02:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      },
+      "player_bets": {
+        "202695": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 202695,
+          "name": "Kawhi Leonard",
+          "team": "Toronto Raptors",
+          "milestone": 22,
+          "side": "over",
+          "odds": 1.52,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T20:29:07+02:00",
+            "milestone": 22
+          },
+          "placed_at": "2026-10-23T23:18:07+02:00",
+          "updated_at": "2026-10-23T23:18:07+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1629628": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1629628,
+          "name": "RJ Barrett",
+          "team": "Toronto Raptors",
+          "milestone": 17,
+          "side": "over",
+          "odds": 1.44,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T22:45:08+02:00",
+            "milestone": 17
+          },
+          "placed_at": "2026-10-23T23:18:20+02:00",
+          "updated_at": "2026-10-23T23:18:20+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "203076": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 203076,
+          "name": "Anthony Davis",
+          "team": "Washington Wizards",
+          "milestone": 19,
+          "side": "over",
+          "odds": 1.32,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T18:11:57+02:00",
+            "milestone": 19
+          },
+          "placed_at": "2026-10-23T23:18:45+02:00",
+          "updated_at": "2026-10-23T23:18:45+02:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      }
+    },
+    "2026-10-23|2026-10-24T02:00:00Z|Golden State Warriors|Memphis Grizzlies": {
+      "game_date": "2026-10-23",
+      "start_utc": "2026-10-24T02:00:00Z",
+      "home": "Golden State Warriors",
+      "away": "Memphis Grizzlies",
+      "bets": {
+        "winner": {
+          "market": "winner",
+          "active": true,
+          "side": "home",
+          "line": null,
+          "odds": 1.57,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "line_ref": null,
+          "placed_at": "2026-10-23T22:40:53+02:00",
+          "updated_at": "2026-10-23T22:40:53+02:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      },
+      "player_bets": {
+        "1641764": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1641764,
+          "name": "Brandin Podziemski",
+          "team": "Golden State Warriors",
+          "milestone": 14,
+          "side": "over",
+          "odds": 1.5,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T22:45:31+02:00",
+            "milestone": 14
+          },
+          "placed_at": "2026-10-24T03:28:30+02:00",
+          "updated_at": "2026-10-24T03:28:30+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1630611": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1630611,
+          "name": "Gui Santos",
+          "team": "Golden State Warriors",
+          "milestone": 10,
+          "side": "over",
+          "odds": 1.4,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T22:45:31+02:00",
+            "milestone": 10
+          },
+          "placed_at": "2026-10-24T03:28:41+02:00",
+          "updated_at": "2026-10-24T03:28:41+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "201939": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 201939,
+          "name": "Stephen Curry",
+          "team": "Golden State Warriors",
+          "milestone": 23,
+          "side": "over",
+          "odds": 1.6,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-24T00:44:26+02:00",
+            "milestone": 23
+          },
+          "placed_at": "2026-10-24T03:28:53+02:00",
+          "updated_at": "2026-10-24T03:28:53+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1642865": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1642865,
+          "name": "Yaxel Lendeborg",
+          "team": "Golden State Warriors",
+          "milestone": 12,
+          "side": "over",
+          "odds": 1.28,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-24T00:44:26+02:00",
+            "milestone": 12
+          },
+          "placed_at": "2026-10-24T03:29:06+02:00",
+          "updated_at": "2026-10-24T03:29:06+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1627780": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1627780,
+          "name": "Gary Payton II",
+          "team": "Golden State Warriors",
+          "milestone": 7,
+          "side": "over",
+          "odds": 1.6,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T16:12:11+02:00",
+            "milestone": 7
+          },
+          "placed_at": "2026-10-24T03:29:22+02:00",
+          "updated_at": "2026-10-24T03:29:22+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "203924": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 203924,
+          "name": "Jerami Grant",
+          "team": "Memphis Grizzlies",
+          "milestone": 12,
+          "side": "over",
+          "odds": 1.36,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T22:45:31+02:00",
+            "milestone": 12
+          },
+          "placed_at": "2026-10-24T03:29:48+02:00",
+          "updated_at": "2026-10-24T03:29:48+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1641744": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1641744,
+          "name": "Zach Edey",
+          "team": "Memphis Grizzlies",
+          "milestone": 8,
+          "side": "over",
+          "odds": 1.26,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T22:45:31+02:00",
+            "milestone": 8
+          },
+          "placed_at": "2026-10-24T03:30:07+02:00",
+          "updated_at": "2026-10-24T03:30:07+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1642285": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1642285,
+          "name": "Cam Spencer",
+          "team": "Memphis Grizzlies",
+          "milestone": 6,
+          "side": "over",
+          "odds": 1.52,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T20:29:31+02:00",
+            "milestone": 6
+          },
+          "placed_at": "2026-10-24T03:30:28+02:00",
+          "updated_at": "2026-10-24T03:30:28+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1630590": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1630590,
+          "name": "Scotty Pippen Jr.",
+          "team": "Memphis Grizzlies",
+          "milestone": 9,
+          "side": "over",
+          "odds": 1.5,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T16:12:11+02:00",
+            "milestone": 9
+          },
+          "placed_at": "2026-10-24T03:30:50+02:00",
+          "updated_at": "2026-10-24T03:30:50+02:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      }
+    },
+    "2026-10-23|2026-10-24T02:00:00Z|Los Angeles Lakers|LA Clippers": {
+      "game_date": "2026-10-23",
+      "start_utc": "2026-10-24T02:00:00Z",
+      "home": "Los Angeles Lakers",
+      "away": "LA Clippers",
+      "bets": {
+        "winner": {
+          "market": "winner",
+          "active": true,
+          "side": "home",
+          "line": null,
+          "odds": 1.26,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "line_ref": null,
+          "placed_at": "2026-10-23T22:41:07+02:00",
+          "updated_at": "2026-10-23T22:41:07+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "total": {
+          "market": "total",
+          "active": true,
+          "side": "over",
+          "line": 224.5,
+          "odds": 1.75,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "line_ref": {
+            "main_line": 225.5,
+            "chosen_line": 224.5,
+            "is_main": false,
+            "source": "Cache",
+            "bookmaker": null,
+            "at": "2026-10-23T22:00:06+02:00"
+          },
+          "placed_at": "2026-10-23T22:42:54+02:00",
+          "updated_at": "2026-10-23T22:42:54+02:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      },
+      "player_bets": {
+        "201572": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 201572,
+          "name": "Brook Lopez",
+          "team": "LA Clippers",
+          "milestone": 9,
+          "side": "over",
+          "odds": 1.52,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-24T01:47:55+02:00",
+            "milestone": 9
+          },
+          "placed_at": "2026-10-24T03:32:08+02:00",
+          "updated_at": "2026-10-24T03:32:08+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1629636": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1629636,
+          "name": "Darius Garland",
+          "team": "LA Clippers",
+          "milestone": 21,
+          "side": "over",
+          "odds": 1.5,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T02:15:57+02:00",
+            "milestone": 21
+          },
+          "placed_at": "2026-10-24T03:32:20+02:00",
+          "updated_at": "2026-10-24T03:32:20+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1627884": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1627884,
+          "name": "Derrick Jones Jr.",
+          "team": "LA Clippers",
+          "milestone": 8,
+          "side": "over",
+          "odds": 1.36,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-24T01:47:55+02:00",
+            "milestone": 8
+          },
+          "placed_at": "2026-10-24T03:32:32+02:00",
+          "updated_at": "2026-10-24T03:32:32+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1643413": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1643413,
+          "name": "Keaton Wagler",
+          "team": "LA Clippers",
+          "milestone": 9,
+          "side": "over",
+          "odds": 1.47,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-24T01:47:55+02:00",
+            "milestone": 9
+          },
+          "placed_at": "2026-10-24T03:32:44+02:00",
+          "updated_at": "2026-10-24T03:32:44+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1627739": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1627739,
+          "name": "Kris Dunn",
+          "team": "LA Clippers",
+          "milestone": 6,
+          "side": "over",
+          "odds": 1.45,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-24T00:44:31+02:00",
+            "milestone": 6
+          },
+          "placed_at": "2026-10-24T03:33:41+02:00",
+          "updated_at": "2026-10-24T03:33:41+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1631117": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1631117,
+          "name": "Walker Kessler",
+          "team": "Los Angeles Lakers",
+          "milestone": 12,
+          "side": "over",
+          "odds": 1.4,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-24T01:47:55+02:00",
+            "milestone": 12
+          },
+          "placed_at": "2026-10-24T03:35:01+02:00",
+          "updated_at": "2026-10-24T03:35:01+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1629656": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1629656,
+          "name": "Quentin Grimes",
+          "team": "Los Angeles Lakers",
+          "milestone": 9,
+          "side": "over",
+          "odds": 1.6,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-24T01:47:55+02:00",
+            "milestone": 9
+          },
+          "placed_at": "2026-10-24T03:35:28+02:00",
+          "updated_at": "2026-10-24T03:35:28+02:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      }
+    },
+    "2026-10-23|2026-10-24T02:00:00Z|Sacramento Kings|Portland Trail Blazers": {
+      "game_date": "2026-10-23",
+      "start_utc": "2026-10-24T02:00:00Z",
+      "home": "Sacramento Kings",
+      "away": "Portland Trail Blazers",
+      "bets": {
+        "winner": {
+          "market": "winner",
+          "active": true,
+          "side": "away",
+          "line": null,
+          "odds": 1.24,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "line_ref": null,
+          "placed_at": "2026-10-23T22:41:21+02:00",
+          "updated_at": "2026-10-23T22:41:21+02:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      },
+      "player_bets": {
+        "1641739": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1641739,
+          "name": "Toumani Camara",
+          "team": "Portland Trail Blazers",
+          "milestone": 9,
+          "side": "over",
+          "odds": 1.45,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T18:12:44+02:00",
+            "milestone": 9
+          },
+          "placed_at": "2026-10-24T03:39:33+02:00",
+          "updated_at": "2026-10-24T03:39:33+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1630166": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1630166,
+          "name": "Deni Avdija",
+          "team": "Portland Trail Blazers",
+          "milestone": 19,
+          "side": "over",
+          "odds": 1.45,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T20:29:42+02:00",
+            "milestone": 19
+          },
+          "placed_at": "2026-10-24T03:39:47+02:00",
+          "updated_at": "2026-10-24T03:39:47+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "201950": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 201950,
+          "name": "Jrue Holiday",
+          "team": "Portland Trail Blazers",
+          "milestone": 9,
+          "side": "over",
+          "odds": 1.35,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T22:45:48+02:00",
+            "milestone": 9
+          },
+          "placed_at": "2026-10-24T03:40:03+02:00",
+          "updated_at": "2026-10-24T03:40:03+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1629630": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1629630,
+          "name": "Ja Morant",
+          "team": "Portland Trail Blazers",
+          "milestone": 15,
+          "side": "over",
+          "odds": 1.52,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-24T00:44:37+02:00",
+            "milestone": 15
+          },
+          "placed_at": "2026-10-24T03:40:15+02:00",
+          "updated_at": "2026-10-24T03:40:15+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1642270": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1642270,
+          "name": "Donovan Clingan",
+          "team": "Portland Trail Blazers",
+          "milestone": 9,
+          "side": "over",
+          "odds": 1.34,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-24T01:48:02+02:00",
+            "milestone": 9
+          },
+          "placed_at": "2026-10-24T03:40:27+02:00",
+          "updated_at": "2026-10-24T03:40:27+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "203081": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 203081,
+          "name": "Damian Lillard",
+          "team": "Portland Trail Blazers",
+          "milestone": 18,
+          "side": "over",
+          "odds": 1.47,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T18:12:44+02:00",
+            "milestone": 18
+          },
+          "placed_at": "2026-10-24T03:40:41+02:00",
+          "updated_at": "2026-10-24T03:40:41+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1643411": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1643411,
+          "name": "Darius Acuff Jr.",
+          "team": "Sacramento Kings",
+          "milestone": 14,
+          "side": "over",
+          "odds": 1.35,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-24T00:44:37+02:00",
+            "milestone": 14
+          },
+          "placed_at": "2026-10-24T03:40:53+02:00",
+          "updated_at": "2026-10-24T03:40:53+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1631099": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1631099,
+          "name": "Keegan Murray",
+          "team": "Sacramento Kings",
+          "milestone": 10,
+          "side": "over",
+          "odds": 1.4,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-24T01:48:02+02:00",
+            "milestone": 10
+          },
+          "placed_at": "2026-10-24T03:41:04+02:00",
+          "updated_at": "2026-10-24T03:41:04+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "203897": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 203897,
+          "name": "Zach LaVine",
+          "team": "Sacramento Kings",
+          "milestone": 17,
+          "side": "over",
+          "odds": 1.52,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-24T01:48:02+02:00",
+            "milestone": 17
+          },
+          "placed_at": "2026-10-24T03:42:24+02:00",
+          "updated_at": "2026-10-24T03:42:24+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1629631": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1629631,
+          "name": "De'Andre Hunter",
+          "team": "Sacramento Kings",
+          "milestone": 9,
+          "side": "over",
+          "odds": 1.34,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-24T01:48:02+02:00",
+            "milestone": 9
+          },
+          "placed_at": "2026-10-24T03:42:32+02:00",
+          "updated_at": "2026-10-24T03:42:32+02:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      }
+    },
+    "2026-10-23|2026-10-23T23:00:00Z|Boston Celtics|New York Knicks": {
+      "game_date": "2026-10-23",
+      "start_utc": "2026-10-23T23:00:00Z",
+      "home": "Boston Celtics",
+      "away": "New York Knicks",
+      "bets": {
+        "total": {
+          "market": "total",
+          "active": true,
+          "side": "over",
+          "line": 219.5,
+          "odds": 1.78,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "line_ref": {
+            "main_line": 221.5,
+            "chosen_line": 219.5,
+            "is_main": false,
+            "source": "Cache",
+            "bookmaker": null,
+            "at": "2026-10-23T22:00:06+02:00"
+          },
+          "placed_at": "2026-10-23T22:41:47+02:00",
+          "updated_at": "2026-10-23T22:41:47+02:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      },
+      "player_bets": {
+        "1630202": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1630202,
+          "name": "Payton Pritchard",
+          "team": "Boston Celtics",
+          "milestone": 13,
+          "side": "over",
+          "odds": 1.4,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T22:44:15+02:00",
+            "milestone": 13
+          },
+          "placed_at": "2026-10-23T23:03:50+02:00",
+          "updated_at": "2026-10-23T23:03:50+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "202331": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 202331,
+          "name": "Paul George",
+          "team": "Boston Celtics",
+          "milestone": 16,
+          "side": "over",
+          "odds": 1.5,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T22:44:15+02:00",
+            "milestone": 16
+          },
+          "placed_at": "2026-10-23T23:04:29+02:00",
+          "updated_at": "2026-10-23T23:04:29+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1629674": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1629674,
+          "name": "Neemias Queta",
+          "team": "Boston Celtics",
+          "milestone": 7,
+          "side": "over",
+          "odds": 1.5,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T22:44:15+02:00",
+            "milestone": 7
+          },
+          "placed_at": "2026-10-23T23:04:48+02:00",
+          "updated_at": "2026-10-23T23:04:48+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1628973": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1628973,
+          "name": "Jalen Brunson",
+          "team": "New York Knicks",
+          "milestone": 23,
+          "side": "over",
+          "odds": 1.53,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T16:08:41+02:00",
+            "milestone": 23
+          },
+          "placed_at": "2026-10-23T23:05:12+02:00",
+          "updated_at": "2026-10-23T23:05:12+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1628404": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1628404,
+          "name": "Josh Hart",
+          "team": "New York Knicks",
+          "milestone": 9,
+          "side": "over",
+          "odds": 1.28,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T22:44:15+02:00",
+            "milestone": 9
+          },
+          "placed_at": "2026-10-23T23:05:40+02:00",
+          "updated_at": "2026-10-23T23:05:40+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1628969": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1628969,
+          "name": "Mikal Bridges",
+          "team": "New York Knicks",
+          "milestone": 9,
+          "side": "over",
+          "odds": 1.34,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T22:44:15+02:00",
+            "milestone": 9
+          },
+          "placed_at": "2026-10-23T23:05:57+02:00",
+          "updated_at": "2026-10-23T23:05:57+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1626157": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1626157,
+          "name": "Karl-Anthony Towns",
+          "team": "New York Knicks",
+          "milestone": 16,
+          "side": "over",
+          "odds": 1.45,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T22:44:15+02:00",
+            "milestone": 16
+          },
+          "placed_at": "2026-10-23T23:06:16+02:00",
+          "updated_at": "2026-10-23T23:06:16+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1630540": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1630540,
+          "name": "Miles McBride",
+          "team": "New York Knicks",
+          "milestone": 5,
+          "side": "over",
+          "odds": 1.47,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T22:44:15+02:00",
+            "milestone": 5
+          },
+          "placed_at": "2026-10-23T23:06:37+02:00",
+          "updated_at": "2026-10-23T23:06:37+02:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      }
+    },
+    "2026-10-23|2026-10-24T00:00:00Z|Miami Heat|Detroit Pistons": {
+      "game_date": "2026-10-23",
+      "start_utc": "2026-10-24T00:00:00Z",
+      "home": "Miami Heat",
+      "away": "Detroit Pistons",
+      "bets": {
+        "total": {
+          "market": "total",
+          "active": true,
+          "side": "over",
+          "line": 233.5,
+          "odds": 1.8,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "line_ref": {
+            "main_line": 235.5,
+            "chosen_line": 233.5,
+            "is_main": false,
+            "source": "Cache",
+            "bookmaker": null,
+            "at": "2026-10-23T22:00:06+02:00"
+          },
+          "placed_at": "2026-10-23T22:42:04+02:00",
+          "updated_at": "2026-10-23T22:42:04+02:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      },
+      "player_bets": {
+        "1631105": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1631105,
+          "name": "Jalen Duren",
+          "team": "Detroit Pistons",
+          "milestone": 16,
+          "side": "over",
+          "odds": 1.4,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-24T01:45:35+02:00",
+            "milestone": 16
+          },
+          "placed_at": "2026-10-24T01:49:11+02:00",
+          "updated_at": "2026-10-24T01:49:11+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1629130": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1629130,
+          "name": "Duncan Robinson",
+          "team": "Detroit Pistons",
+          "milestone": 9,
+          "side": "over",
+          "odds": 1.39,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-24T01:45:35+02:00",
+            "milestone": 9
+          },
+          "placed_at": "2026-10-24T01:49:23+02:00",
+          "updated_at": "2026-10-24T01:49:23+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1642450": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1642450,
+          "name": "Daniss Jenkins",
+          "team": "Detroit Pistons",
+          "milestone": 6,
+          "side": "over",
+          "odds": 1.44,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T16:11:42+02:00",
+            "milestone": 6
+          },
+          "placed_at": "2026-10-24T01:49:37+02:00",
+          "updated_at": "2026-10-24T01:49:37+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1630198": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1630198,
+          "name": "Isaiah Joe",
+          "team": "Detroit Pistons",
+          "milestone": 7,
+          "side": "over",
+          "odds": 1.4,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-24T00:43:00+02:00",
+            "milestone": 7
+          },
+          "placed_at": "2026-10-24T01:49:58+02:00",
+          "updated_at": "2026-10-24T01:49:58+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1630194": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1630194,
+          "name": "Paul Reed",
+          "team": "Detroit Pistons",
+          "milestone": 7,
+          "side": "over",
+          "odds": 1.45,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-24T01:45:35+02:00",
+            "milestone": 7
+          },
+          "placed_at": "2026-10-24T01:50:13+02:00",
+          "updated_at": "2026-10-24T01:50:13+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1628389": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1628389,
+          "name": "Bam Adebayo",
+          "team": "Miami Heat",
+          "milestone": 15,
+          "side": "over",
+          "odds": 1.45,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-24T01:45:35+02:00",
+            "milestone": 15
+          },
+          "placed_at": "2026-10-24T01:51:12+02:00",
+          "updated_at": "2026-10-24T01:51:12+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1641796": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1641796,
+          "name": "Pelle Larsson",
+          "team": "Miami Heat",
+          "milestone": 9,
+          "side": "over",
+          "odds": 1.65,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T20:29:12+02:00",
+            "milestone": 9
+          },
+          "placed_at": "2026-10-24T01:51:29+02:00",
+          "updated_at": "2026-10-24T01:51:29+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1630558": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1630558,
+          "name": "Davion Mitchell",
+          "team": "Miami Heat",
+          "milestone": 9,
+          "side": "over",
+          "odds": 1.7,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-24T00:43:00+02:00",
+            "milestone": 9
+          },
+          "placed_at": "2026-10-24T01:52:10+02:00",
+          "updated_at": "2026-10-24T01:52:10+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "203952": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 203952,
+          "name": "Andrew Wiggins",
+          "team": "Miami Heat",
+          "milestone": 11,
+          "side": "over",
+          "odds": 1.42,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T16:11:42+02:00",
+            "milestone": 11
+          },
+          "placed_at": "2026-10-24T01:52:28+02:00",
+          "updated_at": "2026-10-24T01:52:28+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "203501": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 203501,
+          "name": "Tim Hardaway Jr.",
+          "team": "Miami Heat",
+          "milestone": 7,
+          "side": "over",
+          "odds": 1.42,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T22:45:14+02:00",
+            "milestone": 7
+          },
+          "placed_at": "2026-10-24T01:52:53+02:00",
+          "updated_at": "2026-10-24T01:52:53+02:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      }
+    },
+    "2026-10-23|2026-10-24T01:30:00Z|Utah Jazz|New Orleans Pelicans": {
+      "game_date": "2026-10-23",
+      "start_utc": "2026-10-24T01:30:00Z",
+      "home": "Utah Jazz",
+      "away": "New Orleans Pelicans",
+      "bets": {
+        "total": {
+          "market": "total",
+          "active": true,
+          "side": "over",
+          "line": 238.5,
+          "odds": 1.83,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "line_ref": {
+            "main_line": 239.5,
+            "chosen_line": 238.5,
+            "is_main": false,
+            "source": "Cache",
+            "bookmaker": null,
+            "at": "2026-10-23T22:00:06+02:00"
+          },
+          "placed_at": "2026-10-23T22:42:21+02:00",
+          "updated_at": "2026-10-23T22:42:21+02:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      },
+      "player_bets": {
+        "1630180": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1630180,
+          "name": "Saddiq Bey",
+          "team": "New Orleans Pelicans",
+          "milestone": 9,
+          "side": "over",
+          "odds": 1.38,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T18:12:26+02:00",
+            "milestone": 9
+          },
+          "placed_at": "2026-10-24T03:24:06+02:00",
+          "updated_at": "2026-10-24T03:24:06+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1629627": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1629627,
+          "name": "Zion Williamson",
+          "team": "New Orleans Pelicans",
+          "milestone": 18,
+          "side": "over",
+          "odds": 1.44,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-24T00:44:21+02:00",
+            "milestone": 18
+          },
+          "placed_at": "2026-10-24T03:24:19+02:00",
+          "updated_at": "2026-10-24T03:24:19+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1628374": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1628374,
+          "name": "Lauri Markkanen",
+          "team": "Utah Jazz",
+          "milestone": 20,
+          "side": "over",
+          "odds": 1.53,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-24T01:45:49+02:00",
+            "milestone": 20
+          },
+          "placed_at": "2026-10-24T03:24:39+02:00",
+          "updated_at": "2026-10-24T03:24:39+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1642846": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1642846,
+          "name": "Ace Bailey",
+          "team": "Utah Jazz",
+          "milestone": 9,
+          "side": "over",
+          "odds": 1.28,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-24T00:44:21+02:00",
+            "milestone": 9
+          },
+          "placed_at": "2026-10-24T03:26:12+02:00",
+          "updated_at": "2026-10-24T03:26:12+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1628991": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1628991,
+          "name": "Jaren Jackson Jr.",
+          "team": "Utah Jazz",
+          "milestone": 15,
+          "side": "over",
+          "odds": 1.39,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T22:45:25+02:00",
+            "milestone": 15
+          },
+          "placed_at": "2026-10-24T03:26:32+02:00",
+          "updated_at": "2026-10-24T03:26:32+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1641718": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1641718,
+          "name": "Keyonte George",
+          "team": "Utah Jazz",
+          "milestone": 17,
+          "side": "over",
+          "odds": 1.5,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T18:12:26+02:00",
+            "milestone": 17
+          },
+          "placed_at": "2026-10-24T03:26:48+02:00",
+          "updated_at": "2026-10-24T03:26:48+02:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      }
+    },
+    "2026-10-23|2026-10-24T01:30:00Z|San Antonio Spurs|Houston Rockets": {
+      "game_date": "2026-10-23",
+      "start_utc": "2026-10-24T01:30:00Z",
+      "home": "San Antonio Spurs",
+      "away": "Houston Rockets",
+      "bets": {
+        "total": {
+          "market": "total",
+          "active": true,
+          "side": "over",
+          "line": 223.5,
+          "odds": 1.9,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "line_ref": {
+            "main_line": 224.5,
+            "chosen_line": 223.5,
+            "is_main": false,
+            "source": "Cache",
+            "bookmaker": null,
+            "at": "2026-10-23T22:00:06+02:00"
+          },
+          "placed_at": "2026-10-23T22:42:37+02:00",
+          "updated_at": "2026-10-23T22:42:37+02:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      },
+      "player_bets": {
+        "1641708": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1641708,
+          "name": "Amen Thompson",
+          "team": "Houston Rockets",
+          "milestone": 14,
+          "side": "over",
+          "odds": 1.53,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-24T01:45:40+02:00",
+            "milestone": 14
+          },
+          "placed_at": "2026-10-24T03:14:15+02:00",
+          "updated_at": "2026-10-24T03:14:15+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1631095": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1631095,
+          "name": "Jabari Smith Jr.",
+          "team": "Houston Rockets",
+          "milestone": 11,
+          "side": "over",
+          "odds": 1.32,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-24T01:45:40+02:00",
+            "milestone": 11
+          },
+          "placed_at": "2026-10-24T03:14:27+02:00",
+          "updated_at": "2026-10-24T03:14:27+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "201142": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 201142,
+          "name": "Kevin Durant",
+          "team": "Houston Rockets",
+          "milestone": 22,
+          "side": "over",
+          "odds": 1.5,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-24T01:45:40+02:00",
+            "milestone": 22
+          },
+          "placed_at": "2026-10-24T03:14:42+02:00",
+          "updated_at": "2026-10-24T03:14:42+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1630578": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1630578,
+          "name": "Alperen Sengun",
+          "team": "Houston Rockets",
+          "milestone": 16,
+          "side": "over",
+          "odds": 1.5,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T16:11:49+02:00",
+            "milestone": 16
+          },
+          "placed_at": "2026-10-24T03:14:55+02:00",
+          "updated_at": "2026-10-24T03:14:55+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1630170": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1630170,
+          "name": "Devin Vassell",
+          "team": "San Antonio Spurs",
+          "milestone": 10,
+          "side": "over",
+          "odds": 1.5,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T22:45:19+02:00",
+            "milestone": 10
+          },
+          "placed_at": "2026-10-24T03:15:15+02:00",
+          "updated_at": "2026-10-24T03:15:15+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1642264": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1642264,
+          "name": "Stephon Castle",
+          "team": "San Antonio Spurs",
+          "milestone": 15,
+          "side": "over",
+          "odds": 1.52,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-24T01:45:40+02:00",
+            "milestone": 15
+          },
+          "placed_at": "2026-10-24T03:15:28+02:00",
+          "updated_at": "2026-10-24T03:15:28+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1628368": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1628368,
+          "name": "De'Aaron Fox",
+          "team": "San Antonio Spurs",
+          "milestone": 12,
+          "side": "over",
+          "odds": 1.34,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-24T01:45:40+02:00",
+            "milestone": 12
+          },
+          "placed_at": "2026-10-24T03:15:49+02:00",
+          "updated_at": "2026-10-24T03:15:49+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1641705": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1641705,
+          "name": "Victor Wembanyama",
+          "team": "San Antonio Spurs",
+          "milestone": 22,
+          "side": "over",
+          "odds": 1.35,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T22:45:19+02:00",
+            "milestone": 22
+          },
+          "placed_at": "2026-10-24T03:15:57+02:00",
+          "updated_at": "2026-10-24T03:15:57+02:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      }
+    },
+    "2026-10-23|2026-10-23T23:00:00Z|Charlotte Hornets|Atlanta Hawks": {
+      "game_date": "2026-10-23",
+      "start_utc": "2026-10-23T23:00:00Z",
+      "home": "Charlotte Hornets",
+      "away": "Atlanta Hawks",
+      "bets": {},
+      "player_bets": {
+        "1629638": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1629638,
+          "name": "Nickeil Alexander-Walker",
+          "team": "Atlanta Hawks",
+          "milestone": 17,
+          "side": "over",
+          "odds": 1.55,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T16:08:50+02:00",
+            "milestone": 17
+          },
+          "placed_at": "2026-10-23T23:07:45+02:00",
+          "updated_at": "2026-10-23T23:07:45+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1630700": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1630700,
+          "name": "Dyson Daniels",
+          "team": "Atlanta Hawks",
+          "milestone": 10,
+          "side": "over",
+          "odds": 1.39,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T22:44:23+02:00",
+            "milestone": 10
+          },
+          "placed_at": "2026-10-23T23:07:59+02:00",
+          "updated_at": "2026-10-23T23:07:59+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1630168": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1630168,
+          "name": "Onyeka Okongwu",
+          "team": "Atlanta Hawks",
+          "milestone": 9,
+          "side": "over",
+          "odds": 1.21,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T02:15:16+02:00",
+            "milestone": 9
+          },
+          "placed_at": "2026-10-23T23:08:11+02:00",
+          "updated_at": "2026-10-23T23:08:11+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "203468": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 203468,
+          "name": "CJ McCollum",
+          "team": "Atlanta Hawks",
+          "milestone": 14,
+          "side": "over",
+          "odds": 1.5,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T02:15:16+02:00",
+            "milestone": 14
+          },
+          "placed_at": "2026-10-23T23:08:23+02:00",
+          "updated_at": "2026-10-23T23:08:23+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1641706": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1641706,
+          "name": "Brandon Miller",
+          "team": "Charlotte Hornets",
+          "milestone": 21,
+          "side": "over",
+          "odds": 1.39,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T22:44:23+02:00",
+            "milestone": 21
+          },
+          "placed_at": "2026-10-23T23:09:09+02:00",
+          "updated_at": "2026-10-23T23:09:09+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1631217": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1631217,
+          "name": "Moussa Diabaté",
+          "team": "Charlotte Hornets",
+          "milestone": 8,
+          "side": "over",
+          "odds": 1.33,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T22:44:23+02:00",
+            "milestone": 8
+          },
+          "placed_at": "2026-10-23T23:09:25+02:00",
+          "updated_at": "2026-10-23T23:09:25+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1629675": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1629675,
+          "name": "Naz Reid",
+          "team": "Charlotte Hornets",
+          "milestone": 15,
+          "side": "over",
+          "odds": 1.26,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T22:44:23+02:00",
+            "milestone": 15
+          },
+          "placed_at": "2026-10-23T23:09:46+02:00",
+          "updated_at": "2026-10-23T23:09:46+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1628960": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1628960,
+          "name": "Grayson Allen",
+          "team": "Charlotte Hornets",
+          "milestone": 12,
+          "side": "over",
+          "odds": 1.44,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T22:44:23+02:00",
+            "milestone": 12
+          },
+          "placed_at": "2026-10-23T23:09:52+02:00",
+          "updated_at": "2026-10-23T23:09:52+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1641750": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1641750,
+          "name": "Ryan Kalkbrenner",
+          "team": "Charlotte Hornets",
+          "milestone": 4,
+          "side": "over",
+          "odds": 1.53,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T18:11:03+02:00",
+            "milestone": 4
+          },
+          "placed_at": "2026-10-23T23:10:13+02:00",
+          "updated_at": "2026-10-23T23:10:13+02:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      }
+    },
+    "2026-10-23|2026-10-23T23:00:00Z|Orlando Magic|Minnesota Timberwolves": {
+      "game_date": "2026-10-23",
+      "start_utc": "2026-10-23T23:00:00Z",
+      "home": "Orlando Magic",
+      "away": "Minnesota Timberwolves",
+      "bets": {},
+      "player_bets": {
+        "1630183": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1630183,
+          "name": "Jaden McDaniels",
+          "team": "Minnesota Timberwolves",
+          "milestone": 13,
+          "side": "over",
+          "odds": 1.53,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T22:45:03+02:00",
+            "milestone": 13
+          },
+          "placed_at": "2026-10-23T23:16:16+02:00",
+          "updated_at": "2026-10-23T23:16:16+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1630245": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1630245,
+          "name": "Ayo Dosunmu",
+          "team": "Minnesota Timberwolves",
+          "milestone": 11,
+          "side": "over",
+          "odds": 1.52,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T22:45:03+02:00",
+            "milestone": 11
+          },
+          "placed_at": "2026-10-23T23:16:43+02:00",
+          "updated_at": "2026-10-23T23:16:43+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1630217": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1630217,
+          "name": "Desmond Bane",
+          "team": "Orlando Magic",
+          "milestone": 16,
+          "side": "over",
+          "odds": 1.47,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T18:11:51+02:00",
+            "milestone": 16
+          },
+          "placed_at": "2026-10-23T23:16:51+02:00",
+          "updated_at": "2026-10-23T23:16:51+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1631094": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1631094,
+          "name": "Paolo Banchero",
+          "team": "Orlando Magic",
+          "milestone": 20,
+          "side": "over",
+          "odds": 1.42,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T22:45:03+02:00",
+            "milestone": 20
+          },
+          "placed_at": "2026-10-23T23:17:09+02:00",
+          "updated_at": "2026-10-23T23:17:09+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1630591": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1630591,
+          "name": "Jalen Suggs",
+          "team": "Orlando Magic",
+          "milestone": 11,
+          "side": "over",
+          "odds": 1.35,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T20:29:00+02:00",
+            "milestone": 11
+          },
+          "placed_at": "2026-10-23T23:17:18+02:00",
+          "updated_at": "2026-10-23T23:17:18+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1628976": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1628976,
+          "name": "Wendell Carter Jr.",
+          "team": "Orlando Magic",
+          "milestone": 9,
+          "side": "over",
+          "odds": 1.62,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T22:45:03+02:00",
+            "milestone": 9
+          },
+          "placed_at": "2026-10-23T23:17:26+02:00",
+          "updated_at": "2026-10-23T23:17:26+02:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1641783": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1641783,
+          "name": "Tristan da Silva",
+          "team": "Orlando Magic",
+          "milestone": 8,
+          "side": "over",
+          "odds": 1.4,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-23T22:45:03+02:00",
+            "milestone": 8
+          },
+          "placed_at": "2026-10-23T23:17:41+02:00",
+          "updated_at": "2026-10-23T23:17:41+02:00",
           "removed_at": null,
           "revisions": []
         }
