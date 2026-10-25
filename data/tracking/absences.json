@@ -1,7 +1,7 @@
 {
   "version": 1,
   "format": "nbaedge-absences",
-  "updated_at": "2026-10-23T23:24:11+02:00",
+  "updated_at": "2026-10-25T00:48:59+02:00",
   "days": {
     "2026-10-22": {
       "2026-10-22|2026-10-23T01:30:00Z|Oklahoma City Thunder|Denver Nuggets": {
@@ -565,6 +565,428 @@
             ],
             "doubtful": [
               1631222
+            ]
+          }
+        ]
+      }
+    },
+    "2026-10-24": {
+      "2026-10-24|2026-10-24T22:00:00Z|Charlotte Hornets|Miami Heat": {
+        "out": {
+          "1629684": {
+            "name": "Grant Williams",
+            "team": "Charlotte Hornets",
+            "set_at": "2026-10-25T00:39:38+02:00"
+          },
+          "1629632": {
+            "name": "Coby White",
+            "team": "Charlotte Hornets",
+            "set_at": "2026-10-25T00:39:38+02:00"
+          },
+          "1642851": {
+            "name": "Kon Knueppel",
+            "team": "Charlotte Hornets",
+            "set_at": "2026-10-25T00:39:38+02:00"
+          },
+          "1643573": {
+            "name": "Kylan Boswell",
+            "team": "Charlotte Hornets",
+            "set_at": "2026-10-25T00:39:38+02:00"
+          }
+        },
+        "doubtful": {
+          "1641796": {
+            "name": "Pelle Larsson",
+            "team": "Miami Heat",
+            "set_at": "2026-10-25T00:39:38+02:00"
+          },
+          "1643515": {
+            "name": "Christian Anderson",
+            "team": "Charlotte Hornets",
+            "set_at": "2026-10-25T00:39:38+02:00"
+          }
+        },
+        "updated_at": "2026-10-25T00:39:38+02:00",
+        "history": [
+          {
+            "at": "2026-10-25T00:39:38+02:00",
+            "out": [
+              1629632,
+              1629684,
+              1642851,
+              1643573
+            ],
+            "doubtful": [
+              1641796,
+              1643515
+            ]
+          }
+        ]
+      },
+      "2026-10-24|2026-10-24T23:30:00Z|Cleveland Cavaliers|Brooklyn Nets": {
+        "out": {
+          "1643548": {
+            "name": "Tyler Bilodeau",
+            "team": "Brooklyn Nets",
+            "set_at": "2026-10-25T00:41:08+02:00"
+          }
+        },
+        "doubtful": {},
+        "updated_at": "2026-10-25T00:41:08+02:00",
+        "history": [
+          {
+            "at": "2026-10-25T00:41:08+02:00",
+            "out": [
+              1643548
+            ],
+            "doubtful": []
+          }
+        ]
+      },
+      "2026-10-24|2026-10-24T23:30:00Z|Philadelphia 76ers|Milwaukee Bucks": {
+        "out": {
+          "2544": {
+            "name": "LeBron James",
+            "team": "Philadelphia 76ers",
+            "set_at": "2026-10-25T00:42:24+02:00"
+          },
+          "1629605": {
+            "name": "Tacko Fall",
+            "team": "Philadelphia 76ers",
+            "set_at": "2026-10-25T00:42:24+02:00"
+          },
+          "1631230": {
+            "name": "Dominick Barlow",
+            "team": "Philadelphia 76ers",
+            "set_at": "2026-10-25T00:42:24+02:00"
+          },
+          "1630574": {
+            "name": "Ariel Hukporti",
+            "team": "Philadelphia 76ers",
+            "set_at": "2026-10-25T00:42:24+02:00"
+          }
+        },
+        "doubtful": {
+          "1629731": {
+            "name": "Dean Wade",
+            "team": "Philadelphia 76ers",
+            "set_at": "2026-10-25T00:42:24+02:00"
+          }
+        },
+        "updated_at": "2026-10-25T00:42:24+02:00",
+        "history": [
+          {
+            "at": "2026-10-25T00:42:24+02:00",
+            "out": [
+              2544,
+              1629605,
+              1630574,
+              1631230
+            ],
+            "doubtful": [
+              1629731
+            ]
+          }
+        ]
+      },
+      "2026-10-24|2026-10-25T00:00:00Z|Chicago Bulls|Washington Wizards": {
+        "out": {
+          "1643407": {
+            "name": "AJ Dybantsa",
+            "team": "Washington Wizards",
+            "set_at": "2026-10-25T00:43:35+02:00"
+          },
+          "1641774": {
+            "name": "Tristan Vukcevic",
+            "team": "Washington Wizards",
+            "set_at": "2026-10-25T00:43:35+02:00"
+          },
+          "1642364": {
+            "name": "Jamir Watkins",
+            "team": "Washington Wizards",
+            "set_at": "2026-10-25T00:43:35+02:00"
+          },
+          "1629651": {
+            "name": "Nic Claxton",
+            "team": "Chicago Bulls",
+            "set_at": "2026-10-25T00:43:35+02:00"
+          }
+        },
+        "doubtful": {
+          "1642855": {
+            "name": "Noa Essengue",
+            "team": "Chicago Bulls",
+            "set_at": "2026-10-25T00:43:35+02:00"
+          }
+        },
+        "updated_at": "2026-10-25T00:43:35+02:00",
+        "history": [
+          {
+            "at": "2026-10-25T00:43:35+02:00",
+            "out": [
+              1629651,
+              1641774,
+              1642364,
+              1643407
+            ],
+            "doubtful": [
+              1642855
+            ]
+          }
+        ]
+      },
+      "2026-10-24|2026-10-25T00:00:00Z|Dallas Mavericks|San Antonio Spurs": {
+        "out": {
+          "1643519": {
+            "name": "Jayden Quaintance",
+            "team": "San Antonio Spurs",
+            "set_at": "2026-10-25T00:45:39+02:00"
+          },
+          "202699": {
+            "name": "Tobias Harris",
+            "team": "San Antonio Spurs",
+            "set_at": "2026-10-25T00:45:39+02:00"
+          },
+          "1628997": {
+            "name": "Caleb Martin",
+            "team": "Dallas Mavericks",
+            "set_at": "2026-10-25T00:45:39+02:00"
+          },
+          "1641724": {
+            "name": "Jett Howard",
+            "team": "Dallas Mavericks",
+            "set_at": "2026-10-25T00:45:39+02:00"
+          },
+          "1641844": {
+            "name": "Tarik Biberovic",
+            "team": "Dallas Mavericks",
+            "set_at": "2026-10-25T00:45:39+02:00"
+          },
+          "1630583": {
+            "name": "Santi Aldama",
+            "team": "Dallas Mavericks",
+            "set_at": "2026-10-25T00:45:39+02:00"
+          },
+          "1642843": {
+            "name": "Cooper Flagg",
+            "team": "Dallas Mavericks",
+            "set_at": "2026-10-25T00:45:39+02:00"
+          },
+          "1641726": {
+            "name": "Dereck Lively II",
+            "team": "Dallas Mavericks",
+            "set_at": "2026-10-25T00:45:39+02:00"
+          }
+        },
+        "doubtful": {
+          "1642258": {
+            "name": "Zaccharie Risacher",
+            "team": "Dallas Mavericks",
+            "set_at": "2026-10-25T00:45:39+02:00"
+          },
+          "1643516": {
+            "name": "Morez Johnson Jr.",
+            "team": "Dallas Mavericks",
+            "set_at": "2026-10-25T00:45:39+02:00"
+          },
+          "202681": {
+            "name": "Kyrie Irving",
+            "team": "Dallas Mavericks",
+            "set_at": "2026-10-25T00:45:39+02:00"
+          },
+          "1631108": {
+            "name": "Max Christie",
+            "team": "Dallas Mavericks",
+            "set_at": "2026-10-25T00:45:39+02:00"
+          }
+        },
+        "updated_at": "2026-10-25T00:45:39+02:00",
+        "history": [
+          {
+            "at": "2026-10-25T00:45:39+02:00",
+            "out": [
+              202699,
+              1628997,
+              1630583,
+              1641724,
+              1641726,
+              1641844,
+              1642843,
+              1643519
+            ],
+            "doubtful": [
+              202681,
+              1631108,
+              1642258,
+              1643516
+            ]
+          }
+        ]
+      },
+      "2026-10-24|2026-10-25T00:30:00Z|Atlanta Hawks|Houston Rockets": {
+        "out": {
+          "1627832": {
+            "name": "Fred VanVleet",
+            "team": "Houston Rockets",
+            "set_at": "2026-10-25T00:46:47+02:00"
+          },
+          "203500": {
+            "name": "Steven Adams",
+            "team": "Houston Rockets",
+            "set_at": "2026-10-25T00:46:47+02:00"
+          },
+          "1643539": {
+            "name": "Henri Veesaar",
+            "team": "Atlanta Hawks",
+            "set_at": "2026-10-25T00:46:47+02:00"
+          },
+          "1631243": {
+            "name": "Mouhamed Gueye",
+            "team": "Atlanta Hawks",
+            "set_at": "2026-10-25T00:46:47+02:00"
+          }
+        },
+        "doubtful": {
+          "203935": {
+            "name": "Marcus Smart",
+            "team": "Houston Rockets",
+            "set_at": "2026-10-25T00:46:47+02:00"
+          },
+          "1642263": {
+            "name": "Reed Sheppard",
+            "team": "Houston Rockets",
+            "set_at": "2026-10-25T00:46:47+02:00"
+          }
+        },
+        "updated_at": "2026-10-25T00:46:47+02:00",
+        "history": [
+          {
+            "at": "2026-10-25T00:46:47+02:00",
+            "out": [
+              203500,
+              1627832,
+              1631243,
+              1643539
+            ],
+            "doubtful": [
+              203935,
+              1642263
+            ]
+          }
+        ]
+      },
+      "2026-10-24|2026-10-25T01:00:00Z|Denver Nuggets|New Orleans Pelicans": {
+        "out": {
+          "1642461": {
+            "name": "Spencer Jones",
+            "team": "Denver Nuggets",
+            "set_at": "2026-10-25T00:47:43+02:00"
+          },
+          "1629661": {
+            "name": "Cameron Johnson",
+            "team": "Denver Nuggets",
+            "set_at": "2026-10-25T00:47:43+02:00"
+          },
+          "1631124": {
+            "name": "Julian Strawther",
+            "team": "Denver Nuggets",
+            "set_at": "2026-10-25T00:47:43+02:00"
+          },
+          "1642274": {
+            "name": "Yves Missi",
+            "team": "New Orleans Pelicans",
+            "set_at": "2026-10-25T00:47:43+02:00"
+          }
+        },
+        "doubtful": {
+          "1643813": {
+            "name": "Alpha Diallo",
+            "team": "Denver Nuggets",
+            "set_at": "2026-10-25T00:47:43+02:00"
+          }
+        },
+        "updated_at": "2026-10-25T00:47:43+02:00",
+        "history": [
+          {
+            "at": "2026-10-25T00:47:43+02:00",
+            "out": [
+              1629661,
+              1631124,
+              1642274,
+              1642461
+            ],
+            "doubtful": [
+              1643813
+            ]
+          }
+        ]
+      },
+      "2026-10-24|2026-10-25T02:00:00Z|Phoenix Suns|Golden State Warriors": {
+        "out": {
+          "1641764": {
+            "name": "Brandin Podziemski",
+            "team": "Golden State Warriors",
+            "set_at": "2026-10-25T00:48:59+02:00"
+          },
+          "204001": {
+            "name": "Kristaps Porziņģis",
+            "team": "Golden State Warriors",
+            "set_at": "2026-10-25T00:48:59+02:00"
+          },
+          "202710": {
+            "name": "Jimmy Butler III",
+            "team": "Golden State Warriors",
+            "set_at": "2026-10-25T00:48:59+02:00"
+          },
+          "1630541": {
+            "name": "Moses Moody",
+            "team": "Golden State Warriors",
+            "set_at": "2026-10-25T00:48:59+02:00"
+          },
+          "1642345": {
+            "name": "Oso Ighodaro",
+            "team": "Phoenix Suns",
+            "set_at": "2026-10-25T00:48:59+02:00"
+          },
+          "1631109": {
+            "name": "Mark Williams",
+            "team": "Phoenix Suns",
+            "set_at": "2026-10-25T00:48:59+02:00"
+          }
+        },
+        "doubtful": {
+          "201939": {
+            "name": "Stephen Curry",
+            "team": "Golden State Warriors",
+            "set_at": "2026-10-25T00:48:59+02:00"
+          },
+          "1629646": {
+            "name": "Charles Bassey",
+            "team": "Golden State Warriors",
+            "set_at": "2026-10-25T00:48:59+02:00"
+          },
+          "1628379": {
+            "name": "Luke Kennard",
+            "team": "Phoenix Suns",
+            "set_at": "2026-10-25T00:48:59+02:00"
+          }
+        },
+        "updated_at": "2026-10-25T00:48:59+02:00",
+        "history": [
+          {
+            "at": "2026-10-25T00:48:59+02:00",
+            "out": [
+              202710,
+              204001,
+              1630541,
+              1631109,
+              1641764,
+              1642345
+            ],
+            "doubtful": [
+              201939,
+              1628379,
+              1629646
             ]
           }
         ]
