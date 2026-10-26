@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spielerkarten mit Wettschein</title>
+<!-- Streamlit-Komponente (ohne Build, ohne externe Skripte, kein Netzzugriff). Protokoll: streamlit:componentReady / streamlit:render / streamlit:setFrameHeight / streamlit:setComponentValue.
+     Argumente von Python: html (Karten), css (Karten-CSS), game_key, locked {person_id: gesetzter Meilenstein}, default_stake, result {nonce, saved:[person_id], failed:[{player,name,milestone,reason}]}.
+     Auswahl, Einsaetze und Standard-Einsatz liegen hier im Speicher (je Spiel), Rueckfall sessionStorage. -->
+<style>
+  html, body { margin:0; background:#0e1117; color:#f1f4fa; font-family:"Source Sans Pro", -apple-system, "Segoe UI", sans-serif; overflow:hidden; }
+  #root { display:block; padding-bottom:4px; }
+  #bar { box-sizing:border-box; background:#161b2e; border:1px solid #3a4363; border-radius:14px; padding:10px 14px 12px; margin:0 0 12px; }
+  #bar.bc-slimbar { padding:7px 14px; }
+  .bc-slim { font-size:14px; color:#a3aec4; }
+  #cards { overflow:visible; }
+  .bc-head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px; }
+  .bc-title { font-size:17px; font-weight:700; }
+  .bc-count { font-size:14px; color:#a3aec4; }
+  .bc-items { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:8px; }
+  .bc-item { display:flex; align-items:center; gap:8px; background:#1d2338; border:1px solid #2c3350; border-radius:10px; padding:5px 8px; font-size:14px; }
+  .bc-item b { font-size:15px; }
+  .bc-item .bc-q { color:#a3aec4; }
+  .bc-item input { width:64px; box-sizing:border-box; text-align:right; background:#0e1117; color:#f1f4fa; border:1px solid #3a4363; border-radius:6px; padding:3px 6px; font-size:14px; }
+  .bc-x { cursor:pointer; background:none; border:0; color:#a3aec4; font-size:16px; padding:0 2px; }
+  .bc-x:hover { color:#fca5a5; }
+  .bc-empty { font-size:14px; color:#a3aec4; margin-bottom:8px; }
+  .bc-foot { display:flex; flex-wrap:wrap; align-items:center; gap:14px; font-size:14px; color:#d7deec; }
+  .bc-foot input { width:60px; box-sizing:border-box; text-align:right; background:#0e1117; color:#f1f4fa; border:1px solid #3a4363; border-radius:6px; padding:3px 6px; font-size:14px; }
+  .bc-foot b { color:#f1f4fa; }
+  .bc-spacer { flex:1 1 auto; }
+  .bc-btn { cursor:pointer; border-radius:8px; border:1px solid #3a4363; background:#232940; color:#f1f4fa; font-size:14px; padding:6px 14px; }
+  .bc-btn:disabled { opacity:.45; cursor:default; }
+  .bc-btn-primary { background:#ea580c; border-color:#ea580c; font-weight:700; }
+  .bc-msg { font-size:13px; margin-top:6px; min-height:0; }
+  .bc-hint { color:#fdba74; } .bc-ok { color:#86efac; } .bc-err { color:#fca5a5; }
+  /* Karten: Zeilen anklickbar */
+  .pl-c-row[data-pid] { grid-template-columns:28px 84px 1fr 96px; cursor:pointer; border:1px solid transparent; }
+  .pl-c-row[data-pid]:hover { background:rgba(255,255,255,.04); }
+  .pl-c-row.pl-c-hi:hover { background:rgba(139,92,246,.22); }
+  .bc-cb { width:18px; height:18px; box-sizing:border-box; border:2px solid #6b7693; border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:13px; line-height:1; color:#fff; }
+  .pl-c-row.bc-sel, .pl-c-row.bc-sel:hover { background:rgba(255,122,47,.16); border-color:#ff7a2f; }
+  .pl-c-row.bc-sel .bc-cb { background:#ff7a2f; border-color:#ff7a2f; }
+  .pl-c-row.bc-locked { opacity:.4; cursor:not-allowed; }
+  .pl-c-row.bc-locked:hover { background:transparent; }
+  .pl-c-row.bc-set { cursor:not-allowed; }
+  .pl-c-row.bc-set .bc-cb { border-color:#86efac; color:#86efac; }
+  .bc-settag { display:block; font-size:12px; color:#86efac; }
+</style>
+</head>
+<body>
+<div id="root">
+  <div id="bar"></div>
+  <div id="cards"></div>
+</div>
+<div id="css"></div>
+<script>
+(function () {
+  "use strict";
+  var DEFAULT_STAKE = "10,00";
+  var args = {}, games = {}, lastCss = null, lastHtml = null, lastKey = null, handled = {}, pending = null, pendingTimer = null, msgTimer = null;
+  var stake0 = DEFAULT_STAKE;
+
+  // ---------- Streamlit-Protokoll
+  function send(type, data) {
+    var m = { isStreamlitMessage: true, type: type };
+    for (var k in data) m[k] = data[k];
+    window.parent.postMessage(m, "*");
+  }
+  var lastH = 0;
+  function frameHeight() {                       // tatsaechliche Inhaltshoehe (kein fester Wert, kein innerer Scrollbereich)
+    var h = Math.ceil(document.getElementById("root").getBoundingClientRect().height) + 2;
+    if (h !== lastH) { lastH = h; send("streamlit:setFrameHeight", { height: h }); }
+  }
+  try { new ResizeObserver(frameHeight).observe(document.getElementById("root")); } catch (e) {}
+
+  // ---------- Zustand (Speicher + sessionStorage als Rueckfall)
+  function ssGet(k) { try { return window.sessionStorage.getItem(k); } catch (e) { return null; } }
+  function ssSet(k, v) { try { window.sessionStorage.setItem(k, v); } catch (e) {} }
+  function game(key) {
+    if (!games[key]) {
+      var g = null;
+      try { g = JSON.parse(ssGet("nbaedge_bc:" + key) || "null"); } catch (e) { g = null; }
+      games[key] = g && g.sel ? g : { sel: {}, hint: "", msg: null };
+    }
+    return games[key];
+  }
+  function persist() {
+    var key = args.game_key; if (!key) return;
+    ssSet("nbaedge_bc:" + key, JSON.stringify(games[key]));
+    ssSet("nbaedge_bc_stake", stake0);
+  }
+  var st = null;  // Zustand des aktuellen Spiels
+
+  // ---------- Zahlen (deutsches Format)
+  function fmt(x, d) { return Number(x).toFixed(d === undefined ? 2 : d).replace(".", ","); }
+  function parseNum(t) { var v = Number(String(t).trim().replace(/\s/g, "").replace(",", ".")); return isFinite(v) ? v : NaN; }
+  function esc(t) { return String(t).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function locked(pid) { var l = args.locked || {}; return l[String(pid)]; }
+
+  // ---------- Karten
+  function decorate() {
+    var rows = document.querySelectorAll("#cards .pl-c-row[data-pid]");
+    for (var i = 0; i < rows.length; i++) {
+      var row = rows[i], pid = row.getAttribute("data-pid"), n = Number(row.getAttribute("data-n"));
+      row.classList.remove("bc-sel", "bc-locked", "bc-set");
+      var old = row.querySelector(".bc-cb"); if (old) old.remove();
+      var tag = row.querySelector(".bc-settag"); if (tag) tag.remove();
+      var cb = document.createElement("span"); cb.className = "bc-cb";
+      var lk = locked(pid);
+      if (lk !== undefined) {
+        if (lk === n) { row.classList.add("bc-set"); cb.textContent = "✓"; var t = document.createElement("span"); t.className = "bc-settag"; t.textContent = "✓ gesetzt"; row.querySelector(".pl-c-n").appendChild(t); }
+        else row.classList.add("bc-locked");
+      } else if (st.sel[pid] && st.sel[pid].milestone === n) { row.classList.add("bc-sel"); cb.textContent = "✓"; }
+      row.insertBefore(cb, row.firstChild);
+    }
+  }
+  function drawCards() {
+    var box = document.getElementById("cards"), top = box.scrollTop;
+    box.innerHTML = args.html || "";
+    decorate();
+    box.scrollTop = top;
+  }
+  document.getElementById("cards").addEventListener("click", function (e) {
+    var row = e.target.closest ? e.target.closest(".pl-c-row[data-pid]") : null;
+    if (!row || !st) return;
+    var pid = row.getAttribute("data-pid"), n = Number(row.getAttribute("data-n"));
+    if (locked(pid) !== undefined) return;                                   // gesetzt / gesperrt
+    var cur = st.sel[pid];
+    st.msg = null;
+    if (cur && cur.milestone === n) { delete st.sel[pid]; st.hint = ""; }    // zweiter Klick: Wahl zurueck
+    else {
+      st.hint = cur ? "Bei " + cur.name + " ersetzt: " + cur.milestone + "+ → " + n + "+" : "";
+      st.sel[pid] = { pid: Number(pid), name: row.getAttribute("data-name"), milestone: n, odds: parseNum(row.getAttribute("data-odds")), buch: row.getAttribute("data-buch"),
+                      model: row.getAttribute("data-model"), stake: (cur && cur.stake) || stake0 };
+    }
+    persist(); decorate(); drawBar();
+  });
+
+  // ---------- Wettschein-Leiste
+  function items() { var o = []; for (var k in st.sel) o.push(st.sel[k]); return o; }
+  function totalsText() {
+    var it = items(), sum = 0, odds = 0, bad = false;
+    it.forEach(function (x) { var v = parseNum(x.stake); if (isFinite(v) && v > 0) sum += v; else bad = true; odds += x.odds; });
+    return { sum: sum, avg: it.length ? odds / it.length : null, bad: bad };
+  }
+  function updateTotals() {
+    var t = totalsText(), a = document.getElementById("bc-sum"), b = document.getElementById("bc-avg");
+    if (a) a.textContent = fmt(t.sum) + " €";
+    if (b) b.textContent = t.avg === null ? "–" : fmt(t.avg);
+  }
+  function drawBar() {
+    var it = items(), t = totalsText(), h = "";
+    var bar = document.getElementById("bar");
+    if (!it.length) {                            // leer: nur eine schmale Zeile (plus Meldungen), spart Platz
+      bar.className = "bc-slimbar";
+      bar.innerHTML = '<div class="bc-slim">Wettschein: nichts ausgewählt. Meilenstein-Zeilen anklicken.</div><div class="bc-msg" id="bc-msg"></div>';
+      drawMsg(); frameHeight(); return;
+    }
+    bar.className = "";
+    h += '<div class="bc-head"><span class="bc-title">Wettschein</span><span class="bc-count">' + it.length + (it.length === 1 ? " Wette" : " Wetten") + '</span></div>';
+    {
+      h += '<div class="bc-items">';
+      it.forEach(function (x) {
+        h += '<div class="bc-item"><span>' + esc(x.name) + '</span><b>' + x.milestone + '+</b><span class="bc-q">@ ' + fmt(x.odds) + '</span>' +
+             '<input type="text" inputmode="decimal" data-stake="' + x.pid + '" value="' + esc(x.stake) + '" aria-label="Einsatz in Euro"><span class="bc-q">€</span>' +
+             '<button class="bc-x" data-rm="' + x.pid + '" title="Entfernen">✕</button></div>';
+      });
+      h += '</div>';
+    }
+    h += '<div class="bc-foot"><span>Standard-Einsatz <input type="text" inputmode="decimal" id="bc-def" value="' + esc(stake0) + '"> €</span>' +
+         '<span>Gesamteinsatz <b id="bc-sum">' + fmt(t.sum) + ' €</b></span><span>Ø Quote <b id="bc-avg">' + (t.avg === null ? "–" : fmt(t.avg)) + '</b></span><span class="bc-spacer"></span>' +
+         '<button class="bc-btn" id="bc-clear"' + (it.length ? "" : " disabled") + '>Leeren</button>' +
+         '<button class="bc-btn bc-btn-primary" id="bc-save"' + (it.length && !pending ? "" : " disabled") + '>' + (pending ? "Speichere …" : "Alle speichern") + '</button></div>';
+    h += '<div class="bc-msg" id="bc-msg"></div>';
+    bar.innerHTML = h;
+    drawMsg(); frameHeight();
+  }
+  function drawMsg() {
+    var el = document.getElementById("bc-msg"); if (!el || !st) return;
+    var h = "";
+    if (st.hint) h += '<div class="bc-hint">' + esc(st.hint) + '</div>';
+    if (st.msg) {
+      if (st.msg.ok) h += '<div class="bc-ok">' + st.msg.ok + (st.msg.ok === 1 ? " Wette" : " Wetten") + ' gespeichert ✓</div>';
+      (st.msg.failed || []).forEach(function (f) { h += '<div class="bc-err">' + esc(f.name || "?") + (f.milestone ? " " + f.milestone + "+" : "") + ': nicht gespeichert – ' + esc(f.reason || "Fehler") + '</div>'; });
+      (st.msg.errors || []).forEach(function (m) { h += '<div class="bc-err">' + esc(m) + '</div>'; });
+    }
+    el.innerHTML = h;
+    frameHeight();
+  }
+  document.getElementById("bar").addEventListener("input", function (e) {
+    var t = e.target;
+    if (t.hasAttribute && t.hasAttribute("data-stake")) { var x = st.sel[t.getAttribute("data-stake")]; if (x) { x.stake = t.value; persist(); updateTotals(); } }
+    else if (t.id === "bc-def") { stake0 = t.value; persist(); }
+  });
+  document.getElementById("bar").addEventListener("click", function (e) {
+    var t = e.target;
+    if (t.hasAttribute && t.hasAttribute("data-rm")) { delete st.sel[t.getAttribute("data-rm")]; st.hint = ""; persist(); decorate(); drawBar(); }
+    else if (t.id === "bc-clear") { st.sel = {}; st.hint = ""; st.msg = null; persist(); decorate(); drawBar(); }
+    else if (t.id === "bc-save") save();
+  });
+  function save() {
+    var it = items(), errors = [], out = [];
+    if (!it.length || pending) return;
+    it.forEach(function (x) {
+      var v = parseNum(x.stake);
+      if (!(v > 0)) errors.push(x.name + ": Einsatz muss eine Zahl größer als 0 sein.");
+      else out.push({ player: x.pid, name: x.name, milestone: x.milestone, quote: x.odds, stake: Math.round(v * 100) / 100 });
+    });
+    st.hint = ""; st.msg = null;
+    if (errors.length) { st.msg = { errors: errors }; drawMsg(); return; }
+    var nonce = "n" + Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+    try { var a = new Uint32Array(2); window.crypto.getRandomValues(a); nonce += a[0].toString(36) + a[1].toString(36); } catch (e) {}
+    pending = nonce;
+    clearTimeout(pendingTimer);
+    pendingTimer = setTimeout(function () { if (pending === nonce) { pending = null; st.msg = { errors: ["Keine Antwort von der App. Bitte Wettliste prüfen und erneut versuchen."] }; drawBar(); } }, 20000);
+    drawBar();
+    send("streamlit:setComponentValue", { value: { action: "save", nonce: nonce, game_key: args.game_key, items: out }, dataType: "json" });
+  }
+  function applyResult(r) {
+    if (!r || !r.nonce || handled[r.nonce]) return;
+    handled[r.nonce] = true;
+    ssSet("nbaedge_bc_handled", Object.keys(handled).slice(-50).join(","));
+    var g = game(args.game_key);
+    (r.saved || []).forEach(function (pid) { delete g.sel[String(pid)]; });
+    g.msg = { ok: (r.saved || []).length, failed: r.failed || [] };
+    g.hint = "";
+    if (pending === r.nonce) { pending = null; clearTimeout(pendingTimer); }
+    persist(); decorate(); drawBar();
+    clearTimeout(msgTimer);
+    if (!(r.failed || []).length) msgTimer = setTimeout(function () { if (st.msg && !(st.msg.failed || []).length) { st.msg = null; drawMsg(); } }, 6000);
+  }
+
+  // ---------- Render-Ereignis
+  window.addEventListener("message", function (ev) {
+    var d = ev.data; if (!d || d.type !== "streamlit:render") return;
+    args = d.args || {};
+    if (!handledLoaded) { handledLoaded = true; (ssGet("nbaedge_bc_handled") || "").split(",").forEach(function (n) { if (n) handled[n] = true; }); var s0 = ssGet("nbaedge_bc_stake"); if (s0) stake0 = s0; else if (args.default_stake !== undefined) stake0 = fmt(args.default_stake); }
+    if (args.css !== lastCss) { lastCss = args.css; document.getElementById("css").innerHTML = args.css || ""; }
+    var newGame = args.game_key !== lastKey;
+    lastKey = args.game_key;
+    st = game(args.game_key);
+    for (var pid in st.sel) if (locked(pid) !== undefined) delete st.sel[pid];      // inzwischen gespeichert / gesperrt
+    if (newGame || args.html !== lastHtml) { lastHtml = args.html; drawCards(); } else decorate();
+    var focus = document.activeElement && document.activeElement.closest ? document.activeElement.closest("#bar") : null;
+    if (newGame || !focus) drawBar();
+    applyResult(args.result);
+    frameHeight();
+  });
+  var handledLoaded = false;
+  window.addEventListener("resize", frameHeight);
+  send("streamlit:componentReady", { apiVersion: 1 });
+  frameHeight();
+})();
+</script>
+</body>
+</html>

@@ -107,6 +107,55 @@ def save_slip(key: str, slip: list[dict], options: dict, save_fn=None, now: floa
     return {"saved": saved, "failed": failed, "remaining": [l for l, _ in failed], "messages": messages}
 
 
+# ----------------------------------------------------------------------------------------------- Aktion der Karten-Komponente (ui/components/bet_cards)
+def locked_for_component(options: dict) -> dict:
+    """{person_id (Text): Meilenstein} der Spieler mit gespeicherter aktiver Wette: ihr Meilenstein gilt als '✓ gesetzt', ihre anderen Meilensteine sind nicht anklickbar."""
+    return {str(p["person_id"]): int(p["current_bet"]["milestone"]) for p in options["players"] if p.get("current_bet") and p["current_bet"].get("active", True)}
+
+
+def process_action(key: str, action, options: dict, done_nonces: set, save_fn=None, now: float | None = None) -> dict | None:
+    """Aktion {action:'save', nonce, game_key, items:[{player, name, milestone, quote, stake}]} der Komponente ausfuehren. Streamlit liefert den letzten Komponentenwert bei JEDEM Rerun erneut:
+    eine nonce wird darum nur EINMAL ausgefuehrt (done_nonces wird ergaenzt). Rueckgabe None (nichts zu tun / schon erledigt / fremdes Spiel) oder
+    {'nonce', 'saved': [person_id], 'failed': [{'player', 'name', 'milestone', 'reason'}], 'count'}. Geprueft je Zeile: Spieler und Meilenstein in der eingelesenen Betano-Liste, nur eine Wette je Spieler,
+    Spieler ohne gespeicherte Wette, Einsatz > 0; gespeichert wird ueber save_slip (-> save_player_bet, die Funktion des Formulars) mit der Quote vom Klick. Wirft nie."""
+    if not isinstance(action, dict) or action.get("action") != "save" or not str(action.get("nonce") or "").strip():
+        return None
+    nonce = str(action["nonce"])
+    if nonce in done_nonces:
+        return None
+    done_nonces.add(nonce)
+    if action.get("game_key") not in (None, key):                       # Aktion eines anderen Spiels (Spielwechsel waehrend des Klicks): nicht hier speichern
+        return None
+    by_id = {int(p["person_id"]): p for p in options["players"]}
+    locked = locked_for_component(options)
+    lines, failed, seen = [], [], set()
+    for it in action.get("items") or []:
+        try:
+            pid, n = int(it["player"]), int(it["milestone"])
+        except (KeyError, TypeError, ValueError):
+            failed.append({"player": it.get("player") if isinstance(it, dict) else None, "name": str((it or {}).get("name") or "?") if isinstance(it, dict) else "?", "milestone": None, "reason": "ungültige Angaben"})
+            continue
+        player = by_id.get(pid)
+        name = (player or {}).get("name") or str(it.get("name") or pid)
+        fail = lambda reason: failed.append({"player": pid, "name": name, "milestone": n, "reason": reason})
+        if player is None or n not in {o["milestone"] for o in player["options"]}:
+            fail("Meilenstein nicht in der eingelesenen Betano-Liste")
+        elif str(pid) in locked:
+            fail(f"Spieler hat schon eine gespeicherte Wette auf {locked[str(pid)]}+")
+        elif pid in seen:
+            fail("je Spieler nur eine Wette")
+        else:
+            seen.add(pid)
+            try:
+                lines.append({"person_id": pid, "name": name, "team": player.get("team"), "milestone": n, "odds": float(it["quote"]), "stake": float(str(it["stake"]).replace(",", "."))})
+            except (KeyError, TypeError, ValueError):
+                fail("Quote oder Einsatz ist keine Zahl")
+    res = save_slip(key, lines, options, save_fn=save_fn, now=now)
+    saved = [int(l["person_id"]) for l in res["saved"]]
+    failed += [{"player": int(l["person_id"]), "name": l["name"], "milestone": int(l["milestone"]), "reason": m} for l, m in res["failed"]]
+    return {"nonce": nonce, "saved": saved, "failed": failed, "count": len(saved)}
+
+
 # ----------------------------------------------------------------------------------------------- Streamlit
 def _slip_key(key: str) -> str:
     return f"slip_{key}"

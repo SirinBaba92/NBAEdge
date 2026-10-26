@@ -382,7 +382,7 @@ def absence_box_html(cur: dict | None) -> str:
             f"<div class='pl-c-abs-o'>{' · '.join(origin)}</div></div>")
 
 
-def _card_row(r: dict, lv: dict | None, variant: bool = False) -> str:
+def _card_row(r: dict, lv: dict | None, variant: bool = False, who: tuple | None = None) -> str:
     odds = "" if r.get("odds") is None else f"<span class='pl-c-odds'>@ {fmt_num(r['odds'], 2)}</span>"
     buch = max(0, min(100, int(r["buch_pct"])))
     model = r["model_pct"]
@@ -398,7 +398,9 @@ def _card_row(r: dict, lv: dict | None, variant: bool = False) -> str:
     if variant and r.get("old_pct") is not None and model is not None and abs(int(model) - int(r["old_pct"])) >= 1:
         old = f"<span class='pl-c-old'>vorher {r['old_pct']} %</span>"
     hi = " pl-c-hi" if model is not None and model >= CARD_HIGHLIGHT_MIN_PCT else ""
-    return (f"<div class='pl-c-row{hi}'><div class='pl-c-n'><b>{r['n']}+</b>{odds}</div>"
+    attrs = "" if who is None else (f" data-pid='{int(who[0])}' data-name='{escape(str(who[1]), quote=True)}' data-n='{int(r['n'])}' data-odds='{'' if r.get('odds') is None else r['odds']}'"
+                                     f" data-buch='{buch}' data-model='{'' if model is None else model}'")      # fuer die anklickbare Karten-Komponente (ui/components/bet_cards)
+    return (f"<div class='pl-c-row{hi}'{attrs}><div class='pl-c-n'><b>{r['n']}+</b>{odds}</div>"
             f"<div class='pl-c-mid'><span class='pl-c-bar pl-c-bar-b'><i style='width:{buch}%'></i></span>{model_bar}<span class='pl-c-txt'><span class='pl-c-wb'>Betano</span> <b>{buch} %</b> · {model_txt}</span>{old}</div>"
             f"<div class='pl-c-d'><span class='{diff_class(r['diff'])}'>{diff}</span>{mark}{live_txt}</div></div>")
 
@@ -425,7 +427,7 @@ def render_cards_html(model: dict, absences: dict | None = None) -> str:
         if model.get("live"):
             now = ("<div class='pl-c-now'>Jetzt: " + (f"<b>{lv['points']}</b> Pkt · <b>{fmt_num(lv['minutes'], 1)}</b> Min · <b>{lv['fouls']}</b> Fouls"
                                                        + (f" <span class='pl-q' title='{escape('; '.join(lv.get('notes') or []), quote=True)}'>⚠</span>" if lv.get("notes") else "") if lv else "–") + "</div>")
-        rows = "".join(_card_row(r, lv, variant) for r in p["rows"]) or "<div class='pl-none'>keine Meilensteine eingelesen</div>"
+        rows = "".join(_card_row(r, lv, variant, (p["person_id"], p["name"])) for r in p["rows"]) or "<div class='pl-none'>keine Meilensteine eingelesen</div>"
         meta_html = meta if aff else "<div class='pl-c-meta'>" + meta + "</div>"
         cards.append(f"<div class='pl-card{' pl-card-aff' if aff else ''}'><div class='pl-c-head'><span class='pl-c-name'>{escape(p['name'])}{sym}</span><span class='pl-c-team'>{escape(p['abbr'] or p.get('team') or '')}</span></div>"
                      f"{meta_html}{now}{rows}</div>")

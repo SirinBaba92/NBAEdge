@@ -27,7 +27,7 @@ from ui import player_view as pv
 from ui.live_card import LIVE_CSS, flat
 from data import absences_store as ab
 from ui.player_absence import render_absences
-from ui.bet_slip import render_bet_slip
+from ui.bet_cards_component import is_selectable, render_bet_cards
 from ui.player_bet_entry import render_player_bet_entry
 from ui.score_cards import CARD_CSS
 
@@ -244,7 +244,13 @@ def _render_table(key: str, entry: dict, mode: str, sort: str, state, show_all: 
         score = f"{game.away_score} : {game.home_score} ({game.clock_label}, Abstand {abs(game.home_score - game.away_score)})"
         extra = " · Stand von " + game.source if game.source != "NBA.com" else ""
         st.markdown(f"<div class='pl-info'>Spiel läuft: {pv.escape(game.away_nick)} {pv.escape(score)} {pv.escape(extra)}. Live-Chance = Chance auf den Meilenstein aus Restzeit, erwarteten Minuten (Fouls, Blowout) und Punkten je Minute: UNGEPRÜFT (Version {plive_version()}).</div>", unsafe_allow_html=True)
-    st.markdown(flat(pv.render_table_html(model) if table_view else pv.render_cards_html(model, absences)), unsafe_allow_html=True)
+    if not table_view and is_selectable(key) and ds.player_bet_options(key, entries=cached_entries())["players"]:
+        # vor dem Anpfiff: anklickbare Karten mit Wettschein (Komponente); der Ausfall-Kasten bleibt ein normaler Streamlit-Teil darueber
+        if absences["out"] or absences["doubtful"]:
+            st.markdown(flat(pv.absence_box_html(absences)), unsafe_allow_html=True)
+        render_bet_cards(key, cached_entries(), pv.render_cards_html(model), pv.PLAYER_CSS + pv.CARDS_CSS)
+    else:
+        st.markdown(flat(pv.render_table_html(model) if table_view else pv.render_cards_html(model, absences)), unsafe_allow_html=True)
     if model["hidden_rows"]:
         st.caption(f"Standardansicht: Meilensteine um die erwartete Punktzahl (±{TABLE_WINDOW:g}) und eigene Wetten; {model['hidden_rows']} weitere Zeilen ausgeblendet („Alle Meilensteine anzeigen“ schaltet sie ein).")
 
@@ -303,7 +309,6 @@ def _forecast_view() -> None:
             _render_table(key, entry, mode, sort, lf.get_feed().state(), show_all, table_view)
         st.caption(f"◀ Modell mindestens {pv.fmt_num(pv.MARK_PP, 0)} Prozentpunkte über dem Buchmacher, ▼ darunter. Differenz = Modell minus Buchmacher-Chance (inkl. Marge), aus ungerundeten Werten. "
                    "⚠ bewegt man die Maus darüber: Datenqualität und Hinweise. 🎯 = meine Wette.")
-    render_bet_slip(key, entries, mode)
     render_player_bet_entry(key, entries)
     render_absences(key, entries, entry, mode, show_compare=table_view)
 

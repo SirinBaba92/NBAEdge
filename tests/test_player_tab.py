@@ -117,6 +117,17 @@ HARNESS = str(ROOT / "tests" / "_harness_player_tab.py")
 def run():
     at = AppTest.from_file(HARNESS, default_timeout=60).run()
     return at.selectbox(key="pl_day").set_value(D).run()
+def page_text(at):
+    """Markdown plus Inhalt der Karten-Komponente (AppTest zeigt deren HTML nur als Argument 'html' der Komponente)."""
+    import json as _json
+    parts = [x.value for x in at.markdown]
+    for el in at.get("component_instance"):
+        try:
+            parts.append(_json.loads(el.proto.json_args).get("html", ""))
+        except Exception:
+            pass
+    return " ".join(parts)
+
 at = run()
 check("Tab ohne Snapshot: Ueberschrift, UNGEPRUEFT-Hinweis, Spieltag- und Spielauswahl, keine Exception", "## 🏃 Spieler" in " ".join(x.value for x in at.markdown) and any("UNGEPRÜFT" in x.value for x in at.markdown)
       and len(at.selectbox) == 2 and not at.exception, " | ".join(problems(at))[:200])
@@ -136,15 +147,15 @@ at.button[0].click().run()
 snap_file = T / "snaps" / f"{D}.json"
 saved = json.loads(snap_file.read_text()) if snap_file.exists() else {}
 check("'Prognose jetzt erstellen': Snapshot geschrieben (K1), danach Tabelle statt Knopf, keine Exception", K1 in saved.get("games", {}) and not [b for b in at.button if b.label == "Prognose jetzt erstellen"] and not at.exception, str(list(saved.get("games", {}))))
-H2 = " ".join(x.value for x in at.markdown)
+H2 = page_text(at)
 check("Tabelle im Tab: Spieler und Meilensteine, 'vor Anpfiff erstellt'-Hinweis (nicht als Warnung)", "Anton Alt" in H2 and "20+" in H2 and "vor dem Anpfiff erstellt" in H2 and "nach dem Anpfiff erstellt" not in H2)
 check("Standardansicht verkleinert: Meilensteine weit von der erwarteten Punktzahl ausgeblendet (15+ bei ~22 Punkten) mit Hinweis; Schalter 'Alle Meilensteine anzeigen' zeigt sie", "15+" not in H2 and "Standardansicht: Meilensteine um die erwartete Punktzahl" in " ".join(c.value for c in at.caption))
 at.toggle(key="pl_all").set_value(True).run()
-check("Schalter an: alle Meilensteine (15+ und 25+) sichtbar", "15+" in " ".join(x.value for x in at.markdown))
+check("Schalter an: alle Meilensteine (15+ und 25+) sichtbar", "15+" in page_text(at))
 at.toggle(key="pl_all").set_value(False).run()
 check("Umschalter Modell (Teamabgleich/roh) und Sortierung vorhanden", at.radio(key="pl_mode").options == ["Teamabgleich", "roh"] and at.radio(key="pl_sort").options == ["Team, dann Minuten", "Minuten", "größte Differenz"])
 at.radio(key="pl_mode").set_value("raw").run(); at.radio(key="pl_sort").set_value("diff").run()
-check("Umschalten und Sortieren: keine Exception, Tabelle bleibt", not at.exception and "Anton Alt" in " ".join(x.value for x in at.markdown), " | ".join(problems(at))[:200])
+check("Umschalten und Sortieren: keine Exception, Tabelle bleibt", not at.exception and "Anton Alt" in page_text(at), " | ".join(problems(at))[:200])
 check("zweites Erstellen schreibt nicht ueber den vorhandenen Snapshot", psn.create_for_game(K1, entries)[0] == "vorhanden")
 # begonnenes Spiel: Snapshot nach Anpfiff
 at = run()
