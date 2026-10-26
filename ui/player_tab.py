@@ -227,7 +227,7 @@ def _snapshot_notes(entry: dict) -> None:
         st.markdown("<div class='pl-info'>Teamabgleich: " + " &nbsp;|&nbsp; ".join(pv.escape(x) for x in lines) + "</div>", unsafe_allow_html=True)
 
 
-def _render_table(key: str, entry: dict, mode: str, sort: str, state, show_all: bool = False) -> None:
+def _render_table(key: str, entry: dict, mode: str, sort: str, state, show_all: bool = False, table_view: bool = False) -> None:
     game = game_for_key(state, key)
     window = None if show_all else TABLE_WINDOW
     absences = ab.get(key)
@@ -239,7 +239,7 @@ def _render_table(key: str, entry: dict, mode: str, sort: str, state, show_all: 
         score = f"{game.away_score} : {game.home_score} ({game.clock_label}, Abstand {abs(game.home_score - game.away_score)})"
         extra = " · Stand von " + game.source if game.source != "NBA.com" else ""
         st.markdown(f"<div class='pl-info'>Spiel läuft: {pv.escape(game.away_nick)} {pv.escape(score)} {pv.escape(extra)}. Live-Chance = Chance auf den Meilenstein aus Restzeit, erwarteten Minuten (Fouls, Blowout) und Punkten je Minute: UNGEPRÜFT (Version {plive_version()}).</div>", unsafe_allow_html=True)
-    st.markdown(flat(pv.render_table_html(model)), unsafe_allow_html=True)
+    st.markdown(flat(pv.render_table_html(model) if table_view else pv.render_cards_html(model)), unsafe_allow_html=True)
     if model["hidden_rows"]:
         st.caption(f"Standardansicht: Meilensteine um die erwartete Punktzahl (±{TABLE_WINDOW:g}) und eigene Wetten; {model['hidden_rows']} weitere Zeilen ausgeblendet („Alle Meilensteine anzeigen“ schaltet sie ein).")
 
@@ -250,10 +250,10 @@ def plive_version() -> str:
 
 
 @st.fragment(run_every=AUTO_SECONDS)
-def _table_live(key: str, entry: dict, mode: str, sort: str, show_all: bool = False) -> None:
+def _table_live(key: str, entry: dict, mode: str, sort: str, show_all: bool = False, table_view: bool = False) -> None:
     """Tabelle eines LAUFENDEN Spiels: alle 30 s neu (gemeinsamer Feed), mit Spalten 'Jetzt' und 'Live'."""
     state = lt.pick_state(lf.get_feed(), False, st.session_state.get("sp_auto", True), lt._fragment_rerun())
-    _render_table(key, entry, mode, sort, state, show_all)
+    _render_table(key, entry, mode, sort, state, show_all, table_view)
 
 
 @st.fragment
@@ -284,6 +284,7 @@ def _forecast_view() -> None:
         _snapshot_notes(entry)
         o1, o2, o3 = st.columns([1, 1, 1])
         with o3:
+            table_view = st.toggle("Tabellenansicht", value=False, key="pl_table_view", help="Aus: Spieler-Karten (Standard). An: die bisherige Tabelle.")
             show_all = st.toggle("Alle Meilensteine anzeigen", value=False, key="pl_all", help=f"Aus: nur Meilensteine um die erwartete Punktzahl (±{TABLE_WINDOW:g}) und eigene Wetten (kleinere, schnellere Tabelle).")
         with o1:
             mode = st.radio("Modell", list(pv.MODES), format_func=pv.MODES.get, horizontal=True, key="pl_mode", help="Teamabgleich: Summe der Spieler an den Teampunkten des Spielmodells ausgerichtet. roh: Einzelprognose ohne Abgleich.")
@@ -291,9 +292,9 @@ def _forecast_view() -> None:
             sort = st.radio("Sortierung", list(pv.SORTS), format_func=pv.SORTS.get, horizontal=True, key="pl_sort")
         game = game_for_key(lf.get_feed().state(), key)
         if game is not None and game.clock.is_live:
-            _table_live(key, entry, mode, sort, show_all)                # laufendes Spiel: Tabelle mit Live-Spalten im 30-s-Takt
+            _table_live(key, entry, mode, sort, show_all, table_view)       # laufendes Spiel: Tabelle mit Live-Spalten im 30-s-Takt
         else:
-            _render_table(key, entry, mode, sort, lf.get_feed().state(), show_all)
+            _render_table(key, entry, mode, sort, lf.get_feed().state(), show_all, table_view)
         st.caption(f"◀ Modell mindestens {pv.fmt_num(pv.MARK_PP, 0)} Prozentpunkte über dem Buchmacher, ▼ darunter. Differenz = Modell minus Buchmacher-Chance (inkl. Marge), aus ungerundeten Werten. "
                    "⚠ bewegt man die Maus darüber: Datenqualität und Hinweise. 🎯 = meine Wette.")
     render_player_bet_entry(key, entries)
@@ -303,7 +304,7 @@ def _forecast_view() -> None:
 def render_player_tab() -> None:
     """Inhalt des Tabs '🏃 Spieler' (aus app.py aufgerufen)."""
     st.markdown("## 🏃 Spieler")
-    st.markdown(flat(CARD_CSS + LIVE_CSS + pv.PLAYER_CSS), unsafe_allow_html=True)
+    st.markdown(flat(CARD_CSS + LIVE_CSS + pv.PLAYER_CSS + pv.CARDS_CSS), unsafe_allow_html=True)
     st.markdown(f"<div class='pl-banner'>{pv.escape(pv.UNVERIFIED_TEXT)}</div>", unsafe_allow_html=True)
     if OFFLINE_AUDIT_MODE:
         st.info("Offline-Prüfmodus: Der Spieler-Tab zeigt nichts an.")
