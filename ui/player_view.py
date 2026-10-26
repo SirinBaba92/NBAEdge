@@ -182,6 +182,12 @@ def _css() -> str:
 .pl-bet-head {{ display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }}
 .pl-bet-name {{ font-size:17px; font-weight:700; color:{P['text']}; }}
 .pl-bet-team {{ font-size:13px; font-weight:400; color:{P['label']}; }}
+.pl-prob {{ display:inline-flex; flex-direction:column; align-items:flex-end; line-height:1.15; min-width:92px; padding:4px 12px; border-radius:10px; }}
+.pl-prob-grau {{ background:transparent; }}
+.pl-prob-val {{ font-size:26px; font-weight:800; font-variant-numeric:tabular-nums; }}
+.pl-prob-sub {{ font-size:13px; font-weight:600; opacity:.95; }}
+.pl-prob-tiny {{ font-size:10px; opacity:.7; letter-spacing:.04em; }}
+.pl-prob-grau {{ color:{P['label']}; }}
 .pl-bet-note {{ color:{P['chip_yellow_text']}; }}
 .pl-bet-line {{ font-size:14px; color:{P['text_soft']}; margin-top:4px; font-variant-numeric:tabular-nums; }}
 .pl-live {{ color:{P['text']}; font-weight:600; }}
@@ -209,12 +215,41 @@ def bet_summary_html(summary: dict) -> str:
     return f"<div class='lv-sum'><div class='lv-tiles'>{html}</div>{note}</div>"
 
 
-def bet_card_html(bet: dict, live, game_label: str, game_clock_label: str | None = None, score: str | None = None) -> str:
+PROB_GREEN, PROB_RED = 0.70, 0.30      # Live-Chance: ab 70 % gruen, unter 30 % rot, dazwischen gelb
+
+
+def prob_class(p: float) -> str:
+    return "gruen" if p >= PROB_GREEN else "rot" if p < PROB_RED else "gelb"
+
+
+def live_block_html(live, game_status: str | None, stale: bool = False) -> str | None:
+    """Rechte Seite einer Wette bei LAUFENDEM Spiel: gross die Live-Chance (Farbe nach Schwelle), klein 'noch X Pkt.' bzw. 'erreicht', ganz klein 'ungeprueft'. Ohne Zahl (veraltet, keine Chance,
+    keine Spielerdaten): '–' und der Grund. None, wenn das Spiel nicht laeuft oder die Wette nicht offen/erreicht ist (dann bleibt das bisherige Badge)."""
+    if live is None or game_status not in ("LIVE", "PAUSE") or live.state not in ("laeuft", "gewonnen", "keine_daten"):
+        return None
+    if live.state == "gewonnen":                                   # Linie erreicht: Over ist sicher gewonnen
+        return "<span class='pl-prob lv-st lv-st-gruen'><span class='pl-prob-val'>100 %</span><span class='pl-prob-sub'>erreicht</span></span>"
+    if live.state == "laeuft" and live.probability is not None and not stale:
+        p = float(live.probability)
+        rest = max(0, int(live.needed or 0))
+        return (f"<span class='pl-prob lv-st lv-st-{prob_class(p)}'><span class='pl-prob-val'>{int(p * 100 + 0.5)} %</span><span class='pl-prob-sub'>noch {rest} Pkt.</span>"
+                "<span class='pl-prob-tiny'>ungeprüft</span></span>")
+    if stale:
+        reason = "Daten veraltet"
+    elif live.state == "keine_daten":
+        reason = live.label
+    else:
+        reason = next(iter(getattr(live, "live_notes", ()) or ()), None) or "keine Live-Chance"
+    return f"<span class='pl-prob pl-prob-grau'><span class='pl-prob-val'>–</span><span class='pl-prob-sub'>{escape(reason)}</span></span>"
+
+
+def bet_card_html(bet: dict, live, game_label: str, game_clock_label: str | None = None, score: str | None = None, game_status: str | None = None, stale: bool = False) -> str:
     """Karte einer Spieler-Wette: Spieler, Meilenstein, Quote, Einsatz, Status (Text + Farbe), Punkte/noch noetig/Minuten/Fouls, Gewinn/Verlust. live: BetLivePlayer oder None (kein Status)."""
     n = bet["milestone"]
     title = f"{escape(bet['name'])}" + (f" <span class='pl-bet-team'>{escape(bet['team'])}</span>" if bet.get("team") else "")
     money = lambda v: "—" if v is None else fmt_num(float(v), 2)
     line1 = f"Spiel {escape(game_label)} · mindestens {n} Punkte (Over {fmt_num(n - 0.5, 1)}) · Quote {money(bet.get('odds'))} · Einsatz {money(bet.get('stake'))}"
+    block = None
     if live is None:
         chip, color, detail = "Kein Status (Spiel nicht im Scoreboard)", "grau", ""
     else:
@@ -230,14 +265,16 @@ def bet_card_html(bet: dict, live, game_label: str, game_clock_label: str | None
             parts.append(live.player_status)
         if score:
             parts.append(f"Spielstand {score}" + (f" ({game_clock_label})" if game_clock_label else ""))
-        if live.probability is not None:
+        block = live_block_html(live, game_status, stale)
+        if live.probability is not None and block is None:
             parts.append(f"Live-Chance {int(live.probability * 100 + 0.5)} % (ungeprüft)")
         if live.profit is not None:
             parts.append(f"Gewinn/Verlust {fmt_num(live.profit, 2, signed=True)}")
         detail = " · ".join(escape(x) for x in parts)
     notes = [n for n in (getattr(live, "live_notes", ()) or ())] if live is not None else []
     note_html = f"<div class='pl-bet-line pl-bet-note'>⚠ {escape('; '.join(notes))}</div>" if notes else ""
-    return (f"<div class='pl-bet'><div class='pl-bet-head'><span class='pl-bet-name'>{title}</span><span class='lv-st lv-st-{color}'>{escape(chip)}</span></div>"
+    right = block or f"<span class='lv-st lv-st-{color}'>{escape(chip)}</span>"
+    return (f"<div class='pl-bet'><div class='pl-bet-head'><span class='pl-bet-name'>{title}</span>{right}</div>"
             f"<div class='pl-bet-line'>{line1}</div>" + (f"<div class='pl-bet-line'>{detail}</div>" if detail else "") + note_html + "</div>")
 
 

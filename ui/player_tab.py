@@ -186,7 +186,7 @@ def bets_html(rows: list[dict]) -> tuple[str, list[str]]:
         label = f"{g.away_nick} @ {g.home_nick}" if g is not None else f"{r['info']['away']} @ {r['info']['home']}"
         score = None if g is None or g.status == "PRE" else f"{g.away_score} : {g.home_score}"
         for pid, bet in r["bets"].items():
-            cards.append(pv.bet_card_html(bet, r["lives"].get(pid), label, None if g is None else g.clock_label, score))
+            cards.append(pv.bet_card_html(bet, r["lives"].get(pid), label, None if g is None else g.clock_label, score, None if g is None else g.status, bool(g is not None and getattr(g, "data_stale", False))))
     return pv.bet_summary_html(bets_summary(rows)), cards
 
 

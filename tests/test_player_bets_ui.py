@@ -94,14 +94,14 @@ check("Summen-HTML: Kacheln inkl. 'NICHT GESPIELT' und Hinweis zur Pruefung beim
 live_game = gv("LIVE", [plv(1, "A", 9, 18.5)], hs=60, as_=85)
 rows_l = [{"key": K1, "game": live_game, "info": {"home": "Heim Falken", "away": "Gast Baeren"}, "bets": {1: bets[1]}, "lives": ds.evaluate_player_bets({1: bets[1]}, live_game)}]
 _, cards_l = pt.bets_html(rows_l)
-check("laufend: 'Läuft: 9 von 20 Punkten, noch 11', Minuten, Fouls, Spielerstatus, Spielstand mit Uhr", "Läuft: 9 von 20 Punkten, noch 11" in cards_l[0] and "18,5 Min" in cards_l[0] and "2 Fouls" in cards_l[0] and "spielt" in cards_l[0] and "85 : 60 (Q3 6:00)" in cards_l[0], cards_l[0][:400])
+check("laufend: 'Punkte 9 von 20, noch 11', Minuten, Fouls, Spielerstatus, Spielstand mit Uhr", "Punkte 9 von 20, noch 11" in cards_l[0] and "18,5 Min" in cards_l[0] and "2 Fouls" in cards_l[0] and "spielt" in cards_l[0] and "85 : 60 (Q3 6:00)" in cards_l[0], cards_l[0][:400])
 rows_n = [{"key": K1, "game": None, "info": {"home": "Heim Falken", "away": "Gast Baeren"}, "bets": {1: bets[1]}, "lives": {}}]
 sn, cn = pt.bets_html(rows_n)
 check("Spiel nicht im Scoreboard: Karte bleibt, 'Kein Status', Tagessumme zaehlt die Wette", "Kein Status" in cn[0] and pt.bets_summary(rows_n)["wetten"] == 1 and pt.bets_summary(rows_n)["ohne_status"] == 1)
 check("ohne Wetten: freundlicher Hinweis", "noch keine Spieler-Wetten gespeichert" in pv.bet_summary_html(pt.bets_summary([])))
 check("Farben: Gruen/Rot nur im Status der Wette (lv-st), nie bei Modell-Differenzen", "pl-diff" not in cards[0])
 live_prob = SimpleNamespace(**{**ds.evaluate_player_bets({1: bets[1]}, live_game)[1].__dict__, "probability": 0.42})
-check("vorbereitetes Feld Live-Chance wird angezeigt, sobald vorhanden (ungeprueft)", "Live-Chance 42 % (ungeprüft)" in pv.bet_card_html(bets[1], live_prob, "x"))
+check("vorbereitetes Feld Live-Chance wird angezeigt, sobald vorhanden (ungeprueft)", "Live-Chance 42 % (ungeprüft)" in pv.bet_card_html(bets[1], live_prob, "x"))   # ausserhalb eines laufenden Spiels (ohne game_status): weiter in der Textzeile
 
 # ---------------------------------------------------------------- C) Tab im Harness mit Attrappe als Live-Feed
 class R:
@@ -134,7 +134,7 @@ def run():
 at = run()
 md = " ".join(x.value for x in at.markdown)
 check("Tab: 'Meine Spieler-Wetten' oben, keine Exception/Warnung", "Meine Spieler-Wetten" in md and not at.exception and not problems(at), " | ".join(problems(at))[:200])
-check("laufendes Spiel (Q3, 85:60): Lena 14 Punkte, Meilenstein 12 -> sofort gewonnen; Nora (nicht im Boxscore) 'Keine Spielerdaten'", "lv-st-gruen'>Gewonnen" in md and "Lena Lauf" in md and "Keine Spielerdaten" in md, "")
+check("laufendes Spiel (Q3, 85:60): Lena 14 Punkte, Meilenstein 12 -> sofort gewonnen; Nora (nicht im Boxscore) 'Keine Spielerdaten'", "lv-st-gruen'><span class='pl-prob-val'>100 %</span><span class='pl-prob-sub'>erreicht" in md and "Lena Lauf" in md and "Keine Spielerdaten" in md, "")
 check("Tagessumme im Tab: 2 Wetten, 1 gewonnen, 1 offen", "lv-tile" in md and re.search(r"WETTEN</div><div class='lv-val '>2<", md) is not None and re.search(r"GEWONNEN</div><div class='lv-val '>1<", md) is not None)
 sel = at.selectbox(key=f"pl_game_{D}")
 sel.set_value(K2).run()
