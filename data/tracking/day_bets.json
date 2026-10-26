@@ -1,7 +1,7 @@
 {
   "version": 2,
   "format": "nbaedge-day-bets",
-  "updated_at": "2026-10-25T02:54:01+01:00",
+  "updated_at": "2026-10-25T22:46:15+01:00",
   "games": {
     "2026-10-22|2026-10-22T23:00:00Z|Philadelphia 76ers|Cleveland Cavaliers": {
       "game_date": "2026-10-22",
@@ -3228,6 +3228,1023 @@
           "updated_at": "2026-10-25T00:56:37+02:00",
           "removed_at": null,
           "revisions": []
+        }
+      }
+    },
+    "2026-10-25|2026-10-25T21:00:00Z|Utah Jazz|Los Angeles Lakers": {
+      "game_date": "2026-10-25",
+      "start_utc": "2026-10-25T21:00:00Z",
+      "home": "Utah Jazz",
+      "away": "Los Angeles Lakers",
+      "bets": {
+        "team_total_away": {
+          "market": "team_total_away",
+          "active": true,
+          "side": "over",
+          "line": 119.5,
+          "odds": 1.55,
+          "stake": 20.0,
+          "odds_source": "gespeichert",
+          "line_ref": {
+            "main_line": 122.5,
+            "chosen_line": 119.5,
+            "is_main": false,
+            "source": "eigene Eingabe",
+            "bookmaker": "Betano",
+            "at": "2026-10-25T21:01:21+01:00"
+          },
+          "placed_at": "2026-10-25T21:15:35+01:00",
+          "updated_at": "2026-10-25T21:15:35+01:00",
+          "removed_at": null,
+          "revisions": [
+            {
+              "reason": "geaendert",
+              "replaced_at": "2026-10-25T19:54:31+01:00",
+              "active": true,
+              "side": "over",
+              "line": 118.5,
+              "odds": 1.5,
+              "stake": 10.0,
+              "odds_source": "gespeichert",
+              "line_ref": {
+                "main_line": 121.5,
+                "chosen_line": 118.5,
+                "is_main": false,
+                "source": "eigene Eingabe",
+                "bookmaker": "Betano",
+                "at": "2026-10-25T19:29:22+01:00"
+              },
+              "placed_at": "2026-10-25T19:39:28+01:00",
+              "updated_at": "2026-10-25T19:39:28+01:00",
+              "removed_at": null
+            },
+            {
+              "reason": "entfernt",
+              "replaced_at": "2026-10-25T21:14:59+01:00",
+              "active": true,
+              "side": "over",
+              "line": 118.5,
+              "odds": 1.49,
+              "stake": 20.0,
+              "odds_source": "manuell",
+              "line_ref": {
+                "main_line": 121.5,
+                "chosen_line": 118.5,
+                "is_main": false,
+                "source": "eigene Eingabe",
+                "bookmaker": "Betano",
+                "at": "2026-10-25T19:29:22+01:00"
+              },
+              "placed_at": "2026-10-25T19:39:28+01:00",
+              "updated_at": "2026-10-25T19:54:31+01:00",
+              "removed_at": null
+            }
+          ]
+        }
+      },
+      "player_bets": {
+        "1631117": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1631117,
+          "name": "Walker Kessler",
+          "team": "Los Angeles Lakers",
+          "milestone": 12,
+          "side": "over",
+          "odds": 1.42,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-25T04:39:59+01:00",
+            "milestone": 12
+          },
+          "placed_at": "2026-10-25T21:21:28+01:00",
+          "updated_at": "2026-10-25T21:21:28+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1629656": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1629656,
+          "name": "Quentin Grimes",
+          "team": "Los Angeles Lakers",
+          "milestone": 9,
+          "side": "over",
+          "odds": 1.44,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-25T21:01:21+01:00",
+            "milestone": 9
+          },
+          "placed_at": "2026-10-25T21:21:44+01:00",
+          "updated_at": "2026-10-25T21:21:44+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1630533": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1630533,
+          "name": "Ziaire Williams",
+          "team": "Los Angeles Lakers",
+          "milestone": 7,
+          "side": "over",
+          "odds": 1.53,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-25T21:01:21+01:00",
+            "milestone": 7
+          },
+          "placed_at": "2026-10-25T21:21:53+01:00",
+          "updated_at": "2026-10-25T21:21:53+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1628374": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1628374,
+          "name": "Lauri Markkanen",
+          "team": "Utah Jazz",
+          "milestone": 18,
+          "side": "over",
+          "odds": 1.52,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-25T04:39:59+01:00",
+            "milestone": 18
+          },
+          "placed_at": "2026-10-25T21:22:20+01:00",
+          "updated_at": "2026-10-25T21:22:20+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1628991": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1628991,
+          "name": "Jaren Jackson Jr.",
+          "team": "Utah Jazz",
+          "milestone": 15,
+          "side": "over",
+          "odds": 1.55,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-25T19:29:22+01:00",
+            "milestone": 15
+          },
+          "placed_at": "2026-10-25T21:22:42+01:00",
+          "updated_at": "2026-10-25T21:22:42+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1641718": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1641718,
+          "name": "Keyonte George",
+          "team": "Utah Jazz",
+          "milestone": 17,
+          "side": "over",
+          "odds": 1.42,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-25T19:29:22+01:00",
+            "milestone": 17
+          },
+          "placed_at": "2026-10-25T21:22:49+01:00",
+          "updated_at": "2026-10-25T21:22:49+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1642846": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1642846,
+          "name": "Ace Bailey",
+          "team": "Utah Jazz",
+          "milestone": 9,
+          "side": "over",
+          "odds": 1.39,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-25T21:01:21+01:00",
+            "milestone": 9
+          },
+          "placed_at": "2026-10-25T21:23:08+01:00",
+          "updated_at": "2026-10-25T21:23:08+01:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      }
+    },
+    "2026-10-25|2026-10-25T22:00:00Z|Brooklyn Nets|Indiana Pacers": {
+      "game_date": "2026-10-25",
+      "start_utc": "2026-10-25T22:00:00Z",
+      "home": "Brooklyn Nets",
+      "away": "Indiana Pacers",
+      "bets": {
+        "team_total_home": {
+          "market": "team_total_home",
+          "active": true,
+          "side": "over",
+          "line": 109.5,
+          "odds": 1.55,
+          "stake": 20.0,
+          "odds_source": "gespeichert",
+          "line_ref": {
+            "main_line": 112.5,
+            "chosen_line": 109.5,
+            "is_main": false,
+            "source": "eigene Eingabe",
+            "bookmaker": "Betano",
+            "at": "2026-10-25T19:29:29+01:00"
+          },
+          "placed_at": "2026-10-25T21:16:18+01:00",
+          "updated_at": "2026-10-25T21:16:18+01:00",
+          "removed_at": null,
+          "revisions": [
+            {
+              "reason": "geaendert",
+              "replaced_at": "2026-10-25T19:55:12+01:00",
+              "active": true,
+              "side": "over",
+              "line": 109.5,
+              "odds": 1.53,
+              "stake": 10.0,
+              "odds_source": "gespeichert",
+              "line_ref": {
+                "main_line": 112.5,
+                "chosen_line": 109.5,
+                "is_main": false,
+                "source": "eigene Eingabe",
+                "bookmaker": "Betano",
+                "at": "2026-10-25T19:29:29+01:00"
+              },
+              "placed_at": "2026-10-25T19:40:07+01:00",
+              "updated_at": "2026-10-25T19:40:07+01:00",
+              "removed_at": null
+            },
+            {
+              "reason": "entfernt",
+              "replaced_at": "2026-10-25T21:16:08+01:00",
+              "active": true,
+              "side": "over",
+              "line": 109.5,
+              "odds": 1.51,
+              "stake": 20.0,
+              "odds_source": "manuell",
+              "line_ref": {
+                "main_line": 112.5,
+                "chosen_line": 109.5,
+                "is_main": false,
+                "source": "eigene Eingabe",
+                "bookmaker": "Betano",
+                "at": "2026-10-25T19:29:29+01:00"
+              },
+              "placed_at": "2026-10-25T19:40:07+01:00",
+              "updated_at": "2026-10-25T19:55:12+01:00",
+              "removed_at": null
+            }
+          ]
+        }
+      },
+      "player_bets": {
+        "203944": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 203944,
+          "name": "Julius Randle",
+          "team": "Brooklyn Nets",
+          "milestone": 18,
+          "side": "over",
+          "odds": 1.38,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-25T22:42:11+01:00",
+            "milestone": 18
+          },
+          "placed_at": "2026-10-25T22:44:16+01:00",
+          "updated_at": "2026-10-25T22:44:16+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1629008": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1629008,
+          "name": "Michael Porter Jr.",
+          "team": "Brooklyn Nets",
+          "milestone": 20,
+          "side": "over",
+          "odds": 1.47,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-25T22:18:41+01:00",
+            "milestone": 20
+          },
+          "placed_at": "2026-10-25T22:44:26+01:00",
+          "updated_at": "2026-10-25T22:44:26+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1631165": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1631165,
+          "name": "Keon Ellis",
+          "team": "Brooklyn Nets",
+          "milestone": 6,
+          "side": "over",
+          "odds": 1.4,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-25T22:18:41+01:00",
+            "milestone": 6
+          },
+          "placed_at": "2026-10-25T22:44:42+01:00",
+          "updated_at": "2026-10-25T22:44:42+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1629614": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1629614,
+          "name": "Andrew Nembhard",
+          "team": "Indiana Pacers",
+          "milestone": 12,
+          "side": "over",
+          "odds": 1.47,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-25T22:42:11+01:00",
+            "milestone": 12
+          },
+          "placed_at": "2026-10-25T22:45:24+01:00",
+          "updated_at": "2026-10-25T22:45:24+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1627783": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1627783,
+          "name": "Pascal Siakam",
+          "team": "Indiana Pacers",
+          "milestone": 21,
+          "side": "over",
+          "odds": 1.42,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-25T21:01:30+01:00",
+            "milestone": 21
+          },
+          "placed_at": "2026-10-25T22:45:30+01:00",
+          "updated_at": "2026-10-25T22:45:30+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1630169": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1630169,
+          "name": "Tyrese Haliburton",
+          "team": "Indiana Pacers",
+          "milestone": 17,
+          "side": "over",
+          "odds": 1.53,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-25T22:42:11+01:00",
+            "milestone": 17
+          },
+          "placed_at": "2026-10-25T22:45:38+01:00",
+          "updated_at": "2026-10-25T22:45:38+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1630174": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1630174,
+          "name": "Aaron Nesmith",
+          "team": "Indiana Pacers",
+          "milestone": 9,
+          "side": "over",
+          "odds": 1.57,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-25T22:42:11+01:00",
+            "milestone": 9
+          },
+          "placed_at": "2026-10-25T22:46:00+01:00",
+          "updated_at": "2026-10-25T22:46:00+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1626162": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1626162,
+          "name": "Kelly Oubre Jr.",
+          "team": "Indiana Pacers",
+          "milestone": 7,
+          "side": "over",
+          "odds": 1.53,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-25T22:42:11+01:00",
+            "milestone": 7
+          },
+          "placed_at": "2026-10-25T22:46:08+01:00",
+          "updated_at": "2026-10-25T22:46:08+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1630167": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1630167,
+          "name": "Obi Toppin",
+          "team": "Indiana Pacers",
+          "milestone": 9,
+          "side": "over",
+          "odds": 1.34,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-10-25T22:42:11+01:00",
+            "milestone": 9
+          },
+          "placed_at": "2026-10-25T22:46:15+01:00",
+          "updated_at": "2026-10-25T22:46:15+01:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      }
+    },
+    "2026-10-25|2026-10-25T23:00:00Z|New York Knicks|Orlando Magic": {
+      "game_date": "2026-10-25",
+      "start_utc": "2026-10-25T23:00:00Z",
+      "home": "New York Knicks",
+      "away": "Orlando Magic",
+      "bets": {
+        "team_total_home": {
+          "market": "team_total_home",
+          "active": true,
+          "side": "over",
+          "line": 112.5,
+          "odds": 1.5,
+          "stake": 20.0,
+          "odds_source": "gespeichert",
+          "line_ref": {
+            "main_line": 115.5,
+            "chosen_line": 112.5,
+            "is_main": false,
+            "source": "eigene Eingabe",
+            "bookmaker": "Betano",
+            "at": "2026-10-25T19:29:36+01:00"
+          },
+          "placed_at": "2026-10-25T21:16:53+01:00",
+          "updated_at": "2026-10-25T21:16:53+01:00",
+          "removed_at": null,
+          "revisions": [
+            {
+              "reason": "geaendert",
+              "replaced_at": "2026-10-25T19:56:03+01:00",
+              "active": true,
+              "side": "over",
+              "line": 112.5,
+              "odds": 1.5,
+              "stake": 10.0,
+              "odds_source": "gespeichert",
+              "line_ref": {
+                "main_line": 115.5,
+                "chosen_line": 112.5,
+                "is_main": false,
+                "source": "eigene Eingabe",
+                "bookmaker": "Betano",
+                "at": "2026-10-25T19:29:36+01:00"
+              },
+              "placed_at": "2026-10-25T19:40:47+01:00",
+              "updated_at": "2026-10-25T19:40:47+01:00",
+              "removed_at": null
+            },
+            {
+              "reason": "entfernt",
+              "replaced_at": "2026-10-25T21:16:43+01:00",
+              "active": true,
+              "side": "over",
+              "line": 112.5,
+              "odds": 1.49,
+              "stake": 20.0,
+              "odds_source": "manuell",
+              "line_ref": {
+                "main_line": 115.5,
+                "chosen_line": 112.5,
+                "is_main": false,
+                "source": "eigene Eingabe",
+                "bookmaker": "Betano",
+                "at": "2026-10-25T19:29:36+01:00"
+              },
+              "placed_at": "2026-10-25T19:40:47+01:00",
+              "updated_at": "2026-10-25T19:56:03+01:00",
+              "removed_at": null
+            }
+          ]
+        }
+      }
+    },
+    "2026-10-25|2026-10-25T23:00:00Z|Minnesota Timberwolves|Toronto Raptors": {
+      "game_date": "2026-10-25",
+      "start_utc": "2026-10-25T23:00:00Z",
+      "home": "Minnesota Timberwolves",
+      "away": "Toronto Raptors",
+      "bets": {
+        "team_total_home": {
+          "market": "team_total_home",
+          "active": true,
+          "side": "over",
+          "line": 112.5,
+          "odds": 1.55,
+          "stake": 20.0,
+          "odds_source": "gespeichert",
+          "line_ref": {
+            "main_line": 115.5,
+            "chosen_line": 112.5,
+            "is_main": false,
+            "source": "eigene Eingabe",
+            "bookmaker": "Betano",
+            "at": "2026-10-25T21:01:53+01:00"
+          },
+          "placed_at": "2026-10-25T21:17:27+01:00",
+          "updated_at": "2026-10-25T21:17:27+01:00",
+          "removed_at": null,
+          "revisions": [
+            {
+              "reason": "geaendert",
+              "replaced_at": "2026-10-25T19:56:46+01:00",
+              "active": true,
+              "side": "over",
+              "line": 112.5,
+              "odds": 1.53,
+              "stake": 10.0,
+              "odds_source": "gespeichert",
+              "line_ref": {
+                "main_line": 115.5,
+                "chosen_line": 112.5,
+                "is_main": false,
+                "source": "eigene Eingabe",
+                "bookmaker": "Betano",
+                "at": "2026-10-25T19:30:09+01:00"
+              },
+              "placed_at": "2026-10-25T19:41:22+01:00",
+              "updated_at": "2026-10-25T19:41:22+01:00",
+              "removed_at": null
+            },
+            {
+              "reason": "entfernt",
+              "replaced_at": "2026-10-25T21:17:19+01:00",
+              "active": true,
+              "side": "over",
+              "line": 112.5,
+              "odds": 1.54,
+              "stake": 20.0,
+              "odds_source": "manuell",
+              "line_ref": {
+                "main_line": 115.5,
+                "chosen_line": 112.5,
+                "is_main": false,
+                "source": "eigene Eingabe",
+                "bookmaker": "Betano",
+                "at": "2026-10-25T19:30:09+01:00"
+              },
+              "placed_at": "2026-10-25T19:41:22+01:00",
+              "updated_at": "2026-10-25T19:56:46+01:00",
+              "removed_at": null
+            }
+          ]
+        }
+      }
+    },
+    "2026-10-25|2026-10-25T23:00:00Z|Oklahoma City Thunder|LA Clippers": {
+      "game_date": "2026-10-25",
+      "start_utc": "2026-10-25T23:00:00Z",
+      "home": "Oklahoma City Thunder",
+      "away": "LA Clippers",
+      "bets": {
+        "total": {
+          "market": "total",
+          "active": true,
+          "side": "over",
+          "line": 221.5,
+          "odds": 1.7,
+          "stake": 20.0,
+          "odds_source": "gespeichert",
+          "line_ref": {
+            "main_line": 224.5,
+            "chosen_line": 221.5,
+            "is_main": false,
+            "source": "eigene Eingabe",
+            "bookmaker": "Betano",
+            "at": "2026-10-25T19:30:29+01:00"
+          },
+          "placed_at": "2026-10-25T21:18:02+01:00",
+          "updated_at": "2026-10-25T21:18:02+01:00",
+          "removed_at": null,
+          "revisions": [
+            {
+              "reason": "geaendert",
+              "replaced_at": "2026-10-25T19:57:24+01:00",
+              "active": true,
+              "side": "over",
+              "line": 221.5,
+              "odds": 1.7,
+              "stake": 10.0,
+              "odds_source": "gespeichert",
+              "line_ref": {
+                "main_line": 224.5,
+                "chosen_line": 221.5,
+                "is_main": false,
+                "source": "eigene Eingabe",
+                "bookmaker": "Betano",
+                "at": "2026-10-25T19:30:29+01:00"
+              },
+              "placed_at": "2026-10-25T19:42:07+01:00",
+              "updated_at": "2026-10-25T19:42:07+01:00",
+              "removed_at": null
+            },
+            {
+              "reason": "entfernt",
+              "replaced_at": "2026-10-25T21:17:50+01:00",
+              "active": true,
+              "side": "over",
+              "line": 221.5,
+              "odds": 1.59,
+              "stake": 20.0,
+              "odds_source": "manuell",
+              "line_ref": {
+                "main_line": 224.5,
+                "chosen_line": 221.5,
+                "is_main": false,
+                "source": "eigene Eingabe",
+                "bookmaker": "Betano",
+                "at": "2026-10-25T19:30:29+01:00"
+              },
+              "placed_at": "2026-10-25T19:42:07+01:00",
+              "updated_at": "2026-10-25T19:57:24+01:00",
+              "removed_at": null
+            }
+          ]
+        },
+        "team_total_home": {
+          "market": "team_total_home",
+          "active": true,
+          "side": "over",
+          "line": 114.5,
+          "odds": 1.47,
+          "stake": 20.0,
+          "odds_source": "gespeichert",
+          "line_ref": {
+            "main_line": 117.5,
+            "chosen_line": 114.5,
+            "is_main": false,
+            "source": "eigene Eingabe",
+            "bookmaker": "Betano",
+            "at": "2026-10-25T04:40:23+01:00"
+          },
+          "placed_at": "2026-10-25T21:18:13+01:00",
+          "updated_at": "2026-10-25T21:18:13+01:00",
+          "removed_at": null,
+          "revisions": [
+            {
+              "reason": "entfernt",
+              "replaced_at": "2026-10-25T21:17:52+01:00",
+              "active": true,
+              "side": "over",
+              "line": 114.5,
+              "odds": 1.47,
+              "stake": 10.0,
+              "odds_source": "gespeichert",
+              "line_ref": {
+                "main_line": 117.5,
+                "chosen_line": 114.5,
+                "is_main": false,
+                "source": "eigene Eingabe",
+                "bookmaker": "Betano",
+                "at": "2026-10-25T04:40:23+01:00"
+              },
+              "placed_at": "2026-10-25T19:42:18+01:00",
+              "updated_at": "2026-10-25T19:42:18+01:00",
+              "removed_at": null
+            }
+          ]
+        },
+        "team_total_away": {
+          "market": "team_total_away",
+          "active": true,
+          "side": "over",
+          "line": 100.5,
+          "odds": 1.5,
+          "stake": 20.0,
+          "odds_source": "gespeichert",
+          "line_ref": {
+            "main_line": 103.5,
+            "chosen_line": 100.5,
+            "is_main": false,
+            "source": "eigene Eingabe",
+            "bookmaker": "Betano",
+            "at": "2026-10-25T21:02:10+01:00"
+          },
+          "placed_at": "2026-10-25T21:18:23+01:00",
+          "updated_at": "2026-10-25T21:18:23+01:00",
+          "removed_at": null,
+          "revisions": [
+            {
+              "reason": "entfernt",
+              "replaced_at": "2026-10-25T21:17:53+01:00",
+              "active": true,
+              "side": "over",
+              "line": 100.5,
+              "odds": 1.5,
+              "stake": 10.0,
+              "odds_source": "gespeichert",
+              "line_ref": {
+                "main_line": 103.5,
+                "chosen_line": 100.5,
+                "is_main": false,
+                "source": "eigene Eingabe",
+                "bookmaker": "Betano",
+                "at": "2026-10-25T19:30:29+01:00"
+              },
+              "placed_at": "2026-10-25T19:42:30+01:00",
+              "updated_at": "2026-10-25T19:42:30+01:00",
+              "removed_at": null
+            }
+          ]
+        }
+      }
+    },
+    "2026-10-25|2026-10-25T23:30:00Z|Philadelphia 76ers|Detroit Pistons": {
+      "game_date": "2026-10-25",
+      "start_utc": "2026-10-25T23:30:00Z",
+      "home": "Philadelphia 76ers",
+      "away": "Detroit Pistons",
+      "bets": {
+        "total": {
+          "market": "total",
+          "active": true,
+          "side": "over",
+          "line": 224.5,
+          "odds": 1.65,
+          "stake": 20.0,
+          "odds_source": "gespeichert",
+          "line_ref": {
+            "main_line": 227.5,
+            "chosen_line": 224.5,
+            "is_main": false,
+            "source": "eigene Eingabe",
+            "bookmaker": "Betano",
+            "at": "2026-10-25T21:02:16+01:00"
+          },
+          "placed_at": "2026-10-25T21:19:09+01:00",
+          "updated_at": "2026-10-25T21:19:09+01:00",
+          "removed_at": null,
+          "revisions": [
+            {
+              "reason": "entfernt",
+              "replaced_at": "2026-10-25T21:18:58+01:00",
+              "active": true,
+              "side": "over",
+              "line": 224.5,
+              "odds": 1.65,
+              "stake": 10.0,
+              "odds_source": "gespeichert",
+              "line_ref": {
+                "main_line": 227.5,
+                "chosen_line": 224.5,
+                "is_main": false,
+                "source": "eigene Eingabe",
+                "bookmaker": "Betano",
+                "at": "2026-10-25T19:30:42+01:00"
+              },
+              "placed_at": "2026-10-25T19:43:23+01:00",
+              "updated_at": "2026-10-25T19:43:23+01:00",
+              "removed_at": null
+            }
+          ]
+        },
+        "team_total_home": {
+          "market": "team_total_home",
+          "active": true,
+          "side": "over",
+          "line": 111.5,
+          "odds": 1.57,
+          "stake": 20.0,
+          "odds_source": "gespeichert",
+          "line_ref": {
+            "main_line": 114.5,
+            "chosen_line": 111.5,
+            "is_main": false,
+            "source": "eigene Eingabe",
+            "bookmaker": "Betano",
+            "at": "2026-10-25T21:02:16+01:00"
+          },
+          "placed_at": "2026-10-25T21:19:24+01:00",
+          "updated_at": "2026-10-25T21:19:24+01:00",
+          "removed_at": null,
+          "revisions": [
+            {
+              "reason": "entfernt",
+              "replaced_at": "2026-10-25T21:18:59+01:00",
+              "active": true,
+              "side": "over",
+              "line": 110.5,
+              "odds": 1.5,
+              "stake": 10.0,
+              "odds_source": "gespeichert",
+              "line_ref": {
+                "main_line": 113.5,
+                "chosen_line": 110.5,
+                "is_main": false,
+                "source": "eigene Eingabe",
+                "bookmaker": "Betano",
+                "at": "2026-10-25T19:30:42+01:00"
+              },
+              "placed_at": "2026-10-25T19:43:33+01:00",
+              "updated_at": "2026-10-25T19:43:33+01:00",
+              "removed_at": null
+            }
+          ]
+        },
+        "team_total_away": {
+          "market": "team_total_away",
+          "active": true,
+          "side": "over",
+          "line": 110.5,
+          "odds": 1.5,
+          "stake": 20.0,
+          "odds_source": "gespeichert",
+          "line_ref": {
+            "main_line": 113.5,
+            "chosen_line": 110.5,
+            "is_main": false,
+            "source": "eigene Eingabe",
+            "bookmaker": "Betano",
+            "at": "2026-10-25T21:02:16+01:00"
+          },
+          "placed_at": "2026-10-25T21:19:35+01:00",
+          "updated_at": "2026-10-25T21:19:35+01:00",
+          "removed_at": null,
+          "revisions": [
+            {
+              "reason": "entfernt",
+              "replaced_at": "2026-10-25T21:19:01+01:00",
+              "active": true,
+              "side": "over",
+              "line": 110.5,
+              "odds": 1.52,
+              "stake": 10.0,
+              "odds_source": "gespeichert",
+              "line_ref": {
+                "main_line": 113.5,
+                "chosen_line": 110.5,
+                "is_main": false,
+                "source": "eigene Eingabe",
+                "bookmaker": "Betano",
+                "at": "2026-10-25T19:30:42+01:00"
+              },
+              "placed_at": "2026-10-25T19:43:45+01:00",
+              "updated_at": "2026-10-25T19:43:45+01:00",
+              "removed_at": null
+            }
+          ]
+        }
+      }
+    },
+    "2026-10-25|2026-10-26T01:00:00Z|Sacramento Kings|Memphis Grizzlies": {
+      "game_date": "2026-10-25",
+      "start_utc": "2026-10-26T01:00:00Z",
+      "home": "Sacramento Kings",
+      "away": "Memphis Grizzlies",
+      "bets": {
+        "total": {
+          "market": "total",
+          "active": true,
+          "side": "over",
+          "line": 231.5,
+          "odds": 1.7,
+          "stake": 20.0,
+          "odds_source": "gespeichert",
+          "line_ref": {
+            "main_line": 234.5,
+            "chosen_line": 231.5,
+            "is_main": false,
+            "source": "eigene Eingabe",
+            "bookmaker": "Betano",
+            "at": "2026-10-25T19:31:02+01:00"
+          },
+          "placed_at": "2026-10-25T21:20:25+01:00",
+          "updated_at": "2026-10-25T21:20:25+01:00",
+          "removed_at": null,
+          "revisions": [
+            {
+              "reason": "entfernt",
+              "replaced_at": "2026-10-25T21:20:15+01:00",
+              "active": true,
+              "side": "over",
+              "line": 231.5,
+              "odds": 1.67,
+              "stake": 10.0,
+              "odds_source": "gespeichert",
+              "line_ref": {
+                "main_line": 234.5,
+                "chosen_line": 231.5,
+                "is_main": false,
+                "source": "eigene Eingabe",
+                "bookmaker": "Betano",
+                "at": "2026-10-25T19:31:02+01:00"
+              },
+              "placed_at": "2026-10-25T19:44:18+01:00",
+              "updated_at": "2026-10-25T19:44:18+01:00",
+              "removed_at": null
+            }
+          ]
+        },
+        "team_total_home": {
+          "market": "team_total_home",
+          "active": true,
+          "side": "over",
+          "line": 112.5,
+          "odds": 1.5,
+          "stake": 20.0,
+          "odds_source": "gespeichert",
+          "line_ref": {
+            "main_line": 115.5,
+            "chosen_line": 112.5,
+            "is_main": false,
+            "source": "eigene Eingabe",
+            "bookmaker": "Betano",
+            "at": "2026-10-25T19:31:02+01:00"
+          },
+          "placed_at": "2026-10-25T21:20:40+01:00",
+          "updated_at": "2026-10-25T21:20:40+01:00",
+          "removed_at": null,
+          "revisions": [
+            {
+              "reason": "entfernt",
+              "replaced_at": "2026-10-25T21:20:16+01:00",
+              "active": true,
+              "side": "over",
+              "line": 112.5,
+              "odds": 1.5,
+              "stake": 10.0,
+              "odds_source": "gespeichert",
+              "line_ref": {
+                "main_line": 115.5,
+                "chosen_line": 112.5,
+                "is_main": false,
+                "source": "eigene Eingabe",
+                "bookmaker": "Betano",
+                "at": "2026-10-25T19:31:02+01:00"
+              },
+              "placed_at": "2026-10-25T19:44:30+01:00",
+              "updated_at": "2026-10-25T19:44:30+01:00",
+              "removed_at": null
+            }
+          ]
         }
       }
     }
