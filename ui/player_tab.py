@@ -232,6 +232,10 @@ def _render_table(key: str, entry: dict, mode: str, sort: str, state, show_all: 
     window = None if show_all else TABLE_WINDOW
     absences = ab.get(key)
     model = pv.build_table_model(entry, mode, sort, ds.get_player_bets_by_key(key), None, absences, window)
+    if not table_view and (absences["out"] or absences["doubtful"]):                  # Kartenansicht: Werte der Variante mit Ausfaellen, falls sie zur Auswahl passt (nur Darstellung)
+        variant = psn.latest_variant(key, set(absences["out"]), set(absences["doubtful"]))
+        if variant is not None:
+            model = pv.attach_variant(pv.build_table_model(variant["entry"], mode, sort, ds.get_player_bets_by_key(key), None, None, window), entry, mode)
     shown = pv.shown_milestones(model)
     live = memo("live_table", (key, id(entry), mode, window, game_signature(game), repr(sorted((k, tuple(sorted(v))) for k, v in shown.items()))), lambda: live_table_data(game, entry, shown))
     pv.attach_live(model, live)
@@ -239,7 +243,7 @@ def _render_table(key: str, entry: dict, mode: str, sort: str, state, show_all: 
         score = f"{game.away_score} : {game.home_score} ({game.clock_label}, Abstand {abs(game.home_score - game.away_score)})"
         extra = " · Stand von " + game.source if game.source != "NBA.com" else ""
         st.markdown(f"<div class='pl-info'>Spiel läuft: {pv.escape(game.away_nick)} {pv.escape(score)} {pv.escape(extra)}. Live-Chance = Chance auf den Meilenstein aus Restzeit, erwarteten Minuten (Fouls, Blowout) und Punkten je Minute: UNGEPRÜFT (Version {plive_version()}).</div>", unsafe_allow_html=True)
-    st.markdown(flat(pv.render_table_html(model) if table_view else pv.render_cards_html(model)), unsafe_allow_html=True)
+    st.markdown(flat(pv.render_table_html(model) if table_view else pv.render_cards_html(model, absences)), unsafe_allow_html=True)
     if model["hidden_rows"]:
         st.caption(f"Standardansicht: Meilensteine um die erwartete Punktzahl (±{TABLE_WINDOW:g}) und eigene Wetten; {model['hidden_rows']} weitere Zeilen ausgeblendet („Alle Meilensteine anzeigen“ schaltet sie ein).")
 
@@ -276,6 +280,7 @@ def _forecast_view() -> None:
         (st.success if msg[0] == "ok" else st.error)(msg[1])
     entry = cached_snapshot(key)
     mode = "team"
+    table_view = False
     if entry is None:
         st.info("Für dieses Spiel gibt es noch keinen Prognose-Snapshot." + (" Das Spiel hat bereits begonnen: ein jetzt erstellter Snapshot ist nur eingeschränkt aussagekräftig." if started(key) else ""))
         st.button("Prognose jetzt erstellen", key=f"pl_create_{key}", on_click=_create_clicked, args=(key,),
@@ -298,7 +303,7 @@ def _forecast_view() -> None:
         st.caption(f"◀ Modell mindestens {pv.fmt_num(pv.MARK_PP, 0)} Prozentpunkte über dem Buchmacher, ▼ darunter. Differenz = Modell minus Buchmacher-Chance (inkl. Marge), aus ungerundeten Werten. "
                    "⚠ bewegt man die Maus darüber: Datenqualität und Hinweise. 🎯 = meine Wette.")
     render_player_bet_entry(key, entries)
-    render_absences(key, entries, entry, mode)
+    render_absences(key, entries, entry, mode, show_compare=table_view)
 
 
 def render_player_tab() -> None:

@@ -176,10 +176,14 @@ next(b for b in at.button if b.label == "Auswahl speichern").click().run()
 check("Auswahl speichern: in absences.json gespeichert (pro Tag), Meldung, keine Neuberechnung", set(ab.get(KEY)["out"]) == {11} and any("Auswahl gespeichert" in x.value for x in at.success) and not psn.variants_path(D).exists() and not at.exception)
 check("nach dem Speichern: Hinweis 'noch keine Neuberechnung'", any("Noch keine Neuberechnung" in x.value for x in at.info))
 next(b for b in at.button if "neu rechnen" in b.label).click().run()
+Hc = " ".join(x.value for x in at.markdown)
+check("Kartenansicht (Standard) nach der Neuberechnung: Kasten 'Ausfaelle fuer dieses Spiel', Karten mit Werten der Variante, keine Vergleichstabelle", "Ausfälle für dieses Spiel" in Hc and "pl-cards" in Hc and "Modell alt" not in Hc and "Neuberechnung vom" in Hc and not at.exception, " | ".join(problems(at))[:200])
+msg_ok = any("Neuberechnet und als eigener Stand gespeichert" in x.value for x in at.success)
+at.toggle(key="pl_table_view").set_value(True).run()                 # Tabellenansicht: Vergleichstabelle "alt / neu / Aenderung" wie bisher
 H = " ".join(x.value for x in at.markdown)
 check("Neuberechnung: eigener Eintrag gespeichert, Original-Snapshot bytegleich, Vergleichstabelle mit 'Modell alt'/'Modell neu' und Zeile 'Neuberechnung vom'", psn.variants_path(D).exists() and hashlib.sha1(orig_file.read_bytes()).hexdigest() == orig_hash
       and "Modell alt" in H and "Modell neu" in H and "Neuberechnung vom" in H and "<span class='pl-m'>fehlt</span>" in H and not at.exception, " | ".join(problems(at))[:200])
-check("Meldung nach der Neuberechnung", any("Neuberechnet und als eigener Stand gespeichert" in x.value for x in at.success))
+check("Meldung nach der Neuberechnung", msg_ok)
 H2 = " ".join(x.value for x in at.markdown)
 check("Haupttabelle zeigt weiter den ursprünglichen Snapshot (Eins mit Prognose), Tooltip nennt die Ausfall-Auswahl", "Ausfall-Auswahl: fehlt" in H2 and "Eins" in H2)
 # Aenderung der Auswahl -> alter Vergleich gehoert nicht mehr dazu

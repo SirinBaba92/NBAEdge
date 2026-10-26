@@ -340,7 +340,49 @@ def diff_class(diff_pp: float | None) -> str:
     return "pl-cd-grau" if diff_pp is None else "pl-cd-gruen" if diff_pp >= DIFF_COLOR_PP else "pl-cd-rot" if diff_pp <= -DIFF_COLOR_PP else "pl-cd-grau"
 
 
-def _card_row(r: dict, lv: dict | None) -> str:
+def attach_variant(model: dict, base_entry: dict, mode: str = "team") -> dict:
+    """Modell einer Variante mit Ausfaellen (build_table_model auf variant['entry']) um die alten Werte des urspruenglichen Snapshots ergaenzen: p['old'] = {'minutes', 'points'} und r['old_pct']
+    (nur Nachschlagen, keine Rechnung; gleiche Quelle wie build_compare_model). Danach zeigen die Karten Modell neu, 'vorher' und die Box 'Ausfaelle wirken'."""
+    old_by = {p["person_id"]: p for p in build_table_model(base_entry, mode, "team")["players"]}
+    for p in model["players"]:
+        o = old_by.get(p["person_id"])
+        p["old"] = None if o is None else {"minutes": o["minutes"], "points": o["points"]}
+        for r in p["rows"]:
+            ro = next((x for x in (o["rows"] if o else []) if x["n"] == r["n"]), None)
+            r["old_pct"] = None if ro is None else ro["model_pct"]
+    model["variant"] = True
+    return model
+
+
+def _changed(a, b) -> bool:
+    return a is not None and b is not None and abs(float(a) - float(b)) >= 0.05
+
+
+def affected(p: dict) -> bool:
+    """Minuten oder Punkte des Spielers aendern sich durch die Ausfaelle (nur mit alten Werten)."""
+    o = p.get("old")
+    return o is not None and (_changed(o["minutes"], p["minutes"]) or _changed(o["points"], p["points"]))
+
+
+def absence_box_html(cur: dict | None) -> str:
+    """Gelber Ueberblick 'Ausfaelle fuer dieses Spiel' (ohne Bedienung): Fehlt, Fraglich und Herkunft (automatisch ESPN mit Stand / von Hand) aus den Ausfall-Daten (data/absences_store.get)."""
+    cur = cur or {}
+    out, dbt = cur.get("out") or {}, cur.get("doubtful") or {}
+    if not out and not dbt:
+        return ""
+    names = lambda m: ", ".join(f"{escape(v['name'])} ({escape(v.get('team') or '–')})" for v in sorted(m.values(), key=lambda v: v["name"])) or "–"
+    entries = list(out.values()) + list(dbt.values())
+    origin = []
+    if any(v.get("source") for v in entries):
+        stamp = (cur.get("auto") or {}).get("fetched_at") or next((v.get("fetched_at") for v in entries if v.get("source")), "") or ""
+        origin.append("automatisch (ESPN)" + (f", Stand {stamp[11:16]}" if stamp[11:16] else ""))
+    if any(not v.get("source") for v in entries):
+        origin.append("von Hand")
+    return (f"<div class='pl-c-abs'><div class='pl-c-abs-t'>Ausfälle für dieses Spiel</div><div>Fehlt: {names(out)}</div><div>Fraglich: {names(dbt)}</div>"
+            f"<div class='pl-c-abs-o'>{' · '.join(origin)}</div></div>")
+
+
+def _card_row(r: dict, lv: dict | None, variant: bool = False) -> str:
     odds = "" if r.get("odds") is None else f"<span class='pl-c-odds'>@ {fmt_num(r['odds'], 2)}</span>"
     buch = max(0, min(100, int(r["buch_pct"])))
     model = r["model_pct"]
@@ -352,13 +394,16 @@ def _card_row(r: dict, lv: dict | None) -> str:
     if lv is not None:
         ch = (lv.get("chances") or {}).get(r["n"])
         live_txt = "<span class='pl-c-live'>" + ("erreicht" if lv["points"] >= r["n"] else "Live –" if ch is None else f"Live {pct_int(ch)} %") + "</span>"
+    old = ""
+    if variant and r.get("old_pct") is not None and model is not None and abs(int(model) - int(r["old_pct"])) >= 1:
+        old = f"<span class='pl-c-old'>vorher {r['old_pct']} %</span>"
     hi = " pl-c-hi" if model is not None and model >= CARD_HIGHLIGHT_MIN_PCT else ""
     return (f"<div class='pl-c-row{hi}'><div class='pl-c-n'><b>{r['n']}+</b>{odds}</div>"
-            f"<div class='pl-c-mid'><span class='pl-c-bar pl-c-bar-b'><i style='width:{buch}%'></i></span>{model_bar}<span class='pl-c-txt'><span class='pl-c-wb'>Betano</span> <b>{buch} %</b> · {model_txt}</span></div>"
+            f"<div class='pl-c-mid'><span class='pl-c-bar pl-c-bar-b'><i style='width:{buch}%'></i></span>{model_bar}<span class='pl-c-txt'><span class='pl-c-wb'>Betano</span> <b>{buch} %</b> · {model_txt}</span>{old}</div>"
             f"<div class='pl-c-d'><span class='{diff_class(r['diff'])}'>{diff}</span>{mark}{live_txt}</div></div>")
 
 
-def render_cards_html(model: dict) -> str:
+def render_cards_html(model: dict, absences: dict | None = None) -> str:
     """Spieler-Karten (ein Block, Raster): Kopf (Name, Warnung, Wette, Team), Meta (Punkte erwartet, Minuten), je Meilenstein eine Zeile mit Quote, Balken Betano/Modell und Differenz in PP.
     Gleiche Zahlen und Reihenfolge wie render_table_html (model aus build_table_model); bei laufendem Spiel zusaetzlich 'Jetzt' und Live-Chance je Zeile."""
     cards = []
@@ -369,17 +414,25 @@ def render_cards_html(model: dict) -> str:
             sym += f" <span class='pl-bet-mark' title='Meine Wette: mindestens {b['milestone']} Punkte'>🎯 {b['milestone']}+{'' if b.get('odds') is None else ' @ ' + fmt_num(b['odds'], 2)}</span>"
         lv = p.get("live")
         meta = (f"<b>{fmt_min(p['points'])}</b> Punkte erwartet · <b>{fmt_min(p['minutes'])}</b> Min" if p["ok"] else "keine Prognose")
+        variant, aff = bool(model.get("variant")), bool(model.get("variant")) and affected(p)
+        if aff:
+            o, d = p["old"], (None if p["points"] is None or p["old"]["points"] is None else p["points"] - p["old"]["points"])
+            meta = (f"<div class='pl-c-aff'>Ausfälle wirken: Minuten <s>{fmt_min(o['minutes'])}</s> → <b>{fmt_min(p['minutes'])}</b> · Punkte <s>{fmt_min(o['points'])}</s> → <b>{fmt_min(p['points'])}</b>"
+                    + ("" if d is None else f" ({fmt_num(d, 1, signed=True)})") + "</div>")
+        elif variant and p.get("old") is not None:
+            meta += " · nicht betroffen"
         now = ""
         if model.get("live"):
             now = ("<div class='pl-c-now'>Jetzt: " + (f"<b>{lv['points']}</b> Pkt · <b>{fmt_num(lv['minutes'], 1)}</b> Min · <b>{lv['fouls']}</b> Fouls"
                                                        + (f" <span class='pl-q' title='{escape('; '.join(lv.get('notes') or []), quote=True)}'>⚠</span>" if lv.get("notes") else "") if lv else "–") + "</div>")
-        rows = "".join(_card_row(r, lv) for r in p["rows"]) or "<div class='pl-none'>keine Meilensteine eingelesen</div>"
-        cards.append(f"<div class='pl-card'><div class='pl-c-head'><span class='pl-c-name'>{escape(p['name'])}{sym}</span><span class='pl-c-team'>{escape(p['abbr'] or p.get('team') or '')}</span></div>"
-                     f"<div class='pl-c-meta'>{meta}</div>{now}{rows}</div>")
+        rows = "".join(_card_row(r, lv, variant) for r in p["rows"]) or "<div class='pl-none'>keine Meilensteine eingelesen</div>"
+        meta_html = meta if aff else "<div class='pl-c-meta'>" + meta + "</div>"
+        cards.append(f"<div class='pl-card{' pl-card-aff' if aff else ''}'><div class='pl-c-head'><span class='pl-c-name'>{escape(p['name'])}{sym}</span><span class='pl-c-team'>{escape(p['abbr'] or p.get('team') or '')}</span></div>"
+                     f"{meta_html}{now}{rows}</div>")
     legend = (f"<div class='pl-c-legend'><span class='pl-c-key' style='background:{BLUE}'></span>Betano inkl. Marge · <span class='pl-c-key' style='background:{ORANGE}'></span>Modell ({UNVERIFIED.lower()}) · "
               "Zahl rechts = Differenz Modell minus Betano in Prozentpunkten"
               f"<br>Violett hinterlegt = Modell ≥ {CARD_HIGHLIGHT_MIN_PCT} %</div>")
-    return f"<div class='pl-cards'>{''.join(cards)}</div>{legend}"
+    return f"{absence_box_html(absences)}<div class='pl-cards'>{''.join(cards)}</div>{legend}"
 
 
 def _cards_css() -> str:
@@ -398,6 +451,12 @@ def _cards_css() -> str:
 .pl-c-head .pl-bet-mark, .pl-c-head .pl-q {{ font-size:14px; }}
 .pl-c-meta b, .pl-c-now b {{ color:{P['text']}; }}
 .pl-c-row {{ display:grid; grid-template-columns:84px 1fr 96px; gap:12px; align-items:center; padding:7px 6px; margin:0 -6px; border-radius:8px; }}
+.pl-card-aff {{ border-color:#8f7220; }}
+.pl-c-aff {{ font-size:14px; color:#f3d36b; background:rgba(232,182,49,.14); border:1px solid #8f7220; border-radius:8px; padding:5px 8px; margin:3px 0 8px; }}
+.pl-c-aff s {{ color:{P['label']}; }} .pl-c-aff b {{ color:{P['text']}; }}
+.pl-c-old {{ display:block; font-size:13px; color:{P['label']}; }}
+.pl-c-abs {{ box-sizing:border-box; max-width:1400px; margin:0 0 12px; padding:10px 14px; border-radius:12px; background:rgba(232,182,49,.12); border:1px solid #8f7220; color:#f3d36b; font-size:15px; }}
+.pl-c-abs-t {{ font-weight:700; margin-bottom:3px; }} .pl-c-abs-o {{ font-size:12px; color:{P['label']}; margin-top:3px; }}
 .pl-c-hi {{ background:rgba(139,92,246,.16); }}
 .pl-c-n b {{ display:block; font-size:20px; color:{P['text']}; }}
 .pl-c-odds {{ display:block; font-size:14px; color:{P['label']}; }}

@@ -26,7 +26,7 @@ ok = True
 def check(name, cond, info=""):
     global ok
     ok &= bool(cond); print(("PASS " if cond else "FAIL ") + name + (f"  [{info}]" if info else ""))
-cards_of = lambda h: re.findall(r"<div class='pl-card'>.*?(?=<div class='pl-card'>|</div><div class='pl-c-legend'>)", h, flags=re.S)
+cards_of = lambda h: re.findall(r"<div class='pl-card(?: pl-card-aff)?'>.*?(?=<div class='pl-card(?: pl-card-aff)?'>|</div><div class='pl-c-legend'>)", h, flags=re.S)
 model = pv.build_table_model(ENTRY, "team", "team")
 H = pv.render_cards_html(model)
 cs = cards_of(H)
@@ -85,4 +85,38 @@ ml = pv.attach_live(pv.build_table_model(ENTRY, "team", "team"), lv)
 hl = pv.render_cards_html(ml)
 c1 = cards_of(hl)[[q["name"] for q in ml["players"]].index("Plus Plus")]
 check("laufendes Spiel: 'Jetzt', Live-Chance je Zeile, 'erreicht' fuer erreichte Linie", "Jetzt: <b>21</b> Pkt" in c1 and "Live 40 %" in c1 and "erreicht" in c1 and "Foulprobleme" in c1)
+
+# ----------------------------------------------------------------------------- Stufe 2: Karten mit Ausfaellen (Variante)
+import copy, inspect
+BASE = ENTRY
+VAR = copy.deepcopy(ENTRY)
+for q in VAR["players"]:
+    if q["person_id"] == 1:                                    # betroffen: Minuten 30 -> 35, Punkte 22 -> 24,4; Modell 15+: 90 -> 95, 20+: 60 -> 60, 25+: 30 -> 64, 30+: 12 -> 12
+        q["minutes"] = {"base": 35.0, "mean": 35.0, "role": "Stamm"}; q["minutes_adjusted"] = 35.0; q["expected_points_raw"] = q["expected_points_adjusted"] = 24.4
+        q["p_ge_raw"] = q["p_ge_adjusted"] = {"15": 0.95, "20": 0.60, "25": 0.64, "30": 0.12}
+    if q["person_id"] == 2:                                    # nicht betroffen (Minuten/Punkte gleich), Modell 10+: 52 -> 52, 15+: 40 -> 30
+        q["p_ge_raw"] = q["p_ge_adjusted"] = {"10": 0.52, "15": 0.30}
+vm = pv.attach_variant(pv.build_table_model(VAR, "team", "team"), BASE, "team")
+HV = pv.render_cards_html(vm)
+bv = {c.split("pl-c-name'>")[1].split("<")[0].strip(): c for c in cards_of(HV)}
+rowv = lambda name, n: next(x for x in bv[name].split("<div class='pl-c-row") if f"<b>{n}+</b>" in x)
+check("ohne Ausfaelle: Karten unveraendert (kein Variant-Zusatz, kein Kasten)", "pl-c-aff" not in H.replace("pl-c-aff {", "") and "vorher" not in H and "pl-c-abs'" not in H and "nicht betroffen" not in H)
+check("betroffener Spieler: gelber Rand + Box 'Ausfaelle wirken: Minuten 30,0 -> 35,0 · Punkte 22,0 -> 24,4 (+2,4)', alt durchgestrichen",
+      "pl-card pl-card-aff" in HV and "<div class='pl-card pl-card-aff'><div class='pl-c-head'><span class='pl-c-name'>Plus Plus" in HV and "Ausfälle wirken: Minuten <s>30,0</s> → <b>35,0</b> · Punkte <s>22,0</s> → <b>24,4</b> (+2,4)" in bv["Plus Plus"] and "pl-c-meta" not in bv["Plus Plus"], bv["Plus Plus"][:260])
+check("nicht betroffener Spieler: normale Metazeile mit 'nicht betroffen', kein gelber Rand", "· nicht betroffen" in bv["Minus Minus"] and "pl-card-aff" not in bv["Minus Minus"] and "Ausfälle wirken" not in bv["Minus Minus"])
+check("Modell neu in Balken/Text und Differenz (15+: Modell 95 %, Betano 80 % -> +15,0)", "<b>95 %</b>" in rowv("Plus Plus", 15) and "+15,0" in rowv("Plus Plus", 15))
+check("'vorher' nur bei Aenderung ab 1 PP: 15+ (90->95) und 25+ (30->64) ja, 20+ (60->60) und 10+ (52->52) nein",
+      "vorher 90 %" in rowv("Plus Plus", 15) and "vorher 30 %" in rowv("Plus Plus", 25) and "vorher" not in rowv("Plus Plus", 20) and "vorher" not in rowv("Minus Minus", 10) and "vorher 40 %" in rowv("Minus Minus", 15))
+check("Violett nach neuem Wert: 25+ jetzt 64 % hinterlegt (vorher 30 %), 15+ 30 % bei Minus nicht", "pl-c-hi" in rowv("Plus Plus", 25) and "pl-c-hi" not in rowv("Minus Minus", 15))
+vs = pv.build_table_model(VAR, "team", "diff")
+check("Sortierung 'groesste Differenz' gilt fuer den angezeigten Wert", [c.split("pl-c-name'>")[1].split("<")[0].strip() for c in cards_of(pv.render_cards_html(pv.attach_variant(vs, BASE)))] == [p["name"] for p in vs["players"]])
+cur = {"out": {1: {"name": "Plus Plus", "team": "Heim Falken", "source": "espn", "fetched_at": "2026-10-26T04:44:00+01:00"}}, "doubtful": {2: {"name": "Minus Minus", "team": "Heim Falken"}},
+       "auto": {"source": "espn", "fetched_at": "2026-10-26T04:44:00+01:00", "unmatched": []}}
+box = pv.absence_box_html(cur)
+check("Ausfall-Kasten: Fehlt/Fraglich mit Team, Herkunft 'automatisch (ESPN), Stand 04:44' und 'von Hand'", "Ausfälle für dieses Spiel" in box and "Fehlt: Plus Plus (Heim Falken)" in box and "Fraglich: Minus Minus (Heim Falken)" in box and "automatisch (ESPN), Stand 04:44" in box and "von Hand" in box, box[:200])
+check("Kasten nur mit Ausfaellen, steht vor den Karten", pv.absence_box_html({"out": {}, "doubtful": {}}) == "" and pv.render_cards_html(vm, cur).startswith("<div class='pl-c-abs'>") and "pl-c-abs'" not in pv.render_cards_html(vm))
+check("nur von Hand: Herkunft 'von Hand' ohne ESPN", "von Hand" in pv.absence_box_html({"out": {1: {"name": "A", "team": "T"}}, "doubtful": {}}) and "ESPN" not in pv.absence_box_html({"out": {1: {"name": "A", "team": "T"}}, "doubtful": {}}))
+from ui import player_absence as pa
+src = Path(ROOT / "ui" / "player_tab.py").read_text(encoding="utf-8")
+check("Vergleichstabelle nur in der Tabellenansicht (show_compare, Standard True; Tab reicht table_view durch)", inspect.signature(pa.render_absences).parameters["show_compare"].default is True and "show_compare=table_view" in src)
 print("\nALLES OK" if ok else "\nFEHLER"); sys.exit(0 if ok else 1)

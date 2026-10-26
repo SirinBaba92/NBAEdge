@@ -93,7 +93,7 @@ def _on_recompute(key: str, entries: dict, out_key: str, dbt_key: str) -> None:
 
 # ----------------------------------------------------------------------------------------------- Streamlit
 @st.fragment
-def render_absences(key: str, entries: dict, base_entry: dict | None, mode: str) -> None:
+def render_absences(key: str, entries: dict, base_entry: dict | None, mode: str, show_compare: bool = True) -> None:
     """Bereich 'Ausfaelle' fuer das gewaehlte Spiel (Fragment ohne Takt)."""
     with st.expander("Ausfälle (fehlt / fraglich) und Neuberechnung", expanded=False):
         err = ab.load_error()
@@ -140,6 +140,8 @@ def render_absences(key: str, entries: dict, base_entry: dict | None, mode: str)
         dbts = ", ".join(p["name"] for p in variant["doubtful"]) or "–"
         st.markdown(f"<div class='pl-info'>Neuberechnung vom {created}: fehlt: {pv.escape(outs)} | fraglich: {pv.escape(dbts)}. "
                     f"Ursprünglicher Snapshot: {pv.escape((variant.get('base_created_at') or 'nicht vorhanden')[:16].replace('T', ' '))} (unverändert).</div>", unsafe_allow_html=True)
+        if not show_compare:                                  # Kartenansicht: die Karten zeigen die Werte mit Ausfaellen, die Vergleichstabelle gibt es in der Tabellenansicht
+            return
         if mode == "raw":
             st.caption("Hinweis: Im Modus „roh“ enthalten die Modellwerte keine Ausfallkorrektur; die Neuberechnung wirkt über den Teamabgleich (Modus „Teamabgleich“).")
         model = pv.build_compare_model(base_entry, variant["entry"], mode)
