@@ -37,6 +37,8 @@ from data.fetcher import fetch_seasons, fetch_upcoming_games
 from data import market_lines, pregame_lines
 from data import pre_match_store
 from data import projection_snapshots
+from data import live_feed as lf_feed
+from ui import score_order
 from data.odds import parse_odds
 from data.odds_client import credits_info, describe_age, get_odds
 from data.injuries import fetch_team_news
@@ -773,9 +775,19 @@ for _ in tab_body("📊 Score Projections"):
         # Container mit festem Schluessel je Spiel in FESTER Reihenfolge (nach Spiel-Schluessel); die sichtbare Sortierung nach |Spread| macht CSS (order).
         _gkey = lambda p_: str((p_.get("_line_inputs") or {}).get("entry_key") or p_["home_team"])
         _hash = lambda p_: hashlib.md5(_gkey(p_).encode("utf-8")).hexdigest()[:10]
-        _rank = {_hash(p_): i + 1 for i, p_ in enumerate(sorted(projections, key=lambda x: -abs(x["exp_spread"])))}
-        _fin_hashes = [hashlib.md5(f_["key"].encode("utf-8")).hexdigest()[:10] for f_ in _fin_all]
-        _rank.update({h_: len(_rank) + 1 + i for i, h_ in enumerate(_fin_hashes)})       # beendete Spiele (aus dem Schnappschuss) stehen unter den uebrigen
+        # Reihenfolge: nicht begonnen, laufend, beendet; je Gruppe nach Anpfiff, bei gleichem Anpfiff nach |Spread| (ui/score_order.py). Status: Live-Feed-Stand (kein Abruf), sonst Uhrzeit/BDL-Status.
+        _now = time.time()
+        try:
+            _feed_state = lf_feed.get_feed().state(_now)
+        except Exception:
+            _feed_state = None
+        def _feed_status(day_, home_, away_):
+            g_ = lf_feed.find_game(_feed_state, day_, home_, away_) if _feed_state is not None else None
+            return g_.status if g_ is not None else None
+        _items = [(_hash(p_), p_.get("game_start"), score_order.status_group(p_.get("game_start"), p_.get("game_status"), _now, _feed_status(p_.get("game_date"), p_["home_team"], p_["away_team"])))
+                  for p_ in sorted(projections, key=lambda x: -abs(x["exp_spread"]))]
+        _items += [(hashlib.md5(f_["key"].encode("utf-8")).hexdigest()[:10], f_["card"].get("game_start"), score_order.FINAL) for f_ in _fin_all]      # beendete Spiele aus dem Schnappschuss
+        _rank = {it_[0]: i + 1 for i, it_ in enumerate(score_order.order(_items, lambda it: it[2], lambda it: it[1]))}
         st.markdown("<style>" + "".join(f"div:has(> .st-key-sc_game_{h}){{order:{r};}}" for h, r in _rank.items()) + "</style>", unsafe_allow_html=True)
         with st.container(key="sc_cards"):
             for proj in sorted(projections, key=_gkey):

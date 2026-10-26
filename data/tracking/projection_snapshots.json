@@ -1,7 +1,7 @@
 {
  "version": 1,
  "format": "nbaedge-projection-snapshots",
- "updated_at": "2026-10-26T04:18:15+01:00",
+ "updated_at": "2026-10-26T05:01:50+01:00",
  "games": {
   "2026-10-21|2026-10-21T23:30:00Z|Miami Heat|Minnesota Timberwolves": {
    "game_date": "2026-10-21",
@@ -60981,7 +60981,12 @@
     "home_team_total": null,
     "away_team_total": null
    },
-   "result": null
+   "result": {
+    "home_points": 112,
+    "away_points": 123,
+    "recorded_at": "2026-10-26T05:01:50+01:00",
+    "source": "upcoming_cache"
+   }
   },
   "2026-10-26|2026-10-26T23:00:00Z|Charlotte Hornets|Washington Wizards": {
    "game_date": "2026-10-26",
