@@ -216,15 +216,12 @@ def parse_event(data: dict, home: str, away: str) -> dict:
 
 def team_split(players: dict, roster_players: dict, g: dict) -> tuple[dict, list[str]]:
     """Ordnet die Betano-Spieler den Kaderlisten zu: {'home': [(Vollname, {schwelle: quote})], 'away': [...]}, dazu die nicht zuzuordnenden Namen."""
-    idx = {}
-    for side in ("home", "away"):
-        for p in roster_players.get(g[side], []):
-            idx[rosters.normalize_name(p["name"])] = (side, p["name"])
+    both = [{**p, "side": side} for side in ("home", "away") for p in roster_players.get(g[side], [])]
     out, miss = {"home": [], "away": []}, []
     for name, th in players.items():
-        hit = idx.get(rosters.normalize_name(name))
+        hit = rosters.match_player(name, both)           # tolerant (ohne Akzente/Punkte, ohne Jr./II/III), nur eindeutige Treffer; Mehrdeutiges wird nicht geraten
         if hit:
-            out[hit[0]].append((hit[1], th))
+            out[hit["side"]].append((hit["name"], th))
         else:
             miss.append(name)
     return out, miss
@@ -432,6 +429,12 @@ def run_one(con_write, g: dict, data: dict, real=input, now_fn=time.time) -> str
         return None
     if auto.unmatched:
         con_write("Hinweis: nicht im Kader gefunden, übersprungen: " + ", ".join(auto.unmatched))
+    if parsed["players"]:                                  # nur Laeufe mit Spieler-Linien: uebersprungene Namen pro Spiel merken (Anzeige im Tab Spieler)
+        try:
+            from data import betano_skipped
+            betano_skipped.record(store.game_key(g["date"], g["start"], g["home"], g["away"]), g["home"], g["away"], auto.unmatched, now_fn())
+        except Exception:
+            pass
     return res
 
 
@@ -443,7 +446,7 @@ def fetch_json(path: str) -> dict:
         return json.loads(r.read().decode("utf-8"))
 
 
-def main(argv=None, real=input, write=print, now_fn=time.time, after=None) -> int:
+def main(argv=None, real=input, write=print, now_fn=time.time, after=None, before=None) -> int:
     args = list(sys.argv[1:] if argv is None else argv)
     src = None
     if "--datei" in args:
@@ -467,6 +470,11 @@ def main(argv=None, real=input, write=print, now_fn=time.time, after=None) -> in
             write(f"Spielnummer 1 bis {len(games)} oder nichts angeben.")
             return 2
         games = [games[int(sel) - 1]]
+    if live and before is not None:                         # z. B. Kader auffrischen, wenn aelter als 2 Tage (ein Abruf bei stats.nba.com, nie bei Betano); Fehler stoeren den Lauf nicht
+        try:
+            before(write)
+        except Exception:
+            write("Kader konnte nicht aktualisiert werden")
     payloads = [] if live else load_payloads(src)
     if live:
         payloads = [fetch_json(LIST_PATH)["data"]]
@@ -508,5 +516,12 @@ def espn_after(write=print) -> None:
         write(f"  nicht zugeordnet: {u}")
 
 
+def roster_before(write=print) -> None:
+    """Am Anfang eines Live-Laufs: Kader auffrischen, falls aelter als rosters.MAX_AGE_DAYS (data/rosters.ensure_fresh)."""
+    msg = rosters.ensure_fresh()
+    if msg:
+        write(msg)
+
+
 if __name__ == "__main__":
-    sys.exit(main(after=espn_after))
+    sys.exit(main(after=espn_after, before=roster_before))

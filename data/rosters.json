@@ -1,7 +1,7 @@
 {
  "version": 1,
  "format": "nbaedge-rosters",
- "fetched_at": "2026-10-21T04:56:44+02:00",
+ "fetched_at": "2026-10-26T06:32:46+01:00",
  "source": "nba_api.PlayerIndex",
  "season": "2026-27",
  "abrufe": 1,
@@ -933,7 +933,7 @@
    },
    {
     "person_id": 1630619,
-    "name": "Moussa Cisse",
+    "name": "Moussa Cissé",
     "position": "C",
     "jersey": "30",
     "team_id": 1610612742,
@@ -973,7 +973,7 @@
    },
    {
     "person_id": 1641844,
-    "name": "Tarik Biberovic",
+    "name": "Tarik Biberović",
     "position": "F",
     "jersey": "13",
     "team_id": 1610612742,
@@ -984,6 +984,14 @@
     "name": "Tobi Lawal",
     "position": "F",
     "jersey": "33",
+    "team_id": 1610612742,
+    "team_abbreviation": "DAL"
+   },
+   {
+    "person_id": 1642383,
+    "name": "Walter Clayton Jr.",
+    "position": "G",
+    "jersey": "4",
     "team_id": 1610612742,
     "team_abbreviation": "DAL"
    },
@@ -2077,7 +2085,7 @@
    },
    {
     "person_id": 1643510,
-    "name": "Karim Lopez",
+    "name": "Karim López",
     "position": "F",
     "jersey": "35",
     "team_id": 1610612763,
@@ -2201,7 +2209,7 @@
     "person_id": 202691,
     "name": "Klay Thompson",
     "position": "G-F",
-    "jersey": "11",
+    "jersey": "22",
     "team_id": 1610612748,
     "team_abbreviation": "MIA"
    },
@@ -2710,6 +2718,14 @@
     "team_abbreviation": "NYK"
    },
    {
+    "person_id": 1642261,
+    "name": "Dalton Knecht",
+    "position": "F",
+    "jersey": "4",
+    "team_id": 1610612752,
+    "team_abbreviation": "NYK"
+   },
+   {
     "person_id": 1643022,
     "name": "Jaden Akins",
     "position": "G",
@@ -2762,14 +2778,6 @@
     "name": "Karl-Anthony Towns",
     "position": "C-F",
     "jersey": "32",
-    "team_id": 1610612752,
-    "team_abbreviation": "NYK"
-   },
-   {
-    "person_id": 1641755,
-    "name": "Kevin McCullar Jr.",
-    "position": "G",
-    "jersey": "9",
     "team_id": 1610612752,
     "team_abbreviation": "NYK"
    },
@@ -2944,18 +2952,18 @@
     "team_abbreviation": "OKC"
    },
    {
-    "person_id": 1642260,
-    "name": "Nikola Topić",
-    "position": "G",
-    "jersey": "44",
+    "person_id": 1642877,
+    "name": "Micah Peavy",
+    "position": "G-F",
+    "jersey": "7",
     "team_id": 1610612760,
     "team_abbreviation": "OKC"
    },
    {
-    "person_id": 1642923,
-    "name": "Otega Oweh",
+    "person_id": 1642260,
+    "name": "Nikola Topić",
     "position": "G",
-    "jersey": "13",
+    "jersey": "44",
     "team_id": 1610612760,
     "team_abbreviation": "OKC"
    },
@@ -3205,7 +3213,7 @@
    },
    {
     "person_id": 1642889,
-    "name": "Labaron Philon",
+    "name": "Labaron Philon Jr.",
     "position": "G",
     "jersey": "00",
     "team_id": 1610612755,
@@ -3345,7 +3353,7 @@
     "person_id": 1631109,
     "name": "Mark Williams",
     "position": "C",
-    "jersey": "15",
+    "jersey": "25",
     "team_id": 1610612756,
     "team_abbreviation": "PHX"
    },
@@ -3650,6 +3658,14 @@
     "team_abbreviation": "SAC"
    },
    {
+    "person_id": 1642951,
+    "name": "Sean Pedulla",
+    "position": "G",
+    "jersey": "",
+    "team_id": 1610612758,
+    "team_abbreviation": "SAC"
+   },
+   {
     "person_id": 203897,
     "name": "Zach LaVine",
     "position": "G",
@@ -3936,14 +3952,6 @@
     "team_abbreviation": "UTA"
    },
    {
-    "person_id": 1642396,
-    "name": "Blake Hinson",
-    "position": "F",
-    "jersey": "25",
-    "team_id": 1610612762,
-    "team_abbreviation": "UTA"
-   },
-   {
     "person_id": 1641729,
     "name": "Brice Sensabaugh",
     "position": "F",
@@ -4020,6 +4028,14 @@
     "name": "Keyonte George",
     "position": "G",
     "jersey": "3",
+    "team_id": 1610612762,
+    "team_abbreviation": "UTA"
+   },
+   {
+    "person_id": 1641723,
+    "name": "Kobe Bufkin",
+    "position": "G",
+    "jersey": "4",
     "team_id": 1610612762,
     "team_abbreviation": "UTA"
    },
@@ -4203,7 +4219,7 @@
    },
    {
     "person_id": 1641774,
-    "name": "Tristan Vukcevic",
+    "name": "Tristan Vukčević",
     "position": "F",
     "jersey": "00",
     "team_id": 1610612764,

@@ -18,12 +18,12 @@ import time
 from data import absences_store as ab
 from data import pre_match_store as store
 from data import rosters
+from data.rosters import SUFFIXES, match_player, short_key      # gemeinsamer Namensabgleich (data/rosters.py), hier weiter unter diesen Namen erreichbar
 
 ESPN_INJURIES_URL = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
 USER_AGENT = "NBAEdge/1.0 (persoenliche Nutzung)"
 OUT_STATUS = {"out", "out for season"}
 DOUBTFUL_STATUS = {"questionable", "doubtful", "day to day", "probable"}
-SUFFIXES = {"jr", "sr", "ii", "iii", "iv", "v"}
 TEAM_ALIASES = {"los angeles clippers": "la clippers"}
 UNREACHABLE = "ESPN-Verletzungen: nicht erreichbar"
 
@@ -45,14 +45,6 @@ def team_key(name: str) -> str:
     return TEAM_ALIASES.get(n, n)
 
 
-def short_key(name: str) -> str:
-    """Normalisierter Name ohne Namenszusatz (Jr., Sr., II ...)."""
-    parts = rosters.normalize_name(name).split()
-    while len(parts) > 1 and parts[-1] in SUFFIXES:
-        parts.pop()
-    return " ".join(parts)
-
-
 def classify(status: str) -> str | None:
     """'out' | 'doubtful' | None (unbekannter Status wird ignoriert)."""
     s = re.sub(r"[^a-z]+", " ", str(status or "").lower()).strip()
@@ -69,17 +61,6 @@ def parse(data: dict) -> list[dict]:
             if kind and name:
                 out.append({"name": name, "team": t.get("displayName") or "", "kind": kind, "status": i.get("status")})
     return out
-
-
-def match_player(name: str, roster: list[dict]) -> dict | None:
-    """Eindeutiger Treffer im Kader: 1. exakter Name, 2. normalisiert, 3. normalisiert ohne Zusatz, 4. zusaetzlich ohne Leerzeichen (T.J. = TJ). Mehrdeutig oder unbekannt: None."""
-    for key in (lambda s: s, rosters.normalize_name, short_key, lambda s: short_key(s).replace(" ", "")):       # zuletzt ohne Leerzeichen: 'T.J.' = 'TJ'
-        hits = [p for p in roster if key(p["name"]) == key(name)]
-        if len(hits) == 1:
-            return hits[0]
-        if len(hits) > 1:
-            return None
-    return None
 
 
 def upcoming_games(now: float) -> list[dict]:

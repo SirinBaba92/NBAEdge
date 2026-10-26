@@ -62,6 +62,28 @@ def search_text(name: str) -> str:
     return "" if plain == name else plain
 
 
+SUFFIXES = {"jr", "sr", "ii", "iii", "iv", "v"}
+
+
+def short_key(name: str) -> str:
+    """Normalisierter Name ohne Namenszusatz (Jr., Sr., II ...)."""
+    parts = normalize_name(name).split()
+    while len(parts) > 1 and parts[-1] in SUFFIXES:
+        parts.pop()
+    return " ".join(parts)
+
+
+def match_player(name: str, roster: list[dict]) -> dict | None:
+    """Eindeutiger Treffer im Kader: 1. exakter Name, 2. normalisiert, 3. normalisiert ohne Zusatz, 4. zusaetzlich ohne Leerzeichen (T.J. = TJ). Mehrdeutig oder unbekannt: None."""
+    for key in (lambda s: s, normalize_name, short_key, lambda s: short_key(s).replace(" ", "")):       # zuletzt ohne Leerzeichen: 'T.J.' = 'TJ'
+        hits = [p for p in roster if key(p["name"]) == key(name)]
+        if len(hits) == 1:
+            return hits[0]
+        if len(hits) > 1:
+            return None
+    return None
+
+
 # ------------------------------------------------------------------------------ Datei lesen/schreiben
 def build(index: dict, fetched_at: str, season: str) -> dict:
     """Baut die Dateistruktur aus der Rohantwort von PlayerIndex (get_dict()). Wirft RosterError, wenn sie unvollstaendig ist."""
@@ -165,6 +187,7 @@ def player_label(p: dict) -> str:
 
 
 # ------------------------------------------------------------------------------ Abruf
+MAX_AGE_DAYS = 2                    # betano: aelter als das -> einmal automatisch aktualisieren
 def fetch_playerindex(season: str, timeout: int = TIMEOUT_SECONDS) -> dict:
     """EIN Abruf an stats.nba.com (nba_api PlayerIndex). Kein Wiederholen. Tests ersetzen diese Funktion (kein echtes Netz)."""
     from nba_api.stats.endpoints import PlayerIndex
@@ -183,6 +206,20 @@ def _friendly(e: Exception) -> str:
     if "json" in n or "decode" in n:
         return "Unerwartete Antwort von stats.nba.com (kein gültiges JSON). Die alte Kaderdatei bleibt unverändert."
     return f"Abruf an stats.nba.com fehlgeschlagen ({type(e).__name__}). Die alte Kaderdatei bleibt unverändert."
+
+
+def ensure_fresh(now: float | None = None, max_age_days: float = MAX_AGE_DAYS, refresh_fn=None) -> str | None:
+    """Kader auffrischen, wenn die Datei fehlt, defekt oder aelter als max_age_days ist: EIN refresh() (ein Abruf an stats.nba.com). Rueckgabe: Meldungszeile oder None (nichts zu tun).
+    Wirft nie; bei Fehler 'Kader konnte nicht aktualisiert werden' (die alte Datei bleibt unveraendert)."""
+    now = now if now is not None else time.time()
+    info = load(now)
+    if info["status"] == "ok" and info["age_days"] is not None and info["age_days"] <= max_age_days:
+        return None
+    try:
+        data = (refresh_fn or refresh)(now=now)
+    except Exception:
+        return "Kader konnte nicht aktualisiert werden"
+    return f"Kader aktualisiert ({sum(len(v) for v in data['teams'].values())} Spieler)"
 
 
 def refresh(progress=None, now: float | None = None, fetcher=None) -> dict:

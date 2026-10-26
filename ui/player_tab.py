@@ -18,6 +18,7 @@ import streamlit as st
 
 from config.runtime import OFFLINE_AUDIT_MODE
 from data import day_bets_store as ds
+from data import betano_skipped
 from data import live_feed as lf
 from data import pre_match_store as store
 from engine import player_odds as po
@@ -307,6 +308,9 @@ def _forecast_view() -> None:
             _table_live(key, entry, mode, sort, show_all, table_view)       # laufendes Spiel: Tabelle mit Live-Spalten im 30-s-Takt
         else:
             _render_table(key, entry, mode, sort, lf.get_feed().state(), show_all, table_view)
+        skipped = betano_skipped.caption(key)
+        if skipped:
+            st.caption(skipped)
         st.caption(f"◀ Modell mindestens {pv.fmt_num(pv.MARK_PP, 0)} Prozentpunkte über dem Buchmacher, ▼ darunter. Differenz = Modell minus Buchmacher-Chance (inkl. Marge), aus ungerundeten Werten. "
                    "⚠ bewegt man die Maus darüber: Datenqualität und Hinweise. 🎯 = meine Wette.")
     render_player_bet_entry(key, entries)
