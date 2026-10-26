@@ -27,6 +27,7 @@ from ui import player_view as pv
 from ui.live_card import LIVE_CSS, flat
 from data import absences_store as ab
 from ui.player_absence import render_absences
+from ui.bet_slip import render_bet_slip
 from ui.player_bet_entry import render_player_bet_entry
 from ui.score_cards import CARD_CSS
 
@@ -302,6 +303,7 @@ def _forecast_view() -> None:
             _render_table(key, entry, mode, sort, lf.get_feed().state(), show_all, table_view)
         st.caption(f"◀ Modell mindestens {pv.fmt_num(pv.MARK_PP, 0)} Prozentpunkte über dem Buchmacher, ▼ darunter. Differenz = Modell minus Buchmacher-Chance (inkl. Marge), aus ungerundeten Werten. "
                    "⚠ bewegt man die Maus darüber: Datenqualität und Hinweise. 🎯 = meine Wette.")
+    render_bet_slip(key, entries, mode)
     render_player_bet_entry(key, entries)
     render_absences(key, entries, entry, mode, show_compare=table_view)
 

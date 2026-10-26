@@ -167,7 +167,7 @@ def run():
     at = at.selectbox(key="pl_day").set_value(D).run()
     return at.selectbox(key=f"pl_game_{D}").set_value(KEY).run()
 at = run()
-ms = [x for x in at.multiselect]
+ms = [x for x in at.multiselect if x.label in ("Fehlt", "Fraglich")]      # (der Wettschein hat ein eigenes Mehrfachfeld "Meilensteine")
 check("Bereich 'Ausfaelle': Mehrfachauswahl 'Fehlt' und 'Fraglich' aus dem Kader beider Teams (17 Spieler), Knoepfe", [x.label for x in ms] == ["Fehlt", "Fraglich"] and len(ms[0].options) == 17 and [b.label for b in at.button if "Auswahl speichern" in b.label or "neu rechnen" in b.label] == ["Auswahl speichern", "Prognose mit Ausfällen neu rechnen"]
       and not at.exception, " | ".join(problems(at))[:200])
 check("Spieler der Auswahl mit Team-Kuerzel beschriftet", any("Eins (HEI)" in o for o in ms[0].options))
