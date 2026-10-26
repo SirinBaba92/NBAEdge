@@ -443,7 +443,7 @@ def fetch_json(path: str) -> dict:
         return json.loads(r.read().decode("utf-8"))
 
 
-def main(argv=None, real=input, write=print, now_fn=time.time) -> int:
+def main(argv=None, real=input, write=print, now_fn=time.time, after=None) -> int:
     args = list(sys.argv[1:] if argv is None else argv)
     src = None
     if "--datei" in args:
@@ -491,8 +491,22 @@ def main(argv=None, real=input, write=print, now_fn=time.time) -> int:
     except ei.Quit:
         pass
     write("Beendet. Bestätigte Spiele sind gespeichert.")
+    if after is not None:                                    # z. B. ESPN-Verletzungen; ein Fehler dort stoert den Lauf nicht
+        try:
+            after(write)
+        except Exception:
+            write("ESPN-Verletzungen: nicht erreichbar")
     return 0
 
 
+def espn_after(write=print) -> None:
+    """Am Ende des Laufs: ESPN-Injury-Report in die Ausfall-Felder (data/espn_injuries.py); Fehler zeigen nur eine Zeile."""
+    from data import espn_injuries
+    res = espn_injuries.run(time.time())
+    write(res["line"])
+    for u in res["unmatched"]:
+        write(f"  nicht zugeordnet: {u}")
+
+
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(main(after=espn_after))

@@ -509,13 +509,58 @@ class LiveFeed:
         except Exception:
             return None
 
+    def _load_final_offline(self, g: GameView, entry: dict, t: float) -> bool:
+        """Spielerliste eines beendeten Spiels ohne Netz: 1. final_box.json.gz des Recorders (nur lesen), 2. eigener Cache (data/final_boxes, von frueheren NBA.com-Abrufen). Gilt nur, wenn die
+        Teampunkte dem Endstand entsprechen. Ergebnis wie ein Final-Abruf (final_done); False, wenn nichts Passendes vorliegt."""
+        for rec in (self._recorder_final(g.day, g.game_id), self._cached_final(g.day, g.game_id)):
+            if rec is None:
+                continue
+            try:
+                poss, players, scores, bclock = self._parse_box(rec)
+            except (KeyError, TypeError, ValueError):
+                continue
+            if scores == (g.home_score, g.away_score):
+                entry.update(at=t, poss=poss, error=None, players=players, scores=scores, clock=bclock, final_done=True, attempt=t)
+                self._games[g.game_id] = replace(self._games[g.game_id], possessions=poss, box_error=None, players=players, players_complete=True)
+                return True
+        return False
+
+    @staticmethod
+    def _final_cache_path(day: str, gid: str):
+        import os
+        from pathlib import Path
+        root = Path(os.environ.get("NBAEDGE_FINAL_BOX_DIR") or Path(__file__).resolve().parent / "final_boxes")
+        return root / str(day) / f"{gid}.json.gz"
+
+    def _cached_final(self, day: str, gid: str) -> dict | None:
+        import gzip, json
+        try:
+            return json.loads(gzip.decompress(self._final_cache_path(day, gid).read_bytes()).decode("utf-8"))
+        except Exception:
+            return None
+
+    def _save_final(self, day: str, gid: str, game: dict) -> None:
+        """Beendeten Boxscore (Antwort von NBA.com, 'game') dauerhaft ablegen, damit er nach einem Neustart nicht erneut geholt werden muss. Fehler beim Schreiben bleiben folgenlos."""
+        import gzip, json, os
+        try:
+            path = self._final_cache_path(day, gid)
+            path.parent.mkdir(parents=True, exist_ok=True)
+            tmp = path.with_suffix(".tmp")
+            tmp.write_bytes(gzip.compress(json.dumps(game).encode("utf-8")))
+            os.replace(tmp, path)
+        except Exception:
+            pass
+
     def _refresh_boxes(self, t: float) -> None:
         """Boxscore fuer laufende Spiele (Status 2 laut Scoreboard), je Spiel hoechstens alle 30 s, hoechstens 6 je Aufruf; nach einem Fehler gilt die gemeinsame Wartezeit.
-        Final-Abruf: Ist ein Spiel beendet, wird GENAU EIN weiterer Boxscore geholt (danach nie wieder), damit die Spielerpunkte dem Endstand entsprechen (players_complete); vorher wird, falls vorhanden,
-        die Datei final_box.json.gz des Recorders gelesen (kein Netz). Bei einem Fehler neuer Versuch nach der gemeinsamen Wartezeit, bis es klappt; stimmt der Boxscore noch nicht mit dem Endstand
+        Final-Abruf: Ist ein Spiel beendet, wird GENAU EIN weiterer Boxscore geholt (danach nie wieder), damit die Spielerpunkte dem Endstand entsprechen (players_complete); vorher (ohne Netz, ohne Begrenzung) wird, falls vorhanden,
+        die Datei final_box.json.gz des Recorders oder der eigene Cache data/final_boxes gelesen; ein Abruf von NBA.com wird dort dauerhaft abgelegt. Bei einem Fehler neuer Versuch nach der gemeinsamen Wartezeit, bis es klappt; stimmt der Boxscore noch nicht mit dem Endstand
         ueberein (Boxscore hinkt), hoechstens FINAL_MAX_TRIES Versuche im Abstand von BOX_SECONDS."""
         def info(gid):
             return self._box.get(gid) or {}
+        for g in [g for g in self._games.values() if g.clock.is_final and not info(g.game_id).get("final_done")]:   # beendete Spiele zuerst offline (Recorder, eigener Cache): kein Netz, nicht begrenzt
+            entry = self._box.setdefault(g.game_id, {"at": None, "poss": None, "error": None, "attempt": float("-inf"), "players": (), "scores": None, "clock": None, "final_done": False, "final_tries": 0})
+            self._load_final_offline(g, entry, t)
         live_due = [g for g in self._games.values() if g.clock.is_live and t - info(g.game_id).get("attempt", float("-inf")) >= BOX_SECONDS]
         final_due = [g for g in self._games.values() if g.clock.is_final and not info(g.game_id).get("final_done") and info(g.game_id).get("final_tries", 0) < FINAL_MAX_TRIES
                      and t - info(g.game_id).get("attempt", float("-inf")) >= BOX_SECONDS]
@@ -523,17 +568,6 @@ class LiveFeed:
             entry = self._box.setdefault(g.game_id, {"at": None, "poss": None, "error": None, "attempt": float("-inf"), "players": (), "scores": None, "clock": None, "final_done": False, "final_tries": 0})
             gv = self._games[g.game_id]
             final = gv.clock.is_final
-            if final:                                                  # 1. Recorder-Datei (nur lesen), 2. ein Abruf bei NBA.com
-                rec = self._recorder_final(gv.day, g.game_id)
-                if rec is not None:
-                    try:
-                        poss, players, scores, bclock = self._parse_box(rec)
-                        if scores == (gv.home_score, gv.away_score):
-                            entry.update(at=t, poss=poss, error=None, players=players, scores=scores, clock=bclock, final_done=True, attempt=t)
-                            self._games[g.game_id] = replace(gv, possessions=poss, box_error=None, players=players, players_complete=True)
-                            continue
-                    except (KeyError, TypeError, ValueError):
-                        pass
             if t < self._next_allowed:
                 break
             entry["attempt"] = t
@@ -552,6 +586,7 @@ class LiveFeed:
                 if final:
                     if scores == (gv.home_score, gv.away_score):
                         entry["final_done"] = True
+                        self._save_final(gv.day, g.game_id, res.data["game"])
                     else:
                         entry["final_tries"] = entry.get("final_tries", 0) + 1       # Boxscore hinkt dem Endstand noch hinterher: spaeter noch einmal
             else:

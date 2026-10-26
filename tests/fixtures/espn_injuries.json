@@ -1,0 +1,1014 @@
+{
+ "timestamp": "2026-10-26T03:53:08Z",
+ "status": "success",
+ "season": {
+  "year": 2027,
+  "type": 2,
+  "name": "Regular Season",
+  "displayName": "2026-27"
+ },
+ "injuries": [
+  {
+   "id": "1",
+   "displayName": "Atlanta Hawks",
+   "injuries": [
+    {
+     "status": "Out",
+     "date": "2026-10-19T19:38Z",
+     "athlete": {
+      "firstName": "Mouhamed",
+      "lastName": "Gueye",
+      "displayName": "Mouhamed Gueye",
+      "shortName": "M. Gueye"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-09-21T19:50Z",
+     "athlete": {
+      "firstName": "Henri",
+      "lastName": "Veesaar",
+      "displayName": "Henri Veesaar",
+      "shortName": "H. Veesaar"
+     }
+    }
+   ]
+  },
+  {
+   "id": "2",
+   "displayName": "Boston Celtics",
+   "injuries": [
+    {
+     "status": "Out",
+     "date": "2026-10-18T14:49Z",
+     "athlete": {
+      "firstName": "Devin",
+      "lastName": "Carter",
+      "displayName": "Devin Carter",
+      "shortName": "D. Carter"
+     }
+    }
+   ]
+  },
+  {
+   "id": "17",
+   "displayName": "Brooklyn Nets",
+   "injuries": [
+    {
+     "status": "Out",
+     "date": "2026-10-25T17:19Z",
+     "athlete": {
+      "firstName": "Tyler",
+      "lastName": "Bilodeau",
+      "displayName": "Tyler Bilodeau",
+      "shortName": "T. Bilodeau"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-25T13:40Z",
+     "athlete": {
+      "firstName": "Mikel",
+      "lastName": "Brown Jr.",
+      "displayName": "Mikel Brown Jr.",
+      "shortName": "M. Brown Jr."
+     }
+    }
+   ]
+  },
+  {
+   "id": "30",
+   "displayName": "Charlotte Hornets",
+   "injuries": [
+    {
+     "status": "Out",
+     "date": "2026-10-25T21:20Z",
+     "athlete": {
+      "firstName": "Kon",
+      "lastName": "Knueppel",
+      "displayName": "Kon Knueppel",
+      "shortName": "K. Knueppel"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-25T20:59Z",
+     "athlete": {
+      "firstName": "Coby",
+      "lastName": "White",
+      "displayName": "Coby White",
+      "shortName": "C. White"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-24T17:26Z",
+     "athlete": {
+      "firstName": "Grant",
+      "lastName": "Williams",
+      "displayName": "Grant Williams",
+      "shortName": "G. Williams"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-20T20:55Z",
+     "athlete": {
+      "firstName": "Kylan",
+      "lastName": "Boswell",
+      "displayName": "Kylan Boswell",
+      "shortName": "K. Boswell"
+     }
+    }
+   ]
+  },
+  {
+   "id": "4",
+   "displayName": "Chicago Bulls",
+   "injuries": [
+    {
+     "status": "Day-To-Day",
+     "date": "2026-10-25T17:52Z",
+     "athlete": {
+      "firstName": "Patrick",
+      "lastName": "Williams",
+      "displayName": "Patrick Williams",
+      "shortName": "P. Williams"
+     }
+    },
+    {
+     "status": "Day-To-Day",
+     "date": "2026-10-25T17:50Z",
+     "athlete": {
+      "firstName": "Noa",
+      "lastName": "Essengue",
+      "displayName": "Noa Essengue",
+      "shortName": "N. Essengue"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-19T17:38Z",
+     "athlete": {
+      "firstName": "Nic",
+      "lastName": "Claxton",
+      "displayName": "Nic Claxton",
+      "shortName": "N. Claxton"
+     }
+    }
+   ]
+  },
+  {
+   "id": "6",
+   "displayName": "Dallas Mavericks",
+   "injuries": [
+    {
+     "status": "Out",
+     "date": "2026-10-25T20:28Z",
+     "athlete": {
+      "firstName": "Caleb",
+      "lastName": "Martin",
+      "displayName": "Caleb Martin",
+      "shortName": "C. Martin"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-25T20:26Z",
+     "athlete": {
+      "firstName": "Cooper",
+      "lastName": "Flagg",
+      "displayName": "Cooper Flagg",
+      "shortName": "C. Flagg"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-25T20:25Z",
+     "athlete": {
+      "firstName": "Naji",
+      "lastName": "Marshall",
+      "displayName": "Naji Marshall",
+      "shortName": "N. Marshall"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-24T18:21Z",
+     "athlete": {
+      "firstName": "Tarik",
+      "lastName": "Biberovic",
+      "displayName": "Tarik Biberovic",
+      "shortName": "T. Biberovic"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-24T18:18Z",
+     "athlete": {
+      "firstName": "Santi",
+      "lastName": "Aldama",
+      "displayName": "Santi Aldama",
+      "shortName": "S. Aldama"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-22T20:10Z",
+     "athlete": {
+      "firstName": "Dereck",
+      "lastName": "Lively II",
+      "displayName": "Dereck Lively II",
+      "shortName": "D. Lively II"
+     }
+    }
+   ]
+  },
+  {
+   "id": "7",
+   "displayName": "Denver Nuggets",
+   "injuries": [
+    {
+     "status": "Day-To-Day",
+     "date": "2026-10-25T22:43Z",
+     "athlete": {
+      "firstName": "Alpha",
+      "lastName": "Diallo",
+      "displayName": "Alpha Diallo",
+      "shortName": "A. Diallo"
+     }
+    },
+    {
+     "status": "Day-To-Day",
+     "date": "2026-10-25T22:41Z",
+     "athlete": {
+      "firstName": "Cameron",
+      "lastName": "Johnson",
+      "displayName": "Cameron Johnson",
+      "shortName": "C. Johnson"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-25T22:37Z",
+     "athlete": {
+      "firstName": "Spencer",
+      "lastName": "Jones",
+      "displayName": "Spencer Jones",
+      "shortName": "S. Jones"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-17T00:52Z",
+     "athlete": {
+      "firstName": "Julian",
+      "lastName": "Strawther",
+      "displayName": "Julian Strawther",
+      "shortName": "J. Strawther"
+     }
+    }
+   ]
+  },
+  {
+   "id": "8",
+   "displayName": "Detroit Pistons",
+   "injuries": [
+    {
+     "status": "Day-To-Day",
+     "date": "2026-10-26T00:58Z",
+     "athlete": {
+      "firstName": "Isaiah",
+      "lastName": "Joe",
+      "displayName": "Isaiah Joe",
+      "shortName": "I. Joe"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-25T22:07Z",
+     "athlete": {
+      "firstName": "Ausar",
+      "lastName": "Thompson",
+      "displayName": "Ausar Thompson",
+      "shortName": "A. Thompson"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-25T14:56Z",
+     "athlete": {
+      "firstName": "Jalen",
+      "lastName": "Duren",
+      "displayName": "Jalen Duren",
+      "shortName": "J. Duren"
+     }
+    }
+   ]
+  },
+  {
+   "id": "9",
+   "displayName": "Golden State Warriors",
+   "injuries": [
+    {
+     "status": "Day-To-Day",
+     "date": "2026-10-25T21:22Z",
+     "athlete": {
+      "firstName": "Gui",
+      "lastName": "Santos",
+      "displayName": "Gui Santos",
+      "shortName": "G. Santos"
+     }
+    },
+    {
+     "status": "Day-To-Day",
+     "date": "2026-10-25T21:20Z",
+     "athlete": {
+      "firstName": "Brandon",
+      "lastName": "Williams",
+      "displayName": "Brandon Williams",
+      "shortName": "B. Williams"
+     }
+    },
+    {
+     "status": "Day-To-Day",
+     "date": "2026-10-25T21:13Z",
+     "athlete": {
+      "firstName": "Charles",
+      "lastName": "Bassey",
+      "displayName": "Charles Bassey",
+      "shortName": "C. Bassey"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-21T18:27Z",
+     "athlete": {
+      "firstName": "Kristaps",
+      "lastName": "Porzingis",
+      "displayName": "Kristaps Porzingis",
+      "shortName": "K. Porzingis"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-16T16:14Z",
+     "athlete": {
+      "firstName": "Moses",
+      "lastName": "Moody",
+      "displayName": "Moses Moody",
+      "shortName": "M. Moody"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-16T16:11Z",
+     "athlete": {
+      "firstName": "Jimmy",
+      "lastName": "Butler III",
+      "displayName": "Jimmy Butler III",
+      "shortName": "J. Butler III"
+     }
+    }
+   ]
+  },
+  {
+   "id": "10",
+   "displayName": "Houston Rockets",
+   "injuries": [
+    {
+     "status": "Day-To-Day",
+     "date": "2026-10-25T21:26Z",
+     "athlete": {
+      "firstName": "Marcus",
+      "lastName": "Smart",
+      "displayName": "Marcus Smart",
+      "shortName": "M. Smart"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-25T21:24Z",
+     "athlete": {
+      "firstName": "Steven",
+      "lastName": "Adams",
+      "displayName": "Steven Adams",
+      "shortName": "S. Adams"
+     }
+    }
+   ]
+  },
+  {
+   "id": "11",
+   "displayName": "Indiana Pacers",
+   "injuries": [
+    {
+     "status": "Day-To-Day",
+     "date": "2026-10-26T01:03Z",
+     "athlete": {
+      "firstName": "Ivica",
+      "lastName": "Zubac",
+      "displayName": "Ivica Zubac",
+      "shortName": "I. Zubac"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-24T21:03Z",
+     "athlete": {
+      "firstName": "T.J.",
+      "lastName": "McConnell",
+      "displayName": "T.J. McConnell",
+      "shortName": "T.J. McConnell"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-23T22:53Z",
+     "athlete": {
+      "firstName": "Ben",
+      "lastName": "Sheppard",
+      "displayName": "Ben Sheppard",
+      "shortName": "B. Sheppard"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-02-09T21:43Z",
+     "athlete": {
+      "firstName": "Johnny",
+      "lastName": "Furphy",
+      "displayName": "Johnny Furphy",
+      "shortName": "J. Furphy"
+     }
+    }
+   ]
+  },
+  {
+   "id": "12",
+   "displayName": "LA Clippers",
+   "injuries": [
+    {
+     "status": "Out",
+     "date": "2026-10-15T01:03Z",
+     "athlete": {
+      "firstName": "Bradley",
+      "lastName": "Beal",
+      "displayName": "Bradley Beal",
+      "shortName": "B. Beal"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-05T22:21Z",
+     "athlete": {
+      "firstName": "Max",
+      "lastName": "Strus",
+      "displayName": "Max Strus",
+      "shortName": "M. Strus"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-09-28T18:07Z",
+     "athlete": {
+      "firstName": "Yanic Konan",
+      "lastName": "Niederhauser",
+      "displayName": "Yanic Konan Niederhauser",
+      "shortName": "Y. Niederhauser"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-09-28T18:01Z",
+     "athlete": {
+      "firstName": "Brandon",
+      "lastName": "Ingram",
+      "displayName": "Brandon Ingram",
+      "shortName": "B. Ingram"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-08-26T20:04Z",
+     "athlete": {
+      "firstName": "Jordan",
+      "lastName": "Miller",
+      "displayName": "Jordan Miller",
+      "shortName": "J. Miller"
+     }
+    }
+   ]
+  },
+  {
+   "id": "13",
+   "displayName": "Los Angeles Lakers",
+   "injuries": [
+    {
+     "status": "Out",
+     "date": "2026-10-24T23:20Z",
+     "athlete": {
+      "firstName": "Adou",
+      "lastName": "Thiero",
+      "displayName": "Adou Thiero",
+      "shortName": "A. Thiero"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-24T23:07Z",
+     "athlete": {
+      "firstName": "Cameron",
+      "lastName": "Carr",
+      "displayName": "Cameron Carr",
+      "shortName": "C. Carr"
+     }
+    }
+   ]
+  },
+  {
+   "id": "29",
+   "displayName": "Memphis Grizzlies",
+   "injuries": [
+    {
+     "status": "Out",
+     "date": "2026-10-26T00:15Z",
+     "athlete": {
+      "firstName": "Karim",
+      "lastName": "Lopez",
+      "displayName": "Karim Lopez",
+      "shortName": "K. Lopez"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-25T00:12Z",
+     "athlete": {
+      "firstName": "Zach",
+      "lastName": "Edey",
+      "displayName": "Zach Edey",
+      "shortName": "Z. Edey"
+     }
+    }
+   ]
+  },
+  {
+   "id": "16",
+   "displayName": "Minnesota Timberwolves",
+   "injuries": [
+    {
+     "status": "Out",
+     "date": "2026-10-05T20:53Z",
+     "athlete": {
+      "firstName": "Donte",
+      "lastName": "DiVincenzo",
+      "displayName": "Donte DiVincenzo",
+      "shortName": "D. DiVincenzo"
+     }
+    }
+   ]
+  },
+  {
+   "id": "3",
+   "displayName": "New Orleans Pelicans",
+   "injuries": [
+    {
+     "status": "Out",
+     "date": "2026-10-24T22:17Z",
+     "athlete": {
+      "firstName": "Yves",
+      "lastName": "Missi",
+      "displayName": "Yves Missi",
+      "shortName": "Y. Missi"
+     }
+    }
+   ]
+  },
+  {
+   "id": "18",
+   "displayName": "New York Knicks",
+   "injuries": [
+    {
+     "status": "Out",
+     "date": "2026-10-25T21:25Z",
+     "athlete": {
+      "firstName": "Jose",
+      "lastName": "Alvarado",
+      "displayName": "Jose Alvarado",
+      "shortName": "J. Alvarado"
+     }
+    }
+   ]
+  },
+  {
+   "id": "25",
+   "displayName": "Oklahoma City Thunder",
+   "injuries": [
+    {
+     "status": "Day-To-Day",
+     "date": "2026-10-26T01:28Z",
+     "athlete": {
+      "firstName": "Jalen",
+      "lastName": "Williams",
+      "displayName": "Jalen Williams",
+      "shortName": "J. Williams"
+     }
+    },
+    {
+     "status": "Day-To-Day",
+     "date": "2026-10-26T01:06Z",
+     "athlete": {
+      "firstName": "Jaylin",
+      "lastName": "Williams",
+      "displayName": "Jaylin Williams",
+      "shortName": "J. Williams"
+     }
+    },
+    {
+     "status": "Day-To-Day",
+     "date": "2026-10-26T00:19Z",
+     "athlete": {
+      "firstName": "Cason",
+      "lastName": "Wallace",
+      "displayName": "Cason Wallace",
+      "shortName": "C. Wallace"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-23T18:52Z",
+     "athlete": {
+      "firstName": "Otega",
+      "lastName": "Oweh",
+      "displayName": "Otega Oweh",
+      "shortName": "O. Oweh"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-21T22:13Z",
+     "athlete": {
+      "firstName": "Nikola",
+      "lastName": "Topic",
+      "displayName": "Nikola Topic",
+      "shortName": "N. Topic"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-21T22:08Z",
+     "athlete": {
+      "firstName": "Thomas",
+      "lastName": "Sorber",
+      "displayName": "Thomas Sorber",
+      "shortName": "T. Sorber"
+     }
+    }
+   ]
+  },
+  {
+   "id": "19",
+   "displayName": "Orlando Magic",
+   "injuries": [
+    {
+     "status": "Day-To-Day",
+     "date": "2026-10-26T02:24Z",
+     "athlete": {
+      "firstName": "Jalen",
+      "lastName": "Suggs",
+      "displayName": "Jalen Suggs",
+      "shortName": "J. Suggs"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-24T17:29Z",
+     "athlete": {
+      "firstName": "Jonathan",
+      "lastName": "Isaac",
+      "displayName": "Jonathan Isaac",
+      "shortName": "J. Isaac"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-24T16:47Z",
+     "athlete": {
+      "firstName": "Paolo",
+      "lastName": "Banchero",
+      "displayName": "Paolo Banchero",
+      "shortName": "P. Banchero"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-17T22:19Z",
+     "athlete": {
+      "firstName": "Noah",
+      "lastName": "Penda",
+      "displayName": "Noah Penda",
+      "shortName": "N. Penda"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-09-28T21:33Z",
+     "athlete": {
+      "firstName": "Izaiyah",
+      "lastName": "Nelson",
+      "displayName": "Izaiyah Nelson",
+      "shortName": "I. Nelson"
+     }
+    }
+   ]
+  },
+  {
+   "id": "20",
+   "displayName": "Philadelphia 76ers",
+   "injuries": [
+    {
+     "status": "Out",
+     "date": "2026-10-25T22:50Z",
+     "athlete": {
+      "firstName": "VJ",
+      "lastName": "Edgecombe",
+      "displayName": "VJ Edgecombe",
+      "shortName": "V. Edgecombe"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-25T17:13Z",
+     "athlete": {
+      "firstName": "Tacko",
+      "lastName": "Fall",
+      "displayName": "Tacko Fall",
+      "shortName": "T. Fall"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-25T17:11Z",
+     "athlete": {
+      "firstName": "Jabari",
+      "lastName": "Walker",
+      "displayName": "Jabari Walker",
+      "shortName": "J. Walker"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-25T17:08Z",
+     "athlete": {
+      "firstName": "Joel",
+      "lastName": "Embiid",
+      "displayName": "Joel Embiid",
+      "shortName": "J. Embiid"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-19T21:07Z",
+     "athlete": {
+      "firstName": "Dominick",
+      "lastName": "Barlow",
+      "displayName": "Dominick Barlow",
+      "shortName": "D. Barlow"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-06T19:17Z",
+     "athlete": {
+      "firstName": "Ariel",
+      "lastName": "Hukporti",
+      "displayName": "Ariel Hukporti",
+      "shortName": "A. Hukporti"
+     }
+    }
+   ]
+  },
+  {
+   "id": "21",
+   "displayName": "Phoenix Suns",
+   "injuries": [
+    {
+     "status": "Day-To-Day",
+     "date": "2026-10-25T22:25Z",
+     "athlete": {
+      "firstName": "Oso",
+      "lastName": "Ighodaro",
+      "displayName": "Oso Ighodaro",
+      "shortName": "O. Ighodaro"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-09-11T16:03Z",
+     "athlete": {
+      "firstName": "Mark",
+      "lastName": "Williams",
+      "displayName": "Mark Williams",
+      "shortName": "M. Williams"
+     }
+    }
+   ]
+  },
+  {
+   "id": "22",
+   "displayName": "Portland Trail Blazers",
+   "injuries": [
+    {
+     "status": "Day-To-Day",
+     "date": "2026-10-24T13:46Z",
+     "athlete": {
+      "firstName": "Chris",
+      "lastName": "Youngblood",
+      "displayName": "Chris Youngblood",
+      "shortName": "C. Youngblood"
+     }
+    },
+    {
+     "status": "Day-To-Day",
+     "date": "2026-10-24T13:46Z",
+     "athlete": {
+      "firstName": "Branden",
+      "lastName": "Carlson",
+      "displayName": "Branden Carlson",
+      "shortName": "B. Carlson"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-08-24T20:23Z",
+     "athlete": {
+      "firstName": "Shaedon",
+      "lastName": "Sharpe",
+      "displayName": "Shaedon Sharpe",
+      "shortName": "S. Sharpe"
+     }
+    }
+   ]
+  },
+  {
+   "id": "23",
+   "displayName": "Sacramento Kings",
+   "injuries": [
+    {
+     "status": "Out",
+     "date": "2026-10-25T23:05Z",
+     "athlete": {
+      "firstName": "Keegan",
+      "lastName": "Murray",
+      "displayName": "Keegan Murray",
+      "shortName": "K. Murray"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-21T04:22Z",
+     "athlete": {
+      "firstName": "Ben",
+      "lastName": "Simmons",
+      "displayName": "Ben Simmons",
+      "shortName": "B. Simmons"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-15T14:40Z",
+     "athlete": {
+      "firstName": "Dylan",
+      "lastName": "Cardwell",
+      "displayName": "Dylan Cardwell",
+      "shortName": "D. Cardwell"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-15T14:36Z",
+     "athlete": {
+      "firstName": "Maxime",
+      "lastName": "Raynaud",
+      "displayName": "Maxime Raynaud",
+      "shortName": "M. Raynaud"
+     }
+    }
+   ]
+  },
+  {
+   "id": "24",
+   "displayName": "San Antonio Spurs",
+   "injuries": [
+    {
+     "status": "Out",
+     "date": "2026-10-24T18:32Z",
+     "athlete": {
+      "firstName": "Tobias",
+      "lastName": "Harris",
+      "displayName": "Tobias Harris",
+      "shortName": "T. Harris"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-05T21:43Z",
+     "athlete": {
+      "firstName": "Jayden",
+      "lastName": "Quaintance",
+      "displayName": "Jayden Quaintance",
+      "shortName": "J. Quaintance"
+     }
+    }
+   ]
+  },
+  {
+   "id": "28",
+   "displayName": "Toronto Raptors",
+   "injuries": [
+    {
+     "status": "Out",
+     "date": "2026-10-25T22:03Z",
+     "athlete": {
+      "firstName": "Kawhi",
+      "lastName": "Leonard",
+      "displayName": "Kawhi Leonard",
+      "shortName": "K. Leonard"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-20T18:05Z",
+     "athlete": {
+      "firstName": "Nate",
+      "lastName": "Bittle",
+      "displayName": "Nate Bittle",
+      "shortName": "N. Bittle"
+     }
+    }
+   ]
+  },
+  {
+   "id": "26",
+   "displayName": "Utah Jazz",
+   "injuries": [
+    {
+     "status": "Out",
+     "date": "2026-10-24T23:18Z",
+     "athlete": {
+      "firstName": "Trey",
+      "lastName": "Alexander",
+      "displayName": "Trey Alexander",
+      "shortName": "T. Alexander"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-07T23:07Z",
+     "athlete": {
+      "firstName": "Jusuf",
+      "lastName": "Nurkic",
+      "displayName": "Jusuf Nurkic",
+      "shortName": "J. Nurkic"
+     }
+    }
+   ]
+  },
+  {
+   "id": "27",
+   "displayName": "Washington Wizards",
+   "injuries": [
+    {
+     "status": "Out",
+     "date": "2026-10-25T20:52Z",
+     "athlete": {
+      "firstName": "AJ",
+      "lastName": "Dybantsa",
+      "displayName": "AJ Dybantsa",
+      "shortName": "A. Dybantsa"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-10-01T19:11Z",
+     "athlete": {
+      "firstName": "Tristan",
+      "lastName": "Vukcevic",
+      "displayName": "Tristan Vukcevic",
+      "shortName": "T. Vukcevic"
+     }
+    },
+    {
+     "status": "Out",
+     "date": "2026-07-30T20:11Z",
+     "athlete": {
+      "firstName": "Jamir",
+      "lastName": "Watkins",
+      "displayName": "Jamir Watkins",
+      "shortName": "J. Watkins"
+     }
+    }
+   ]
+  }
+ ]
+}

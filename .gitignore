@@ -41,3 +41,6 @@ NBAEdge_Backups/
 analysis/results/player_forecast_*.txt
 analysis/results/forecast_snapshots/
 analysis/results/eval_player_forecasts_*.txt
+
+# Eigener Cache beendeter Boxscores (data/live_feed.py)
+data/final_boxes/

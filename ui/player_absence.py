@@ -59,6 +59,20 @@ def recompute(key: str, entries: dict, now=None) -> tuple[bool, str]:
     return True, ("Neuberechnet und als eigener Stand gespeichert" if status == "geschrieben" else "Unverändert: zu dieser Auswahl gibt es schon eine Neuberechnung") + f" (Ausfälle: {len(cur['out'])} fehlt, {len(cur['doubtful'])} fraglich)."
 
 
+def auto_caption_lines(cur: dict) -> list[str]:
+    """Hinweiszeilen zu automatischen Eintraegen (ESPN): 'automatisch (ESPN), Stand HH:MM' (nur wenn solche Eintraege da sind) und nicht zugeordnete Namen. Reine Funktion."""
+    auto = cur.get("auto") or {}
+    if not auto:
+        return []
+    stamp = (auto.get("fetched_at") or "")[11:16]
+    lines = []
+    if any(v.get("source") for m in (cur["out"], cur["doubtful"]) for v in m.values()):
+        lines.append(f"automatisch (ESPN), Stand {stamp}" + (" – von Hand geänderte Einträge bleiben unverändert" if stamp else ""))
+    if auto.get("unmatched"):
+        lines.append("ESPN, nicht zugeordnet (bitte von Hand prüfen): " + "; ".join(auto["unmatched"]))
+    return lines
+
+
 def selection_label(p: dict) -> str:
     return f"{p['name']} ({p.get('team_abbreviation') or p.get('team') or ''})"
 
@@ -105,6 +119,8 @@ def render_absences(key: str, entries: dict, base_entry: dict | None, mode: str)
                                  help="Unsicher: nur ein Hinweis, die Prognose gilt, wenn er spielt. Keine Neuberechnung.")
         if set(out_sel) & set(dbt_sel):
             st.warning("Ein Spieler steht bei „Fehlt“ und „Fraglich“: bitte nur eins wählen.")
+        for line in auto_caption_lines(cur):
+            st.caption(line)
         b1, b2, _ = st.columns([1.2, 2.2, 4])
         b1.button("Auswahl speichern", key=f"{base}_save", on_click=_on_save, args=(key, f"{base}_out", f"{base}_dbt"))
         b2.button("Prognose mit Ausfällen neu rechnen", key=f"{base}_calc", type="primary", on_click=_on_recompute, args=(key, entries, f"{base}_out", f"{base}_dbt"),

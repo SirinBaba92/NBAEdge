@@ -1,7 +1,7 @@
 """Tests fuer den Final-Abruf im Live-Feed (data/live_feed.py): nach dem Schlusspfiff wird GENAU EIN weiterer Boxscore geholt (bei Fehler nach der gemeinsamen Wartezeit erneut), erst danach
 sind die Spielerpunkte dem Endstand entsprechend (players_complete) und Spieler-Wetten werden gewonnen/verloren/nicht gespielt. Alternativ final_box.json.gz des Recorders (nur lesen).
 Offline: Attrappen, nichts ins Projekt geschrieben. Aufruf aus dem Projektordner: venv/bin/python tests/test_live_feed_final.py"""
-import gzip, hashlib, json, os, sys, tempfile
+import gzip, hashlib, json, os, shutil, sys, tempfile
 from datetime import datetime
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -12,6 +12,7 @@ from fake_net import fresh_env
 fake_net.install(); fresh_env()
 TMP = tempfile.TemporaryDirectory(); T = Path(TMP.name)
 os.environ["NBAEDGE_LIVE_DIR"] = str(T / "live")
+os.environ["NBAEDGE_FINAL_BOX_DIR"] = str(T / "final_boxes")
 from data import day_bets_store as ds
 from data import live_feed as lf
 
@@ -65,7 +66,7 @@ def statuses(feed, t):
     return gm, {pid: v.state for pid, v in ds.evaluate_player_bets(BETS, gm).items()}
 
 # --- laufendes Spiel: Boxscore alle 30 s, Spielerliste und players_complete
-net = Net(); feed = lf.LiveFeed(http_get=net.get, now=lambda: T0)
+net = Net(); shutil.rmtree(T / "final_boxes", ignore_errors=True); feed = lf.LiveFeed(http_get=net.get, now=lambda: T0)
 feed.refresh(T0)
 gm, st = statuses(feed, T0)
 check("laufend (80:78, Boxscore 80:78): Spielerliste da, players_complete, X 19 Punkte laeuft, Z (inaktiv) keine Daten-Fehler", len(gm.players) == 3 and gm.players_complete and st[1] == "laeuft" and st[2] == "laeuft", str(st))
@@ -93,7 +94,7 @@ net.reset(); [feed.refresh(due + k) for k in (15, 45, 100, 400, 1000)]
 check("danach nie wieder ein Boxscore-Abruf fuer dieses Spiel (genau EIN Final-Abruf erfolgreich)", net.boxes() == 0, str(net.calls))
 
 # --- Boxscore hinkt (noch alter Stand): begrenzte Wiederholungen
-net = Net(); feed = lf.LiveFeed(http_get=net.get, now=lambda: T0); feed.refresh(T0)
+net = Net(); shutil.rmtree(T / "final_boxes", ignore_errors=True); feed = lf.LiveFeed(http_get=net.get, now=lambda: T0); feed.refresh(T0)
 net.row = row(status=3, period=4, clock="", text="Final", hs=82, as_=78)               # Box liefert weiter 80:78
 for k in range(1, 40):
     feed.refresh(T0 + 30 * k)
@@ -101,7 +102,7 @@ gm, st = statuses(feed, T0 + 30 * 39)
 check("Boxscore bleibt beim alten Stand: hoechstens 5 Final-Versuche, Status bleibt 'unsicher' (keine Endlosschleife, nie falsch 'verloren')", net.boxes() <= 1 + lf.FINAL_MAX_TRIES and st[1] == "unsicher" and not gm.players_complete, f"{net.boxes()} {st}")
 
 # --- Recorder-Datei statt Netz
-net = Net(); feed = lf.LiveFeed(http_get=net.get, now=lambda: T0); feed.refresh(T0)
+net = Net(); shutil.rmtree(T / "final_boxes", ignore_errors=True); feed = lf.LiveFeed(http_get=net.get, now=lambda: T0); feed.refresh(T0)
 gdir = T / "live" / DAY / "G1"; gdir.mkdir(parents=True)
 (gdir / "final_box.json.gz").write_bytes(gzip.compress(json.dumps({"game": boxgame(status=3, clock="PT00M00.00S", hs=82, as_=78, x=21)}).encode()))
 net.row = row(status=3, period=4, clock="", text="Final", hs=82, as_=78); net.reset()
@@ -109,19 +110,19 @@ feed.refresh(T0 + 30)
 gm, st = statuses(feed, T0 + 30)
 check("final_box.json.gz des Recorders vorhanden und passend: kein Boxscore-Abruf, players_complete, Status entschieden", net.boxes() == 0 and gm.players_complete and st[1] == "gewonnen" and st[2] == "verloren", f"{net.boxes()} {st}")
 (gdir / "final_box.json.gz").write_bytes(gzip.compress(json.dumps({"game": boxgame(status=3, clock="PT00M00.00S", hs=80, as_=78, x=19)}).encode()))
-net = Net(); feed = lf.LiveFeed(http_get=net.get, now=lambda: T0); feed.refresh(T0)
+net = Net(); shutil.rmtree(T / "final_boxes", ignore_errors=True); feed = lf.LiveFeed(http_get=net.get, now=lambda: T0); feed.refresh(T0)
 net.row = row(status=3, period=4, clock="", text="Final", hs=82, as_=78); net.box = boxgame(status=3, clock="PT00M00.00S", hs=82, as_=78, x=21); net.reset()
 feed.refresh(T0 + 30)
 check("Recorder-Datei passt nicht zum Endstand: wird nicht benutzt, Abruf bei NBA.com", net.boxes() == 1 and statuses(feed, T0 + 30)[1][1] == "gewonnen")
 (gdir / "final_box.json.gz").write_bytes(b"kaputt")
-net = Net(); feed = lf.LiveFeed(http_get=net.get, now=lambda: T0); feed.refresh(T0)
+net = Net(); shutil.rmtree(T / "final_boxes", ignore_errors=True); feed = lf.LiveFeed(http_get=net.get, now=lambda: T0); feed.refresh(T0)
 net.row = row(status=3, period=4, clock="", text="Final", hs=82, as_=78); net.box = boxgame(status=3, clock="PT00M00.00S", hs=82, as_=78, x=21); net.reset()
 feed.refresh(T0 + 30)
 check("kaputte Recorder-Datei: kein Absturz, Abruf bei NBA.com", net.boxes() == 1 and statuses(feed, T0 + 30)[1][1] == "gewonnen")
 
 # --- App-Start nach Spielende (Spiel war nie live in dieser Sitzung): ein Abruf holt die Spielerliste
 net = Net(); net.row = row(status=3, period=4, clock="", text="Final", hs=82, as_=78); net.box = boxgame(status=3, clock="PT00M00.00S", hs=82, as_=78, x=21)
-feed = lf.LiveFeed(http_get=net.get, now=lambda: T0); feed.refresh(T0)
+shutil.rmtree(T / "final_boxes", ignore_errors=True); feed = lf.LiveFeed(http_get=net.get, now=lambda: T0); feed.refresh(T0)
 gm, st = statuses(feed, T0)
 check("Start nach Spielende: ein Final-Abruf im ersten Lauf, Status direkt entschieden", net.boxes() == 1 and st[1] == "gewonnen" and gm.players_complete)
 
