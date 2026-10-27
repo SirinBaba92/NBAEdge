@@ -146,7 +146,7 @@ with tempfile.TemporaryDirectory() as td:
     g1, g2, g3 = "0022600001", "0022600002", "0022600003"
     net.rows = [row(g1, 2, 1, "PT11M30.00S", hs=2, as_=0),                                                                        # laeuft, gerade angepfiffen
                 row(g2, 2, 3, "PT06M00.00S", home=("Oklahoma City", "Thunder", "OKC"), away=("Denver", "Nuggets", "DEN"), hs=60, as_=58, et="2026-10-22T21:30:00-04:00"),   # laeuft schon (spaet gesehen)
-                row(g3, 1, 0, "", home=("Boston", "Celtics", "BOS"), away=("Miami", "Heat", "MIA"))]                                # noch nicht gestartet
+                row(g3, 1, 0, "", home=("Boston", "Celtics", "BOS"), away=("Miami", "Heat", "MIA"), et="2026-10-22T21:00:00-04:00", utc="2026-10-23T01:00:00Z")]   # noch nicht gestartet (Startzeit liegt in der Zukunft)
     check("Durchlauf 1 meldet Erfolg", rec.cycle() is True)
     d1, d2, d3 = (root / "2026-10-22" / g for g in (g1, g2, g3))
     check("Abrufe: 1 Scoreboard + 2 Boxscores (nur laufende Spiele)", net.kinds() == ["sb", "box", "box"], net.kinds())

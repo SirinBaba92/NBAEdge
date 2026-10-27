@@ -15,6 +15,8 @@ Ablage (ausserhalb des Projekts, damit Ordner-Backups sie nicht mitnehmen):
   <...>/.recorder.lock               Sperrdatei: eine zweite Instanz startet nicht
 
 Regeln: Scoreboard alle 30 s, Boxscore je laufendem Spiel etwa jede Minute; bei 403/429/Timeout wird die Wartezeit verdoppelt (30 -> 60 -> ... max. 300 s),
+Zeigt das Scoreboard ein Spiel nach der geplanten Startzeit (gameTimeUTC) noch als PRE, wird alle 30 s der Boxscore abgerufen; gameStatus 2 dort gilt als live
+(404 oder gameStatus 1 vor dem Anpfiff: still weiter versuchen, kein Fehler, kein Logeintrag). Danach laeuft alles wie bisher.
 pro Durchlauf bricht der erste Fehler die weiteren Abrufe ab. Spiele, die schon laufen, werden sofort aufgezeichnet (Play-by-Play ist am Ende vollstaendig).
 Beendet sich selbst NUR, wenn (1) mindestens ein Spiel des aktuellen US-Spieltags gesehen wurde, (2) alle bekannten Spiele dieses Spieltags beendet sind und
 (3) danach 3 Stunden lang kein neues Spiel erschien. Der aktuelle US-Spieltag wechselt um 17:00 Uhr deutscher Zeit; zeigt das Scoreboard noch den Vortag, laeuft er weiter,
@@ -414,13 +416,65 @@ class Recorder:
             day = game_day_us(row)
             gdir = game_dir(self.root, day, gid)
             self.games[gid] = {"day": day, "dir": gdir, "first_seen": t, "phase_key": None, "last_box": 0.0, "compact": {},
-                               "seen_live": False, "context": (gdir / "context.json").exists(),
+                               "seen_live": False, "last_probe": 0.0, "box_row": None, "context": (gdir / "context.json").exists(),
                                "finalized": all((gdir / n).exists() for n in ("final_box.json.gz", "final_pbp.json.gz", "result.json"))}
         return self.games[gid]
 
-    def _handle_game(self, row: dict, t: float) -> bool:
+    @staticmethod
+    def _start_ts(row: dict) -> float | None:
+        try:
+            return datetime.fromisoformat(str(row.get("gameTimeUTC")).replace("Z", "+00:00")).timestamp()
+        except ValueError:
+            return None
+
+    @staticmethod
+    def _overlay(row: dict, box_game: dict) -> dict:
+        """Scoreboard-Zeile mit Status, Periode, Uhr und Punkten aus dem Boxscore (das Scoreboard zeigt das Spiel noch als PRE)."""
+        out = dict(row)
+        for k in ("gameStatus", "gameStatusText", "period", "gameClock"):
+            if box_game.get(k) is not None:
+                out[k] = box_game[k]
+        for side in ("homeTeam", "awayTeam"):
+            if (box_game.get(side) or {}).get("score") is not None:
+                out[side] = {**(row.get(side) or {}), "score": box_game[side]["score"]}
+        return out
+
+    def _probe_box(self, row: dict, st: dict, t: float):
+        """Scoreboard meldet das Spiel noch nicht als live (oft ~15 Min. Verzug): ab der geplanten Startzeit alle 30 s den Boxscore abrufen. Meldet er gameStatus 2,
+        gilt das Spiel als live; die Zeile wird dann aus dem Boxscore ergaenzt. 404 oder gameStatus 1 vor dem Anpfiff ist normal: leise weiter versuchen.
+        Rueckgabe (Zeile, vorab geholte Antwort oder None, ok); ok=False bei einem echten Fehler (403/429/Timeout), der Durchlauf bricht dann ab."""
         clock = gc.from_scoreboard_game(row)
+        if clock.is_live or clock.is_final or st["finalized"]:
+            st["box_row"] = None                                     # Scoreboard hat aufgeholt: es gilt wieder allein
+            return row, None, True
+        if st["box_row"]:
+            if t - st["last_box"] < BOX_SECONDS - BOX_TOLERANCE:
+                return self._overlay(row, st["box_row"]), None, True
+        else:
+            start = self._start_ts(row)
+            if start is None or t < start or t - st["last_probe"] < POLL_SECONDS - BOX_TOLERANCE:
+                return row, None, True
+        st["last_probe"] = t
+        res = self._get(NBA_BOXSCORE_URL.format(game_id=str(row.get("gameId"))))
+        if not res.ok:
+            if res.status == 404:
+                return (self._overlay(row, st["box_row"]) if st["box_row"] else row), None, True
+            self._fail("box", res, st)
+            return row, None, False
+        game = (res.data or {}).get("game") or {}
+        if game.get("gameStatus") == 2:
+            st["box_row"] = game
+            return self._overlay(row, game), res, True
+        return (self._overlay(row, st["box_row"]) if st["box_row"] else row), None, True
+
+    def _handle_game(self, row: dict, t: float) -> bool:
         st = self._state(row, t)
+        if not st["compact"]:
+            st["compact"] = compact_game(row)
+        row, prefetched, ok = self._probe_box(row, st, t)
+        if not ok:
+            return False
+        clock = gc.from_scoreboard_game(row)
         gid = str(row.get("gameId"))
         seen = st["seen_live"]
         kind = classify_game(clock, seen, st["finalized"])
@@ -441,7 +495,7 @@ class Recorder:
         if clock.is_live:
             st["seen_live"] = True
             if t - st["last_box"] >= BOX_SECONDS - BOX_TOLERANCE:
-                res = self._get(NBA_BOXSCORE_URL.format(game_id=gid))
+                res = prefetched or self._get(NBA_BOXSCORE_URL.format(game_id=gid))
                 if not res.ok:
                     self._fail("box", res, st)
                     return False
