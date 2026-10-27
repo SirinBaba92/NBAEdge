@@ -1,0 +1,107 @@
+RUHETAGE, REISE, HOEHENLAGE IM SIEGER-MODELL (Spread und Siegchance)
+Messskript: analysis/backtest_winner_rest_travel.py (liest nur data/cache). Replay: analysis/replica_tunable.run, Modell von heute (K 20, Heimvorteil 100, MoV heute, Ruhe -1,5/+0,45 ELO).
+Fehler = Ist-Spread minus Modell-Spread (Heim-Sicht, + = Heim besser als Modell), nur Regular Season ohne Cup-Endrunde (Las Vegas). Spiele: 2017-2024 9540, 2025-26 1234.
+Mittlerer Fehler: 2017-2024 -0.00 Punkte (Std 13.8), 2025-26 -0.31 (Std 14.8). Siegchance wie heute (Normalverteilung, Sigma 13.2, 3-97 %).
+Brier/Log-Loss-Differenzen sind NEU minus HEUTE in x10^-3 (negativ = besser), Intervalle 95 % (gepaarter Bootstrap nach Spielen, 2000 Ziehungen).
+
+1 HAEUFIGKEIT UND MITTLERER FEHLER JE GRUPPE (Faktor = 1 bzw. > 0)
+  Faktor                                                     2017-24: n  Fehler Pkt 2025-26: n  Fehler Pkt
+  Heim Back-to-Back                                                1389       -1.44        215       -2.01
+  Gast Back-to-Back                                                1874       +1.99        226       +0.02
+  Heim >= 3 Ruhetage                                                505       +0.45         60       -2.81
+  Gast >= 3 Ruhetage                                                352       -0.49         52       -1.53
+  Gast: Zeitzone ostwaerts (je Stunde)                             2175       +0.25        267       +0.83
+  Gast: Zeitzone westwaerts (je Stunde)                            2094       -0.03        281       -1.05
+  Gast: Entfernung zum letzten Ort (je 1000 km)                    9033       -0.03       1172       -0.37
+  Heim: Entfernung zum letzten Ort (je 1000 km, zusaetzlich)       4144       -0.03        544       -0.86
+  Hoehenlage (Heimspiel Denver/Utah)                                636       +1.86         82       -0.82
+
+2 EINZELFAKTOREN: Steigung (Punkte je Faktor-Einheit) mit 95-%-Intervall, Korrektur aus 2017-2024, Pruefung 2025-26
+  Heim Back-to-Back
+    Steigung 2017-24: -1.69 Pkt [-2.48; -0.87] (Vorzeichen gleich in 8 von 8 Einzelsaisons: -0.2, -1.3, -1.3, -0.1, -4.2, -0.8, -2.7, -2.1)
+    Steigung 2025-26: -2.06 Pkt [-4.36; +0.25]
+    Pruefung 2025-26 mit b aus 2017-24: Brier -0.21 [-1.21; +0.85], Log-Loss -0.63 [-2.91; +1.66]
+    Zwei Haelften 2025-26 (A->B / B->A): Brier -0.45 / +0.21, Log-Loss -1.13 / +0.24; gemeinsam Brier -0.12 [-1.41; +1.20], Log-Loss -0.44 [-3.25; +2.46] -> auf beiden Haelften besser: nein
+    => nicht bestanden (Brier/Log-Loss besser: ja; Intervalle Pruefung < 0: nein; Steigungs-Intervall 2017-24 ohne 0: ja)
+  Gast Back-to-Back
+    Steigung 2017-24: +2.48 Pkt [+1.78; +3.18] (Vorzeichen gleich in 8 von 8 Einzelsaisons: +2.7, +2.5, +3.3, +2.1, +0.9, +3.4, +2.5, +2.8)
+    Steigung 2025-26: +0.40 Pkt [-1.84; +2.69]
+    Pruefung 2025-26 mit b aus 2017-24: Brier +1.32 [-0.31; +2.89], Log-Loss +2.75 [-0.62; +6.35]
+    Zwei Haelften 2025-26 (A->B / B->A): Brier +0.53 / -0.03, Log-Loss +1.02 / -0.04; gemeinsam Brier +0.25 [-0.34; +0.85], Log-Loss +0.49 [-0.83; +1.72] -> auf beiden Haelften besser: nein
+    => nicht bestanden (Brier/Log-Loss besser: nein; Intervalle Pruefung < 0: nein; Steigungs-Intervall 2017-24 ohne 0: ja)
+  Heim >= 3 Ruhetage
+    Steigung 2017-24: +0.48 Pkt [-0.68; +1.63] (Vorzeichen gleich in 6 von 8 Einzelsaisons: +3.0, +0.2, -4.1, -1.0, +0.4, +2.9, +1.9, +0.1)
+    Steigung 2025-26: -2.62 Pkt [-6.09; +1.04]
+    Pruefung 2025-26 mit b aus 2017-24: Brier +0.09 [-0.05; +0.25], Log-Loss +0.17 [-0.17; +0.50]
+    Zwei Haelften 2025-26 (A->B / B->A): Brier -0.19 / +1.03, Log-Loss -0.36 / +2.58; gemeinsam Brier +0.42 [-0.93; +1.79], Log-Loss +1.11 [-1.81; +4.20] -> auf beiden Haelften besser: nein
+    => nicht bestanden (Brier/Log-Loss besser: nein; Intervalle Pruefung < 0: nein; Steigungs-Intervall 2017-24 ohne 0: nein)
+  Gast >= 3 Ruhetage
+    Steigung 2017-24: -0.51 Pkt [-2.01; +0.97] (Vorzeichen gleich in 3 von 8 Einzelsaisons: +0.2, -3.0, -2.5, +1.5, +0.4, +1.6, +1.4, -3.0)
+    Steigung 2025-26: -1.27 Pkt [-5.22; +2.63]
+    Pruefung 2025-26 mit b aus 2017-24: Brier -0.01 [-0.18; +0.14], Log-Loss -0.03 [-0.37; +0.32]
+    Zwei Haelften 2025-26 (A->B / B->A): Brier +0.08 / +1.19, Log-Loss +0.15 / +2.59; gemeinsam Brier +0.64 [-0.47; +1.75], Log-Loss +1.37 [-0.88; +3.75] -> auf beiden Haelften besser: nein
+    => nicht bestanden (Brier/Log-Loss besser: ja; Intervalle Pruefung < 0: nein; Steigungs-Intervall 2017-24 ohne 0: nein)
+  Gast: Zeitzone ostwaerts (je Stunde)
+    Steigung 2017-24: -0.02 Pkt [-0.45; +0.45] (Vorzeichen gleich in 4 von 8 Einzelsaisons: +0.3, -0.2, +0.3, -1.1, +0.2, -0.6, -0.0, +0.8)
+    Steigung 2025-26: +1.34 Pkt [+0.09; +2.60]
+    Pruefung 2025-26 mit b aus 2017-24: Brier +0.00 [-0.03; +0.04], Log-Loss +0.01 [-0.05; +0.08]
+    Zwei Haelften 2025-26 (A->B / B->A): Brier +1.24 / -0.63, Log-Loss +2.06 / -1.41; gemeinsam Brier +0.30 [-0.91; +1.49], Log-Loss +0.33 [-2.34; +3.29] -> auf beiden Haelften besser: nein
+    => nicht bestanden (Brier/Log-Loss besser: nein; Intervalle Pruefung < 0: nein; Steigungs-Intervall 2017-24 ohne 0: nein)
+  Gast: Zeitzone westwaerts (je Stunde)
+    Steigung 2017-24: -0.27 Pkt [-0.73; +0.21] (Vorzeichen gleich in 5 von 8 Einzelsaisons: -1.1, -0.7, +0.6, +0.3, +0.0, -0.0, -0.4, -0.8)
+    Steigung 2025-26: -0.96 Pkt [-2.37; +0.60]
+    Pruefung 2025-26 mit b aus 2017-24: Brier +0.04 [-0.20; +0.28], Log-Loss +0.13 [-0.39; +0.69]
+    Zwei Haelften 2025-26 (A->B / B->A): Brier -0.20 / +0.58, Log-Loss -0.55 / +1.40; gemeinsam Brier +0.19 [-0.74; +1.09], Log-Loss +0.42 [-1.60; +2.56] -> auf beiden Haelften besser: nein
+    => nicht bestanden (Brier/Log-Loss besser: nein; Intervalle Pruefung < 0: nein; Steigungs-Intervall 2017-24 ohne 0: nein)
+  Gast: Entfernung zum letzten Ort (je 1000 km)
+    Steigung 2017-24: -0.21 Pkt [-0.55; +0.13] (Vorzeichen gleich in 6 von 8 Einzelsaisons: -0.3, -0.8, +0.3, -0.2, +0.5, -0.7, -0.1, -0.5)
+    Steigung 2025-26: -0.22 Pkt [-1.32; +0.81]
+    Pruefung 2025-26 mit b aus 2017-24: Brier +0.20 [-0.21; +0.62], Log-Loss +0.47 [-0.41; +1.36]
+    Zwei Haelften 2025-26 (A->B / B->A): Brier -0.12 / +0.42, Log-Loss -0.25 / +0.93; gemeinsam Brier +0.15 [-0.29; +0.56], Log-Loss +0.34 [-0.59; +1.27] -> auf beiden Haelften besser: nein
+    => nicht bestanden (Brier/Log-Loss besser: nein; Intervalle Pruefung < 0: nein; Steigungs-Intervall 2017-24 ohne 0: nein)
+  Heim: Entfernung zum letzten Ort (je 1000 km, zusaetzlich)
+    Steigung 2017-24: -0.14 Pkt [-0.47; +0.19] (Vorzeichen gleich in 6 von 8 Einzelsaisons: +0.2, +0.5, -0.2, -0.1, -0.2, -0.1, -0.7, -0.6)
+    Steigung 2025-26: -0.82 Pkt [-1.87; +0.30]
+    Pruefung 2025-26 mit b aus 2017-24: Brier -0.09 [-0.31; +0.12], Log-Loss -0.20 [-0.68; +0.25]
+    Zwei Haelften 2025-26 (A->B / B->A): Brier +1.02 / -0.27, Log-Loss +1.75 / -0.61; gemeinsam Brier +0.38 [-1.03; +1.96], Log-Loss +0.57 [-2.68; +4.10] -> auf beiden Haelften besser: nein
+    => nicht bestanden (Brier/Log-Loss besser: ja; Intervalle Pruefung < 0: nein; Steigungs-Intervall 2017-24 ohne 0: nein)
+  Hoehenlage (Heimspiel Denver/Utah)
+    Steigung 2017-24: +1.99 Pkt [+0.92; +3.09] (Vorzeichen gleich in 6 von 8 Einzelsaisons: +3.0, +3.8, -1.1, +5.2, +2.2, +2.1, +2.6, -1.8)
+    Steigung 2025-26: -0.54 Pkt [-4.18; +3.42]
+    Pruefung 2025-26 mit b aus 2017-24: Brier +0.24 [-0.51; +0.99], Log-Loss +0.68 [-1.00; +2.43]
+    Zwei Haelften 2025-26 (A->B / B->A): Brier +0.06 / -0.01, Log-Loss +0.16 / +0.10; gemeinsam Brier +0.02 [-0.47; +0.51], Log-Loss +0.13 [-0.95; +1.20] -> auf beiden Haelften besser: nein
+    => nicht bestanden (Brier/Log-Loss besser: nein; Intervalle Pruefung < 0: nein; Steigungs-Intervall 2017-24 ohne 0: ja)
+
+3 GEMEINSAME REGRESSION (alle Faktoren zusammen, damit nichts doppelt zaehlt)
+  Faktor                                                          2017-24 Steigung [95 %]      2025-26 Steigung [95 %]   Einzel 2017-24
+  Heim Back-to-Back                                            -2.04 [ -2.88;  -1.23]*   -2.67 [ -4.91;  -0.31]   -1.69
+  Gast Back-to-Back                                            +2.70 [ +2.00;  +3.45]*   +0.78 [ -1.75;  +3.17]   +2.48
+  Heim >= 3 Ruhetage                                           +0.42 [ -0.87;  +1.70]    -3.06 [ -7.74;  +1.46]   +0.48
+  Gast >= 3 Ruhetage                                           -0.27 [ -1.91;  +1.30]    +0.21 [ -4.47;  +5.12]   -0.51
+  Gast: Zeitzone ostwaerts (je Stunde)                         +0.05 [ -0.61;  +0.69]    +1.98 [ +0.05;  +3.83]   -0.02
+  Gast: Zeitzone westwaerts (je Stunde)                        -0.23 [ -0.91;  +0.43]    +0.26 [ -1.71;  +2.13]   -0.27
+  Gast: Entfernung zum letzten Ort (je 1000 km)                +0.10 [ -0.46;  +0.64]    -0.88 [ -2.53;  +0.76]   -0.21
+  Heim: Entfernung zum letzten Ort (je 1000 km, zusaetzlich)   -0.21 [ -0.51;  +0.11]    -0.83 [ -1.86;  +0.27]   -0.14
+  Hoehenlage (Heimspiel Denver/Utah)                           +2.07 [ +1.04;  +3.17]*   -0.63 [ -4.29;  +3.09]   +1.99
+  (* = Intervall 2017-24 ohne 0; Achsenabschnitt: -0.32 / +1.03 Pkt)
+  Pruefung 2025-26, alle Faktoren mit b aus 2017-24: Brier +0.93 [-1.01; +2.89], Log-Loss +1.83 [-2.20; +6.25]
+  Nur Faktoren mit Intervall ohne 0 (b2b_h, b2b_a, alt), neu geschaetzt: b2b_h -2.02, b2b_a +2.69, alt +2.02
+    Pruefung 2025-26: Brier +1.12 [-0.89; +3.02], Log-Loss +2.30 [-1.86; +6.58]
+    Zwei Haelften 2025-26 (A->B / B->A): Brier +0.05 / +0.18, Log-Loss -0.08 / +0.29; gemeinsam Brier +0.12 [-1.37; +1.56], Log-Loss +0.10 [-3.23; +3.39]
+  Zwei Haelften 2025-26, alle Faktoren (A->B / B->A): Brier +3.25 / +1.86, Log-Loss +5.80 / +4.18; gemeinsam Brier +2.56 [-0.91; +6.10], Log-Loss +4.99 [-2.89; +12.95] (viele Parameter auf je ~600 Spielen: Ueberanpassung moeglich)
+
+4 VARIANTE: 'viel Ruhe' ab Abstand >= 3 Tagen (2 Ruhetage, wie im Modell) statt >= 4
+  Heim >= 2 Ruhetage: n 1982/247, Steigung 2017-24 +0.41 [-0.29; +1.12], Pruefung 2025-26 Brier -0.11 [-0.38; +0.15], Log-Loss -0.27 [-0.84; +0.31]
+  Gast >= 2 Ruhetage: n 1708/222, Steigung 2017-24 -0.83 [-1.57; -0.08], Pruefung 2025-26 Brier +0.10 [-0.41; +0.64], Log-Loss +0.29 [-0.88; +1.42]
+
+5 HOEHENLAGE GETRENNT
+  Denver Nuggets: n 319/41, Steigung 2017-24 +2.14 [+0.71; +3.61], 2025-26 +0.49 [-4.21; +5.23] (Hinweis: Denver/Utah haben auch ohne Hoehe oft starke Heimbilanzen, die Ratings enthalten schon einen Teil davon)
+  Utah Jazz: n 317/41, Steigung 2017-24 +1.71 [+0.21; +3.24], 2025-26 -1.54 [-7.30; +3.99] (Hinweis: Denver/Utah haben auch ohne Hoehe oft starke Heimbilanzen, die Ratings enthalten schon einen Teil davon)
+
+ZUSAMMENFASSUNG
+  Einzelfaktoren bestanden: keiner
+  Steigungs-Intervall 2017-24 ohne 0 (unabhaengig von der Pruefung): Heim Back-to-Back, Gast Back-to-Back, Hoehenlage (Heimspiel Denver/Utah)
+  Beide Haelften 2025-26 besser (Brier und Log-Loss): keiner
+  Alle Faktoren gemeinsam, Pruefung 2025-26: Brier +0.93 [-1.01; +2.89], Log-Loss +1.83 [-2.20; +6.25]
+  Grenzen: Auslands-/Neutralplatzspiele sind nicht erkennbar (Reisewerte dort falsch); Ruhetage zaehlen auch Pausen wie All-Star; 'Saisonauftakt' bekommt Faktor 0;
+  Modell-Spread ist das reine Elo-Modell (ohne Markt-Mischung und ohne Verletzungen). Das Modell enthaelt Ruhetage bereits mit -1,5/+0,45 ELO (0,03/0,009 Punkte), das ist vernachlaessigbar.

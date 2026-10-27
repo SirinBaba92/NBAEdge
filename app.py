@@ -298,10 +298,10 @@ def build_mock_projections():
                 "market_diff": round(total - 225.5, 1),
                 "market_weight": 0.0,
                 "lineup_warning": False,
-                "is_playoff": is_playoff_date(date.today().isoformat()),
+                "is_playoff": is_playoff_date(us_today().isoformat()),
                 "home_bias_adjustment": 0.0,
                 "away_bias_adjustment": 0.0,
-                "game_date": date.today().isoformat(),
+                "game_date": us_today().isoformat(),
                 "total_over_odds": None,
                 "total_under_odds": None,
                 "spread_home_odds": None,
@@ -419,7 +419,7 @@ def refresh_data(engine, refresh=False):
         home = game["home_team"]["full_name"]
         away = game["visitor_team"]["full_name"]
         try:
-            game_date = game.get("date") or date.today().isoformat()
+            game_date = game.get("date") or us_today().isoformat()
             pred = engine.predict(home, away, us_today())   # US-Spieltag, nicht das Berliner Systemdatum
             predictions.append(pred)
             lines, line_source, line_at = pregame_lines.line_for_game_ex(
@@ -475,7 +475,7 @@ def fetch_completed_games(days_back: int):
         for game in load_mock_scoreboard():
             games.append(
                 {
-                    "_display_date": date.today().isoformat(),
+                    "_display_date": us_today().isoformat(),
                     "status": "Final",
                     "home_team": {
                         "full_name": f"{game.get('home_city', '')} {game.get('home_team', '')}".strip()
@@ -493,7 +493,7 @@ def fetch_completed_games(days_back: int):
     headers = {"Authorization": api_key}
     all_games = []
     for days_ago in range(1, days_back + 1):
-        d = (date.today() - timedelta(days=days_ago)).isoformat()
+        d = (us_today() - timedelta(days=days_ago)).isoformat()
         for attempt in range(3):
             r = requests.get(
                 "https://api.balldontlie.io/v1/games",

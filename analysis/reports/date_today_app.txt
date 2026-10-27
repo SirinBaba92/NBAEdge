@@ -1,0 +1,27 @@
+date.today() in app.py: Berliner Systemdatum oder US-Spieltag? (Stand 27.10.2026)
+
+GEAENDERT (Spieltag gemeint -> us_today(), data/game_updates.py)
+ Z. 301  build_mock_projections: is_playoff_date(...) im Offline-Audit-Modus. Nach 00:00 Berlin (in New York noch Vortag) wuerde am Playoff-Starttag ein Regular-Season-Spiel als Playoff gelten.
+ Z. 304  build_mock_projections: "game_date" der Mock-Projektion (Spieltag). Nach Mitternacht Berlin trug sie den falschen, naechsten Tag.
+ Z. 422  refresh_data: Rueckfall fuer game_date, wenn BallDontLie kein "date" liefert (der Wert wird Teil des Schluessels pre_match_store.game_key, der Snapshots/Eingaben/Wetten dem Spieltag zuordnet). Nach Mitternacht Berlin: falscher Tag im Schluessel.
+ Z. 478  fetch_completed_games (Offline-Mock): _display_date, Anzeigetag des Spiels.
+ Z. 496  fetch_completed_games: Abfragetage dates[] fuer BallDontLie (US-Daten) werden vom Heute zurueckgezaehlt; ab Berliner Datum faellt der noch laufende US-Tag mit hinein, der aelteste Tag fehlt. (Die Funktion hat aktuell keinen Aufrufer.)
+ Test: tests/test_us_day_app.py (00:30 Berliner Zeit; alter Quelltext aus git HEAD falsch, neuer richtig).
+
+UNVERAENDERT (Berliner Zeit richtig oder ohne Wirkung)
+ Z. 329  datetime.now() als commence_time der Mock-Wette: reine Zeitangabe.
+ Z. 563/617 datetime.now() fuer "Last update": Anzeige der lokalen Uhrzeit.
+ Z. 2134 datetime.now() Zeitstempel einer gespeicherten Wette: Berliner Uhrzeit als Zeitangabe, Spieltag steht gesondert.
+ Z. 1731 Saison der Spieler-Props (Jahr, ab Oktober neue Saison): Berlin und New York unterscheiden sich nur in der Nacht zum 1. Oktober (spielfrei) bzw. 1. Januar (gleiche Saison). Kein Spieltag.
+ Die 17:00-Umschaltung (data/live_feed.py DAY_SWITCH_HOUR, current_us_day) steht nicht in app.py und wurde nicht angefasst.
+
+ANDERE DATEIEN (nur aufgelistet, nicht geaendert; ohne tests/analysis)
+ data/fetcher.py:29 current_season(today=None) -> date.today(): Saisonjahr ab Oktober, gleiche Folgen wie Z. 1731 (kein Spieltag).
+ data/fetcher.py:116 fetch_upcoming_games: UTC-Datum, Fenster gestern..heute: deckt den US-Tag ab, in Ordnung.
+ data/rosters.py:41 season_string(today=None) -> date.today(): Saison ab Oktober, wie oben.
+ models/elo.py:242 EloEngine.predict(game_date=None) -> date.today(): Standard nur ohne Datum; app.py uebergibt jetzt us_today(). Wer ohne Datum aufruft, bekommt das Berliner Datum (Ruhetage um bis zu 1 Tag verschoben). Aufrufer ohne Datum in Produktivcode: keiner gefunden.
+ models/elo.py:300 Dateiname der Modellkopie (ratings_as_of oder heute): nur Name.
+ models/points_rating.py:154 predict(game_date=None) -> date.today(): wie elo.py:242; :269 Dateiname.
+ data/injuries.py:21, data/live_market.py:62, engine/player_snapshots.py:93/132: UTC-Zeitstempel, in Ordnung.
+ data/odds_client.py:121/138, data/automation_log.py:39/79, data/pre_match_store.py:308/320, data/projection_snapshots.py:117/130, engine/player_snapshots.py:76: Zeitstempel in Logs und Dateinamen von Sicherungen, richtig in lokaler Zeit.
+ ui/, record_live.py, update_model.py: keine date.today()/datetime.now()-Stellen (update_model.py nutzt us_today()).
