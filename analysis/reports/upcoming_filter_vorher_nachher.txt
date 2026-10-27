@@ -1,0 +1,20 @@
+
+HEUTE 27.10. (Cache-Stand, 12:48 Berlin)  (jetzt = 2026-10-27 11:48Z)
+  heutiges Verhalten (TypeError-Pfad)     4: BKN@BOS, DET@NYK, SAC@SAS, POR@LAL
+  Zeitfenster wie beabsichtigt            1: BKN@BOS
+  NEU: nur Final ausblenden               4: BKN@BOS, DET@NYK, SAC@SAS, POR@LAL
+
+26.10. als Spieltag, ohne Endstaende, 14:00Z  (jetzt = 2026-10-26 14:00Z)
+  heutiges Verhalten (TypeError-Pfad)     9: WAS@CHA, MIN@CLE, CHI@BOS, DAL@MIA, IND@MIL, PHX@OKC, ATL@HOU, MEM@UTA, GSW@DEN
+  Zeitfenster wie beabsichtigt            8: WAS@CHA, MIN@CLE, CHI@BOS, DAL@MIA, IND@MIL, PHX@OKC, ATL@HOU, MEM@UTA
+  NEU: nur Final ausblenden               9: WAS@CHA, MIN@CLE, CHI@BOS, DAL@MIA, IND@MIL, PHX@OKC, ATL@HOU, MEM@UTA, GSW@DEN
+
+26.10. als Spieltag, ohne Endstaende, 22:00Z  (jetzt = 2026-10-26 22:00Z)
+  heutiges Verhalten (TypeError-Pfad)     9: WAS@CHA, MIN@CLE, CHI@BOS, DAL@MIA, IND@MIL, PHX@OKC, ATL@HOU, MEM@UTA, GSW@DEN
+  Zeitfenster wie beabsichtigt            9: WAS@CHA, MIN@CLE, CHI@BOS, DAL@MIA, IND@MIL, PHX@OKC, ATL@HOU, MEM@UTA, GSW@DEN
+  NEU: nur Final ausblenden               9: WAS@CHA, MIN@CLE, CHI@BOS, DAL@MIA, IND@MIL, PHX@OKC, ATL@HOU, MEM@UTA, GSW@DEN
+
+26.10. nach Spielende (alle Final), 03:00Z am 27.10.  (jetzt = 2026-10-27 03:00Z)
+  heutiges Verhalten (TypeError-Pfad)     0: 
+  Zeitfenster wie beabsichtigt            0: 
+  NEU: nur Final ausblenden               0: 

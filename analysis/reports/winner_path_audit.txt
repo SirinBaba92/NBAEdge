@@ -1,0 +1,73 @@
+PRÜFUNG DES WEGS DER SIEGCHANCE (MONEYLINE) — Stand 27.10.2026, nur lesen und messen, am Code wurde nichts geändert
+Messskript: analysis/audit_winner_path.py (liest nur). Zusätzliche Einmal-Messungen (B2B, Bias) sind unten mit Ergebnis genannt.
+
+WEG DER SIEGCHANCE (Dateien und Funktionen)
+ models/elo.py: process_game (Rating-Update, K 20, Heimvorteil 100, Form, Ruhetage) -> EloEngine.predict (Elo-Differenz, Logistik+Isotonik "home_win_prob", Clip 3-97 %).
+ app.py refresh_data (Z. 421-422) ruft predict und engine/projection.py compute_projection: Spread = Elo-Differenz / 50, Markt-Spread zu 25 % beigemischt, Siegchance = win_prob_home(exp_spread) (engine/line_probabilities.py, Normalverteilung, Sigma 13,2).
+ Markt-Spread kommt aus data/odds.py parse_totals_spreads (Vorzeichen gedreht) bzw. eigener Eingabe (data/market_lines.py), zugeordnet über data/pregame_lines.py line_for_game_ex.
+ Anzeige: ui/score_cards.py build_card_vm / render_card_html. Value Bets: engine/ev.py find_value_bets (_match_game, blend_probabilities, calculate_ev, kelly_fraction) mit data/odds.py parse_odds und get_sharp_fair_odds; seit config/settings.py Z. 11 SHOW_VALUE_BETS = False ist der Tab samt h2h-Abruf AUS (app.py Z. 391 und 466).
+ Wichtig: Es gibt ZWEI verschiedene Siegchancen: Anzeige = Normalverteilung um den (mit Markt gemischten) Spread; Value Bets = die Elo-Logistik (pred["home_win_prob"]), 30 % Modell + 70 % Sharp-Quote.
+
+================================================================================
+A. SICHER BESTÄTIGT
+================================================================================
+
+1. REVERSED-BUG in _match_game (engine/ev.py Z. 121-132) — Fehler: JA (im Code), Wirkung heute: keine
+   Befund: Passt das Spiel nur mit vertauschten Rollen (Z. 130-132), wird das Odds-Spiel trotzdem unverändert zurückgegeben; der Kommentar "swap perspective handled by caller" stimmt nicht: find_value_bets (Z. 82) nimmt home_odds/away_odds und die Sharp-Wahrscheinlichkeiten (Z. 62-72) unverändert für Heim/Gast des Modells.
+   Nachweis (Demo mit erfundenen Zahlen, nichts gespeichert): Modell Boston 80 %, Odds-Spiel mit vertauschten Rollen (Brooklyn "Heim" 5,0 / Boston "Gast" 1,20): korrekt zugeordnet -> keine Value Bet; vertauscht -> "Boston, Quote 5,0, EV +87,7 %, Mischwahrscheinlichkeit 37,5 %" (die Quote 5,0 gehört Brooklyn). Value Bets werden also nicht ausgeschaltet, sondern falsch (Phantom-Wetten mit riesigem EV).
+   Häufigkeit gemessen: In 49 Snapshot-Spielen mit Odds-Event (data/pregame_lines.json) ist Heim/Gast 0-mal vertauscht. 5 von 1230 Spielen 2025-26 sind Neutralplatz-/Auslandsspiele (im NBA-Log beide Teams "Gast"); dort könnte BallDontLie und Odds API verschieden zuordnen; in den vorhandenen Daten ist das nicht aufgetreten.
+   Gleiche Ursache, anderer Ort: data/pregame_lines.py Z. 139-140 (teams_match "wie bisher auch vertauscht"): Bei vertauschter Zuordnung würde der Markt-Spread mit falschem Vorzeichen in die Projektion gehen (25 % Gewicht). Ebenfalls 0 Fälle in den Daten.
+   Vorschlag: In _match_game bei Reversed-Treffer Quoten und Sharp-Wahrscheinlichkeiten tauschen (oder Spiele mit Reversed-Treffer überspringen und melden); in pregame_lines den Spread bei vertauschten Rollen negieren. Erst relevant, wenn Value Bets wieder eingeschaltet werden.
+
+2. BIAS-ANPASSUNG (engine/bias.py, engine/projection.py Z. 103-112) — Fehler: JA, aber derzeit wirkungslos
+   Wirkt NUR auf die Punkte beider Teams (home_score_float/away_score_float, Z. 106-108), NICHT auf exp_spread und NICHT auf die Siegchance (Z. 112 nutzt exp_spread ohne Bias). Folge: Punkteunterschied der Karte und angezeigter Spread können auseinanderlaufen, und das Total (Summe der gerundeten Punkte) ändert sich um die Summe beider Anpassungen.
+   Einschalten: Die Anpassungen stehen in data/bias_adjustments.json (engine/bias.py Z. 7); die Datei existiert nicht -> alle Anpassungen sind 0 (Karte: "bias adj: H +0.0 / A +0.0"). Entstehen konnte sie nur über die Knöpfe "Self-Correction speichern" im alten History-Tab (alte app.py Z. 2357); diese Knöpfe sind seit dem Neubau des History-Tabs am 27.10. weg -> die Funktion ist ohne Oberfläche (bias_adjustments wird in app.py Z. 132 weiter geladen). Wirkungsbedingung wäre: Team war in mindestens 2 Spielen des gewählten Zeitraums (Standard 4 Tage) das Team mit dem größeren Fehler (min_games = 2).
+   Methodische Mängel (aus dem alten Code, Z. 2237-2285 der Version vom 26.10.): (a) Statistik nur für das Team mit dem GRÖSSEREN Fehler je Spiel (Auswahl-Verzerrung); (b) engine.predict mit den heutigen Ratings für vergangene Spiele (Vorauswissen), (c) die Projektion enthält bereits die gespeicherte Anpassung (Rückkopplung), (d) Betrag 0,35 x Ø-Fehler, höchstens 6 Punkte, ohne Verfall.
+   Gemessen (2025-26, walk-forward-Nachbau, 4-Tage-Fenster, min. 2 Spiele): Ø größter Teamfehler 13,4 Punkte -> Anpassung Ø 4,5 Punkte bei 8,6 % der Team-Einsätze; der Punktefehler wird dadurch NICHT besser (MAE 9,59 ohne, 9,67 mit Anpassung).
+   Vorschlag: Funktion entweder ganz entfernen oder erst nach sauberer Messung (beide Teams, nur Wissen vor dem Spiel) wieder anbieten; falls behalten, auch den Spread korrigieren und den Kommentar zur Wirkung ergänzen.
+
+3. date.today() STATT US-SPIELTAG (app.py Z. 422) — Fehler: JA (kleine Wirkung heute)
+   Z. 421 hat das richtige US-Spieldatum (game.get("date")) und nutzt es für compute_projection, Z. 422 übergibt aber date.today() (Systemzeit Berlin) an engine.predict (-> _rest_factor, models/elo.py Z. 72-78). Nach Mitternacht deutscher Zeit (= während der meisten NBA-Spiele) ist date.today() einen Tag zu spät: ein Team mit Back-to-back wird als "2 Tage Pause" gewertet (Strafe entfällt), 2 Tage Pause als "3+" (Bonus).
+   Gemessen (2025-26, 1237 Spiele, Nachbau): Bei Tagesfehler +1 ändert sich die Ruhe-Differenz in 543 Spielen (44 %), Ø 0,37 ELO = 0,007 Punkte Spread, maximal 1,5 ELO = 0,03 Punkte. Heute also praktisch bedeutungslos, WEIL der Ruhe-Faktor selbst viel zu klein ist (siehe Punkt 6a). Würde der Ruhe-Faktor korrigiert, würde dieser Datumsfehler zu einem echten Fehler.
+   Weitere Datumsstellen: data/fetcher.py Z. 107 nutzt das UTC-Datum für das Abfragefenster (start = UTC heute - 1, end = UTC heute): unkritisch, solange nach "heute" nicht gefiltert wird (siehe 4b). update_model.py nutzt korrekt us_today() (data/game_updates.py). Alte History-Abfrage (app.py Z. 495 vor dem Neubau) nutzte date.today() - Tage.
+   Vorschlag: In app.py Z. 422 das Spieldatum game_date (US-Spieltag) an predict geben (date.fromisoformat(game_date)); Rest-Faktor erst danach neu bewerten.
+
+4. STILLE FEHLER — Fehler: TEILWEISE
+   Sicher bestätigt:
+   (a) data/fetcher.py Z. 132-137: Schlägt der BallDontLie-Abruf fehl und es gibt einen Cache mit denselben Parametern (auch abgelaufen, höchstens ein UTC-Tag alt), werden diese Spiele ohne Hinweis in der App gezeigt; nur print() auf der Konsole.
+   (b) data/fetcher.py Z. 146-150: Der Zeitfilter (Anpfiff zwischen jetzt-3 h und jetzt+12 h) ist wirkungslos: das Feld "date" ist nur ein Datum ("2026-10-26"), fromisoformat liefert eine Zeit OHNE Zeitzone, der Vergleich mit der Zeitzonen-Zeit wirft TypeError, der except hängt das Spiel einfach an. Gemessen: 13 von 13 Spielen im Cache laufen in diesen Zweig (9 davon sind "Final" und werden vorher aussortiert). Folge: Nicht beendete Spiele von gestern (Status-Verzug) und alle Spiele des UTC-Tages werden als "kommend" gezeigt.
+   (c) app.py Z. 633-634: Fehler beim Schreiben der Snapshots nur print() auf der Konsole, die Seite sagt nichts (dann fehlt der Stand vor dem Anpfiff für die Auswertung).
+   (d) data/odds_client.py Z. 229: Speichern der Vorab-Linien (update_from_snapshot) schluckt jeden Fehler (pass); Z. 88: unlesbarer Odds-Cache wird still zu leer ({}); Z. 118/132: Protokollfehler ebenfalls still.
+   Teilweise sichtbar (kein stiller Fehler): BallDontLie ohne Cache -> st.error (app.py Z. 410-413); Projektion pro Spiel übersprungen -> st.warning (Z. 463-464, z. B. Team nicht im Modell: predict wirft KeyError); Totals/Spreads ohne Daten -> Warnung (Z. 401-402); alte Quoten -> Seitenleiste "Quoten von ... (älter als ...)" (Z. 243-246); Ratings-Stand -> "Ratings bis: ..." (Z. 548-552); Modell-Update-Fehler -> data/automation.log.
+   Lücke: Hat der Totals/Spreads-Abruf einen Fehler, aber es liegen alte Daten im Cache, zeigt app.py Z. 401 keine Warnung (nur das Alter in der Seitenleiste).
+   Vorschlag: (a)/(c) als st.warning bzw. Hinweis "Daten von vor X Min." ausgeben; (b) mit der Spielzeit aus "datetime" statt "date" rechnen und tz-bewusst vergleichen.
+
+5. MISCHUNG MARKT/MODELL UND RICHTUNG — Fehler: NEIN bei der Richtung, JA bei der Uneinheitlichkeit
+   Richtung geprüft: Elo-Differenz = Heim minus Gast inkl. Heimvorteil (positiv = Heim stärker); Odds-API-Handicap wird in data/odds.py (Z. 111) gedreht (positiv = Heim-Favorit); eigene Eingabe wird in data/market_lines.py (own_candidates) gedreht; compute_projection: exp_spread = 0,75 x Modell + 0,25 x Markt (beide Heim-positiv); Siegchance = Normalverteilung(exp_spread / 13,2); Anzeige-Balken und Spread-Label (spread_label) stimmen überein. Value Bets: blended_home/away jeweils mit der passenden Sharp-Wahrscheinlichkeit (engine/ev.py Z. 71-72), Vig-Abzug korrekt (fair = implied / (1 + vig)). In diesen Schritten keine Vertauschung gefunden (außer Punkt 1).
+   Uneinheitlich: Der "25 % Markt" gilt nur für den SPREAD (und damit die Anzeige-Siegchance). Value Bets rechnen mit einer anderen Siegchance: Elo-Logistik/Isotonik, gemischt zu nur 30 % Modell und 70 % Sharp-Quote (blend_probabilities Z. 13, ohne Sharp-Buch: 100 % Logistik). Gemessen an 42 Snapshot-Spielen: Anzeige und Logistik weichen Ø 5,3 PP ab (max. 12,8 PP), in 2 Spielen sogar mit anderem Favoriten. Die Kalibrierung der Logistik für 2025-26 ist hier nicht gemessen (frühere Messung der Anzeige-Siegchance: Brier 0,2102).
+   Vorschlag: Eine einzige Siegchance für Anzeige und EV verwenden (oder bewusst dokumentieren, dass EV die Logistik nutzt) und die Mischung (30/70) neu begründen/messen.
+
+================================================================================
+B. WEITERE BEFUNDE (6)
+================================================================================
+
+6a. RUHE-FAKTOR (back-to-back) viel zu klein — Fehler: JA (gemessen)
+   models/elo.py Z. 74-76: Strafe = REST_DAYS_WEIGHT x 100 = 1,5 ELO (config/settings.py Z. 6), das sind 0,03 Punkte Spread (Faktor 50 ELO je Punkt). Die Daten zeigen etwa 2,4 Punkte: Residuum (Marge minus Modell-Spread), Regular Season 2017-2025: Heim B2B (Gast nicht) -2,56 +-0,84 Punkte (n 1111), Gast B2B (Heim nicht) +2,07 +-0,68 (n 1607), beide B2B +0,83 +-1,28 (n 493), keiner B2B -0,17 +-0,31 (n 7566). Vermutlich eine Einheiten-Verwechslung (Punkte statt ELO).
+   Nutzen einer Korrektur (nur Schätzung der B2B-Wirkung aus früheren Saisons, Spread' = Spread + b x (Heim-B2B minus Gast-B2B)): Brier 2023 -1,94 x10^-3 [-3,49; -0,35], 2024 -1,41 [-3,05; +0,22], 2025 +0,63 [-1,02; +2,38] (b = -2,2/-2,3/-2,4). Also vorhanden, aber klein und nicht in jeder Saison belegt.
+   Vorschlag: Ruhe-Faktor in Punkten ansetzen (ca. 2 Punkte = ca. 100 ELO) und zusammen mit Punkt 3 (Datum) und der Aktualität des Modells nachmessen.
+
+6b. Aktualität der Ratings/Ruhetage: Das Modell wird täglich um 08:00 Berlin fortgeschrieben (automation/de.nbaedge.update-model.plist); heute früh (07:20) stand es auf "Ratings bis 25.10.", die 9 Spiele vom 26.10. fehlten noch. Bis dahin sieht ein Team, das gestern spielte, wie ausgeruht aus (last_game zu alt, models/elo.py Z. 72). Spät endende West-Küsten-Spiele sind beim 08:00-Lauf noch nicht "Final" (werden über pending beim nächsten Lauf nachgeholt, update_with_games). Vermutung, nicht gemessen.
+
+6c. Rundung/Werte: (1) Punkte werden mit Pythons round() gerundet (Z. 109-110, rundet .5 zum geraden Wert), das angezeigte Total ist die Summe der gerundeten Punkte (exp_total, Z. 111), der Spread (1 Nachkommastelle) kann daher bis zu 1 Punkt vom Punkteunterschied abweichen. (2) Prozentanzeige: Heim% + Gast% ist bei 16 von 10001 Wahrscheinlichkeiten ungleich 100 (0,16 %). (3) win_prob_home(round(exp_spread, 1)): Rundungswirkung < 0,01 PP. (4) Clip 3-97 % entspricht Spreads von -24,8 bis +24,8; der größte Spread in den Snapshots ist 16,8: der Clip greift nicht.
+
+6d. Zwei Siegchancen in den Snapshots: home_win_prob (Normal) und home_win_prob_elo (Logistik) stehen nebeneinander; Auswertungen (history_view, backtest_winner) nutzen die Normal-Variante, Value Bets die Logistik (siehe Punkt 5).
+
+================================================================================
+C. VERMUTUNGEN (nicht gemessen oder nicht bestätigt)
+================================================================================
+ - engine/ev.py kelly_fraction (Z. 31-39): Bei Quote 1,00 wäre b = 0 und es käme eine Division durch null; Odds-API-Quoten liegen praktisch immer darüber, nicht beobachtet.
+ - engine/ev.py _match_game nutzt Teilwort-Treffer auf das letzte Namenswort ("heat" in "...") und ignoriert Datum/Anpfiff; bei zwei Spielen derselben Paarung im Fenster würde das erste gewählt. Nicht beobachtet.
+ - Kalibrierung der Elo-Logistik (Value Bets) für 2025-26 ist nicht gemessen; ohne Sharp-Buch entsteht der EV allein aus ihr (sharp_source = "model_only").
+ - Neutralplatz-Spiele (5 in 2025-26): Heimvorteil im Modell trotzdem 100 ELO; Wirkung nicht gemessen.
+
+ZUSAMMENFASSUNG: Sicher bestätigt: Reversed-Bug (latent, Value Bets aus; 0 Fälle in 49 Spielen), Bias nur auf Punkte und aktuell wirkungslos (Datei fehlt, Knöpfe entfernt), date.today() in app.py Z. 422 (Wirkung heute 0,007 Punkte), toter Zeitfilter in fetcher.py (13 von 13), mehrere stille Fehlerstellen, zwei verschiedene Siegchancen (Ø 5,3 PP Abstand), Ruhe-Faktor um etwa den Faktor 80 zu klein (0,03 gegen ca. 2,4 Punkte gemessen). Richtung Heim/Gast ist in der Anzeige-Kette überall korrekt.

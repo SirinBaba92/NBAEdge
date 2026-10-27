@@ -57,7 +57,7 @@ def build_snapshot_entry(key: str, entries: dict, res: dict, now: datetime) -> d
                        p_ge_raw={str(n): v for n, v in fc["p_ge_raw"].items()}, p_ge_adjusted={str(n): v for n, v in fc["p_ge_adjusted"].items()}, games_used=fc["games_used"])
         players.append(row)
     return {"game_key": key, "created_at": now.astimezone().isoformat(timespec="seconds"), "start_utc": key.split("|")[1] if "|" in key else None, "created_after_start": after,
-            "note": "nach Anpfiff erstellt, Daten nur bis Vortag" if after else "vor Anpfiff erstellt", "status": pf.UNVERIFIED, "context": res["context"],
+            "note": "nach Anpfiff erstellt, Daten nur bis Vortag" if after else "vor Anpfiff erstellt", "model_version": pf.PLAYER_MODEL_VERSION, "status": pf.UNVERIFIED, "context": res["context"],
             "teams": res["teams"], "history": data_stand(), "players": players}
 
 

@@ -1,0 +1,41 @@
+VERLETZUNGEN IM SIEGER-MODELL: OBERGRENZE DES NUTZENS, REGULAR SEASON 2025-26 — erstellt 2026-10-27 06:27 (analysis/backtest_winner_injuries.py)
+Reine Messung, Produktivmodell unverändert. WISSEN AUS DER ZUKUNFT: wer fehlte, steht erst nach dem Spiel fest; alle Ergebnisse sind eine Obergrenze dessen, was mit echten (vorab gemeldeten, unsicheren) Ausfällen erreichbar wäre.
+Daten: Spielerzeilen aus data/cache/player_games_2025-26.json (nur Einsätze und 0-Minuten-Zeilen; fehlende Zeile = nicht eingesetzt). Regular Season laut BallDontLie: 1237 Spiele; ohne Spielerdaten: 7 (Cup-K.-o.-Spiele laufen in der Liga-Datei nicht unter Regular Season);
+in den ersten 10 Teamspielen nicht bewertet: 155; bewertet: 1075 (2025-11-09 bis 2026-04-12). Hälfte 1: 538 Spiele bis 2026-01-27, Hälfte 2: 537 Spiele ab 2026-01-27.
+Stammspieler = Top 8 nach Minuten bis dahin mit diesem Team. Fehlend = 0 Minuten oder keine Zeile, außer bei Teamwechsel danach. Ausfall-Differenz D = Heim minus Gast (positiv: Heim fehlt mehr, Erwartung: Fehler-Steigung NEGATIV).
+
+0. DATENLAGE
+  Je Spiel und Team liegen die Einsatzminuten und Punkte aller Spieler vor; daraus ergibt sich pro Spiel, welche Top-8-Spieler (nach Minuten bis dahin) nicht eingesetzt wurden. Ob es Verletzung, Schonung oder Sperre war, steht nicht in den Daten.
+  Spiele mit mindestens einem fehlenden Stammspieler (Top 8): Heim 862, Gast 852, mindestens ein Team 1034 von 1075. Ø fehlende Stammspieler je Team und Spiel: 1.59.
+  Streuung (Standardabweichung) der Ausfall-Differenz D: Punkte-Anteil 0.238, Minuten-Anteil 0.200.
+
+2. MODELLFEHLER (Ist-Spread minus Modell-Spread) GEGEN AUSFALL-DIFFERENZ D
+  Ø Fehler ganze Saison -0.53 Pkt, Streuung des Fehlers 14.92 Pkt. Steigung = Punkte Fehler je 1,0 Ausfall-Anteil (ein Stammspieler mit 20 % Teampunkten = 0,20).
+  Maß       Zeitraum           n           Steigung [95 %]  Achsenabschnitt      R²
+  Punkte    ganze Saison    1075   -14.44 [-17.80; -11.07]            -0.57   0.053
+  Punkte    Hälfte 1         538    -12.83 [-18.87; -6.59]            -0.46   0.030
+  Punkte    Hälfte 2         537   -15.27 [-19.30; -11.32]            -0.67   0.074
+  Minuten   ganze Saison    1075   -17.00 [-20.89; -12.74]            -0.56   0.052
+  Minuten   Hälfte 1         538    -13.78 [-21.44; -6.39]            -0.41   0.026
+  Minuten   Hälfte 2         537   -18.76 [-23.91; -13.67]            -0.72   0.077
+
+3. EINFACHE KORREKTUR: Spread' = Spread + Steigung * D; Steigung auf der einen Hälfte bestimmt, auf der anderen geprüft (und umgekehrt)
+   Differenz Korrektur minus heute (negativ = besser), gepaarter Bootstrap; x10^-3.
+  Maß       Bestimmt auf → geprüft auf      Steigung  Brier heute  Brier korr.             ΔBrier [95 %]            ΔLog-Loss [95 %]
+  Punkte    Hälfte 1 → Hälfte 2               -12.83       0.1916       0.1834     -8.23 [-14.90; -1.77]      -22.83 [-37.43; -8.21]
+  Punkte    Hälfte 2 → Hälfte 1               -15.27       0.2281       0.2267      -1.44 [-7.77; +5.02]      -2.39 [-16.14; +12.38]
+  Minuten   Hälfte 1 → Hälfte 2               -13.78       0.1916       0.1832     -8.43 [-14.09; -2.79]      -22.76 [-35.64; -9.45]
+  Minuten   Hälfte 2 → Hälfte 1               -18.76       0.2281       0.2276      -0.52 [-7.07; +5.91]      -0.34 [-15.60; +15.05]
+  Zum Vergleich ohne Trennung (Steigung auf der GANZEN Saison bestimmt und dort bewertet, also im Prüfdatensatz mit angepasst; nur Größenordnung der Obergrenze):
+   Punkte    Steigung -14.44: ΔBrier -4.96 x10^-3 [-9.88; -0.12]
+   Minuten   Steigung -17.00: ΔBrier -4.91 x10^-3 [-9.70; -0.35]
+
+4. ZUSATZ: SPIELE MIT MINDESTENS EINEM FEHLENDEN TOP-3-SPIELER
+  Spiele mit mindestens einem fehlenden Top-3-Spieler: 594 von 1075 (55.3 %); Heim fehlt (Top-3): 379, Gast fehlt: 377, beide: 162.
+  Fehler aus Sicht des betroffenen Teams (Ist-Marge minus Modell-Marge des Teams; nur Spiele, in denen genau eine Seite einen Top-3-Spieler vermisst, n 432): Ø -3.07 [-4.48; -1.63] Pkt (negativ = Team schlechter als das Modell erwartet).
+  Spiele ohne fehlenden Top-3-Spieler (n 481): Ø Fehler aus Sicht Heim -1.08 [-2.30; +0.20] Pkt (Vergleichswert, Heimseite).
+  Betrag des Fehlers (MAE): mit fehlendem Top-3-Spieler 11.95 Pkt (n 594), ohne 11.35 Pkt (n 481).
+  Hälfte 1: 248 Spiele mit fehlendem Top-3; Fehler aus Sicht des betroffenen Teams -2.74 [-4.88; -0.68] Pkt (n 210); MAE mit 11.73, ohne 11.00.
+  Hälfte 2: 346 Spiele mit fehlendem Top-3; Fehler aus Sicht des betroffenen Teams -3.38 [-5.50; -1.23] Pkt (n 222); MAE mit 12.10, ohne 11.89.
+
+Hinweis: Obergrenze, keine Empfehlung. Ob ein Ausfall vorab bekannt gewesen wäre, ist hier nicht berücksichtigt; ebenso wenig, dass der Markt Ausfälle teils schon einpreist (die App mischt den Markt zum Spread mit 25 %).

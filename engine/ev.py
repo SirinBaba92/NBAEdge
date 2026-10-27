@@ -119,7 +119,8 @@ def find_value_bets(
 
 
 def _match_game(home: str, away: str, odds_games: list[dict]) -> dict | None:
-    """Simple fuzzy team name matching."""
+    """Simple fuzzy team name matching. Liefert das Spiel immer aus Sicht von home/away:
+    ist es in den Quoten vertauscht, werden Teams und Heim-/Gast-Quoten getauscht."""
     home_kw = home.split()[-1].lower()
     away_kw = away.split()[-1].lower()
     for g in odds_games:
@@ -128,6 +129,14 @@ def _match_game(home: str, away: str, odds_games: list[dict]) -> dict | None:
         if home_kw in oh and away_kw in oa:
             return g
         if away_kw in oh and home_kw in oa:
-            # Reversed — swap perspective handled by caller
-            return g
+            return _swap_sides(g)
     return None
+
+
+def _swap_sides(g: dict) -> dict:
+    """Kopie des Spiels mit getauschten Seiten (Teams, home_odds <-> away_odds je Buchmacher)."""
+    swapped = dict(g, home_team=g["away_team"], away_team=g["home_team"])
+    swapped["bookmakers"] = {
+        k: dict(b, home_odds=b["away_odds"], away_odds=b["home_odds"]) for k, b in g["bookmakers"].items()
+    }
+    return swapped

@@ -592,7 +592,7 @@ def _validate_player(person_id, name, team, milestone, odds, stake, odds_source,
 
 
 _PLAYER_CORE = ("milestone", "odds", "stake", "odds_source", "name", "team")
-_PLAYER_STATE = ("active", "name", "team", "milestone", "side", "odds", "stake", "odds_source", "odds_ref", "categories", "placed_at", "updated_at", "removed_at")
+_PLAYER_STATE = ("active", "name", "team", "milestone", "side", "odds", "stake", "odds_source", "odds_ref", "categories", "model_p_roh", "model_p_team", "display_mode", "model_version", "placed_at", "updated_at", "removed_at")
 
 
 def _player_revision(bet: dict, reason: str, stamp: str) -> dict:
@@ -600,10 +600,12 @@ def _player_revision(bet: dict, reason: str, stamp: str) -> dict:
 
 
 def set_player_bet(game_date: str, start_utc: str, home: str, away: str, person_id, name: str, team: str | None, milestone, odds=None, stake=None,
-                   odds_source: str | None = None, odds_ref: dict | None = None, now: float | None = None, categories=None) -> dict:
+                   odds_source: str | None = None, odds_ref: dict | None = None, now: float | None = None, categories=None, display_mode: str | None = None) -> dict:
     """Spieler-Wette (mindestens N Punkte, immer Over) setzen oder aendern. Je Spieler hoechstens eine aktive Wette (eine neue ersetzt die alte, der alte Stand bleibt in revisions);
     mehrere Spieler je Spiel sind moeglich. Rueckgabe {'status': 'saved'|'unchanged', 'key', 'bet'}. Wirft BetInputError, GameStartedError (ab Anpfiff), DayBetsError.
-    categories: Liste (player_ta/player_raw), mindestens eine; ohne Angabe bleiben die Kategorien einer bestehenden Wette erhalten."""
+    categories: Liste (player_ta/player_raw), mindestens eine; ohne Angabe bleiben die Kategorien einer bestehenden Wette erhalten.
+    Neue Staende speichern zusaetzlich model_p_roh / model_p_team (Modell-Chance dieser Linie aus dem Prognose-Snapshot, sonst None), display_mode ('roh' | 'teamabgleich' | None) und model_version;
+    fehlende Werte blockieren nichts. Aeltere Wetten ohne diese Felder bleiben unveraendert (Version dann 'player-0', siehe bet_model_version)."""
     now = now if now is not None else time.time()
     new = _validate_player(person_id, name, team, milestone, odds, stake, odds_source, odds_ref)
     categories = _check_categories("player", categories)
@@ -620,6 +622,7 @@ def set_player_bet(game_date: str, start_utc: str, home: str, away: str, person_
         if old and old.get("active") and all(old.get(k) == new[k] for k in _PLAYER_CORE) and (categories is None or bc.normalize(old.get("categories", old.get("category"))) == categories):
             return {"status": "unchanged", "key": key, "bet": copy.deepcopy(old)}
         stamp = iso_now(now)
+        model = _model_fields(key, pid, new["milestone"], display_mode)
         revisions = list(old["revisions"]) if old else []
         placed_at = stamp
         if old and old.get("active"):
@@ -627,9 +630,36 @@ def set_player_bet(game_date: str, start_utc: str, home: str, away: str, person_
             placed_at = old["placed_at"]
             if categories is None:
                 categories = bc.normalize(old.get("categories", old.get("category")))
-        bets[pid] = {"market": PLAYER_MARKET, "active": True, **new, "categories": categories if categories is not None else [], "placed_at": placed_at, "updated_at": stamp, "removed_at": None, "revisions": revisions}
+        bets[pid] = {"market": PLAYER_MARKET, "active": True, **new, "categories": categories if categories is not None else [], **model, "placed_at": placed_at, "updated_at": stamp, "removed_at": None, "revisions": revisions}
         _write(data, stamp, now)
         return {"status": "saved", "key": key, "bet": copy.deepcopy(bets[pid])}
+
+
+def bet_model_version(bet: dict | None) -> str:
+    """Modellversion einer Wette; Wetten ohne Feld gelten als 'player-0'."""
+    return str((bet or {}).get("model_version") or "player-0")
+
+
+def _display_mode(mode) -> str | None:
+    return {"raw": "roh", "roh": "roh", "team": "teamabgleich", "teamabgleich": "teamabgleich"}.get(str(mode).strip().lower()) if mode is not None else None
+
+
+def _model_fields(key: str, pid: str, milestone: int, display_mode) -> dict:
+    """Modell-Chancen (roh / Teamabgleich) fuer die Linie aus dem Prognose-Snapshot des Spiels; fehlt er oder der Spieler, None. Version: die des Snapshots ('player-0' ohne Feld),
+    ohne Snapshot die aktuelle PLAYER_MODEL_VERSION. Wirft nie."""
+    from engine.player_forecast import PLAYER_MODEL_VERSION
+    p_raw = p_team = None
+    version = PLAYER_MODEL_VERSION
+    try:
+        snap = load_forecast_snapshot(key)
+        if snap:
+            version = str(snap.get("model_version") or "player-0")
+            sp = next((p for p in snap.get("players", []) if str(p.get("person_id")) == str(pid)), None) or {}
+            raw, adj = sp.get("p_ge_raw") or {}, sp.get("p_ge_adjusted") or {}
+            p_raw, p_team = raw.get(str(milestone)), adj.get(str(milestone))
+    except Exception:
+        pass
+    return {"model_p_roh": p_raw, "model_p_team": p_team, "display_mode": _display_mode(display_mode), "model_version": version}
 
 
 def remove_player_bet(game_date: str, start_utc: str, home: str, away: str, person_id, now: float | None = None) -> dict:

@@ -14,6 +14,8 @@ Datei: data/tracking/projection_snapshots.json  (Ordner ueber NBAEDGE_TRACKING_D
                      "sigmas": {...}, "sigmas_version": "2" (fehlt = "1": Spread 10,5 / Total 18,0 / Team Total 12,5; Siegchance aus der Elo-Logistik), "pre_match_ref": {"entry_key", "<markt>": "<updated_at der Eingabe>"} | null}],
        "card": {...}       # Anzeigefelder der letzten Version (nur damit ein beendetes Spiel danach noch als Karte erscheint)
        "result": {"home_points", "away_points", "recorded_at", "source"} | null}}}
+Seit "team-2" (engine/team_injury.py) hat eine Version zusaetzlich "team2": {"version": "team-2", "base": "Vorjahr" | "laufende Saison", "measure_home", "measure_away", "missing_home", "missing_away",
+"delta_spread", "exp_spread", "exp_total", "home_score", "away_score", "home_win_prob", "away_win_prob"} (korrigierte Werte; "projection" bleibt das heutige Modell). Aeltere Versionen haben den Block nicht.
 Eine neue Version entsteht nur, wenn sich der Inhalt (Hash ohne Zeitstempel) gegenueber der letzten Version aendert und das Spiel noch nicht
 begonnen hat (unbekannter Anpfiff gilt als begonnen). Ab dem Anpfiff gibt es keine neuen Versionen: die letzte Version ist die gueltige ("final").
 Die Spielzahl der Saison je Team ist aus dem Modell nicht ableitbar (die Form-Liste mischt Saisons) und wird deshalb nicht gespeichert.
@@ -220,7 +222,8 @@ def build_snapshot(proj: dict, entry: dict | None, model: dict) -> dict | None:
         for name, mk in (entry.get("markets") or {}).items():
             if isinstance(mk, dict) and mk.get("updated_at"):
                 ref[name] = mk["updated_at"]
-    return {
+    team2 = proj.get("team2")
+    out = {
         "model": model,
         "projection": {"exp_spread": _num(proj.get("exp_spread")), "exp_total": _num(proj.get("exp_total")), "home_score": _num(proj.get("home_score")),
                        "away_score": _num(proj.get("away_score")), "home_win_prob": _num(proj.get("home_win_prob")), "away_win_prob": _num(proj.get("away_win_prob")),
@@ -231,6 +234,12 @@ def build_snapshot(proj: dict, entry: dict | None, model: dict) -> dict | None:
         "sigmas_version": lp.SIGMAS_VERSION,
         "pre_match_ref": ref,
     }
+    if team2:                      # Verletzungs-Variante "team-2" (engine/team_injury.py): nur mit Block, damit Projektionen ohne ihn denselben Inhalt/Hash wie bisher haben
+        out["team2"] = {"version": team2.get("version"), "base": team2.get("base"), "measure_home": _num(team2.get("measure_home")), "measure_away": _num(team2.get("measure_away")),
+                        "missing_home": team2.get("missing_home") or [], "missing_away": team2.get("missing_away") or [], "delta_spread": _num(team2.get("delta_spread")),
+                        "exp_spread": _num(team2.get("exp_spread")), "exp_total": _num(team2.get("exp_total")), "home_score": _num(team2.get("home_score")), "away_score": _num(team2.get("away_score")),
+                        "home_win_prob": _num(team2.get("home_win_prob")), "away_win_prob": _num(team2.get("away_win_prob"))}
+    return out
 
 
 def content_hash(content: dict) -> str:

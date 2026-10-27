@@ -12,8 +12,9 @@ from zoneinfo import ZoneInfo
 US_TZ = ZoneInfo("America/New_York")
 
 
-def us_today() -> date:
-    return datetime.now(US_TZ).date()
+def us_today(now: datetime | None = None) -> date:
+    """US-Spieltag (Ostkueste); now (mit Zeitzone) nur fuer Tests."""
+    return (now.astimezone(US_TZ) if now else datetime.now(US_TZ)).date()
 
 
 def fetch_final_games(start: date, end: date) -> list[dict]:

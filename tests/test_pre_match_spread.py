@@ -36,7 +36,7 @@ fsha = lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
 K, P = "New York Knicks", "Philadelphia 76ers"
 def pm_expanders(at):
     """Expander des Tabs Pre-Match Eingabe (nicht die Zeilen-Bloecke der Score-Projections-Karten)."""
-    return [x for x in at.expander if x.label != "Wetten eintragen" and not any("pc-l" in m.value for m in x.markdown)]   # ohne die Linien-Expander der Karten und den Bereich "Wetten eintragen" (Tab Spieltag)
+    return [x for x in at.expander if x.label != "Wetten eintragen" and not x.label.startswith("Wettliste nach Kategorien") and not any("pc-l" in m.value for m in x.markdown)]   # ohne die Linien-Expander der Karten und den Bereich "Wetten eintragen" (Tab Spieltag)
 def row(rid="main", line="-4,5", h="1,91", a="1,95", b="Pinnacle"):
     return {"id": rid, "line": line, "home_odds": h, "away_odds": a, "bookmaker": b}
 def spread(start, now, rows, sugg=None, home=K, away=P, date="2026-10-20"):

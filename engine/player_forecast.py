@@ -37,6 +37,7 @@ from data import player_history as ph
 from data import projection_snapshots as snaps
 from engine.line_probabilities import SPREAD_SIGMA
 
+PLAYER_MODEL_VERSION = "player-1"   # Version der Spieler-Prognose; steht in jedem neuen Prognose-Snapshot und in jeder neu gespeicherten Spieler-Wette. Ohne Feld gilt "player-0".
 UNVERIFIED = "UNGEPRÜFT"
 UNVERIFIED_TEXT = "UNGEPRÜFT: Modell noch nicht gegen Ergebnisse geprüft (kein Backtest). Gilt für den Fall, dass der Spieler spielt."
 

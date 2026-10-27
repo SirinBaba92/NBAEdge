@@ -95,6 +95,15 @@ def _upcoming_cache_path() -> Path:
     return Path(os.environ.get("NBAEDGE_UPCOMING_CACHE") or Path(__file__).parent.parent / "data" / "upcoming_cache.json")
 
 
+_upcoming_status = {"stale": False, "cache_at": None, "error": None}
+
+
+def upcoming_status() -> dict:
+    """Zustand des letzten fetch_upcoming_games()-Aufrufs: stale=True, wenn der alte Zwischenspeicher genutzt wurde
+    (cache_at = Abrufzeit des Zwischenspeichers als Epoch-Sekunden, error = Fehlertext)."""
+    return dict(_upcoming_status)
+
+
 def fetch_upcoming_games() -> list[dict]:
     """Fetch today's upcoming games (not yet started).
 
@@ -111,6 +120,7 @@ def fetch_upcoming_games() -> list[dict]:
         "per_page": 100,
     }
     cache_file = _upcoming_cache_path()
+    _upcoming_status.update(stale=False, cache_at=None, error=None)
     cached = None
     try:
         cached = json.loads(cache_file.read_text())
@@ -135,17 +145,6 @@ def fetch_upcoming_games() -> list[dict]:
             age_min = int((now_ts - cached.get("fetched_at", now_ts)) / 60)
             print(f"  BallDontLie nicht erreichbar ({type(e).__name__}); nutze Zwischenspeicher von vor {age_min} Min.")
             games = cached["games"]
-    # Only show games that haven't finished
-    now = datetime.now(timezone.utc)
-    upcoming = []
-    for g in games:
-        if g.get("status") == "Final":
-            continue
-        game_time_str = g.get("date", "")
-        try:
-            game_time = datetime.fromisoformat(game_time_str.replace("Z", "+00:00"))
-            if game_time > now - timedelta(hours=3) and game_time < now + timedelta(hours=12):
-                upcoming.append(g)
-        except Exception:
-            upcoming.append(g)
-    return upcoming
+            _upcoming_status.update(stale=True, cache_at=cached.get("fetched_at"), error=f"{type(e).__name__}: {e}")
+    # Nur beendete Spiele ausblenden; laufende und kommende bleiben sichtbar (der fruehere Zeitfilter lief immer in den Fehlerzweig)
+    return [g for g in games if g.get("status") != "Final"]

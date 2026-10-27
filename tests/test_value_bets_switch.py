@@ -48,7 +48,7 @@ def run(flag):
     settings.SHOW_VALUE_BETS = flag
     ns = dict(st=_St, OFFLINE_AUDIT_MODE=False, SHOW_VALUE_BETS=flag, parse_odds=parse_odds, parse_totals_spreads=parse_totals_spreads, get_odds=get_odds, pregame_lines=pregame_lines,
               fetch_upcoming_games=fetch_upcoming_games, compute_projection=compute_projection, find_value_bets=find_value_bets,
-              date=dt.date, market_lines=market_lines, pre_match_store=pre_match_store, time=__import__("time"))
+              date=dt.date, us_today=__import__("data.game_updates", fromlist=["us_today"]).us_today, market_lines=market_lines, pre_match_store=pre_match_store, time=__import__("time"))
     for _fn in ("_resolve_lines", "_set_line_fields"):
         exec(funcs[_fn], ns)                       # Hilfsfunktionen der Marktlinien-Aufloesung (Schritt 9a)
     exec(funcs["match_lines"], ns); exec(funcs["refresh_data"], ns)

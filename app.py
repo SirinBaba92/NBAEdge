@@ -33,14 +33,15 @@ from data.nba_player_stats import (
     search_nba_players,
 )
 from models.elo import EloEngine, build_model
-from data.fetcher import fetch_seasons, fetch_upcoming_games
+from data.fetcher import fetch_seasons, fetch_upcoming_games, upcoming_status
+from data.game_updates import us_today
 from data import market_lines, pregame_lines
 from data import pre_match_store
 from data import projection_snapshots
 from data import live_feed as lf_feed
 from ui import score_order
 from data.odds import parse_odds
-from data.odds_client import credits_info, describe_age, get_odds
+from data.odds_client import credits_info, describe_age, get_odds, cache_problem as odds_cache_problem
 from data.injuries import fetch_team_news
 from engine.ev import find_value_bets
 from engine.projection import compute_projection, is_playoff_date
@@ -419,7 +420,7 @@ def refresh_data(engine, refresh=False):
         away = game["visitor_team"]["full_name"]
         try:
             game_date = game.get("date") or date.today().isoformat()
-            pred = engine.predict(home, away, date.today())
+            pred = engine.predict(home, away, us_today())   # US-Spieltag, nicht das Berliner Systemdatum
             predictions.append(pred)
             lines, line_source, line_at = pregame_lines.line_for_game_ex(
                 odds_events,
@@ -618,6 +619,13 @@ if st.session_state.last_refresh is None and (engine or OFFLINE_AUDIT_MODE):
 # Pre-Match-Datei geaendert (oder Spiel gestartet)? Dann die Linien der betroffenen Spiele neu aufloesen (kein API-Abruf)
 apply_market_lines(st.session_state.projections)
 
+# Team-Modell "team-2" (Verletzungs-Korrektur, engine/team_injury.py): Zusatzblock proj["team2"] aus den gespeicherten Ausfaellen; das Standard-Modell bleibt unveraendert. Nur lokale Daten.
+from engine import team_injury
+for _p in st.session_state.projections:
+    _k = (_p.get("_line_inputs") or {}).get("entry_key")
+    if _k:
+        team_injury.attach(_p, _k)
+
 # Schnappschuss der Projektion vor dem Anpfiff (nur Spiele, die noch nicht begonnen haben, nur bei geaendertem Inhalt; kein API-Abruf) und Ergebnisse,
 # die lokal schon bekannt sind (upcoming_cache). Ein Fehler hier darf die Seite nie stoeren.
 try:
@@ -646,6 +654,15 @@ _tab_labels = [
     "📈 ELO Rankings",
     "✍️ Pre-Match Eingabe",
 ]
+# Hinweise zu veralteten Daten (statt stillem Weiterarbeiten mit altem Cache)
+_up = upcoming_status()
+if _up["stale"]:
+    _at = datetime.fromtimestamp(_up["cache_at"]).strftime("%d.%m. %H:%M") if _up.get("cache_at") else "unbekannt"
+    st.warning(f"Spieldaten nicht aktuell, Stand: {_at}")
+_op = odds_cache_problem()
+if _op:
+    st.warning(f"Odds-Zwischenspeicher war nicht lesbar ({datetime.fromtimestamp(_op['at']).strftime('%H:%M')}); Quoten wurden neu geladen oder fehlen.")
+
 # Navigation: Standard ist ein Auswahlelement, das nur den AKTIVEN Bereich rechnet (st.tabs fuehrt immer ALLE Tabs aus: jeder Klick ausserhalb eines Fragments liess z. B. den schweren Pre-Match-Tab
 # mit den Spielerbloecken aller Spiele mitlaufen, und die 30-s-Takte unsichtbarer Tabs liefen weiter). NBAEDGE_ALL_TABS=1 stellt die alten st.tabs wieder her (Pruefungen/Tests, die alle Tabs sehen).
 LAZY_TABS = os.environ.get("NBAEDGE_ALL_TABS") != "1"
@@ -2207,173 +2224,8 @@ for _ in tab_body("📰 Lineup News"):
             st.divider()
 
 for _ in tab_body("📅 History"):
-    st.markdown("## 📅 History / Accuracy / Self-Correction")
-    days_back = st.slider("Wie viele Tage zurück laden?", 1, 14, 4)
-    yday_games = fetch_completed_games(days_back)
-    if not yday_games:
-        st.markdown(
-            '<div class="no-bets"><div style="font-size:3rem">📅</div><div style="margin-top:16px">Keine Spiele gefunden</div></div>',
-            unsafe_allow_html=True,
-        )
-    elif engine is None:
-        st.info(
-            "Offline Audit Mode: History ist geladen, ELO-Auswertung ist ohne lokales Modell deaktiviert."
-        )
-    else:
-        by_date = defaultdict(list)
-        for g in yday_games:
-            by_date[g["_display_date"]].append(g)
-        total_correct, total_games = 0, len(yday_games)
-        team_bias_stats = {}
-        rows = []
-        for d in sorted(by_date.keys(), reverse=True):
-            st.markdown(f"### 📅 {d}")
-            day_correct = 0
-            for g in by_date[d]:
-                home = g["home_team"]["full_name"]
-                away = g["visitor_team"]["full_name"]
-                h_pts = g["home_team_score"]
-                a_pts = g["visitor_team_score"]
-                pred = engine.predict(home, away, date.fromisoformat(d))
-                proj = compute_projection(
-                    pred,
-                    game_date=d,
-                    bias_adjustments=st.session_state.bias_adjustments,
-                )
-                h_proj, a_proj = proj["home_score"], proj["away_score"]
-                exp_total = proj["exp_total"]
-                actual_total = h_pts + a_pts
-                projection_error = round(abs(exp_total - actual_total), 1)
-                if projection_error <= 6:
-                    projection_grade = "🔥 ELITE"
-                elif projection_error <= 12:
-                    projection_grade = "✓ SOLID"
-                else:
-                    projection_grade = "⚠️ OFF"
-                home_error = abs(h_proj - h_pts)
-                away_error = abs(a_proj - a_pts)
-                worst_team = home if home_error > away_error else away
-                worst_error = max(home_error, away_error)
-                team_bias_direction = (
-                    "OVERVALUED"
-                    if (
-                        (worst_team == home and h_proj > h_pts)
-                        or (worst_team == away and a_proj > a_pts)
-                    )
-                    else "UNDERVALUED"
-                )
-                if worst_team not in team_bias_stats:
-                    team_bias_stats[worst_team] = {
-                        "games": 0,
-                        "total_error": 0,
-                        "overvalued": 0,
-                        "undervalued": 0,
-                    }
-                team_bias_stats[worst_team]["games"] += 1
-                team_bias_stats[worst_team]["total_error"] += worst_error
-                team_bias_stats[worst_team][
-                    (
-                        "overvalued"
-                        if team_bias_direction == "OVERVALUED"
-                        else "undervalued"
-                    )
-                ] += 1
-                pred_home_win = pred["home_win_prob"] > 0.5
-                actual_home_win = h_pts > a_pts
-                hit = pred_home_win == actual_home_win
-                if hit:
-                    day_correct += 1
-                    total_correct += 1
-                border_color = "#22c55e" if hit else "#ef4444"
-                icon = "✓" if hit else "✗"
-                c1, c2, c3, c4 = st.columns([2, 1.3, 0.4, 2])
-                with c1:
-                    st.markdown(
-                        f"""<div class="score-card" style="border-left:4px solid {border_color}"><div class="score-team">{away} (AWAY)</div><div class="score-pts">{a_pts}</div><div class="score-team" style="margin-top:4px;color:#94a3b8">proj: {a_proj}</div></div>""",
-                        unsafe_allow_html=True,
-                    )
-                with c2:
-                    st.markdown(
-                        f"""
-                    <div style='text-align:center;padding-top:20px;'>
-                        <div style='font-size:1.5rem'>{icon}</div>
-                        <div class='info-line'>{'RICHTIG' if hit else 'FALSCH'}</div>
-                        <div class='info-line' style='margin-top:8px'>Fav: {'HOME' if pred['home_win_prob'] > 0.5 else 'AWAY'}</div>
-                        <div class='info-line'>O/U: {round(exp_total)}</div>
-                        <div class='info-line'>raw model: {proj['model_total']}</div>
-                        <div class='info-line'>quality: {projection_grade}</div>
-                        <div class='info-line'>worst: {worst_team} ({worst_error}) · {team_bias_direction}</div>
-                        <div class='info-line'>total error: {projection_error}</div>
-                        <div class='info-line'>home error: {home_error} · away error: {away_error}</div>
-                    </div>""",
-                        unsafe_allow_html=True,
-                    )
-                with c3:
-                    st.markdown(
-                        '<div style="text-align:center;padding-top:38px;color:#2a2a4a;font-family:Space Mono,monospace;font-size:1.2rem">@</div>',
-                        unsafe_allow_html=True,
-                    )
-                with c4:
-                    st.markdown(
-                        f"""<div class="score-card" style="border-left:4px solid {border_color}"><div class="score-team">{home} (HOME)</div><div class="score-pts">{h_pts}</div><div class="score-team" style="margin-top:4px;color:#94a3b8">proj: {h_proj}</div></div>""",
-                        unsafe_allow_html=True,
-                    )
-                rows.append(
-                    {
-                        "date": d,
-                        "away": away,
-                        "home": home,
-                        "actual_total": actual_total,
-                        "proj_total": exp_total,
-                        "total_error": projection_error,
-                        "winner_hit": hit,
-                        "worst_team": worst_team,
-                        "worst_error": worst_error,
-                        "bias": team_bias_direction,
-                    }
-                )
-                st.divider()
-            st.caption(f"{d}: {day_correct}/{len(by_date[d])} richtig")
-
-        st.metric(
-            "Hit Rate",
-            f"{total_correct}/{total_games} = {round(total_correct/total_games*100, 1)}%",
-        )
-        st.markdown("## 🧠 Team Bias Tracking")
-        for team, stats in sorted(
-            team_bias_stats.items(),
-            key=lambda x: x[1]["total_error"] / x[1]["games"],
-            reverse=True,
-        ):
-            avg_error = round(stats["total_error"] / stats["games"], 1)
-            st.markdown(
-                f"""<div class='bias-card'><div style='font-weight:700;color:#e8e8f0'>{team}</div><div class='info-line'>avg error: {avg_error} · overvalued: {stats['overvalued']} · undervalued: {stats['undervalued']} · games: {stats['games']}</div></div>""",
-                unsafe_allow_html=True,
-            )
-
-        c1, c2 = st.columns(2)
-        with c1:
-            if st.button("💾 Self-Correction aus History speichern"):
-                adjustments = build_bias_adjustments(team_bias_stats, min_games=2)
-                save_bias_adjustments(adjustments)
-                st.session_state.bias_adjustments = adjustments
-                st.success(
-                    f"{len(adjustments)} Team-Adjustments gespeichert. Danach Refresh Odds klicken."
-                )
-        with c2:
-            if st.button("🧹 Self-Correction löschen"):
-                save_bias_adjustments({})
-                st.session_state.bias_adjustments = {}
-                st.success("Self-Correction gelöscht.")
-
-        if rows:
-            df = pd.DataFrame(rows)
-            st.download_button(
-                "📥 History CSV herunterladen",
-                df.to_csv(index=False).encode("utf-8"),
-                "nbaedge_history.csv",
-                "text/csv",
-            )
+    from ui.history_tab import render_history_tab
+    render_history_tab()
 
 for _ in tab_body("📈 ELO Rankings"):
     st.markdown("## 📈 Team ELO Rankings")

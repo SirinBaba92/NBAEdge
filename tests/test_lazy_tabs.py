@@ -37,7 +37,7 @@ count(lt, "_live_head", "live_head"); count(lt, "_live_cards", "live_cards"); co
 
 def app(): return AppTest.from_file(str(ROOT / "app.py"), default_timeout=300)
 HEAD = {"📊 Score Projections": "## 📊 Score Projections", "🔴 Live (alt)": "## 🔴 Live Projection Engine", "🏀 Spieltag": "## 🏀 Spieltag", "🎯 Live Bet Tracker": "## 🎯 Live Bet Tracker",
-        "🏃 Spieler": "## 🏃 Spieler", "📰 Lineup News": "## 📰 Lineup / Injury News", "📅 History": "## 📅 History / Accuracy / Self-Correction", "📈 ELO Rankings": "## 📈 Team ELO Rankings",
+        "🏃 Spieler": "## 🏃 Spieler", "📰 Lineup News": "## 📰 Lineup / Injury News", "📅 History": "## 📅 History", "📈 ELO Rankings": "## 📈 Team ELO Rankings",
         "✍️ Pre-Match Eingabe": "## ✍️ Pre-Match Eingabe"}
 
 os.environ["NBAEDGE_ALL_TABS"] = "0"

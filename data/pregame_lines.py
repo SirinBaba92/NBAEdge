@@ -128,6 +128,19 @@ def _pick(cands: list, key_time, game_start: float | None, now: float):
     return min(cands, key=lambda c: abs(key_time(c) - now))
 
 
+def _orient(lines: dict, home: str) -> dict:
+    """Linien aus Sicht des Heimteams `home`: ist das Event vertauscht (Heim/Gast der Odds API umgekehrt), werden
+    Spread-Vorzeichen (positiv = Heim stark), Spread-Quoten und Teamnamen mitgedreht."""
+    if _kw(lines.get("home_team")) == _kw(home):
+        return lines
+    out = dict(lines, home_team=lines.get("away_team"), away_team=lines.get("home_team"),
+               spread_home_odds=lines.get("spread_away_odds"), spread_away_odds=lines.get("spread_home_odds"))
+    for k in ("spread", "spread_home_point"):
+        if lines.get(k) is not None:
+            out[k] = -lines[k] + 0.0
+    return out
+
+
 def line_for_game_ex(events: list[dict], fetched_at: float | None, home: str, away: str,
                      game_start: float | None = None, now: float | None = None) -> tuple[dict | None, str | None, float | None]:
     """Vorab-Linie fuer ein Spiel: (Linien-Dict wie parse_totals_spreads, Quelle, Zeitpunkt der Linie) oder (None, None, None).
@@ -144,7 +157,7 @@ def line_for_game_ex(events: list[dict], fetched_at: float | None, home: str, aw
     if ev is not None and fetched_at is not None and not is_live_snapshot(ev, fetched_at):
         lines = event_lines(ev)
         if lines is not None:
-            return lines, "cache_vorab", fetched_at
+            return _orient(lines, home), "cache_vorab", fetched_at
 
     store = _load()
     scands = [(k, v) for k, v in store.items() if teams_match(v.get("home_team"), v.get("away_team"))]
@@ -154,7 +167,8 @@ def line_for_game_ex(events: list[dict], fetched_at: float | None, home: str, aw
         picked = _pick(scands, lambda kv: kv[1]["commence"], game_start, now)
         entry = picked[1] if picked else None
     if entry is not None:
-        return entry["lines"], "gespeichert", entry.get("fetched_at")
+        lines = dict(entry["lines"], home_team=entry.get("home_team"), away_team=entry.get("away_team"))
+        return _orient(lines, home), "gespeichert", entry.get("fetched_at")
     return None, None, None
 
 

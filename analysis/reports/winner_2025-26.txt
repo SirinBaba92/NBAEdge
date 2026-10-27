@@ -1,0 +1,105 @@
+SIEGER-MODELL (MONEYLINE), IST-STAND, SAISON 2025-26 — erstellt 2026-10-27 06:15 (analysis/backtest_winner.py)
+Gemessen wird das REINE MODELL ohne Markt-Mischung (die App mischt den Markt zum Spread mit 25 % dazu; historische Linien gibt es nicht) und nur gegen echte Ergebnisse, keine Quoten.
+Siegchance = Normalverteilung um den Spread (ELO-Differenz / 50) mit Sigma 13,2, begrenzt auf 3-97 %, genau die Rechnung der App (engine/line_probabilities.win_prob_home).
+Walk-forward: Replay der Produktiv-Engine ab 2015, vor jedem Spiel nur Wissen davor. Kausalitätsprüfung (Replay nur bis Spiel i-1 bzw. i gegen den vollen Lauf, 6 Stichproben): größte Abweichung 0.00e+00; Spiele chronologisch: ja.
+Spiele 2025-26 im Replay: 1322 (Regular Season 1237, Playoffs 85). Spiele mit Verlängerung zählen als normaler Sieg/Niederlage.
+Einschränkung: Sigma 13,2, K, Heimvorteil und MOV-Faktor wurden früher an Daten bis einschließlich 2025 festgelegt (Sigma auf 2017-2025). 2025-26 ist deshalb nicht völlig 'ungesehen'; da es nur wenige Parameter sind, ist der Effekt klein, aber nicht null.
+
+1. GESAMT (Regular Season)
+  Spiele: 1237
+  Brier-Score: 0.2102 [0.2019; 0.2183]   (Referenz immer 50 %: 0,2500; kleiner ist besser)
+  Log-Loss:    0.6075 [0.5903; 0.6265]   (Referenz immer 50 %: 0,6931)
+  Favorit gewinnt: 67.0 % [64.3; 69.7]
+  Heimvorteil: Ø Modell-Chance Heim 55.7 % gegen tatsächliche Heim-Siegquote 55.5 %  (Differenz Modell minus Ist +0.2 PP [-2.3; +2.6])
+
+2. KALIBRIERUNG in 5-%-Stufen (Heim-Siegchance des Modells, Regular Season)
+       Stufe  Spiele  Ø Modell %  Trefferquote %   Abw. PP   Hinweis
+     10-15 %       4        13.2             0.0     -13.2   wenige Spiele (n < 20)
+     15-20 %      14        17.6             7.1     -10.5   wenige Spiele (n < 20)
+     20-25 %      28        22.5            17.9      -4.7   
+     25-30 %      47        27.5            14.9     -12.7   
+     30-35 %      68        32.8            29.4      -3.4   
+     35-40 %      71        37.6            36.6      -1.0   
+     40-45 %     103        42.7            36.9      -5.8   
+     45-50 %     125        47.4            49.6      +2.2   
+     50-55 %     124        52.3            60.5      +8.2   
+     55-60 %     141        57.4            53.2      -4.2   
+     60-65 %     133        62.5            61.7      -0.8   
+     65-70 %     111        67.4            70.3      +2.8   
+     70-75 %      79        72.7            75.9      +3.3   
+     75-80 %      96        77.4            85.4      +8.0   
+     80-85 %      51        82.1            74.5      -7.5   
+     85-90 %      33        87.4            87.9      +0.5   
+     90-95 %       8        92.1           100.0      +7.9   wenige Spiele (n < 20)
+    95-100 %       1        95.2           100.0      +4.8   wenige Spiele (n < 20)
+
+   Favoriten-Sicht (Chance der favorisierten Seite, Trefferquote des Favoriten je Stufe)
+       Stufe  Spiele  Ø Modell %  Trefferquote %   Abw. PP   Hinweis
+     50-55 %     249        52.5            55.4      +3.0   
+     55-60 %     244        57.3            57.4      +0.0   
+     60-65 %     204        62.5            62.3      -0.2   
+     65-70 %     179        67.4            70.4      +3.0   
+     70-75 %     126        72.6            79.4      +6.8   
+     75-80 %     124        77.4            84.7      +7.2   
+     80-85 %      65        82.1            78.5      -3.7   
+     85-90 %      37        87.3            89.2      +1.9   
+     90-95 %       8        92.1           100.0      +7.9   wenige Spiele (n < 20)
+    95-100 %       1        95.2           100.0      +4.8   wenige Spiele (n < 20)
+
+3. HEIMVORTEIL
+  Ø Modell-Chance Heim 55.7 %, tatsächliche Heim-Siegquote 55.5 % (687 von 1237). Differenz +0.2 PP, 95 %-Intervall [-2.3; +2.6] (0 liegt im Intervall: keine Verzerrung nachweisbar).
+
+4. SAISONPHASE (Regular Season): erste 15 Spiele je Team (beide Teams < 15 Spiele) gegen danach
+  [erste 15]
+  Spiele: 218
+  Brier-Score: 0.1996 [0.1803; 0.2198]   (Referenz immer 50 %: 0,2500; kleiner ist besser)
+  Log-Loss:    0.5827 [0.5383; 0.6277]   (Referenz immer 50 %: 0,6931)
+  Favorit gewinnt: 67.0 % [61.0; 73.4]
+  Heimvorteil: Ø Modell-Chance Heim 55.2 % gegen tatsächliche Heim-Siegquote 56.9 %  (Differenz Modell minus Ist -1.7 PP [-7.3; +4.3])
+
+  [danach]
+  Spiele: 1019
+  Brier-Score: 0.2124 [0.2038; 0.2212]   (Referenz immer 50 %: 0,2500; kleiner ist besser)
+  Log-Loss:    0.6128 [0.5917; 0.6336]   (Referenz immer 50 %: 0,6931)
+  Favorit gewinnt: 67.0 % [64.2; 70.0]
+  Heimvorteil: Ø Modell-Chance Heim 55.8 % gegen tatsächliche Heim-Siegquote 55.3 %  (Differenz Modell minus Ist +0.6 PP [-2.4; +3.3])
+
+  Kalibrierung [erste 15] in 10-%-Stufen (5-%-Stufen sind je Phase zu dünn besetzt)
+       Stufe  Spiele  Ø Modell %  Trefferquote %   Abw. PP   Hinweis
+     10-20 %       6        16.3             0.0     -16.3   wenige Spiele (n < 20)
+     20-30 %      16        26.3            12.5     -13.8   wenige Spiele (n < 20)
+     30-40 %      23        34.6            39.1      +4.5   
+     40-50 %      43        45.3            51.2      +5.8   
+     50-60 %      45        55.2            48.9      -6.3   
+     60-70 %      32        64.7            78.1     +13.4   
+     70-80 %      34        75.5            85.3      +9.8   
+     80-90 %      15        84.6            73.3     -11.2   wenige Spiele (n < 20)
+    90-100 %       4        92.8           100.0      +7.2   wenige Spiele (n < 20)
+
+  Kalibrierung [danach] in 10-%-Stufen (5-%-Stufen sind je Phase zu dünn besetzt)
+       Stufe  Spiele  Ø Modell %  Trefferquote %   Abw. PP   Hinweis
+     10-20 %      12        16.8             8.3      -8.5   wenige Spiele (n < 20)
+     20-30 %      59        25.5            16.9      -8.6   
+     30-40 %     116        35.3            31.9      -3.5   
+     40-50 %     185        45.3            42.2      -3.1   
+     50-60 %     220        55.0            58.2      +3.2   
+     60-70 %     212        64.7            63.7      -1.1   
+     70-80 %     141        75.2            80.1      +4.9   
+     80-90 %      69        84.0            81.2      -2.9   
+    90-100 %       5        92.2           100.0      +7.8   wenige Spiele (n < 20)
+
+5. TREFFERQUOTE DES FAVORITEN
+  Regular Season gesamt    n  1237  Favorit gewinnt 67.0 % [64.3; 69.7]
+  erste 15                 n   218  Favorit gewinnt 67.0 % [61.0; 73.4]
+  danach                   n  1019  Favorit gewinnt 67.0 % [64.2; 70.0]
+  Favorit = Heimteam in 777 Spielen: gewinnt 68.0 %; Favorit = Gastteam in 460 Spielen: gewinnt 65.4 %.
+
+ZUSATZ: Playoffs 2025-26 (getrennt, kleine Stichprobe)
+  Playoffs
+  Spiele: 85
+  Brier-Score: 0.2337 [0.2103; 0.2575]   (Referenz immer 50 %: 0,2500; kleiner ist besser)
+  Log-Loss:    0.6607 [0.6125; 0.7158]   (Referenz immer 50 %: 0,6931)
+  Favorit gewinnt: 64.7 % [54.1; 75.3]
+  Heimvorteil: Ø Modell-Chance Heim 55.7 % gegen tatsächliche Heim-Siegquote 55.3 %  (Differenz Modell minus Ist +0.4 PP [-9.4; +10.3])
+
+Hinweis: reine Messung, keine Empfehlung und keine Änderung am Modell.

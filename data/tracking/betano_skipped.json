@@ -57,6 +57,32 @@
         "names": [],
         "at": "2026-10-26T23:03:54+01:00"
       }
+    },
+    "2026-10-27": {
+      "2026-10-27|2026-10-27T23:30:00Z|Boston Celtics|Brooklyn Nets": {
+        "home": "Boston Celtics",
+        "away": "Brooklyn Nets",
+        "names": [],
+        "at": "2026-10-27T12:43:51+01:00"
+      },
+      "2026-10-27|2026-10-28T00:00:00Z|New York Knicks|Detroit Pistons": {
+        "home": "New York Knicks",
+        "away": "Detroit Pistons",
+        "names": [],
+        "at": "2026-10-27T12:44:01+01:00"
+      },
+      "2026-10-27|2026-10-28T00:00:00Z|San Antonio Spurs|Sacramento Kings": {
+        "home": "San Antonio Spurs",
+        "away": "Sacramento Kings",
+        "names": [],
+        "at": "2026-10-27T07:22:15+01:00"
+      },
+      "2026-10-27|2026-10-28T03:00:00Z|Los Angeles Lakers|Portland Trail Blazers": {
+        "home": "Los Angeles Lakers",
+        "away": "Portland Trail Blazers",
+        "names": [],
+        "at": "2026-10-27T12:44:37+01:00"
+      }
     }
   }
 }

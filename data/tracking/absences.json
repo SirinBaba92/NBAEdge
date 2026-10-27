@@ -1,7 +1,7 @@
 {
   "version": 1,
   "format": "nbaedge-absences",
-  "updated_at": "2026-10-26T22:54:22+01:00",
+  "updated_at": "2026-10-27T07:22:21+01:00",
   "days": {
     "2026-10-22": {
       "2026-10-22|2026-10-23T01:30:00Z|Oklahoma City Thunder|Denver Nuggets": {
@@ -2098,6 +2098,228 @@
         "auto": {
           "source": "espn",
           "fetched_at": "2026-10-26T23:03:54+01:00",
+          "unmatched": []
+        }
+      }
+    },
+    "2026-10-27": {
+      "2026-10-27|2026-10-27T23:30:00Z|Boston Celtics|Brooklyn Nets": {
+        "out": {
+          "1642269": {
+            "name": "Devin Carter",
+            "team": "Boston Celtics",
+            "set_at": "2026-10-27T07:22:21+01:00",
+            "source": "espn",
+            "fetched_at": "2026-10-27T12:44:37+01:00"
+          },
+          "1643548": {
+            "name": "Tyler Bilodeau",
+            "team": "Brooklyn Nets",
+            "set_at": "2026-10-27T07:22:21+01:00",
+            "source": "espn",
+            "fetched_at": "2026-10-27T12:44:37+01:00"
+          }
+        },
+        "doubtful": {},
+        "updated_at": "2026-10-27T07:22:21+01:00",
+        "history": [
+          {
+            "at": "2026-10-27T07:22:21+01:00",
+            "out": [
+              1642269,
+              1643548
+            ],
+            "doubtful": [],
+            "source": "espn"
+          }
+        ],
+        "auto": {
+          "source": "espn",
+          "fetched_at": "2026-10-27T12:44:37+01:00",
+          "unmatched": []
+        }
+      },
+      "2026-10-27|2026-10-28T00:00:00Z|New York Knicks|Detroit Pistons": {
+        "out": {
+          "1631105": {
+            "name": "Jalen Duren",
+            "team": "Detroit Pistons",
+            "set_at": "2026-10-27T07:22:21+01:00",
+            "source": "espn",
+            "fetched_at": "2026-10-27T12:44:37+01:00"
+          },
+          "1630631": {
+            "name": "Jose Alvarado",
+            "team": "New York Knicks",
+            "set_at": "2026-10-27T07:22:21+01:00",
+            "source": "espn",
+            "fetched_at": "2026-10-27T12:44:37+01:00"
+          }
+        },
+        "doubtful": {
+          "1630198": {
+            "name": "Isaiah Joe",
+            "team": "Detroit Pistons",
+            "set_at": "2026-10-27T07:22:21+01:00",
+            "source": "espn",
+            "fetched_at": "2026-10-27T12:44:37+01:00"
+          },
+          "1641709": {
+            "name": "Ausar Thompson",
+            "team": "Detroit Pistons",
+            "set_at": "2026-10-27T07:22:21+01:00",
+            "source": "espn",
+            "fetched_at": "2026-10-27T12:44:37+01:00"
+          }
+        },
+        "updated_at": "2026-10-27T07:22:21+01:00",
+        "history": [
+          {
+            "at": "2026-10-27T07:22:21+01:00",
+            "out": [
+              1630631,
+              1631105
+            ],
+            "doubtful": [
+              1630198,
+              1641709
+            ],
+            "source": "espn"
+          }
+        ],
+        "auto": {
+          "source": "espn",
+          "fetched_at": "2026-10-27T12:44:37+01:00",
+          "unmatched": []
+        }
+      },
+      "2026-10-27|2026-10-28T00:00:00Z|San Antonio Spurs|Sacramento Kings": {
+        "out": {
+          "1642928": {
+            "name": "Dylan Cardwell",
+            "team": "Sacramento Kings",
+            "set_at": "2026-10-27T07:22:21+01:00",
+            "source": "espn",
+            "fetched_at": "2026-10-27T12:44:37+01:00"
+          },
+          "1642875": {
+            "name": "Maxime Raynaud",
+            "team": "Sacramento Kings",
+            "set_at": "2026-10-27T07:22:21+01:00",
+            "source": "espn",
+            "fetched_at": "2026-10-27T12:44:37+01:00"
+          },
+          "1631099": {
+            "name": "Keegan Murray",
+            "team": "Sacramento Kings",
+            "set_at": "2026-10-27T07:22:21+01:00",
+            "source": "espn",
+            "fetched_at": "2026-10-27T12:44:37+01:00"
+          },
+          "1627732": {
+            "name": "Ben Simmons",
+            "team": "Sacramento Kings",
+            "set_at": "2026-10-27T07:22:21+01:00",
+            "source": "espn",
+            "fetched_at": "2026-10-27T12:44:37+01:00"
+          },
+          "202699": {
+            "name": "Tobias Harris",
+            "team": "San Antonio Spurs",
+            "set_at": "2026-10-27T07:22:21+01:00",
+            "source": "espn",
+            "fetched_at": "2026-10-27T12:44:37+01:00"
+          },
+          "1643519": {
+            "name": "Jayden Quaintance",
+            "team": "San Antonio Spurs",
+            "set_at": "2026-10-27T07:22:21+01:00",
+            "source": "espn",
+            "fetched_at": "2026-10-27T12:44:37+01:00"
+          }
+        },
+        "doubtful": {},
+        "updated_at": "2026-10-27T07:22:21+01:00",
+        "history": [
+          {
+            "at": "2026-10-27T07:22:21+01:00",
+            "out": [
+              202699,
+              1627732,
+              1631099,
+              1642875,
+              1642928,
+              1643519
+            ],
+            "doubtful": [],
+            "source": "espn"
+          }
+        ],
+        "auto": {
+          "source": "espn",
+          "fetched_at": "2026-10-27T12:44:37+01:00",
+          "unmatched": []
+        }
+      },
+      "2026-10-27|2026-10-28T03:00:00Z|Los Angeles Lakers|Portland Trail Blazers": {
+        "out": {
+          "1642876": {
+            "name": "Adou Thiero",
+            "team": "Los Angeles Lakers",
+            "set_at": "2026-10-27T07:22:21+01:00",
+            "source": "espn",
+            "fetched_at": "2026-10-27T12:44:37+01:00"
+          },
+          "1642959": {
+            "name": "Chris Youngblood",
+            "team": "Portland Trail Blazers",
+            "set_at": "2026-10-27T07:22:21+01:00",
+            "source": "espn",
+            "fetched_at": "2026-10-27T12:44:37+01:00"
+          },
+          "1631101": {
+            "name": "Shaedon Sharpe",
+            "team": "Portland Trail Blazers",
+            "set_at": "2026-10-27T07:22:21+01:00",
+            "source": "espn",
+            "fetched_at": "2026-10-27T12:44:37+01:00"
+          }
+        },
+        "doubtful": {
+          "1642382": {
+            "name": "Branden Carlson",
+            "team": "Portland Trail Blazers",
+            "set_at": "2026-10-27T07:22:21+01:00",
+            "source": "espn",
+            "fetched_at": "2026-10-27T12:44:37+01:00"
+          },
+          "1630703": {
+            "name": "Scoot Henderson",
+            "team": "Portland Trail Blazers",
+            "set_at": "2026-10-27T07:22:21+01:00",
+            "source": "espn",
+            "fetched_at": "2026-10-27T12:44:37+01:00"
+          }
+        },
+        "updated_at": "2026-10-27T07:22:21+01:00",
+        "history": [
+          {
+            "at": "2026-10-27T07:22:21+01:00",
+            "out": [
+              1631101,
+              1642876,
+              1642959
+            ],
+            "doubtful": [
+              1630703,
+              1642382
+            ],
+            "source": "espn"
+          }
+        ],
+        "auto": {
+          "source": "espn",
+          "fetched_at": "2026-10-27T12:44:37+01:00",
           "unmatched": []
         }
       }

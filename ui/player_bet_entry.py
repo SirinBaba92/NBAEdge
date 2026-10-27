@@ -37,7 +37,7 @@ def bet_text(bet: dict) -> str:
     return f"{bet['name']}: mindestens {bet['milestone']} Punkte · Quote {odds} · Einsatz {stake}"
 
 
-def save_player_bet(key: str, option_player: dict, milestone: int, odds_text, stake, options: dict, now: float | None = None, categories=None) -> tuple[bool, str]:
+def save_player_bet(key: str, option_player: dict, milestone: int, odds_text, stake, options: dict, now: float | None = None, categories=None, display_mode: str | None = None) -> tuple[bool, str]:
     """Spieler-Wette speichern (setzen oder aendern). Rueckgabe (ok, Meldung); jeder Fehler wird eine verstaendliche deutsche Meldung, nichts wird geworfen.
     Nur Meilensteine aus der eingelesenen Liste sind zulaessig; Quelle der Quote: 'gespeichert' (unveraendert aus der Betano-Eingabe), sonst 'manuell'.
     categories: Liste aus player_ta | player_raw (data/bet_categories.py), mindestens eine; ohne Angabe bleiben die Kategorien einer bestehenden Wette erhalten."""
@@ -49,7 +49,8 @@ def save_player_bet(key: str, option_player: dict, milestone: int, odds_text, st
         odds = ds.parse_odds_optional(odds_text)
         source = None if odds is None else ("gespeichert" if abs(pre["odds"] - odds) < 1e-9 else "manuell")
         res = ds.set_player_bet(g["game_date"], g["start_utc"], g["home"], g["away"], option_player["person_id"], option_player["name"], option_player.get("team"), milestone,
-                                odds=odds, stake=stake if stake else None, odds_source=source, odds_ref=pre["odds_ref"], now=now, categories=categories)
+                                odds=odds, stake=stake if stake else None, odds_source=source, odds_ref=pre["odds_ref"], now=now, categories=categories,
+                                display_mode=display_mode if display_mode is not None else _shown_mode())
     except ds.GameStartedError as e:
         return False, f"{LOCK_TEXT}: {e}"
     except ds.BetInputError as e:
@@ -59,6 +60,14 @@ def save_player_bet(key: str, option_player: dict, milestone: int, odds_text, st
     except Exception as e:
         return False, f"Unerwarteter Fehler beim Speichern ({type(e).__name__}); es wurde nichts geändert."
     return True, ("Gespeichert" if res["status"] == "saved" else "Unverändert (so bereits gespeichert)") + f": {bet_text(res['bet'])}"
+
+
+def _shown_mode() -> str | None:
+    """Angezeigter Modus der Spieler-Tabelle ('team' | 'raw') aus der Sitzung; ausserhalb einer Sitzung None."""
+    try:
+        return st.session_state.get("pl_mode")
+    except Exception:
+        return None
 
 
 def remove_player_bet(key: str, option_player: dict, now: float | None = None) -> tuple[bool, str]:

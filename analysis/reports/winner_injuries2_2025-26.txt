@@ -1,0 +1,58 @@
+VERFEINERTE VERLETZUNGS-MESSUNG, SIEGER-MODELL, REGULAR SEASON 2025-26 — erstellt 2026-10-27 06:31 (analysis/backtest_winner_injuries2.py)
+Reine Messung, Produktivmodell unverändert. WISSEN AUS DER ZUKUNFT: wer fehlte, steht erst nach dem Spiel fest; alle Ergebnisse sind eine Obergrenze.
+Stichprobe wie im Vorbericht: 1075 Spiele (2025-11-09 bis 2026-04-12; ohne Spielerdaten 7 Cup-K.-o.-Spiele, in den ersten 10 Teamspielen 155). Hälfte 1: 538 Spiele bis 2026-01-27, Hälfte 2: 537 Spiele ab 2026-01-27.
+Neues Maß: Top 8 nach Minuten der letzten 10 Teamspiele, Gewicht = Punkte-Anteil in diesen 10 Spielen. 'neu fehlt' = spielte im vorigen Teamspiel noch, 'länger fehlt' = fehlte schon im vorigen Teamspiel.
+Fehlende Stammspieler-Einsätze insgesamt: 1230 'neu fehlt', 1078 'länger fehlt' (Team-Spiele); Streuung von D: neu 0.134, länger 0.101, alle 0.162, altes Maß 0.238.
+Spiele mit mindestens einem 'neu fehlt': 708 von 1075; mit mindestens einem 'länger fehlt': 681. Ø Fehler des Modells -0.53 Pkt, Streuung 14.92 Pkt.
+
+1+2. STEIGUNG DES MODELLFEHLERS (Punkte je 1,0 Ausfall-Anteil; Erwartung negativ)
+  Maß / Gruppe                            Zeitraum                 Steigung [95 %]      R²
+  altes Maß (Saison bis dahin, Referenz)  ganze Saison     -14.44 [-17.80; -11.07]   0.053
+  altes Maß (Saison bis dahin, Referenz)  Hälfte 1          -12.83 [-18.87; -6.59]   0.030
+  altes Maß (Saison bis dahin, Referenz)  Hälfte 2         -15.27 [-19.30; -11.32]   0.074
+
+  neues Maß, alle Fehlenden               ganze Saison     -16.85 [-22.28; -11.64]   0.034
+  neues Maß, alle Fehlenden               Hälfte 1          -16.91 [-25.23; -8.90]   0.032
+  neues Maß, alle Fehlenden               Hälfte 2          -16.80 [-24.51; -9.15]   0.035
+
+  neu fehlt (einzeln)                     ganze Saison     -17.12 [-23.89; -10.31]   0.023
+  neu fehlt (einzeln)                     Hälfte 1          -17.79 [-28.32; -6.98]   0.022
+  neu fehlt (einzeln)                     Hälfte 2          -16.65 [-25.71; -7.70]   0.025
+
+  länger fehlt (einzeln)                  ganze Saison      -13.60 [-22.50; -4.55]   0.008
+  länger fehlt (einzeln)                  Hälfte 1          -14.16 [-26.22; -3.09]   0.009
+  länger fehlt (einzeln)                  Hälfte 2          -13.17 [-26.09; +0.14]   0.008
+
+  Gemeinsame Regression Fehler ~ D_neu + D_lang (beide Gruppen zugleich):
+   ganze Saison   neu fehlt -17.83 [-24.42; -11.31]    länger fehlt -15.07 [-23.95; -6.35]
+   Hälfte 1       neu fehlt -18.16 [-28.82; -6.92]    länger fehlt -14.88 [-27.14; -3.45]
+   Hälfte 2       neu fehlt -17.59 [-26.40; -8.80]    länger fehlt -15.22 [-27.62; -2.24]
+
+3+4. KORREKTUR-TEST (Steigung auf einer Hälfte bestimmt, auf der anderen geprüft, und umgekehrt); Spread' = Spread + faktor * Steigung * D
+   Differenz Korrektur minus heute (negativ = besser), gepaarter Bootstrap, x10^-3. faktor 0,5 = halbierte Steigung (Annäherung an unsichere Meldungen).
+  Maß                        Faktor    Bestimmt → geprüft  Steigung Brier heute Brier korr.           ΔBrier [95 %]          ΔLog-Loss [95 %]
+  neues Maß, alle Fehlenden     1.0   Hälfte 1 → Hälfte 2    -16.91      0.1916      0.1864   -5.20 [-10.92; +0.48]    -12.72 [-25.83; +0.38]
+  neues Maß, alle Fehlenden     1.0   Hälfte 2 → Hälfte 1    -16.80      0.2281      0.2262    -1.96 [-7.24; +3.65]     -3.65 [-15.92; +8.98]
+  neues Maß, alle Fehlenden     0.5   Hälfte 1 → Hälfte 2    -16.91      0.1916      0.1875    -4.15 [-7.03; -1.27]     -9.64 [-16.49; -3.20]
+  neues Maß, alle Fehlenden     0.5   Hälfte 2 → Hälfte 1    -16.80      0.2281      0.2259    -2.21 [-4.98; +0.56]     -4.56 [-10.95; +1.48]
+
+  nur 'neu fehlt'               1.0   Hälfte 1 → Hälfte 2    -17.79      0.1916      0.1865   -5.18 [-10.24; +0.10]    -11.68 [-23.25; -0.22]
+  nur 'neu fehlt'               1.0   Hälfte 2 → Hälfte 1    -16.65      0.2281      0.2268    -1.33 [-5.41; +2.95]     -3.13 [-12.65; +6.20]
+  nur 'neu fehlt'               0.5   Hälfte 1 → Hälfte 2    -17.79      0.1916      0.1878    -3.86 [-6.57; -1.27]     -8.47 [-14.63; -2.82]
+  nur 'neu fehlt'               0.5   Hälfte 2 → Hälfte 1    -16.65      0.2281      0.2267    -1.40 [-3.61; +0.82]      -3.17 [-8.00; +1.46]
+
+  altes Maß (Referenz)          1.0   Hälfte 1 → Hälfte 2    -12.83      0.1916      0.1834   -8.23 [-14.30; -1.86]    -22.83 [-36.65; -8.75]
+  altes Maß (Referenz)          1.0   Hälfte 2 → Hälfte 1    -15.27      0.2281      0.2267    -1.44 [-8.32; +4.78]    -2.39 [-16.70; +11.55]
+  altes Maß (Referenz)          0.5   Hälfte 1 → Hälfte 2    -12.83      0.1916      0.1854    -6.25 [-9.49; -2.88]    -15.96 [-23.83; -8.32]
+  altes Maß (Referenz)          0.5   Hälfte 2 → Hälfte 1    -15.27      0.2281      0.2258    -2.32 [-5.82; +0.97]     -4.76 [-11.98; +2.10]
+
+  GEPOOLT (beide Prüfhälften zusammen, jedes Spiel mit der Steigung der jeweils anderen Hälfte):
+  Maß                        Faktor        ΔBrier x10^-3 [95 %]       ΔLog-Loss x10^-3 [95 %]
+  neues Maß, alle Fehlenden     1.0        -3.58 [-7.44; +0.59]         -8.18 [-17.13; +0.89]
+  neues Maß, alle Fehlenden     0.5        -3.18 [-5.27; -1.17]         -7.10 [-11.75; -2.64]
+  nur 'neu fehlt'               1.0        -3.26 [-6.70; +0.26]         -7.40 [-14.95; -0.01]
+  nur 'neu fehlt'               0.5        -2.63 [-4.32; -0.97]          -5.81 [-9.63; -1.76]
+  altes Maß (Referenz)          1.0        -4.83 [-9.22; -0.30]        -12.60 [-22.87; -2.60]
+  altes Maß (Referenz)          0.5        -4.28 [-6.63; -2.02]        -10.35 [-15.39; -5.33]
+
+Hinweis: Obergrenze, keine Empfehlung. Die Gruppen sind nach dem Spiel bekannt; 'neu fehlt' wäre im Betrieb am ehesten vorab zu erfahren, aber unsicher und oft schon im Marktpreis.

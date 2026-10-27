@@ -1,0 +1,85 @@
+FAVORITEN-KALIBRIERUNG DES SIEGER-MODELLS, REGULAR SEASON 2025-26 — erstellt 2026-10-27 06:19 (analysis/backtest_winner_calibration.py)
+Reines Modell ohne Markt-Mischung, Siegchance wie die App (Normalverteilung um den Spread, Sigma 13,2, 3-97 %), Replay der Produktiv-Engine, nur Wissen vor dem Spiel, nur echte Ergebnisse. Keine Änderung am Modell.
+Spiele: 1237. Hälfte 1: 619 Spiele (2025-10-21 bis 2026-01-17), Hälfte 2: 618 Spiele (2026-01-17 bis 2026-04-17); geteilt nach Anzahl in Datumsreihenfolge (ein Spieltag kann an der Grenze geteilt sein).
+Intervalle: Bootstrap nach Spielen, 95 %, 2000 Ziehungen. Steigung b > 1 heißt: Modell zu vorsichtig (echte Chancen extremer als die Modell-Chancen); b < 1: Modell zu sicher.
+Stufen mit weniger als 20 Spielen: das Intervall ist nicht aussagekräftig (bei lauter Treffern schwankt nur noch die Modell-Chance), bitte ignorieren.
+
+1+2. GANZE SAISON (Regular Season)
+  Spiele 1237, Brier 0.2102, Log-Loss 0.6075
+  Favorit: Ø Modell-Chance 64.7 %, Trefferquote 67.0 %, Differenz +2.3 PP [-0.1; +5.0]
+  Rekalibrierung logit P(Heim) = a + b*logit(p):  Steigung b = 1.19 [1.02; 1.38],  Achsenabschnitt a = -0.04 [-0.17; +0.08]
+  nur Steigung (a = 0):   b = 1.17 [1.01; 1.35]   (Steigung ÜBER 1: Modell zu vorsichtig)
+
+  Favoriten-Sicht, 5-%-Stufen
+       Stufe  Spiele  Ø Modell %  Treffer %  Diff PP     95 %-Intervall PP  Hinweis
+     50-55 %     249        52.5       55.4     +3.0          [-3.2; +9.1]  0 im Intervall
+     55-60 %     244        57.3       57.4     +0.0          [-6.2; +6.4]  0 im Intervall
+     60-65 %     204        62.5       62.3     -0.2          [-7.5; +6.1]  0 im Intervall
+     65-70 %     179        67.4       70.4     +3.0          [-3.7; +9.6]  0 im Intervall
+     70-75 %     126        72.6       79.4     +6.8         [-1.0; +13.8]  0 im Intervall
+     75-80 %     124        77.4       84.7     +7.2         [+0.1; +13.6]  Treffer ÜBER Modell
+     80-85 %      65        82.1       78.5     -3.7         [-14.5; +5.6]  0 im Intervall
+     85-90 %      37        87.3       89.2     +1.9         [-8.9; +10.2]  0 im Intervall
+     90-95 %       8        92.1      100.0     +7.9          [+6.9; +8.8]  Treffer ÜBER Modell, wenige Spiele (n < 20)
+    95-100 %       1        95.2      100.0     +4.8          [+4.8; +4.8]  Treffer ÜBER Modell, wenige Spiele (n < 20)
+
+3a. HÄLFTE 1
+  Spiele 619, Brier 0.2228, Log-Loss 0.6347
+  Favorit: Ø Modell-Chance 64.3 %, Trefferquote 62.5 %, Differenz -1.8 PP [-5.5; +1.9]
+  Rekalibrierung logit P(Heim) = a + b*logit(p):  Steigung b = 0.91 [0.69; 1.16],  Achsenabschnitt a = +0.07 [-0.10; +0.23]
+  nur Steigung (a = 0):   b = 0.93 [0.72; 1.17]   (1 liegt im Intervall: kalibriert)
+
+  Favoriten-Sicht, 5-%-Stufen
+       Stufe  Spiele  Ø Modell %  Treffer %  Diff PP     95 %-Intervall PP  Hinweis
+     50-55 %     141        52.3       51.8     -0.6          [-8.8; +7.9]  0 im Intervall
+     55-60 %     120        57.4       54.2     -3.3         [-12.2; +5.8]  0 im Intervall
+     60-65 %      96        62.5       56.2     -6.2         [-15.8; +4.3]  0 im Intervall
+     65-70 %      80        67.3       63.7     -3.6         [-13.9; +6.6]  0 im Intervall
+     70-75 %      67        72.5       79.1     +6.7         [-3.5; +15.6]  0 im Intervall
+     75-80 %      61        77.5       78.7     +1.2        [-10.0; +11.2]  0 im Intervall
+     80-85 %      33        82.1       72.7     -9.4         [-24.8; +5.6]  0 im Intervall
+     85-90 %      16        87.3       87.5     +0.2        [-18.5; +12.9]  0 im Intervall, wenige Spiele (n < 20)
+     90-95 %       4        92.0      100.0     +8.0          [+6.7; +8.9]  Treffer ÜBER Modell, wenige Spiele (n < 20)
+    95-100 %       1        95.2      100.0     +4.8          [+4.8; +4.8]  Treffer ÜBER Modell, wenige Spiele (n < 20)
+
+3b. HÄLFTE 2
+  Spiele 618, Brier 0.1975, Log-Loss 0.5803
+  Favorit: Ø Modell-Chance 65.1 %, Trefferquote 71.5 %, Differenz +6.5 PP [+3.0; +10.1]
+  Rekalibrierung logit P(Heim) = a + b*logit(p):  Steigung b = 1.54 [1.25; 1.83],  Achsenabschnitt a = -0.19 [-0.39; -0.01]
+  nur Steigung (a = 0):   b = 1.44 [1.15; 1.70]   (Steigung ÜBER 1: Modell zu vorsichtig)
+
+  Favoriten-Sicht, 5-%-Stufen
+       Stufe  Spiele  Ø Modell %  Treffer %  Diff PP     95 %-Intervall PP  Hinweis
+     50-55 %     108        52.6       60.2     +7.6         [-1.8; +16.9]  0 im Intervall
+     55-60 %     124        57.3       60.5     +3.2         [-5.6; +12.1]  0 im Intervall
+     60-65 %     108        62.5       67.6     +5.1         [-4.0; +13.4]  0 im Intervall
+     65-70 %      99        67.4       75.8     +8.4         [-0.8; +16.4]  0 im Intervall
+     70-75 %      59        72.8       79.7     +6.9         [-3.6; +15.6]  0 im Intervall
+     75-80 %      63        77.4       90.5    +13.1         [+5.1; +19.5]  Treffer ÜBER Modell
+     80-85 %      32        82.1       84.4     +2.3        [-10.6; +14.6]  0 im Intervall
+     85-90 %      21        87.3       90.5     +3.2        [-11.0; +12.9]  0 im Intervall
+     90-95 %       4        92.2      100.0     +7.8          [+6.3; +9.3]  Treffer ÜBER Modell, wenige Spiele (n < 20)
+
+ZWISCHENFAZIT (nur Beschreibung)
+  Steigung b: ganze Saison 1.19 [1.02; 1.38], Hälfte 1 0.91 [0.69; 1.16], Hälfte 2 1.54 [1.25; 1.83]
+  Bewertung: ganze Saison — Steigung ÜBER 1: Modell zu vorsichtig; Hälfte 1 — 1 liegt im Intervall: kalibriert; Hälfte 2 — Steigung ÜBER 1: Modell zu vorsichtig
+
+4. SIGMA-TEST (Sigma 11,0 bis 14,5; Brier x10^-3, kleiner ist besser)
+   Sigma   Hälfte 1   Hälfte 2    Saison  Log-Loss ges.
+    11.0     224.31     195.06    209.70         0.6062
+    11.5     223.78     195.53    209.67         0.6061
+    12.0     223.37     196.07    209.73         0.6063
+    12.5     223.06     196.65    209.87         0.6067
+    13.0     222.84     197.27    210.07         0.6073
+    13.5     222.70     197.92    210.32         0.6080
+    14.0     222.62     198.59    210.62         0.6088
+    14.5     222.60     199.27    210.95         0.6097
+    13.2     222.78     197.53    210.16         0.6075   <- aktuell (13,2)
+  (Sigma 13,2 liegt nicht im 0,5er-Raster und ist deshalb zusätzlich aufgeführt.)
+
+  Anpassen auf Hälfte 1, prüfen auf Hälfte 2: bestes Sigma auf der Anpassungs-Hälfte (n 619) nach Brier = 14.5 (Brier 0.2226; mit 13.2: 0.2228)
+    Prüfung auf der anderen Hälfte (n 618): Brier mit Sigma 14.5 = 0.1993, mit 13.2 = 0.1975; Differenz (neu minus 13,2) +1.74 x10^-3 [+0.95; +2.56] -> schlechter (Intervall über 0)
+  Vertauscht: anpassen auf Hälfte 2, prüfen auf Hälfte 1: bestes Sigma auf der Anpassungs-Hälfte (n 618) nach Brier = 11.0 (Brier 0.1951; mit 13.2: 0.1975)
+    Prüfung auf der anderen Hälfte (n 619): Brier mit Sigma 11.0 = 0.2243, mit 13.2 = 0.2228; Differenz (neu minus 13,2) +1.54 x10^-3 [-0.30; +3.37] -> nicht unterscheidbar (Intervall schließt 0 ein)
+
+Hinweis: reine Messung, keine Empfehlung und keine Änderung am Modell. Ein Sigma-Optimum auf einer Hälfte (~620 Spiele) ist selbst verrauscht; zählen sollte nur, was auf der jeweils anderen Hälfte hält.

@@ -227,8 +227,14 @@ def build_card_vm(proj: dict, entry: dict | None = None, tables: dict | None = N
     win_note = None                                  # nur Projektionen mit Siegchance aus der Spread-Verteilung (sigmas_version 2); aeltere Schnappschuss-Karten: kein Hinweis
     if proj.get("win_prob_source") == "normal_spread" and proj.get("sigma_spread"):
         win_note = f"Siegchance und Spread aus derselben Verteilung (Sigma {fmt_num(float(proj['sigma_spread']))})"
-    return {"home": h, "away": a, "fav": fav, "spread": sp, "total": tt, "warnings": warnings, "details": details, "win_note": win_note,
-            "origin": origin, "origin_warnings": origin_warnings, "lines": _line_blocks(proj, entry, h, a, tables, result)}
+    vm = {"home": h, "away": a, "fav": fav, "spread": sp, "total": tt, "warnings": warnings, "details": details, "win_note": win_note,
+          "origin": origin, "origin_warnings": origin_warnings, "lines": _line_blocks(proj, entry, h, a, tables, result)}
+    t2 = proj.get("team2")
+    if t2 and t2.get("active") and tables is None and result is None:       # nur laufende Projektionen; beendete Spiele (Schnappschuss-Karten) bleiben wie gespeichert
+        from engine import team_injury as ti
+        vm2 = build_card_vm(ti.variant_proj({k: v for k, v in proj.items() if k != "team2"}, t2), entry)
+        vm["t2"] = {"vm": vm2, "note": ti.note_text(proj, t2, h["nick"], a["nick"]), "delta": t2.get("delta_spread")}
+    return vm
 
 
 # ---------------------------------------------------------------------------------------- HTML
@@ -300,9 +306,13 @@ def render_line_expanders(vm: dict, key: str) -> None:
         return
     import streamlit as st
     with st.container(key=f"sc_lines_{key}"):
+        t2_lines = {b["key"]: b for b in (vm.get("t2") or {}).get("vm", {}).get("lines") or []}
         for block in vm["lines"]:
             with st.expander(block["title"]):
-                st.markdown("".join(line.strip() for line in line_block_body_html(block).splitlines()), unsafe_allow_html=True)
+                body = line_block_body_html(block)
+                if block["key"] in t2_lines and block["key"] != "total":          # Spread und Team Totals aendern sich mit dem Schalter, das Total nicht
+                    body = f'<div class="pc-var pc-var-std">{body}</div><div class="pc-var pc-var-t2">{line_block_body_html(t2_lines[block["key"]])}</div>'
+                st.markdown("".join(line.strip() for line in body.splitlines()), unsafe_allow_html=True)
 
 
 def _logo_html(team: dict, logo_dir) -> str:
@@ -350,11 +360,40 @@ def _model_col(label: str, block: dict) -> str:
     )
 
 
-def render_card_html(vm: dict, logo_dir: Path | str | None = None) -> str:
+def _variant_items(vm: dict) -> dict:
+    """Die Teile der Karte, die sich zwischen 'Standard' und 'Mit Ausfaellen' aendern: Punkteanzeige, Siegchance-Balken (mit Beschriftung), Spread-Spalte."""
     h, a, fav = vm["home"], vm["away"], vm["fav"]
     cls = lambda side: "pc-score pc-fav" if fav == side else "pc-score pc-dog"
     away_seg = "pc-seg pc-seg-fav" if fav == "away" else "pc-seg pc-seg-other"
     home_seg = "pc-seg pc-seg-fav" if fav == "home" else "pc-seg pc-seg-other"
+    return {
+        "mid": [f'<span class="{cls("away")}">{a["score"]}</span>', '<span class="pc-at">@</span>', f'<span class="{cls("home")}">{h["score"]}</span>'],
+        "bar": [f'<div class="pc-bar-labels"><span>{escape(a["nick"])} {a["pct"]} %</span><span>{escape(h["nick"])} {h["pct"]} %</span></div>',
+                f'<div class="pc-bar" role="img" aria-label="Siegwahrscheinlichkeit {escape(a["nick"])} {a["pct"]} %, {escape(h["nick"])} {h["pct"]} %">'
+                f'<div class="{away_seg}" style="width:{a["p"] * 100:.1f}%"></div>'
+                f'<div class="{home_seg}" style="width:{h["p"] * 100:.1f}%"></div></div>'],
+        "spread": [_model_col("SPREAD", vm["spread"])],
+    }
+
+
+def _switchable(std: list[str], t2: list[str] | None) -> list[str]:
+    """Ohne team-2: unveraenderte Teile. Mit team-2: beide Varianten, per CSS (Schalter) umgeblendet."""
+    if t2 is None:
+        return std
+    return ['<div class="pc-var pc-var-std">', *std, '</div>', '<div class="pc-var pc-var-t2">', *t2, '</div>']
+
+
+def _switch_html() -> str:
+    return ('<details class="pc-sw"><summary aria-label="Modellvariante umschalten"><span class="pc-sw-opt pc-sw-std">Standard</span>'
+            '<span class="pc-sw-opt pc-sw-t2">Mit Ausfällen</span></summary></details>')
+
+
+def render_card_html(vm: dict, logo_dir: Path | str | None = None) -> str:
+    h, a, fav = vm["home"], vm["away"], vm["fav"]
+    t2 = vm.get("t2")
+    std = _variant_items(vm)
+    alt = _variant_items(t2["vm"]) if t2 else {}
+    note_html = f'<div class="pc-warnings"><div class="pc-chip pc-chip-yellow">{escape(t2["note"])}</div></div>' if t2 and t2.get("note") else ""
     warn_html = ""
     if vm["warnings"]:
         warn_html = '<div class="pc-warnings">' + "".join(
@@ -367,23 +406,20 @@ def render_card_html(vm: dict, logo_dir: Path | str | None = None) -> str:
             origin_html += '<div class="pc-warnings">' + "".join(f'<div class="pc-chip pc-chip-yellow">⚠ {escape(w)}</div>' for w in vm["origin_warnings"]) + "</div>"
     parts = [
         '<div class="pc-card pc-card-attached">' if vm.get("lines") else '<div class="pc-card">',
+        _switch_html() if t2 else "",
         '<div class="pc-head">',
         _team_html(a, "AWAY", logo_dir),
         '<div class="pc-mid">',
-        f'<span class="{cls("away")}">{a["score"]}</span>',
-        '<span class="pc-at">@</span>',
-        f'<span class="{cls("home")}">{h["score"]}</span>',
+        *_switchable(std["mid"], alt.get("mid")),
         '</div>',
         _team_html(h, "HOME", logo_dir),
         '</div>',
-        f'<div class="pc-bar-labels"><span>{escape(a["nick"])} {a["pct"]} %</span><span>{escape(h["nick"])} {h["pct"]} %</span></div>',
-        f'<div class="pc-bar" role="img" aria-label="Siegwahrscheinlichkeit {escape(a["nick"])} {a["pct"]} %, {escape(h["nick"])} {h["pct"]} %">'
-        f'<div class="{away_seg}" style="width:{a["p"] * 100:.1f}%"></div>'
-        f'<div class="{home_seg}" style="width:{h["p"] * 100:.1f}%"></div></div>',
+        *_switchable(std["bar"], alt.get("bar")),
         f'<div class="pc-winnote">{escape(vm["win_note"])}</div>' if vm.get("win_note") else "",
+        note_html,
         warn_html,
         '<div class="pc-model-wrap"><div class="pc-model">',
-        _model_col("SPREAD", vm["spread"]),
+        *_switchable(std["spread"], alt.get("spread")),
         _model_col("TOTAL", vm["total"]),
         '</div></div>',
         origin_html,
@@ -455,6 +491,18 @@ def _css() -> str:
 .pc-details summary {{ cursor:pointer; font-size:13px; letter-spacing:.14em; color:{P['label']}; }}
 .pc-info-body {{ margin-top:12px; }}
 .pc-info {{ font-size:14px; color:{P['text_soft']}; padding:3px 0; font-variant-numeric:tabular-nums; }}
+.pc-card {{ position:relative; }}
+.pc-var {{ display:contents; }}
+.pc-var-t2 {{ display:none; }}
+.pc-card:has(.pc-sw[open]) .pc-var-std, [class*="st-key-sc_game_"]:has(.pc-sw[open]) .pc-var-std {{ display:none; }}
+.pc-card:has(.pc-sw[open]) .pc-var-t2, [class*="st-key-sc_game_"]:has(.pc-sw[open]) .pc-var-t2 {{ display:contents; }}
+.pc-sw {{ position:absolute; top:12px; right:16px; z-index:2; }}
+.pc-sw summary {{ list-style:none; cursor:pointer; display:inline-flex; border:1px solid #2c3350; border-radius:999px; overflow:hidden; font-size:12px; font-weight:600; user-select:none; }}
+.pc-sw summary::-webkit-details-marker {{ display:none; }}
+.pc-sw-opt {{ padding:4px 12px; color:{P['label']}; }}
+.pc-sw-std {{ background:{P['pill_bg']}; color:{P['pill_text']}; }}
+.pc-sw[open] .pc-sw-std {{ background:transparent; color:{P['label']}; }}
+.pc-sw[open] .pc-sw-t2 {{ background:{P['pill_bg']}; color:{P['pill_text']}; }}
 @media (max-width:760px) {{ .pc-head {{ grid-template-columns:1fr; }} .pc-model {{ grid-template-columns:1fr; gap:24px; }} .pc-card {{ padding:24px 18px 18px; }} }}
 @media (max-width:1200px) {{ .pc-lrow {{ grid-template-columns:auto 1fr auto; grid-template-areas:"line line line" "pl bar pr"; row-gap:6px; padding:8px 10px; }} .pc-lline {{ grid-area:line; }} .pc-lpct-l {{ grid-area:pl; }} .pc-lbar {{ grid-area:bar; }} .pc-lpct-r {{ grid-area:pr; }} .pc-lrow-chip {{ grid-template-columns:auto 1fr auto; grid-template-areas:"line line chip" "pl bar pr"; }} .pc-lchip {{ grid-area:chip; }} .pc-lpill {{ padding:3px 8px; font-size:15px; }} }}
 </style>

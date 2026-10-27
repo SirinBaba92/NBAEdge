@@ -42,6 +42,16 @@ KINDS = {"totals_spreads": "totals,spreads", "h2h": "h2h"}
 
 _lock = threading.RLock()
 _mem = {"path": None, "mtime": None, "obj": None}
+_problem = {"at": None, "path": None, "error": None}     # unlesbarer Odds-Cache (fuer den Hinweis in der App)
+PROBLEM_SHOW_SECONDS = 3600
+
+
+def cache_problem(now: float | None = None) -> dict | None:
+    """Hinweis, wenn der Odds-Cache zuletzt nicht lesbar war (eine Stunde lang sichtbar, auch nach dem Neuaufbau), sonst None."""
+    now = now or time.time()
+    if _problem["at"] is not None and now - _problem["at"] < PROBLEM_SHOW_SECONDS:
+        return dict(_problem)
+    return None
 
 
 class OddsError(Exception):
@@ -85,8 +95,10 @@ def _read() -> dict:
         obj = json.loads(path.read_text(encoding="utf-8"))
         if not isinstance(obj, dict):
             raise ValueError
-    except Exception:
+    except Exception as e:
         obj = {}
+        _problem.update(at=time.time(), path=str(path), error=f"{type(e).__name__}")
+        print(f"  Odds-Cache nicht lesbar ({path.name}): {type(e).__name__}")
     obj.setdefault("entries", {})
     obj.setdefault("credits", {})
     obj.setdefault("last_error", {})
