@@ -24,6 +24,8 @@ Regeln
   Wette: {"market": "player_points", "active", "person_id", "name", "team", "milestone" (mindestens N Punkte), "side": "over", "odds", "stake", "odds_source", "odds_ref" ({"bookmaker",
   "updated_at", "milestone"} | null), "placed_at", "updated_at", "removed_at", "revisions": [...]}. Dieselben Regeln (atomar, Sperre ab Anpfiff, Revisionen, Entfernen ohne Loeschen, Sicherung bei
   beschaedigter Datei). Die Dateiversion wird nur auf 2 gesetzt, sobald eine Spieler-Wette existiert; reine Team-Wetten-Dateien bleiben Version 1. Version 1 und 2 sind lesbar.
+- Kategorien: optionales Feld "categories" je Wette = Liste von IDs aus data/bet_categories.py (team_1/team_2 bei Team-Wetten, player_ta/player_raw bei Spieler-Wetten; eine Wette kann in mehreren liegen);
+  fehlt es oder ist es leer, gilt "Ohne Kategorie"; das fruehere Einzelfeld "category" wird beim Lesen zur Liste. Keine Migration. change_categories() aendert NUR dieses Feld (einzeln oder gesammelt).
 - Auswahl-Logik (reine Funktionen): nearest_half_line, line_choices, selectable_lines, main_lines_from_resolved, stored_odds, make_line_ref.
 - Verbindung zum Live-Modell: evaluate_game_bets / bet_live_status (engine/live_model + engine/bet_status), summarize fuer die Tagesuebersicht.
 """
@@ -43,6 +45,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 
+from data import bet_categories as bc
 from data import pre_match_store as store
 from data.pre_match_store import GameStartedError, OddsInputError, game_key, iso_now, normalize_start
 
@@ -285,6 +288,13 @@ def _validate(market: str, side, line, odds, stake, odds_source, line_ref) -> di
     return {"side": side, "line": line, "odds": odds, "stake": stake, "odds_source": odds_source, "line_ref": _clean_line_ref(line_ref)}
 
 
+def _check_categories(kind: str, categories) -> list | None:
+    try:
+        return bc.validate(kind, categories)
+    except bc.CategoryError as e:
+        raise BetInputError(str(e)) from e
+
+
 def _check_editable(start_utc, now: float) -> str:
     """Normalisierter Anpfiff; wirft GameStartedError ab dem Anpfiff (oder bei unbekanntem Anpfiff)."""
     start_norm = normalize_start(start_utc)
@@ -301,7 +311,7 @@ def is_bet_editable(start_utc, now: float | None = None) -> bool:
 
 
 _CORE = ("side", "line", "odds", "stake", "odds_source")
-_STATE = ("active", "side", "line", "odds", "stake", "odds_source", "line_ref", "placed_at", "updated_at", "removed_at")
+_STATE = ("active", "side", "line", "odds", "stake", "odds_source", "line_ref", "categories", "placed_at", "updated_at", "removed_at")
 
 
 def _revision(bet: dict, reason: str, stamp: str) -> dict:
@@ -310,11 +320,13 @@ def _revision(bet: dict, reason: str, stamp: str) -> dict:
 
 # ------------------------------------------------------------------------------ Setzen, Aendern, Entfernen
 def set_bet(game_date: str, start_utc: str, home: str, away: str, market: str, side: str | None = None, line=None, odds=None, stake=None,
-            odds_source: str | None = None, line_ref: dict | None = None, now: float | None = None) -> dict:
+            odds_source: str | None = None, line_ref: dict | None = None, now: float | None = None, categories=None) -> dict:
     """Wette setzen oder aendern (ersetzt die bestehende des Marktes, der alte Stand bleibt in revisions). Rueckgabe {'status': 'saved'|'unchanged', 'key', 'bet'}.
-    Wirft BetInputError (Eingabe), GameStartedError (ab Anpfiff) oder DayBetsError (Datei). Es wird erst geprueft, dann geschrieben."""
+    Wirft BetInputError (Eingabe), GameStartedError (ab Anpfiff) oder DayBetsError (Datei). Es wird erst geprueft, dann geschrieben.
+    categories: Liste von Kategorie-IDs (team_1/team_2, data/bet_categories.py; auch eine einzelne ID), mindestens eine; ohne Angabe (None) bleiben die Kategorien einer bestehenden Wette erhalten, eine neue Wette hat dann keine."""
     now = now if now is not None else time.time()
     new = _validate(market, side, line, odds, stake, odds_source, line_ref)
+    categories = _check_categories("team", categories)
     start_norm = _check_editable(start_utc, now)
     if not (str(home).strip() and str(away).strip() and re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(game_date))):
         raise BetInputError("Spieldatum (JJJJ-MM-TT), Heim und Gast müssen angegeben sein.")
@@ -323,7 +335,7 @@ def set_bet(game_date: str, start_utc: str, home: str, away: str, market: str, s
         data = _load_for_write()
         game = data["games"].setdefault(key, {"game_date": game_date, "start_utc": start_norm, "home": home, "away": away, "bets": {}})
         old = game["bets"].get(market)
-        if old and old.get("active") and all(old.get(k) == new[k] for k in _CORE):
+        if old and old.get("active") and all(old.get(k) == new[k] for k in _CORE) and (categories is None or bc.normalize(old.get("categories", old.get("category"))) == categories):
             return {"status": "unchanged", "key": key, "bet": copy.deepcopy(old)}
         stamp = iso_now(now)
         revisions = list(old["revisions"]) if old else []
@@ -331,7 +343,9 @@ def set_bet(game_date: str, start_utc: str, home: str, away: str, market: str, s
         if old and old.get("active"):
             revisions.append(_revision(old, "geaendert", stamp))
             placed_at = old["placed_at"]                       # dieselbe Wette, nur geaendert
-        game["bets"][market] = {"market": market, "active": True, **new, "placed_at": placed_at, "updated_at": stamp, "removed_at": None, "revisions": revisions}
+            if categories is None:
+                categories = bc.normalize(old.get("categories", old.get("category")))
+        game["bets"][market] = {"market": market, "active": True, **new, "categories": categories if categories is not None else [], "placed_at": placed_at, "updated_at": stamp, "removed_at": None, "revisions": revisions}
         _write(data, stamp, now)
         return {"status": "saved", "key": key, "bet": copy.deepcopy(game["bets"][market])}
 
@@ -357,8 +371,16 @@ def remove_bet(game_date: str, start_utc: str, home: str, away: str, market: str
 
 
 # ------------------------------------------------------------------------------ Lesen
+def _norm_bet(b: dict) -> dict:
+    """Kopie mit "categories" als Liste (Altwetten ohne Feld: []; frueheres Einzelfeld "category": eine Liste). Die Datei wird dabei nicht veraendert."""
+    b = copy.deepcopy(b)
+    b["categories"] = bc.normalize(b.get("categories", b.get("category")))
+    b.pop("category", None)
+    return b
+
+
 def _bets_of(game: dict | None, include_removed: bool) -> dict:
-    return {m: copy.deepcopy(b) for m, b in ((game or {}).get("bets") or {}).items() if include_removed or b.get("active")}
+    return {m: _norm_bet(b) for m, b in ((game or {}).get("bets") or {}).items() if include_removed or b.get("active")}
 
 
 def get_bets_by_key(key: str, include_removed: bool = False) -> dict:
@@ -570,7 +592,7 @@ def _validate_player(person_id, name, team, milestone, odds, stake, odds_source,
 
 
 _PLAYER_CORE = ("milestone", "odds", "stake", "odds_source", "name", "team")
-_PLAYER_STATE = ("active", "name", "team", "milestone", "side", "odds", "stake", "odds_source", "odds_ref", "placed_at", "updated_at", "removed_at")
+_PLAYER_STATE = ("active", "name", "team", "milestone", "side", "odds", "stake", "odds_source", "odds_ref", "categories", "placed_at", "updated_at", "removed_at")
 
 
 def _player_revision(bet: dict, reason: str, stamp: str) -> dict:
@@ -578,11 +600,13 @@ def _player_revision(bet: dict, reason: str, stamp: str) -> dict:
 
 
 def set_player_bet(game_date: str, start_utc: str, home: str, away: str, person_id, name: str, team: str | None, milestone, odds=None, stake=None,
-                   odds_source: str | None = None, odds_ref: dict | None = None, now: float | None = None) -> dict:
+                   odds_source: str | None = None, odds_ref: dict | None = None, now: float | None = None, categories=None) -> dict:
     """Spieler-Wette (mindestens N Punkte, immer Over) setzen oder aendern. Je Spieler hoechstens eine aktive Wette (eine neue ersetzt die alte, der alte Stand bleibt in revisions);
-    mehrere Spieler je Spiel sind moeglich. Rueckgabe {'status': 'saved'|'unchanged', 'key', 'bet'}. Wirft BetInputError, GameStartedError (ab Anpfiff), DayBetsError."""
+    mehrere Spieler je Spiel sind moeglich. Rueckgabe {'status': 'saved'|'unchanged', 'key', 'bet'}. Wirft BetInputError, GameStartedError (ab Anpfiff), DayBetsError.
+    categories: Liste (player_ta/player_raw), mindestens eine; ohne Angabe bleiben die Kategorien einer bestehenden Wette erhalten."""
     now = now if now is not None else time.time()
     new = _validate_player(person_id, name, team, milestone, odds, stake, odds_source, odds_ref)
+    categories = _check_categories("player", categories)
     start_norm = _check_editable(start_utc, now)
     if not (str(home).strip() and str(away).strip() and re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(game_date))):
         raise BetInputError("Spieldatum (JJJJ-MM-TT), Heim und Gast müssen angegeben sein.")
@@ -593,7 +617,7 @@ def set_player_bet(game_date: str, start_utc: str, home: str, away: str, person_
         game = data["games"].setdefault(key, {"game_date": game_date, "start_utc": start_norm, "home": home, "away": away, "bets": {}})
         bets = game.setdefault("player_bets", {})
         old = bets.get(pid)
-        if old and old.get("active") and all(old.get(k) == new[k] for k in _PLAYER_CORE):
+        if old and old.get("active") and all(old.get(k) == new[k] for k in _PLAYER_CORE) and (categories is None or bc.normalize(old.get("categories", old.get("category"))) == categories):
             return {"status": "unchanged", "key": key, "bet": copy.deepcopy(old)}
         stamp = iso_now(now)
         revisions = list(old["revisions"]) if old else []
@@ -601,7 +625,9 @@ def set_player_bet(game_date: str, start_utc: str, home: str, away: str, person_
         if old and old.get("active"):
             revisions.append(_player_revision(old, "geaendert", stamp))
             placed_at = old["placed_at"]
-        bets[pid] = {"market": PLAYER_MARKET, "active": True, **new, "placed_at": placed_at, "updated_at": stamp, "removed_at": None, "revisions": revisions}
+            if categories is None:
+                categories = bc.normalize(old.get("categories", old.get("category")))
+        bets[pid] = {"market": PLAYER_MARKET, "active": True, **new, "categories": categories if categories is not None else [], "placed_at": placed_at, "updated_at": stamp, "removed_at": None, "revisions": revisions}
         _write(data, stamp, now)
         return {"status": "saved", "key": key, "bet": copy.deepcopy(bets[pid])}
 
@@ -629,7 +655,7 @@ def remove_player_bet(game_date: str, start_utc: str, home: str, away: str, pers
 def get_player_bets_by_key(key: str, include_removed: bool = False) -> dict:
     """{person_id (int): Wette} eines Spiels; standardmaessig nur aktive."""
     g = load()["games"].get(key) or {}
-    return {int(pid): copy.deepcopy(b) for pid, b in (g.get("player_bets") or {}).items() if include_removed or b.get("active")}
+    return {int(pid): _norm_bet(b) for pid, b in (g.get("player_bets") or {}).items() if include_removed or b.get("active")}
 
 
 def get_day_player_bets(day: str, include_removed: bool = False) -> dict:
@@ -638,7 +664,7 @@ def get_day_player_bets(day: str, include_removed: bool = False) -> dict:
     for key, g in load()["games"].items():
         if g.get("game_date") != day:
             continue
-        bets = {int(pid): copy.deepcopy(b) for pid, b in (g.get("player_bets") or {}).items() if include_removed or b.get("active")}
+        bets = {int(pid): _norm_bet(b) for pid, b in (g.get("player_bets") or {}).items() if include_removed or b.get("active")}
         if bets:
             out[key] = {"game": {k: g.get(k) for k in ("game_date", "start_utc", "home", "away")}, "player_bets": bets}
     return out
@@ -754,3 +780,68 @@ def evaluate_player_bets(bets: dict, game, pre: dict | None = None) -> dict:
         out[int(pid)] = BetLivePlayer(PLAYER_MARKET, int(pid), bet["name"], bet["milestone"], bet.get("odds"), bet.get("stake"), st.label, st.color, st.state, st.decided, st.won,
                                       bs.player_profit(bet, st), st.points, st.needed, st.minutes, st.fouls, st.player_status, prob, tuple(notes), bool(is_out))
     return out
+
+
+# ------------------------------------------------------------------------------ Kategorien aendern
+CHANGE_MODES = ("add", "remove", "replace")
+
+
+def plan_categories(current: list, mode: str, wanted: list, kind: str) -> tuple[list | None, str | None]:
+    """Neue Kategorienliste einer Wette. current: bisherige Liste, wanted: gewuenschte IDs (fremde Wettart wird ignoriert). Rueckgabe (neue Liste, None) oder (None, Grund), wenn nichts
+    anzuwenden ist oder die Wette ohne Kategorie bliebe ('mindestens eine Kategorie')."""
+    cur = bc.normalize(current)
+    want = [c for c in bc.normalize(wanted) if bc.kind_of(c) == kind]
+    if mode == "add":
+        new = bc.normalize(cur + want)
+    elif mode == "remove":
+        new = [c for c in cur if c not in want]
+    elif mode == "replace":
+        new = want
+    else:
+        raise BetInputError("Unbekannte Änderungsart.")
+    if mode in ("add", "replace") and not want:
+        return None, "keine passende Kategorie für diese Wettart"
+    if not new:
+        return None, "eine Wette braucht mindestens eine Kategorie"
+    return new, None
+
+
+def change_categories(items: list, mode: str, categories, now: float | None = None) -> dict:
+    """Kategorien der angegebenen AKTIVEN Wetten aendern: mode 'add' (hinzufuegen), 'remove' (entfernen) oder 'replace' (ersetzen). Aendert ausschliesslich das Feld "categories" (kein Einsatz,
+    keine Quote, kein Status, kein Ergebnis, keine Revision, kein updated_at, nie die Zahl der Wetten); keine Sperre ab Anpfiff, weil nichts an der Wette selbst geaendert wird. Je Wette zaehlen nur
+    die IDs der passenden Wettart; eine Wette behaelt mindestens eine Kategorie (sonst uebersprungen). items: [{'key': game_key, 'kind': 'team'|'player', 'id': Markt | person_id}].
+    Ein einziger atomarer Schreibvorgang, geschrieben nur bei Aenderung. Rueckgabe {'changed': n, 'unchanged': n, 'skipped': [(item, Grund)]}. BetInputError bei unbekannter ID/Art."""
+    now = now if now is not None else time.time()
+    if mode not in CHANGE_MODES:
+        raise BetInputError("Unbekannte Änderungsart.")
+    wanted = [categories] if isinstance(categories, str) else list(categories or [])
+    if any(c not in bc.ALL_IDS for c in wanted):
+        raise BetInputError("Unbekannte Kategorie.")
+    changed, unchanged, skipped = 0, 0, []
+    with _WriteLock():
+        data = _load_for_write()
+        for it in items:
+            kind = it.get("kind")
+            game = data["games"].get(it.get("key")) or {}
+            bet = (game.get("bets") or {}).get(it.get("id")) if kind == "team" else (game.get("player_bets") or {}).get(str(it.get("id"))) if kind == "player" else None
+            if not bet or not bet.get("active"):
+                skipped.append((it, "keine aktive Wette"))
+                continue
+            cur = bc.normalize(bet.get("categories", bet.get("category")))
+            new, why = plan_categories(cur, mode, wanted, kind)
+            if new is None:
+                if mode == "remove" and why and "mindestens" in why:
+                    skipped.append((it, why))
+                elif mode == "remove":
+                    unchanged += 1
+                else:
+                    skipped.append((it, why))
+            elif new == cur and "category" not in bet:
+                unchanged += 1
+            else:
+                bet["categories"] = new
+                bet.pop("category", None)
+                changed += 1
+        if changed:
+            _write(data, iso_now(now), now)
+    return {"changed": changed, "unchanged": unchanged, "skipped": skipped}

@@ -51,11 +51,13 @@ def build_table_model(entry: dict, mode: str = "team", sort: str = "team", bets:
     players = []
     for p in entry.get("players", []):
         pj = (p.get("p_ge_adjusted") if team_mode else p.get("p_ge_raw")) or {}
+        pj_other = (p.get("p_ge_raw") if team_mode else p.get("p_ge_adjusted")) or {}          # der jeweils ANDERE Modellwert (nur Anzeige in den Karten)
         rows = []
         for q in sorted(p.get("quotes") or [], key=lambda q: q["milestone"]):
             m = pj.get(str(q["milestone"])) if p.get("ok") else None
             diff = None if m is None else (m - q["bookmaker_probability"]) * 100
-            rows.append({"n": q["milestone"], "odds": q["odds"], "bookmaker": q.get("bookmaker"), "buch_pct": pct_int(q["bookmaker_probability"]),
+            mo = pj_other.get(str(q["milestone"])) if p.get("ok") else None
+            rows.append({"other_pct": None if mo is None else pct_int(mo), "other_label": "Roh" if team_mode else "Teamabgleich", "n": q["milestone"], "odds": q["odds"], "bookmaker": q.get("bookmaker"), "buch_pct": pct_int(q["bookmaker_probability"]),
                          "model_pct": None if m is None else pct_int(m), "diff": diff, "mark": mark_for(diff)})
         if not p.get("ok"):
             minutes = points = None
@@ -333,6 +335,7 @@ PLAYER_CSS = _css()
 # ----------------------------------------------------------------------------------------------- Spieler-Karten (Ansicht "Karten", Standard im Tab Prognose)
 CARD_HIGHLIGHT_MIN_PCT = 60              # Zeile violett hinterlegt, wenn das angezeigte (gerundete) Modell in Prozent mindestens so hoch ist
 BLUE, ORANGE = "#6f8fd6", "#ff7a2f"      # Balken: Betano (inkl. Marge) / Modell
+OTHER = "#9fb8ad"                        # dritter, schmalerer Balken und Text: der jeweils andere Modellwert (gedaempftes Grau-Gruen)
 DIFF_COLOR_PP = 3.0                      # Differenz ab +3 gruen, ab -3 rot, sonst grau
 
 
@@ -388,6 +391,9 @@ def _card_row(r: dict, lv: dict | None, variant: bool = False, who: tuple | None
     model = r["model_pct"]
     model_bar = "" if model is None else f"<span class='pl-c-bar pl-c-bar-m'><i style='width:{max(0, min(100, int(model)))}%'></i></span>"
     model_txt = "<span class='pl-c-wm'>Modell</span> <b>–</b>" if model is None else f"<span class='pl-c-wm'>Modell</span> <b>{model} %</b>"
+    other = r.get("other_pct")                                           # dritter, schmalerer Balken: der andere Modellwert (Roh bzw. Teamabgleich); fehlt er, entfallen Balken und Text
+    other_bar = "" if other is None else f"<span class='pl-c-bar pl-c-bar-o'><i style='width:{max(0, min(100, int(other)))}%'></i></span>"
+    other_txt = "" if other is None else f" · <span class='pl-c-wo'>{escape(str(r.get('other_label') or ''))} <b>{int(other)} %</b></span>"
     diff = "–" if r["diff"] is None else fmt_num(r["diff"], 1, signed=True)
     mark = f"<span class='pl-c-mark'>{r['mark']}</span>" if r["mark"] else ""
     live_txt = ""
@@ -401,7 +407,7 @@ def _card_row(r: dict, lv: dict | None, variant: bool = False, who: tuple | None
     attrs = "" if who is None else (f" data-pid='{int(who[0])}' data-name='{escape(str(who[1]), quote=True)}' data-n='{int(r['n'])}' data-odds='{'' if r.get('odds') is None else r['odds']}'"
                                      f" data-buch='{buch}' data-model='{'' if model is None else model}'")      # fuer die anklickbare Karten-Komponente (ui/components/bet_cards)
     return (f"<div class='pl-c-row{hi}'{attrs}><div class='pl-c-n'><b>{r['n']}+</b>{odds}</div>"
-            f"<div class='pl-c-mid'><span class='pl-c-bar pl-c-bar-b'><i style='width:{buch}%'></i></span>{model_bar}<span class='pl-c-txt'><span class='pl-c-wb'>Betano</span> <b>{buch} %</b> · {model_txt}</span>{old}</div>"
+            f"<div class='pl-c-mid'><div class='pl-c-bars'><span class='pl-c-bar pl-c-bar-b'><i style='width:{buch}%'></i></span>{model_bar}{other_bar}</div><span class='pl-c-txt'><span class='pl-c-wb'>Betano</span> <b>{buch} %</b> · {model_txt}{other_txt}</span>{old}</div>"
             f"<div class='pl-c-d'><span class='{diff_class(r['diff'])}'>{diff}</span>{mark}{live_txt}</div></div>")
 
 
@@ -433,7 +439,7 @@ def render_cards_html(model: dict, absences: dict | None = None) -> str:
                      f"{meta_html}{now}{rows}</div>")
     legend = (f"<div class='pl-c-legend'><span class='pl-c-key' style='background:{BLUE}'></span>Betano inkl. Marge · <span class='pl-c-key' style='background:{ORANGE}'></span>Modell ({UNVERIFIED.lower()}) · "
               "Zahl rechts = Differenz Modell minus Betano in Prozentpunkten"
-              f"<br>Violett hinterlegt = Modell ≥ {CARD_HIGHLIGHT_MIN_PCT} %</div>")
+              f"<br>Violett hinterlegt = Modell ≥ {CARD_HIGHLIGHT_MIN_PCT} % · weiße Linie im Balken = {CARD_HIGHLIGHT_MIN_PCT} %</div>")
     return f"{absence_box_html(absences)}<div class='pl-cards'>{''.join(cards)}</div>{legend}"
 
 
@@ -466,9 +472,13 @@ def _cards_css() -> str:
 .pl-c-bar {{ display:block; height:10px; border-radius:5px; background:#2a3250; margin-bottom:5px; overflow:hidden; }}
 .pl-c-bar i {{ display:block; height:100%; border-radius:5px; }}
 .pl-c-bar-b i {{ background:{BLUE}; }} .pl-c-bar-m i {{ background:{ORANGE}; }}
-.pl-c-txt {{ display:block; font-size:17px; line-height:1.35; color:{P['text']}; white-space:nowrap; font-variant-numeric:tabular-nums; }}
+.pl-c-bar-o i {{ background:{OTHER}; }}
+.pl-c-bars {{ position:relative; }}
+.pl-c-bars::after {{ content:""; position:absolute; top:-2px; bottom:3px; left:{CARD_HIGHLIGHT_MIN_PCT}%; width:2px; margin-left:-1px; background:rgba(255,255,255,.7); border-radius:1px; pointer-events:none; }}
+.pl-c-txt {{ display:block; font-size:17px; line-height:1.35; color:{P['text']}; white-space:normal; font-variant-numeric:tabular-nums; }}
 .pl-c-txt b {{ font-weight:700; }}
 .pl-c-wb {{ color:{BLUE}; font-weight:600; }} .pl-c-wm {{ color:{ORANGE}; font-weight:600; }}
+.pl-c-wo {{ color:{OTHER}; font-weight:600; white-space:nowrap; }}
 .pl-c-d {{ text-align:right; font-size:20px; font-weight:700; white-space:nowrap; font-variant-numeric:tabular-nums; }}
 .pl-c-mark {{ font-size:15px; margin-left:3px; color:{P['label']}; font-weight:400; }}
 .pl-c-live {{ display:block; font-size:14px; font-weight:400; color:{P['label']}; }}

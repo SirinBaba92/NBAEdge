@@ -1,0 +1,225 @@
+ZUSAMMENFASSUNG Schwellwert-Test (nur Messung: KEINE Wettempfehlung, KEINE Änderung am Modell; reines Modell ohne Markt-Mischung, Regular Season 2017-18..2025-26, Linien = Raster um das Modell, keine historischen Quoten)
+Daten: 10777 Spiele, 1458 Spieltage; Tipps gesamt (alle Schwellen ab 50 %): Sieger (Favorit gewinnt) 10777, Total Over 64662, Team Total Over (Heim+Gast) 129324. Stabile Schwelle = ab ihr (und höher) trifft in JEDER Saison (>= 30 Tipps) die Quote mindestens so oft wie das Modell sagt.
+Sieger (Favorit gewinnt): stabil ab keine Schwelle (alle Zeilen).
+Total Over: stabil ab keine Schwelle (alle Zeilen); nur Hauptlinie: keine Schwelle.
+Team Total Over (Heim+Gast): stabil ab keine Schwelle (alle Zeilen); nur Hauptlinie: keine Schwelle.
+  Sieger (Favorit gewinnt) (alle Zeilen) gepoolte Differenz PP / Anteil Saisons mit Treffer >= Modell je Schwelle: 50 %: +0.1 / 67 %; 55 %: +0.2 / 56 %; 60 %: +0.7 / 78 %; 65 %: +0.9 / 67 %; 70 %: +1.2 / 56 %; 75 %: +1.6 / 67 %; 80 %: +2.5 / 50 %; 85 %: +1.3 / 100 % (höchste Schwelle mit Tipps: 85 %).
+  Total Over (alle Zeilen) gepoolte Differenz PP / Anteil Saisons mit Treffer >= Modell je Schwelle: 50 %: -0.3 / 44 %; 55 %: -0.4 / 44 %; 60 %: -0.2 / 33 % (höchste Schwelle mit Tipps: 60 %).
+  Team Total Over (Heim+Gast) (alle Zeilen) gepoolte Differenz PP / Anteil Saisons mit Treffer >= Modell je Schwelle: 50 %: +0.2 / 67 %; 55 %: +0.2 / 78 %; 60 %: +0.2 / 67 %; 65 %: +0.1 / 78 % (höchste Schwelle mit Tipps: 65 %).
+Sieger (Favorit gewinnt): zu sicher (Intervall der Differenz ganz unter 0): nirgends. Kalibrierungsregel (alle Zeilen) erfüllt bei Schwellen: 50, 55, 60, 65, 70, 75, 80, 85 % (geprüfte Schwellen mit >= 100 Tipps).
+Total Over: zu sicher (Intervall der Differenz ganz unter 0): nirgends. Kalibrierungsregel (alle Zeilen) erfüllt bei Schwellen: 50, 55, 60 % (geprüfte Schwellen mit >= 100 Tipps).
+Team Total Over (Heim+Gast): zu sicher (Intervall der Differenz ganz unter 0): nirgends. Kalibrierungsregel (alle Zeilen) erfüllt bei Schwellen: 50, 55, 60, 65 % (geprüfte Schwellen mit >= 100 Tipps).
+  Sieger (Favorit gewinnt) (alle Zeilen) ab 60 %: 6163 Tipps 4349/1814 richtig/falsch, Treffer 70.6 % gegen Modell 69.9 % (+0.7 PP [-0.4; +1.8] im Rahmen) | ab 70 %: 2673 Tipps 2083/590 richtig/falsch, Treffer 77.9 % gegen Modell 76.8 % (+1.2 PP [-0.3; +2.7] im Rahmen) | ab 80 %: 626 Tipps 540/86 richtig/falsch, Treffer 86.3 % gegen Modell 83.8 % (+2.5 PP [-0.1; +5.0] im Rahmen)
+  Total Over (alle Zeilen) ab 60 %: 8495 Tipps 5145/3350 richtig/falsch, Treffer 60.6 % gegen Modell 60.8 % (-0.2 PP [-1.2; +0.8] im Rahmen) | ab 70 %: 0 Tipps | ab 80 %: 0 Tipps
+  Team Total Over (Heim+Gast) (alle Zeilen) ab 60 %: 55347 Tipps 35607/19740 richtig/falsch, Treffer 64.3 % gegen Modell 64.2 % (+0.2 PP [-0.5; +0.8] im Rahmen) | ab 70 %: 0 Tipps | ab 80 %: 0 Tipps
+ECHTE TAGE (29 Spiele ab 22.10.2026; KLEINE STICHPROBE, NUR INFORMATION, App-Chancen mit Markt-Mischung): Sieger (Favorit gewinnt) ab 60 %: 18 Tipps 12/6 richtig/falsch, Treffer 66.7 % gegen Modell 73.2 % (-6.5 PP) | Total Over ab 60 %: 0 Tipps | Team Total Over (Heim+Gast) ab 60 %: 116 Tipps 69/47 richtig/falsch, Treffer 59.5 % gegen Modell 63.5 % (-4.0 PP [-16.9; +8.9] im Rahmen).
+Einschränkungen: keine historischen Quoten (nur Trefferquote/Kalibrierung, keine Gewinnrechnung); Linien als Raster um das Modell (Linien unter der Hauptlinie erzeugen die hohen Chancen); Zeilen eines Spiels korreliert (Bootstrap nach Spielen); Sigmas/Parameter teils auf denselben Saisons abgestimmt. Laufzeit 15 s.
+
+==================================================================================================================================
+Schwellwert-Test: Details. Format je Zeile: Tipps, richtig/falsch, Trefferquote gegen mittlere Modell-Chance (Differenz PP [95 %-Intervall nach Spielen] Urteil)
+==================================================================================================================================
+
+1. TABELLEN (gemeinsam 2017-18..2025-26, kumulativ ab Schwelle)
+  Sieger (Favorit gewinnt) · Zeilen: alle
+    ab 50 %: 10777 Tipps 6855/3922 richtig/falsch, Treffer 63.6 % gegen Modell 63.5 % (+0.1 PP [-0.7; +1.1] im Rahmen); Saisons mit Treffer >= Modell: 67 % (von 9 bewerteten)
+    ab 55 %: 8428 Tipps 5625/2803 richtig/falsch, Treffer 66.7 % gegen Modell 66.6 % (+0.2 PP [-0.8; +1.2] im Rahmen); Saisons mit Treffer >= Modell: 56 % (von 9 bewerteten)
+    ab 60 %: 6163 Tipps 4349/1814 richtig/falsch, Treffer 70.6 % gegen Modell 69.9 % (+0.7 PP [-0.4; +1.8] im Rahmen); Saisons mit Treffer >= Modell: 78 % (von 9 bewerteten)
+    ab 65 %: 4237 Tipps 3143/1094 richtig/falsch, Treffer 74.2 % gegen Modell 73.3 % (+0.9 PP [-0.4; +2.2] im Rahmen); Saisons mit Treffer >= Modell: 67 % (von 9 bewerteten)
+    ab 70 %: 2673 Tipps 2083/590 richtig/falsch, Treffer 77.9 % gegen Modell 76.8 % (+1.2 PP [-0.3; +2.7] im Rahmen); Saisons mit Treffer >= Modell: 56 % (von 9 bewerteten)
+    ab 75 %: 1501 Tipps 1226/275 richtig/falsch, Treffer 81.7 % gegen Modell 80.1 % (+1.6 PP [-0.4; +3.5] im Rahmen); Saisons mit Treffer >= Modell: 67 % (von 9 bewerteten)
+    ab 80 %: 626 Tipps 540/86 richtig/falsch, Treffer 86.3 % gegen Modell 83.8 % (+2.5 PP [-0.1; +5.0] im Rahmen); Saisons mit Treffer >= Modell: 50 % (von 8 bewerteten)
+    ab 85 %: 177 Tipps 158/19 richtig/falsch, Treffer 89.3 % gegen Modell 87.9 % (+1.3 PP [-3.1; +5.8] im Rahmen); Saisons mit Treffer >= Modell: 100 % (von 3 bewerteten)
+    ab 90 %: 28 Tipps 26/2 richtig/falsch, Treffer 92.9 % gegen Modell 92.1 % (+0.8 PP [-9.9; +8.1] im Rahmen); Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+  Total Over · Zeilen: alle
+    ab 50 %: 59209 Tipps 32882/26327 richtig/falsch, Treffer 55.5 % gegen Modell 55.9 % (-0.3 PP [-1.2; +0.5] im Rahmen); Saisons mit Treffer >= Modell: 44 % (von 9 bewerteten)
+    ab 55 %: 34029 Tipps 19726/14303 richtig/falsch, Treffer 58.0 % gegen Modell 58.3 % (-0.4 PP [-1.2; +0.5] im Rahmen); Saisons mit Treffer >= Modell: 44 % (von 9 bewerteten)
+    ab 60 %: 8495 Tipps 5145/3350 richtig/falsch, Treffer 60.6 % gegen Modell 60.8 % (-0.2 PP [-1.2; +0.8] im Rahmen); Saisons mit Treffer >= Modell: 33 % (von 9 bewerteten)
+    ab 65 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 70 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 75 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 80 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 85 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 90 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+  Total Over · Zeilen: haupt
+    ab 50 %: 5324 Tipps 2669/2655 richtig/falsch, Treffer 50.1 % gegen Modell 50.5 % (-0.4 PP [-1.7; +0.8] im Rahmen); Saisons mit Treffer >= Modell: 56 % (von 9 bewerteten)
+    ab 55 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 60 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 65 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 70 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 75 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 80 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 85 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 90 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+  Total Over · Zeilen: unter1
+    ab 50 %: 10777 Tipps 5576/5201 richtig/falsch, Treffer 51.7 % gegen Modell 52.1 % (-0.4 PP [-1.3; +0.5] im Rahmen); Saisons mit Treffer >= Modell: 67 % (von 9 bewerteten)
+    ab 55 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 60 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 65 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 70 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 75 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 80 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 85 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 90 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+  Total Over · Zeilen: unter2
+    ab 50 %: 10777 Tipps 5821/4956 richtig/falsch, Treffer 54.0 % gegen Modell 54.3 % (-0.3 PP [-1.1; +0.7] im Rahmen); Saisons mit Treffer >= Modell: 44 % (von 9 bewerteten)
+    ab 55 %: 1698 Tipps 910/788 richtig/falsch, Treffer 53.6 % gegen Modell 55.2 % (-1.6 PP [-4.0; +0.8] im Rahmen); Saisons mit Treffer >= Modell: 44 % (von 9 bewerteten)
+    ab 60 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 65 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 70 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 75 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 80 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 85 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 90 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+  Total Over · Zeilen: unter3
+    ab 50 %: 10777 Tipps 6047/4730 richtig/falsch, Treffer 56.1 % gegen Modell 56.4 % (-0.3 PP [-1.2; +0.6] im Rahmen); Saisons mit Treffer >= Modell: 44 % (von 9 bewerteten)
+    ab 55 %: 10777 Tipps 6047/4730 richtig/falsch, Treffer 56.1 % gegen Modell 56.4 % (-0.3 PP [-1.2; +0.6] im Rahmen); Saisons mit Treffer >= Modell: 44 % (von 9 bewerteten)
+    ab 60 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 65 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 70 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 75 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 80 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 85 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 90 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+  Total Over · Zeilen: unter4
+    ab 50 %: 10777 Tipps 6284/4493 richtig/falsch, Treffer 58.3 % gegen Modell 58.5 % (-0.2 PP [-1.1; +0.7] im Rahmen); Saisons mit Treffer >= Modell: 44 % (von 9 bewerteten)
+    ab 55 %: 10777 Tipps 6284/4493 richtig/falsch, Treffer 58.3 % gegen Modell 58.5 % (-0.2 PP [-1.1; +0.7] im Rahmen); Saisons mit Treffer >= Modell: 44 % (von 9 bewerteten)
+    ab 60 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 65 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 70 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 75 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 80 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 85 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 90 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+  Total Over · Zeilen: unter5
+    ab 50 %: 10777 Tipps 6485/4292 richtig/falsch, Treffer 60.2 % gegen Modell 60.6 % (-0.4 PP [-1.3; +0.5] im Rahmen); Saisons mit Treffer >= Modell: 44 % (von 9 bewerteten)
+    ab 55 %: 10777 Tipps 6485/4292 richtig/falsch, Treffer 60.2 % gegen Modell 60.6 % (-0.4 PP [-1.3; +0.5] im Rahmen); Saisons mit Treffer >= Modell: 44 % (von 9 bewerteten)
+    ab 60 %: 8495 Tipps 5145/3350 richtig/falsch, Treffer 60.6 % gegen Modell 60.8 % (-0.2 PP [-1.2; +0.8] im Rahmen); Saisons mit Treffer >= Modell: 33 % (von 9 bewerteten)
+    ab 65 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 70 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 75 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 80 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 85 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 90 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+  Team Total Over (Heim+Gast) · Zeilen: alle
+    ab 50 %: 118665 Tipps 70603/48062 richtig/falsch, Treffer 59.5 % gegen Modell 59.3 % (+0.2 PP [-0.4; +0.9] im Rahmen); Saisons mit Treffer >= Modell: 67 % (von 9 bewerteten)
+    ab 55 %: 87140 Tipps 53999/33141 richtig/falsch, Treffer 62.0 % gegen Modell 61.7 % (+0.2 PP [-0.4; +0.9] im Rahmen); Saisons mit Treffer >= Modell: 78 % (von 9 bewerteten)
+    ab 60 %: 55347 Tipps 35607/19740 richtig/falsch, Treffer 64.3 % gegen Modell 64.2 % (+0.2 PP [-0.5; +0.8] im Rahmen); Saisons mit Treffer >= Modell: 67 % (von 9 bewerteten)
+    ab 65 %: 22192 Tipps 14806/7386 richtig/falsch, Treffer 66.7 % gegen Modell 66.6 % (+0.1 PP [-0.6; +0.8] im Rahmen); Saisons mit Treffer >= Modell: 78 % (von 9 bewerteten)
+    ab 70 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 75 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 80 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 85 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 90 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+  Team Total Over (Heim+Gast) · Zeilen: haupt
+    ab 50 %: 10895 Tipps 5554/5341 richtig/falsch, Treffer 51.0 % gegen Modell 50.9 % (+0.1 PP [-0.8; +1.1] im Rahmen); Saisons mit Treffer >= Modell: 44 % (von 9 bewerteten)
+    ab 55 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 60 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 65 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 70 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 75 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 80 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 85 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 90 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+  Team Total Over (Heim+Gast) · Zeilen: unter1
+    ab 50 %: 21554 Tipps 11550/10004 richtig/falsch, Treffer 53.6 % gegen Modell 53.5 % (+0.1 PP [-0.5; +0.9] im Rahmen); Saisons mit Treffer >= Modell: 67 % (von 9 bewerteten)
+    ab 55 %: 924 Tipps 500/424 richtig/falsch, Treffer 54.1 % gegen Modell 55.1 % (-1.0 PP [-3.9; +2.1] im Rahmen); Saisons mit Treffer >= Modell: 44 % (von 9 bewerteten)
+    ab 60 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 65 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 70 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 75 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 80 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 85 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 90 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+  Team Total Over (Heim+Gast) · Zeilen: unter2
+    ab 50 %: 21554 Tipps 12343/9211 richtig/falsch, Treffer 57.3 % gegen Modell 56.9 % (+0.4 PP [-0.3; +1.2] im Rahmen); Saisons mit Treffer >= Modell: 78 % (von 9 bewerteten)
+    ab 55 %: 21554 Tipps 12343/9211 richtig/falsch, Treffer 57.3 % gegen Modell 56.9 % (+0.4 PP [-0.3; +1.2] im Rahmen); Saisons mit Treffer >= Modell: 78 % (von 9 bewerteten)
+    ab 60 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 65 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 70 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 75 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 80 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 85 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 90 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+  Team Total Over (Heim+Gast) · Zeilen: unter3
+    ab 50 %: 21554 Tipps 13043/8511 richtig/falsch, Treffer 60.5 % gegen Modell 60.2 % (+0.3 PP [-0.4; +1.0] im Rahmen); Saisons mit Treffer >= Modell: 67 % (von 9 bewerteten)
+    ab 55 %: 21554 Tipps 13043/8511 richtig/falsch, Treffer 60.5 % gegen Modell 60.2 % (+0.3 PP [-0.4; +1.0] im Rahmen); Saisons mit Treffer >= Modell: 67 % (von 9 bewerteten)
+    ab 60 %: 12239 Tipps 7494/4745 richtig/falsch, Treffer 61.2 % gegen Modell 60.9 % (+0.3 PP [-0.6; +1.2] im Rahmen); Saisons mit Treffer >= Modell: 44 % (von 9 bewerteten)
+    ab 65 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 70 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 75 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 80 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 85 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 90 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+  Team Total Over (Heim+Gast) · Zeilen: unter4
+    ab 50 %: 21554 Tipps 13724/7830 richtig/falsch, Treffer 63.7 % gegen Modell 63.5 % (+0.2 PP [-0.5; +0.9] im Rahmen); Saisons mit Treffer >= Modell: 67 % (von 9 bewerteten)
+    ab 55 %: 21554 Tipps 13724/7830 richtig/falsch, Treffer 63.7 % gegen Modell 63.5 % (+0.2 PP [-0.5; +0.9] im Rahmen); Saisons mit Treffer >= Modell: 67 % (von 9 bewerteten)
+    ab 60 %: 21554 Tipps 13724/7830 richtig/falsch, Treffer 63.7 % gegen Modell 63.5 % (+0.2 PP [-0.5; +0.9] im Rahmen); Saisons mit Treffer >= Modell: 67 % (von 9 bewerteten)
+    ab 65 %: 638 Tipps 417/221 richtig/falsch, Treffer 65.4 % gegen Modell 65.0 % (+0.3 PP [-3.1; +3.8] im Rahmen); Saisons mit Treffer >= Modell: 56 % (von 9 bewerteten)
+    ab 70 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 75 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 80 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 85 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 90 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+  Team Total Over (Heim+Gast) · Zeilen: unter5
+    ab 50 %: 21554 Tipps 14389/7165 richtig/falsch, Treffer 66.8 % gegen Modell 66.7 % (+0.1 PP [-0.6; +0.8] im Rahmen); Saisons mit Treffer >= Modell: 78 % (von 9 bewerteten)
+    ab 55 %: 21554 Tipps 14389/7165 richtig/falsch, Treffer 66.8 % gegen Modell 66.7 % (+0.1 PP [-0.6; +0.8] im Rahmen); Saisons mit Treffer >= Modell: 78 % (von 9 bewerteten)
+    ab 60 %: 21554 Tipps 14389/7165 richtig/falsch, Treffer 66.8 % gegen Modell 66.7 % (+0.1 PP [-0.6; +0.8] im Rahmen); Saisons mit Treffer >= Modell: 78 % (von 9 bewerteten)
+    ab 65 %: 21554 Tipps 14389/7165 richtig/falsch, Treffer 66.8 % gegen Modell 66.7 % (+0.1 PP [-0.6; +0.8] im Rahmen); Saisons mit Treffer >= Modell: 78 % (von 9 bewerteten)
+    ab 70 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 75 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 80 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 85 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+    ab 90 %: 0 Tipps; Saisons mit Treffer >= Modell: - (von 0 bewerteten)
+
+2. KALIBRIERUNG (Regel: mittl. Abweichung < 3 PP, keine Stufe >= 100 Zeilen > 6 PP; kumulativ ab Schwelle)
+  Sieger (Favorit gewinnt) · alle: ab 50 %: 0.65 PP / max 2.88 PP gut (n 10777) | ab 55 %: 0.79 PP / max 2.88 PP gut (n 8428) | ab 60 %: 0.67 PP / max 2.88 PP gut (n 6163) | ab 65 %: 0.88 PP / max 2.88 PP gut (n 4237) | ab 70 %: 1.17 PP / max 2.88 PP gut (n 2673) | ab 75 %: 1.58 PP / max 2.88 PP gut (n 1501) | ab 80 %: 2.44 PP / max 2.88 PP gut (n 626) | ab 85 %: 1.33 PP / max 1.44 PP gut (n 177) | ab 90 %: n 28 nicht prüfbar
+  Total Over · alle: ab 50 %: 0.23 PP / max 0.4 PP gut (n 64662) | ab 55 %: 0.36 PP / max 0.4 PP gut (n 34029) | ab 60 %: 0.24 PP / max 0.24 PP gut (n 8495) | ab 65 %: n 0 nicht prüfbar | ab 70 %: n 0 nicht prüfbar | ab 75 %: n 0 nicht prüfbar | ab 80 %: n 0 nicht prüfbar | ab 85 %: n 0 nicht prüfbar | ab 90 %: n 0 nicht prüfbar
+  Total Over · haupt: ab 50 %: 0.16 PP / max 0.16 PP gut (n 10777) | ab 55 %: n 0 nicht prüfbar | ab 60 %: n 0 nicht prüfbar | ab 65 %: n 0 nicht prüfbar | ab 70 %: n 0 nicht prüfbar | ab 75 %: n 0 nicht prüfbar | ab 80 %: n 0 nicht prüfbar | ab 85 %: n 0 nicht prüfbar | ab 90 %: n 0 nicht prüfbar
+  Total Over · unter1: ab 50 %: 0.4 PP / max 0.4 PP gut (n 10777) | ab 55 %: n 0 nicht prüfbar | ab 60 %: n 0 nicht prüfbar | ab 65 %: n 0 nicht prüfbar | ab 70 %: n 0 nicht prüfbar | ab 75 %: n 0 nicht prüfbar | ab 80 %: n 0 nicht prüfbar | ab 85 %: n 0 nicht prüfbar | ab 90 %: n 0 nicht prüfbar
+  Total Over · unter2: ab 50 %: 0.26 PP / max 1.59 PP gut (n 10777) | ab 55 %: 1.59 PP / max 1.59 PP gut (n 1698) | ab 60 %: n 0 nicht prüfbar | ab 65 %: n 0 nicht prüfbar | ab 70 %: n 0 nicht prüfbar | ab 75 %: n 0 nicht prüfbar | ab 80 %: n 0 nicht prüfbar | ab 85 %: n 0 nicht prüfbar | ab 90 %: n 0 nicht prüfbar
+  Total Over · unter3: ab 50 %: 0.29 PP / max 0.29 PP gut (n 10777) | ab 55 %: 0.29 PP / max 0.29 PP gut (n 10777) | ab 60 %: n 0 nicht prüfbar | ab 65 %: n 0 nicht prüfbar | ab 70 %: n 0 nicht prüfbar | ab 75 %: n 0 nicht prüfbar | ab 80 %: n 0 nicht prüfbar | ab 85 %: n 0 nicht prüfbar | ab 90 %: n 0 nicht prüfbar
+  Total Over · unter4: ab 50 %: 0.2 PP / max 0.2 PP gut (n 10777) | ab 55 %: 0.2 PP / max 0.2 PP gut (n 10777) | ab 60 %: n 0 nicht prüfbar | ab 65 %: n 0 nicht prüfbar | ab 70 %: n 0 nicht prüfbar | ab 75 %: n 0 nicht prüfbar | ab 80 %: n 0 nicht prüfbar | ab 85 %: n 0 nicht prüfbar | ab 90 %: n 0 nicht prüfbar
+  Total Over · unter5: ab 50 %: 0.41 PP / max 1.06 PP gut (n 10777) | ab 55 %: 0.41 PP / max 1.06 PP gut (n 10777) | ab 60 %: 0.24 PP / max 0.24 PP gut (n 8495) | ab 65 %: n 0 nicht prüfbar | ab 70 %: n 0 nicht prüfbar | ab 75 %: n 0 nicht prüfbar | ab 80 %: n 0 nicht prüfbar | ab 85 %: n 0 nicht prüfbar | ab 90 %: n 0 nicht prüfbar
+  Team Total Over (Heim+Gast) · alle: ab 50 %: 0.18 PP / max 0.34 PP gut (n 129324) | ab 55 %: 0.22 PP / max 0.34 PP gut (n 87140) | ab 60 %: 0.16 PP / max 0.21 PP gut (n 55347) | ab 65 %: 0.08 PP / max 0.08 PP gut (n 22192) | ab 70 %: n 0 nicht prüfbar | ab 75 %: n 0 nicht prüfbar | ab 80 %: n 0 nicht prüfbar | ab 85 %: n 0 nicht prüfbar | ab 90 %: n 0 nicht prüfbar
+  Team Total Over (Heim+Gast) · haupt: ab 50 %: 0.03 PP / max 0.03 PP gut (n 21554) | ab 55 %: n 0 nicht prüfbar | ab 60 %: n 0 nicht prüfbar | ab 65 %: n 0 nicht prüfbar | ab 70 %: n 0 nicht prüfbar | ab 75 %: n 0 nicht prüfbar | ab 80 %: n 0 nicht prüfbar | ab 85 %: n 0 nicht prüfbar | ab 90 %: n 0 nicht prüfbar
+  Team Total Over (Heim+Gast) · unter1: ab 50 %: 0.21 PP / max 0.96 PP gut (n 21554) | ab 55 %: 0.96 PP / max 0.96 PP gut (n 924) | ab 60 %: n 0 nicht prüfbar | ab 65 %: n 0 nicht prüfbar | ab 70 %: n 0 nicht prüfbar | ab 75 %: n 0 nicht prüfbar | ab 80 %: n 0 nicht prüfbar | ab 85 %: n 0 nicht prüfbar | ab 90 %: n 0 nicht prüfbar
+  Team Total Over (Heim+Gast) · unter2: ab 50 %: 0.41 PP / max 0.41 PP gut (n 21554) | ab 55 %: 0.41 PP / max 0.41 PP gut (n 21554) | ab 60 %: n 0 nicht prüfbar | ab 65 %: n 0 nicht prüfbar | ab 70 %: n 0 nicht prüfbar | ab 75 %: n 0 nicht prüfbar | ab 80 %: n 0 nicht prüfbar | ab 85 %: n 0 nicht prüfbar | ab 90 %: n 0 nicht prüfbar
+  Team Total Over (Heim+Gast) · unter3: ab 50 %: 0.29 PP / max 0.3 PP gut (n 21554) | ab 55 %: 0.29 PP / max 0.3 PP gut (n 21554) | ab 60 %: 0.29 PP / max 0.29 PP gut (n 12239) | ab 65 %: n 0 nicht prüfbar | ab 70 %: n 0 nicht prüfbar | ab 75 %: n 0 nicht prüfbar | ab 80 %: n 0 nicht prüfbar | ab 85 %: n 0 nicht prüfbar | ab 90 %: n 0 nicht prüfbar
+  Team Total Over (Heim+Gast) · unter4: ab 50 %: 0.17 PP / max 0.31 PP gut (n 21554) | ab 55 %: 0.17 PP / max 0.31 PP gut (n 21554) | ab 60 %: 0.17 PP / max 0.31 PP gut (n 21554) | ab 65 %: 0.31 PP / max 0.31 PP gut (n 638) | ab 70 %: n 0 nicht prüfbar | ab 75 %: n 0 nicht prüfbar | ab 80 %: n 0 nicht prüfbar | ab 85 %: n 0 nicht prüfbar | ab 90 %: n 0 nicht prüfbar
+  Team Total Over (Heim+Gast) · unter5: ab 50 %: 0.07 PP / max 0.07 PP gut (n 21554) | ab 55 %: 0.07 PP / max 0.07 PP gut (n 21554) | ab 60 %: 0.07 PP / max 0.07 PP gut (n 21554) | ab 65 %: 0.07 PP / max 0.07 PP gut (n 21554) | ab 70 %: n 0 nicht prüfbar | ab 75 %: n 0 nicht prüfbar | ab 80 %: n 0 nicht prüfbar | ab 85 %: n 0 nicht prüfbar | ab 90 %: n 0 nicht prüfbar
+
+3. STABILITÄT (Schwelle, ab der in jeder Saison Treffer >= Modell; Tipps pro Spieltag)
+  Sieger (Favorit gewinnt) · alle: keine solche Schwelle
+  Total Over · alle: keine solche Schwelle
+  Total Over · haupt: keine solche Schwelle
+  Total Over · unter1: keine solche Schwelle
+  Total Over · unter2: keine solche Schwelle
+  Total Over · unter3: keine solche Schwelle
+  Total Over · unter4: keine solche Schwelle
+  Total Over · unter5: keine solche Schwelle
+  Team Total Over (Heim+Gast) · alle: keine solche Schwelle
+  Team Total Over (Heim+Gast) · haupt: keine solche Schwelle
+  Team Total Over (Heim+Gast) · unter1: keine solche Schwelle
+  Team Total Over (Heim+Gast) · unter2: keine solche Schwelle
+  Team Total Over (Heim+Gast) · unter3: keine solche Schwelle
+  Team Total Over (Heim+Gast) · unter4: keine solche Schwelle
+  Team Total Over (Heim+Gast) · unter5: keine solche Schwelle
+
+3b. Differenz Treffer minus Modell (PP) je Saison, Zeilen 'alle', Schwellen 60/70/80 %
+  Sieger (Favorit gewinnt) ab 60 %: 2017: +2.3 (n 692), 2018: +1.4 (n 699), 2019: +1.4 (n 599), 2020: -2.8 (n 596), 2021: +0.3 (n 728), 2022: -1.3 (n 619), 2023: +0.8 (n 727), 2024: +0.3 (n 759), 2025: +2.9 (n 744)
+  Sieger (Favorit gewinnt) ab 70 %: 2017: +2.9 (n 295), 2018: +0.4 (n 281), 2019: -1.1 (n 289), 2020: -1.3 (n 224), 2021: -1.9 (n 300), 2022: -4.4 (n 210), 2023: +4.6 (n 351), 2024: +2.7 (n 362), 2025: +4.6 (n 361)
+  Sieger (Favorit gewinnt) ab 80 %: 2017: -0.1 (n 67), 2018: +7.5 (n 55), 2019: +12.9 (n 61), 2020: -1.1 (n 61), 2021: -2.7 (n 56), 2022: -14.7 (n 28), 2023: +5.6 (n 96), 2024: +5.8 (n 91), 2025: -0.9 (n 111)
+  Total Over ab 60 %: 2017: -0.5 (n 977), 2018: +0.6 (n 954), 2019: -0.8 (n 840), 2020: -1.2 (n 854), 2021: -0.9 (n 946), 2022: +2.0 (n 997), 2023: -2.8 (n 1004), 2024: +2.0 (n 962), 2025: -0.7 (n 961)
+  Total Over ab 70 %: 
+  Total Over ab 80 %: 
+  Team Total Over (Heim+Gast) ab 60 %: 2017: +0.2 (n 6261), 2018: +1.8 (n 6305), 2019: +0.2 (n 5472), 2020: -1.1 (n 5585), 2021: +0.4 (n 6327), 2022: +0.9 (n 6367), 2023: -1.6 (n 6367), 2024: +0.3 (n 6322), 2025: -0.0 (n 6341)
+  Team Total Over (Heim+Gast) ab 70 %: 
+  Team Total Over (Heim+Gast) ab 80 %: 
+
+4. ECHTE TAGE: KLEINE STICHPROBE, NUR INFORMATION: wenige Spiele, Zeilen eines Spiels korreliert, Intervalle breit; die Chancen sind die ANGEZEIGTEN App-Chancen (mit Markt-Mischung, Sigmas der Version) - nicht das reine Modell. Linien = Raster um den App-Mittelwert (keine Betano-Linien).
+  Spiele: 29; Sigmas der Versionen (Spread, Total, Team Total): ['(13.2, 18.6, 11.6)']
+  Sieger (Favorit gewinnt) · alle: ab 50 %: 29 Tipps 17/12 richtig/falsch, Treffer 58.6 % gegen Modell 66.5 % (-7.9 PP [-25.9; +9.9] im Rahmen) | ab 55 %: 25 Tipps 17/8 richtig/falsch, Treffer 68.0 % gegen Modell 68.6 % (-0.6 PP [-19.2; +17.7] im Rahmen) | ab 60 %: 18 Tipps 12/6 richtig/falsch, Treffer 66.7 % gegen Modell 73.2 % (-6.5 PP) | ab 65 %: 16 Tipps 12/4 richtig/falsch, Treffer 75.0 % gegen Modell 74.4 % (+0.6 PP) | ab 70 %: 9 Tipps 8/1 richtig/falsch, Treffer 88.9 % gegen Modell 79.3 % (+9.6 PP) | ab 75 %: 8 Tipps 7/1 richtig/falsch, Treffer 87.5 % gegen Modell 80.4 % (+7.1 PP) | ab 80 %: 4 Tipps 4/0 richtig/falsch, Treffer 100.0 % gegen Modell 84.1 % (+15.9 PP) | ab 85 %: 2 Tipps 2/0 richtig/falsch, Treffer 100.0 % gegen Modell 86.0 % (+13.9 PP)
+  Total Over · alle: ab 50 %: 145 Tipps 66/79 richtig/falsch, Treffer 45.5 % gegen Modell 55.3 % (-9.8 PP [-27.1; +8.8] im Rahmen) | ab 55 %: 87 Tipps 41/46 richtig/falsch, Treffer 47.1 % gegen Modell 57.5 % (-10.3 PP [-27.6; +8.1] im Rahmen)
+  Total Over · haupt: 
+  Team Total Over (Heim+Gast) · alle: ab 50 %: 290 Tipps 155/135 richtig/falsch, Treffer 53.5 % gegen Modell 58.5 % (-5.0 PP [-18.1; +8.1] im Rahmen) | ab 55 %: 232 Tipps 128/104 richtig/falsch, Treffer 55.2 % gegen Modell 60.2 % (-5.0 PP [-17.9; +7.5] im Rahmen) | ab 60 %: 116 Tipps 69/47 richtig/falsch, Treffer 59.5 % gegen Modell 63.5 % (-4.0 PP [-16.9; +8.9] im Rahmen) | ab 65 %: 58 Tipps 36/22 richtig/falsch, Treffer 62.1 % gegen Modell 65.1 % (-3.0 PP [-15.1; +9.0] im Rahmen)
+  Team Total Over (Heim+Gast) · haupt: 

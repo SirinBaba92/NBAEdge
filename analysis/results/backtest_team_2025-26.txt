@@ -1,0 +1,250 @@
+ZUSAMMENFASSUNG (Saison 2025-26, Regular Season n = 1237, Playoffs n = 85 getrennt). REINES MODELL ohne Markt-Mischung; die App mischt den Markt dazu.
+Plausibilität: Heim-Siegwahrscheinlichkeit Ø 0.557 gegen Heimsiegquote 0.555; Modell-Total Ø 230.6518 gegen echter Ø 231.1884.
+Sieg: Brier 0.2102 (Referenz 0,25), Log-Loss 0.608, Favorit gewinnt 67.0 %; Heim-p Ø 0.557 gegen Heimsiegquote 0.555.
+  Kalibrierung: Steigung 1.19; Favorit-Stufen 50-60 %: Modell 55 % / Treffer 56 % (n 493), 60-70 %: Modell 65 % / Treffer 66 % (n 383), 70-80 %: Modell 75 % / Treffer 82 % (n 250), 80+ %: Modell 85 % / Treffer 84 % (n 111).
+  Schwellen: keine Schwelle gedeckt (geprüft 55 bis 80 %).
+Spread (Heim deckt): Bias +0.33 [-0.47; +1.13] Pkt (keine Verzerrung nachweisbar), MAE 11.58.
+  Kalibrierung: gut kalibriert (Steigung 0.92 [0.83; 1.01], 1 liegt im Intervall); mittlere Stufenabweichung 0.7 PP; größte Linien-Abweichung -1.2 PP bei Hauptlinie -5.
+  Schwellen: gedeckt ab 55 % bis 65 % (darüber zu wenige Zeilen).
+Gesamt-Total (Over): Bias -0.54 [-1.58; +0.54] Pkt (keine Verzerrung nachweisbar), MAE 15.17.
+  Kalibrierung: gut kalibriert (Steigung 1.03 [0.90; 1.12], 1 liegt im Intervall); mittlere Stufenabweichung 0.2 PP; größte Linien-Abweichung -2.2 PP bei Hauptlinie +4.
+  Schwellen: gedeckt ab 55 % bis 60 % (darüber zu wenige Zeilen).
+Team-Total Heim (Over): Bias -0.11 [-0.79; +0.60] Pkt (keine Verzerrung nachweisbar), MAE 9.78.
+  Kalibrierung: gut kalibriert (Steigung 0.98 [0.90; 1.07], 1 liegt im Intervall); mittlere Stufenabweichung 0.3 PP; größte Linien-Abweichung -1.1 PP bei Hauptlinie -5.
+  Schwellen: gedeckt ab 55 % bis 65 % (darüber zu wenige Zeilen).
+Team-Total Gast (Over): Bias -0.43 [-1.08; +0.25] Pkt (keine Verzerrung nachweisbar), MAE 9.39.
+  Kalibrierung: gut kalibriert (Steigung 1.02 [0.93; 1.13], 1 liegt im Intervall); mittlere Stufenabweichung 0.5 PP; größte Linien-Abweichung +1.4 PP bei Hauptlinie -2.
+  Schwellen: gedeckt ab 55 % bis 65 % (darüber zu wenige Zeilen).
+Nur Beschreibung der Messung; keine Empfehlungen zu Produktivparametern.
+
+==============================================================================================================
+Backtest Team-Märkte 2025-26 (Walk-forward). Laufzeit 32.9 s. Rechenweg: siehe Kopf von analysis/backtest_team_markets.py.
+==============================================================================================================
+
+KONTROLLEN
+  Spiele insgesamt im Replay (2015-2025): 14168; ausgewertet Saison 2025-26: 1322 (Regular Season 1237, Playoffs 85).
+  Kausalität (Replay nur bis Spiel i, ohne Spiel i und Zukunft = voller Lauf): OK bei 6 Stichproben, größte Abweichung 0.00e+00.
+  Parität replica_tunable gegen old_engine_replica (diff, alle Spiele): größte Abweichung 0.00e+00. Spiele chronologisch (Datum, ID): ja.
+  Sigmas Version 2: Spread 13.2, Total 18.6, Team Total 11.6; Spread = diff / 50.
+
+SIEG (Regular Season)
+  n 1237, Brier 0.2102 (Referenz immer 50 %: 0,25), Log-Loss 0.608, Favorit gewinnt 67.0 %, Steigung 1.19
+  Heim-Siegwahrscheinlichkeit nach Stufen:
+       Stufe    n  Modell  Treffer  Abw. PP
+    --------  ---  ------  -------  -------
+     10-20 %   18  0.1664   0.0556   -11.08
+     20-30 %   75  0.2568     0.16    -9.68
+     30-40 %  139  0.3523   0.3309    -2.13
+     40-50 %  228  0.4527   0.4386    -1.41
+     50-60 %  265  0.5501    0.566      1.6
+     60-70 %  244  0.6474   0.6557     0.84
+     70-80 %  175  0.7529   0.8114     5.85
+     80-90 %   84  0.8414   0.7976    -4.38
+    90-100 %    9  0.9248      1.0     7.52
+  Favorit nach Stufen:
+      Stufe    n  Modell  Treffer  Abw. PP
+    -------  ---  ------  -------  -------
+    50-60 %  493  0.5488   0.5639     1.51
+    60-70 %  383  0.6475   0.6606     1.31
+    70-80 %  250    0.75     0.82      7.0
+      80+ %  111  0.8469   0.8378     -0.9
+  Vorhergesagte Seite nach 5er-Stufen:
+      Stufe    n  Modell  Treffer  Abw. PP
+    -------  ---  ------  -------  -------
+    50-55 %  249  0.5246   0.5542     2.96
+    55-60 %  244  0.5735   0.5738     0.03
+    60-65 %  204  0.6246   0.6225     -0.2
+    65-70 %  179  0.6736   0.7039     3.03
+    70-75 %  126   0.726   0.7937     6.76
+    75-80 %  124  0.7744   0.8468     7.24
+    80-85 %   65  0.8212   0.7846    -3.66
+    85-90 %   37   0.873   0.8919     1.89
+      90+ %    9  0.9248      1.0     7.52
+
+SPREAD (HEIM DECKT)  (Sigma 13.2)
+  n 1237; Ø Modell 2.10, Ø Ergebnis 1.78; Bias (Modell minus Ergebnis) +0.33 [-0.47; +1.13]; MAE 11.58 [11.06; 12.11]
+  über alle Linien: Brier 0.2425, Log-Loss 0.6780, Steigung 0.92 [0.83; 1.01]
+  je Linie (Hauptlinie k = 0; Abweichung = Trefferquote minus Modell, Ereignis Heim deckt / Over):
+     k     n  Modell  Treffer  Abw. PP  95 %-Intervall   Brier  LogLoss  Steigung
+    --  ----  ------  -------  -------  --------------  ------  -------  --------
+    -5  1237  0.6474   0.6354     -1.2    [-3.7; +1.4]  0.2318   0.6564      None
+    -4  1237  0.6189   0.6112    -0.77    [-3.2; +1.9]  0.2377   0.6684      None
+    -3  1237  0.5897   0.5812    -0.85    [-3.4; +1.9]  0.2435   0.6801      None
+    -2  1237  0.5601   0.5513    -0.87    [-3.5; +1.9]  0.2476   0.6884      None
+    -1  1237    0.53   0.5327     0.27    [-2.3; +3.1]  0.2491   0.6914      None
+     0  1237  0.4999    0.502     0.22    [-2.4; +2.9]  0.2501   0.6934      None
+     1  1237  0.4697   0.4737     0.41    [-2.2; +3.1]  0.2495   0.6921      None
+     2  1237  0.4397   0.4446      0.5    [-2.2; +3.3]  0.2471   0.6874      None
+     3  1237    0.41   0.4212     1.12    [-1.5; +3.9]   0.244   0.6811      None
+     4  1237  0.3808    0.388     0.72    [-1.9; +3.5]  0.2377   0.6684      None
+     5  1237  0.3523   0.3541     0.18    [-2.4; +3.0]   0.229   0.6506      None
+  vorhergesagte Seite nach 5er-Stufen (alle Linien, Zeilen eines Spiels nicht unabhängig):
+      Stufe     n  Modell  Treffer  Abw. PP
+    -------  ----  ------  -------  -------
+    50-55 %  4118  0.5251   0.5226    -0.25
+    55-60 %  4144  0.5751   0.5661     -0.9
+    60-65 %  4330  0.6251   0.6208    -0.44
+    65-70 %  1015  0.6559   0.6325    -2.34
+  Over-/Heim-Seite nach 10er-Stufen (alle Linien):
+      Stufe     n  Modell  Treffer  Abw. PP
+    -------  ----  ------  -------  -------
+    30-40 %  2657  0.3687   0.3749     0.61
+    40-50 %  4177  0.4498   0.4563     0.65
+    50-60 %  4085  0.5502   0.5452    -0.51
+    60-70 %  2688  0.6307   0.6209    -0.98
+  Schwellen (Kriterium: mittlere Abweichung < 3 PP und keine Stufe mit >= 100 Zeilen über 6 PP daneben): gedeckt ab 55 % bis 65 % (darüber zu wenige Zeilen)
+
+GESAMT-TOTAL (OVER)  (Sigma 18.6)
+  n 1237; Ø Modell 230.65, Ø Ergebnis 231.19; Bias (Modell minus Ergebnis) -0.54 [-1.58; +0.54]; MAE 15.17 [14.52; 15.82]
+  über alle Linien: Brier 0.2452, Log-Loss 0.6834, Steigung 1.03 [0.90; 1.12]
+  je Linie (Hauptlinie k = 0; Abweichung = Trefferquote minus Modell, Ereignis Heim deckt / Over):
+     k     n  Modell  Treffer  Abw. PP  95 %-Intervall   Brier  LogLoss  Steigung
+    --  ----  ------  -------  -------  --------------  ------  -------  --------
+    -5  1237  0.6057   0.5877     -1.8    [-4.7; +0.8]  0.2424   0.6779      None
+    -4  1237  0.5849   0.5724    -1.25    [-4.2; +1.5]  0.2447   0.6826      None
+    -3  1237  0.5638   0.5602    -0.36    [-3.3; +2.4]  0.2462   0.6856      None
+    -2  1237  0.5426   0.5424    -0.01    [-3.0; +2.7]  0.2481   0.6893      None
+    -1  1237  0.5212   0.5222      0.1    [-2.8; +3.0]  0.2494   0.6919      None
+     0  1237  0.4998   0.5004     0.07    [-2.7; +3.1]  0.2499   0.6929      None
+     1  1237  0.4783   0.4802     0.19    [-2.6; +3.1]  0.2495   0.6921      None
+     2  1237  0.4569   0.4584     0.14    [-2.6; +3.0]  0.2481   0.6894      None
+     3  1237  0.4357   0.4236    -1.21    [-4.0; +1.7]  0.2441   0.6813      None
+     4  1237  0.4146   0.3929    -2.17    [-4.9; +0.7]  0.2388   0.6706      None
+     5  1237  0.3938     0.38    -1.39    [-4.2; +1.5]  0.2356   0.6641      None
+  vorhergesagte Seite nach 5er-Stufen (alle Linien, Zeilen eines Spiels nicht unabhängig):
+      Stufe     n  Modell  Treffer  Abw. PP
+    -------  ----  ------  -------  -------
+    50-55 %  5784   0.525   0.5239    -0.12
+    55-60 %  5873  0.5751   0.5767     0.16
+    60-65 %  1950  0.6081   0.6138     0.57
+  Over-/Heim-Seite nach 10er-Stufen (alle Linien):
+      Stufe     n  Modell  Treffer  Abw. PP
+    -------  ----  ------  -------  -------
+    30-40 %   989  0.3917   0.3741    -1.76
+    40-50 %  5830  0.4497   0.4434    -0.64
+    50-60 %  5827  0.5503   0.5444    -0.59
+    60-70 %   961   0.608   0.6015    -0.65
+  Schwellen (Kriterium: mittlere Abweichung < 3 PP und keine Stufe mit >= 100 Zeilen über 6 PP daneben): gedeckt ab 55 % bis 60 % (darüber zu wenige Zeilen)
+
+TEAM-TOTAL HEIM (OVER)  (Sigma 11.6)
+  n 1237; Ø Modell 116.38, Ø Ergebnis 116.48; Bias (Modell minus Ergebnis) -0.11 [-0.79; +0.60]; MAE 9.78 [9.38; 10.19]
+  über alle Linien: Brier 0.2390, Log-Loss 0.6708, Steigung 0.98 [0.90; 1.07]
+  je Linie (Hauptlinie k = 0; Abweichung = Trefferquote minus Modell, Ereignis Heim deckt / Over):
+     k     n  Modell  Treffer  Abw. PP  95 %-Intervall   Brier  LogLoss  Steigung
+    --  ----  ------  -------  -------  --------------  ------  -------  --------
+    -5  1237  0.6667   0.6556    -1.11    [-3.7; +1.3]  0.2259   0.6441      None
+    -4  1237  0.6348   0.6289    -0.59    [-3.3; +1.9]  0.2333   0.6593      None
+    -3  1237   0.602   0.6015    -0.05    [-2.8; +2.6]  0.2396   0.6723      None
+    -2  1237  0.5684   0.5724      0.4    [-2.3; +3.0]  0.2446   0.6823      None
+    -1  1237  0.5343   0.5408     0.65    [-2.0; +3.3]  0.2482   0.6895      None
+     0  1237  0.4999    0.502     0.21    [-2.6; +3.0]  0.2498   0.6927      None
+     1  1237  0.4656   0.4608    -0.48    [-3.2; +2.4]  0.2483   0.6898      None
+     2  1237  0.4315   0.4317     0.02    [-2.7; +2.9]  0.2451   0.6833      None
+     3  1237  0.3979   0.3961    -0.18    [-2.8; +2.7]  0.2389   0.6707      None
+     4  1237  0.3651   0.3646    -0.05    [-2.6; +2.6]  0.2313   0.6553      None
+     5  1237  0.3332   0.3379     0.47    [-2.0; +3.3]  0.2237   0.6395      None
+  vorhergesagte Seite nach 5er-Stufen (alle Linien, Zeilen eines Spiels nicht unabhängig):
+      Stufe     n  Modell  Treffer  Abw. PP
+    -------  ----  ------  -------  -------
+    50-55 %  3579  0.5248   0.5284     0.35
+    55-60 %  3677  0.5748   0.5755     0.07
+    60-65 %  3792   0.625   0.6226    -0.24
+    65-70 %  2559  0.6662   0.6612     -0.5
+  Over-/Heim-Seite nach 10er-Stufen (alle Linien):
+      Stufe     n  Modell  Treffer  Abw. PP
+    -------  ----  ------  -------  -------
+    30-40 %  3183  0.3584   0.3582    -0.03
+    40-50 %  3623  0.4499   0.4499     -0.0
+    50-60 %  3633  0.5502   0.5544     0.41
+    60-70 %  3168  0.6417   0.6345    -0.72
+  Schwellen (Kriterium: mittlere Abweichung < 3 PP und keine Stufe mit >= 100 Zeilen über 6 PP daneben): gedeckt ab 55 % bis 65 % (darüber zu wenige Zeilen)
+
+TEAM-TOTAL GAST (OVER)  (Sigma 11.6)
+  n 1237; Ø Modell 114.27, Ø Ergebnis 114.71; Bias (Modell minus Ergebnis) -0.43 [-1.08; +0.25]; MAE 9.39 [9.00; 9.78]
+  über alle Linien: Brier 0.2381, Log-Loss 0.6690, Steigung 1.02 [0.93; 1.13]
+  je Linie (Hauptlinie k = 0; Abweichung = Trefferquote minus Modell, Ereignis Heim deckt / Over):
+     k     n  Modell  Treffer  Abw. PP  95 %-Intervall   Brier  LogLoss  Steigung
+    --  ----  ------  -------  -------  --------------  ------  -------  --------
+    -5  1237  0.6667   0.6791     1.23    [-1.6; +3.8]   0.218   0.6278      None
+    -4  1237  0.6348   0.6403     0.54    [-2.3; +3.2]  0.2303   0.6533      None
+    -3  1237   0.602   0.6152     1.32    [-1.5; +4.0]   0.237   0.6669      None
+    -2  1237  0.5684   0.5829     1.45    [-1.4; +4.1]  0.2434   0.6798      None
+    -1  1237  0.5343   0.5392     0.49    [-2.4; +3.2]  0.2486   0.6903      None
+     0  1237     0.5   0.5093     0.93    [-1.9; +3.6]    0.25   0.6932      None
+     1  1237  0.4656   0.4721     0.65    [-2.3; +3.4]  0.2493   0.6918      None
+     2  1237  0.4316   0.4276    -0.39    [-3.2; +2.2]   0.245   0.6831      None
+     3  1237   0.398   0.3969     -0.1    [-2.9; +2.5]  0.2394   0.6719      None
+     4  1237  0.3651   0.3719     0.67    [-2.2; +3.3]  0.2338   0.6604      None
+     5  1237  0.3333   0.3395     0.63    [-2.0; +3.2]  0.2244    0.641      None
+  vorhergesagte Seite nach 5er-Stufen (alle Linien, Zeilen eines Spiels nicht unabhängig):
+      Stufe     n  Modell  Treffer  Abw. PP
+    -------  ----  ------  -------  -------
+    50-55 %  3609   0.525   0.5223    -0.27
+    55-60 %  3656  0.5751   0.5875     1.24
+    60-65 %  3791  0.6251   0.6238    -0.13
+    65-70 %  2551  0.6662   0.6695     0.33
+  Over-/Heim-Seite nach 10er-Stufen (alle Linien):
+      Stufe     n  Modell  Treffer  Abw. PP
+    -------  ----  ------  -------  -------
+    30-40 %  3169  0.3583   0.3642     0.59
+    40-50 %  3628  0.4496   0.4518     0.21
+    50-60 %  3637  0.5501    0.562     1.19
+    60-70 %  3173  0.6416   0.6486      0.7
+  Schwellen (Kriterium: mittlere Abweichung < 3 PP und keine Stufe mit >= 100 Zeilen über 6 PP daneben): gedeckt ab 55 % bis 65 % (darüber zu wenige Zeilen)
+
+AUFTEILUNGEN (Regular Season; je Markt n / Bias / MAE bzw. Brier / Hauptlinie Modell gegen Treffer / Steigung über alle Linien / mittlere Stufenabweichung PP)
+  [erste_saisonhaelfte]
+    Sieg        n  618  Heim-p Ø 0.549 / Heimsiegquote 0.560  Brier 0.2229  Favorit 0.625  Steigung 0.91
+    spread      n  618  Bias   0.13  MAE 11.07  Hauptlinie 0.500 / 0.510  Steigung 0.96  Abw. 0.5
+    total       n  618  Bias  -0.29  MAE 15.23  Hauptlinie 0.500 / 0.497  Steigung 1.14  Abw. 0.8
+    tt_home     n  618  Bias  -0.08  MAE  9.83  Hauptlinie 0.500 / 0.497  Steigung 0.99  Abw. 0.5
+    tt_away     n  618  Bias  -0.21  MAE  9.16  Hauptlinie 0.500 / 0.511  Steigung 1.04  Abw. 0.8
+  [zweite_saisonhaelfte]
+    Sieg        n  619  Heim-p Ø 0.565 / Heimsiegquote 0.551  Brier 0.1975  Favorit 0.716  Steigung 1.54
+    spread      n  619  Bias   0.52  MAE 12.10  Hauptlinie 0.500 / 0.494  Steigung 0.88  Abw. 0.9
+    total       n  619  Bias  -0.79  MAE 15.10  Hauptlinie 0.500 / 0.504  Steigung 0.92  Abw. 0.7
+    tt_home     n  619  Bias  -0.13  MAE  9.73  Hauptlinie 0.500 / 0.507  Steigung 0.98  Abw. 0.4
+    tt_away     n  619  Bias  -0.65  MAE  9.63  Hauptlinie 0.500 / 0.507  Steigung 1.00  Abw. 0.4
+  [erste_15_spiele_je_team]
+    Sieg        n  218  Heim-p Ø 0.552 / Heimsiegquote 0.569  Brier 0.1996  Favorit 0.670  Steigung 1.28
+    spread      n  218  Bias  -0.33  MAE 10.36  Hauptlinie 0.500 / 0.518  Steigung 1.08  Abw. 1.1
+    total       n  218  Bias  -3.02  MAE 14.38  Hauptlinie 0.500 / 0.550  Steigung 1.47  Abw. 2.7
+    tt_home     n  218  Bias  -1.67  MAE  9.32  Hauptlinie 0.501 / 0.505  Steigung 1.02  Abw. 0.6
+    tt_away     n  218  Bias  -1.35  MAE  8.89  Hauptlinie 0.500 / 0.564  Steigung 1.11  Abw. 1.5
+  [rest]
+    Sieg        n 1019  Heim-p Ø 0.558 / Heimsiegquote 0.553  Brier 0.2124  Favorit 0.670  Steigung 1.17
+    spread      n 1019  Bias   0.46  MAE 11.84  Hauptlinie 0.500 / 0.499  Steigung 0.89  Abw. 0.9
+    total       n 1019  Bias  -0.00  MAE 15.34  Hauptlinie 0.500 / 0.490  Steigung 0.94  Abw. 0.5
+    tt_home     n 1019  Bias   0.23  MAE  9.88  Hauptlinie 0.500 / 0.501  Steigung 0.97  Abw. 0.3
+    tt_away     n 1019  Bias  -0.23  MAE  9.50  Hauptlinie 0.500 / 0.498  Steigung 1.00  Abw. 0.4
+  [mit_overtime]
+    Sieg        n   56  Heim-p Ø 0.533 / Heimsiegquote 0.625  Brier 0.2605  Favorit 0.607  Steigung 0.13
+    spread      n   56  Bias   0.27  MAE  5.79  Hauptlinie 0.502 / 0.500  Steigung 1.94  Abw. 7.1
+    total       n   56  Bias -24.69  MAE 26.20  Hauptlinie 0.501 / 0.839  Steigung 1.89  Abw. 2.7
+    tt_home     n   56  Bias -12.21  MAE 13.42  Hauptlinie 0.501 / 0.857  Steigung 1.44  Abw. 3.7
+    tt_away     n   56  Bias -12.48  MAE 13.68  Hauptlinie 0.498 / 0.875  Steigung 0.99  Abw. 5.4
+  [ohne_overtime]
+    Sieg        n 1181  Heim-p Ø 0.558 / Heimsiegquote 0.552  Brier 0.2078  Favorit 0.673  Steigung 1.24
+    spread      n 1181  Bias   0.33  MAE 11.86  Hauptlinie 0.500 / 0.502  Steigung 0.88  Abw. 1.0
+    total       n 1181  Bias   0.61  MAE 14.65  Hauptlinie 0.500 / 0.484  Steigung 1.04  Abw. 0.2
+    tt_home     n 1181  Bias   0.47  MAE  9.61  Hauptlinie 0.500 / 0.485  Steigung 1.00  Abw. 0.3
+    tt_away     n 1181  Bias   0.14  MAE  9.19  Hauptlinie 0.500 / 0.492  Steigung 1.05  Abw. 0.7
+  [Heim gegen Gast]
+    Team-Total Heim: Bias -0.11, MAE 9.78, Steigung 0.98;  Gast: Bias -0.43, MAE 9.39, Steigung 1.02
+    Heimvorteil: Ø Spread Modell +2.10 gegen Ø Marge +1.78; Heim-p Ø 0.557 gegen Heimsiegquote 0.555
+
+TOTAL SPEZIELL
+  Residuum (Ergebnis minus Modell-Total): Ø +0.54, SD 19.08 (Modell-Sigma 18.6), Schiefe +0.18, Überschuss-Wölbung +0.01
+  Quantile 5/25/50/75/95 %: [-29.12, -12.36, 0.12, 13.48, 33.93]   (Normal mit SD 18.6: [-30.06, -12.01, 0.54, 13.08, 31.13])
+  nach Höhe des Modell-Totals:
+    modell_total_unter_225     n  155  Ø Modell 222.6  Ø Ergebnis 223.6  Bias -1.05  Over Hauptlinie Modell 0.500 / Treffer 0.458  alle Linien 0.500 / 0.456  Steigung 0.73
+    modell_total_225_bis_235   n  866  Ø Modell 230.3  Ø Ergebnis 230.5  Bias -0.14  Over Hauptlinie Modell 0.500 / Treffer 0.507  alle Linien 0.500 / 0.496  Steigung 1.08
+    modell_total_ab_235        n  216  Ø Modell 237.8  Ø Ergebnis 239.5  Bias -1.77  Over Hauptlinie Modell 0.499 / Treffer 0.505  alle Linien 0.499 / 0.507  Steigung 1.06
+  Overtime: 56 Spiele (4.5 %), Ø Total mit OT 255.8 gegen ohne 230.0; Residuum Ø mit OT +24.69, ohne -0.61; Bias gesamt -0.54, ohne OT-Spiele +0.61
+
+PLAYOFFS (Zusatz, kleine Stichprobe, nur Fehler)
+  spread   n 85  Bias +0.16 [-3.08; +3.60]  MAE 13.29
+  total    n 85  Bias +14.39 [+10.71; +18.03]  MAE 17.84
+  tt_home  n 85  Bias +7.28 [+4.90; +9.65]  MAE 10.72
+  tt_away  n 85  Bias +7.11 [+4.37; +9.68]  MAE 11.76
+  Sieg: Heim-p Ø 0.557, Heimsiegquote 0.553, Brier 0.2337

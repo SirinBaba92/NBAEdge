@@ -423,7 +423,7 @@ def run_one(con_write, g: dict, data: dict, real=input, now_fn=time.time) -> str
               f"{len(parsed['spread']['lines'])} Spread-, {len(parsed['total']['lines'])} Total-Linien, Team Totals "
               f"{len(parsed['team']['home']['lines'])}/{len(parsed['team']['away']['lines'])}, {len(parsed['players'])} Spieler in den Daten.")
     try:
-        res = ei.run_game(con, g, now_fn)
+        res = ei.run_game(con, g, now_fn, replace_player_lines=True)       # Betano-Spieler ersetzen ihre gespeicherten Meilensteine komplett
     except ImportAbort as e:
         con_write(f"\nABBRUCH: {e}")
         return None

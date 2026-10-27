@@ -307,10 +307,13 @@ def _warn_dev(plan: dict, market: str, label: str, value: float, ref: dict) -> N
                                 f"(Grenze {fnum(market_lines.DEVIATION_LIMITS[market])}). Wird trotzdem gespeichert.")
 
 
-def build_plan(s: Session, g: dict, entry: dict | None, roster: dict, ref: dict | None = None) -> dict:
+def build_plan(s: Session, g: dict, entry: dict | None, roster: dict, ref: dict | None = None, replace_player_lines: bool = False) -> dict:
     """Stellt alle Fragen eines Spiels (Heim zuerst) und liefert den Plan:
     {'winner': {home_odds, away_odds}|None, 'spread': [Zeilen], 'total': [...], 'team': {'home': [...], 'away': [...]}, 'players': [Bloecke],
-     'remove': [Entfernungen], 'warnings': [...]}; Zeile = {id|None, line, odds..., direction}."""
+     'remove': [Entfernungen], 'warnings': [...]}; Zeile = {id|None, line, odds..., direction}.
+    replace_player_lines (nur der Betano-Import setzt es): Liefert die Quelle fuer einen Spieler aktuelle Meilensteine, ersetzen sie dessen gespeicherte Meilensteine komplett;
+    Team-Total-Linien, die mit der verschobenen Hauptlinie die Richtung wechseln, werden neu angelegt (der Store behaelt sonst die alte Richtung -> 'hoechstens 3 hoehere Linien');
+    gespeicherte Schwellen, die ausserhalb der neuen Zeilen liegen, werden entfernt (sonst bleiben sie neben den neuen stehen und sprengen das Limit MAX_MILESTONES). Standard False = wie bisher."""
     ref = ref or {}
     H, A = nick(g["home"]), nick(g["away"])
     plan = {"winner": None, "spread": [], "total": [], "team": {"home": [], "away": []}, "players": [], "remove": [], "replaced": set(), "warnings": []}
@@ -455,7 +458,13 @@ def build_plan(s: Session, g: dict, entry: dict | None, roster: dict, ref: dict 
                 continue
             o, u = tt_odds(sv, ln)
             used.add(ln)
-            rows.append({"id": sv["id"], "line": ln, "over_odds": o, "under_odds": u, "direction": "higher" if ln > tl else "lower"})
+            d = "higher" if ln > tl else "lower"
+            rid = sv["id"]
+            if replace_player_lines and sv.get("direction") != d:               # Betano hat die Hauptlinie verschoben: der Store behielte die alte Richtung -> neu anlegen, alte ersetzen
+                plan["remove"].append(("team", side, sv["id"]))
+                plan["replaced"].add(("team", side, sv["id"]))
+                rid = None
+            rows.append({"id": rid, "line": ln, "over_odds": o, "under_odds": u, "direction": d})
         while True:
             more = s.ask(f"Weitere Team-Total-Linie {N} vorhanden? (j = ja, Enter = nein)", parse_yes_no)
             if not more:
@@ -540,6 +549,11 @@ def build_plan(s: Session, g: dict, entry: dict | None, roster: dict, ref: dict 
                     continue
                 rows.append({"id": sv["id"] if sv else None, "threshold": th, "odds": q})
             if rows:
+                if replace_player_lines and blk:                                   # Betano liefert den Spieler: alte Schwellen, die es nicht mehr gibt, fallen weg
+                    keep = {r["threshold"] for r in rows}
+                    for th_, sv_ in slines.items():
+                        if th_ not in keep and ("player_line", blk["id"], sv_["id"]) not in plan["remove"]:
+                            plan["remove"].append(("player_line", blk["id"], sv_["id"]))
                 plan["players"].append({"block_id": blk["id"] if blk else None, "person_id": p["person_id"], "name": p["name"], "team": team,
                                         "team_abbreviation": p.get("team_abbreviation") or "", "rows": rows})
                 _warn_monotonic(plan, p["name"], rows)
@@ -776,7 +790,7 @@ def jump_menu(con: Console, g: dict) -> str | None:
         con.write(f"  Bitte eine Nummer von 1 bis {len(menu)} eingeben.")
 
 
-def run_game(con: Console, g: dict, now_fn=time.time) -> str:
+def run_game(con: Console, g: dict, now_fn=time.time, replace_player_lines: bool = False) -> str:
     """Ein Spiel abfragen, bestaetigen, speichern. Rueckgabe: 'saved' | 'discarded' | 'unchanged'. 'q' wirft Quit.
     Am 'Speichern?'-Prompt springt 's' in einen einzelnen Bereich; danach geht es direkt zurueck zur Zusammenfassung."""
     key = store.game_key(g["date"], g["start"], g["home"], g["away"])
@@ -790,7 +804,7 @@ def run_game(con: Console, g: dict, now_fn=time.time) -> str:
     while True:
         try:
             s.reset()
-            plan = build_plan(s, g, entry, roster, ref)
+            plan = build_plan(s, g, entry, roster, ref, replace_player_lines)
         except Back:
             r = s.undo()
             if r == "first":

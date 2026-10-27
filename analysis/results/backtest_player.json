@@ -1,0 +1,4343 @@
+{
+ "version": 1,
+ "hinweis": "Walk-forward Spieler-Backtest; siehe Kopf von analysis/backtest_player_markets.py (Einschraenkungen: Konstanten in-sample/aus der Zukunft, Ausfaelle, OT).",
+ "league_ppm": "produktiv (2025-26)",
+ "saisons": {
+  "2024-25": {
+   "spielerzeilen": 25783,
+   "spiele": 1230,
+   "spieler": 543,
+   "uebersprungene_spieler": 423,
+   "anteil_uebersprungen": 0.0161,
+   "gespielte_spieler_gesamt": 26206,
+   "team_spiele": 2460,
+   "kader_ø": 15.67,
+   "rotation_B_ø": 10.0,
+   "ausfaelle_C_ø_je_teamspiel": 2.14,
+   "teamabgleich_gelungen_B": 1.0,
+   "faktor_f_B_ø": 0.961,
+   "varianten": {
+    "A": {
+     "n": 451916,
+     "brier": 0.1682,
+     "brier_ci95": [
+      0.1669,
+      0.1696
+     ],
+     "logloss": 0.5105,
+     "logloss_ci95": [
+      0.5064,
+      0.5141
+     ],
+     "mittel_modell": 0.4214,
+     "trefferquote": 0.4195,
+     "abweichung_pp": -0.19,
+     "brier_basisrate": 0.2435,
+     "steigung": 0.911,
+     "stufen": [
+      {
+       "stufe": "5-10 %",
+       "n": 70239,
+       "modell": 0.0726,
+       "treffer": 0.0803,
+       "abweichung_pp": 0.77,
+       "ci95_pp": [
+        0.4,
+        1.08
+       ]
+      },
+      {
+       "stufe": "10-15 %",
+       "n": 44600,
+       "modell": 0.1236,
+       "treffer": 0.1361,
+       "abweichung_pp": 1.25,
+       "ci95_pp": [
+        0.79,
+        1.7
+       ]
+      },
+      {
+       "stufe": "15-20 %",
+       "n": 33731,
+       "modell": 0.174,
+       "treffer": 0.1891,
+       "abweichung_pp": 1.51,
+       "ci95_pp": [
+        0.94,
+        2.07
+       ]
+      },
+      {
+       "stufe": "20-25 %",
+       "n": 27781,
+       "modell": 0.2244,
+       "treffer": 0.2394,
+       "abweichung_pp": 1.5,
+       "ci95_pp": [
+        0.95,
+        2.14
+       ]
+      },
+      {
+       "stufe": "25-30 %",
+       "n": 23833,
+       "modell": 0.2746,
+       "treffer": 0.287,
+       "abweichung_pp": 1.23,
+       "ci95_pp": [
+        0.48,
+        1.81
+       ]
+      },
+      {
+       "stufe": "30-35 %",
+       "n": 21387,
+       "modell": 0.3246,
+       "treffer": 0.3395,
+       "abweichung_pp": 1.48,
+       "ci95_pp": [
+        0.67,
+        2.23
+       ]
+      },
+      {
+       "stufe": "35-40 %",
+       "n": 19525,
+       "modell": 0.3746,
+       "treffer": 0.3833,
+       "abweichung_pp": 0.87,
+       "ci95_pp": [
+        0.13,
+        1.62
+       ]
+      },
+      {
+       "stufe": "40-45 %",
+       "n": 18340,
+       "modell": 0.4247,
+       "treffer": 0.4309,
+       "abweichung_pp": 0.62,
+       "ci95_pp": [
+        -0.04,
+        1.23
+       ]
+      },
+      {
+       "stufe": "45-50 %",
+       "n": 17499,
+       "modell": 0.4749,
+       "treffer": 0.4763,
+       "abweichung_pp": 0.14,
+       "ci95_pp": [
+        -0.57,
+        0.9
+       ]
+      },
+      {
+       "stufe": "50-55 %",
+       "n": 16854,
+       "modell": 0.5249,
+       "treffer": 0.522,
+       "abweichung_pp": -0.29,
+       "ci95_pp": [
+        -1.28,
+        0.51
+       ]
+      },
+      {
+       "stufe": "55-60 %",
+       "n": 16474,
+       "modell": 0.5751,
+       "treffer": 0.5656,
+       "abweichung_pp": -0.95,
+       "ci95_pp": [
+        -1.65,
+        -0.13
+       ]
+      },
+      {
+       "stufe": "60-65 %",
+       "n": 16603,
+       "modell": 0.625,
+       "treffer": 0.6157,
+       "abweichung_pp": -0.94,
+       "ci95_pp": [
+        -1.89,
+        -0.13
+       ]
+      },
+      {
+       "stufe": "65-70 %",
+       "n": 16795,
+       "modell": 0.675,
+       "treffer": 0.6579,
+       "abweichung_pp": -1.71,
+       "ci95_pp": [
+        -2.37,
+        -0.84
+       ]
+      },
+      {
+       "stufe": "70-75 %",
+       "n": 17359,
+       "modell": 0.7253,
+       "treffer": 0.7062,
+       "abweichung_pp": -1.91,
+       "ci95_pp": [
+        -2.49,
+        -1.16
+       ]
+      },
+      {
+       "stufe": "75-80 %",
+       "n": 18581,
+       "modell": 0.7753,
+       "treffer": 0.7475,
+       "abweichung_pp": -2.78,
+       "ci95_pp": [
+        -3.52,
+        -2.2
+       ]
+      },
+      {
+       "stufe": "80-85 %",
+       "n": 20125,
+       "modell": 0.8255,
+       "treffer": 0.7935,
+       "abweichung_pp": -3.2,
+       "ci95_pp": [
+        -3.86,
+        -2.69
+       ]
+      },
+      {
+       "stufe": "85-90 %",
+       "n": 23053,
+       "modell": 0.8756,
+       "treffer": 0.8412,
+       "abweichung_pp": -3.44,
+       "ci95_pp": [
+        -4.01,
+        -2.85
+       ]
+      },
+      {
+       "stufe": "90-95 %",
+       "n": 29137,
+       "modell": 0.9262,
+       "treffer": 0.8965,
+       "abweichung_pp": -2.98,
+       "ci95_pp": [
+        -3.41,
+        -2.6
+       ]
+      }
+     ],
+     "steigung_stufen": 0.911,
+     "steigung_stufen_ci95": [
+      0.901,
+      0.922
+     ],
+     "abdeckung": {
+      "gedeckt_insgesamt": true,
+      "mittlere_abweichung_pp": 1.49,
+      "stufen_ueber_6pp": [],
+      "stufen_gedeckt_ab100": [
+       "5-10 %",
+       "10-15 %",
+       "15-20 %",
+       "20-25 %",
+       "25-30 %",
+       "30-35 %",
+       "35-40 %",
+       "40-45 %",
+       "45-50 %",
+       "50-55 %",
+       "55-60 %",
+       "60-65 %",
+       "65-70 %",
+       "70-75 %",
+       "75-80 %",
+       "80-85 %",
+       "85-90 %",
+       "90-95 %"
+      ],
+      "bereiche": {
+       "niedrig 5-35 %": {
+        "n": 221571,
+        "mittlere_abweichung_pp": 1.19,
+        "max_abweichung_pp_ab100": 1.51,
+        "gedeckt": true
+       },
+       "mittel 35-65 %": {
+        "n": 105295,
+        "mittlere_abweichung_pp": 0.64,
+        "max_abweichung_pp_ab100": 0.95,
+        "gedeckt": true
+       },
+       "hoch 65-95 %": {
+        "n": 125050,
+        "mittlere_abweichung_pp": 2.75,
+        "max_abweichung_pp_ab100": 3.44,
+        "gedeckt": true
+       }
+      }
+     },
+     "punktfehler": {
+      "minuten": {
+       "n": 25783,
+       "bias": -0.03,
+       "bias_ci95": [
+        -0.162,
+        0.094
+       ],
+       "mae": 5.215,
+       "mae_ci95": [
+        5.143,
+        5.295
+       ]
+      },
+      "punkte": {
+       "n": 25783,
+       "bias": -0.035,
+       "bias_ci95": [
+        -0.114,
+        0.051
+       ],
+       "mae": 4.676,
+       "mae_ci95": [
+        4.627,
+        4.726
+       ]
+      }
+     },
+     "minuten_nach_rolle": {
+      "unter 20 Min": {
+       "n": 9964,
+       "bias": -0.809,
+       "bias_ci95": [
+        -1.071,
+        -0.594
+       ],
+       "mae": 6.122,
+       "mittel_erwartet": 13.39,
+       "mittel_tatsaechlich": 14.2
+      },
+      "20-28 Min": {
+       "n": 7251,
+       "bias": 0.155,
+       "bias_ci95": [
+        -0.036,
+        0.319
+       ],
+       "mae": 5.284,
+       "mittel_erwartet": 24.27,
+       "mittel_tatsaechlich": 24.11
+      },
+      "ueber 28 Min": {
+       "n": 8568,
+       "bias": 0.721,
+       "bias_ci95": [
+        0.533,
+        0.897
+       ],
+       "mae": 4.103,
+       "mittel_erwartet": 32.78,
+       "mittel_tatsaechlich": 32.06
+      }
+     },
+     "aufteilungen": {
+      "heim": {
+       "n": 226829,
+       "brier": 0.1691,
+       "mittel_modell": 0.4216,
+       "trefferquote": 0.4212,
+       "abweichung_pp": -0.04
+      },
+      "gast": {
+       "n": 225087,
+       "brier": 0.1672,
+       "mittel_modell": 0.4212,
+       "trefferquote": 0.4178,
+       "abweichung_pp": -0.34
+      },
+      "grosser_abstand_ab_15": {
+       "n": 163541,
+       "brier": 0.1664,
+       "mittel_modell": 0.4175,
+       "trefferquote": 0.3941,
+       "abweichung_pp": -2.34
+      },
+      "enges_spiel_bis_6": {
+       "n": 132385,
+       "brier": 0.1695,
+       "mittel_modell": 0.4247,
+       "trefferquote": 0.4434,
+       "abweichung_pp": 1.87
+      },
+      "mit_overtime": {
+       "n": 20531,
+       "brier": 0.1835,
+       "mittel_modell": 0.4224,
+       "trefferquote": 0.497,
+       "abweichung_pp": 7.46
+      },
+      "ohne_overtime": {
+       "n": 431385,
+       "brier": 0.1674,
+       "mittel_modell": 0.4213,
+       "trefferquote": 0.4158,
+       "abweichung_pp": -0.55
+      },
+      "erste_15_teamspiele": {
+       "n": 82517,
+       "brier": 0.1679,
+       "mittel_modell": 0.4237,
+       "trefferquote": 0.4033,
+       "abweichung_pp": -2.04
+      },
+      "rest_der_saison": {
+       "n": 369399,
+       "brier": 0.1682,
+       "mittel_modell": 0.4209,
+       "trefferquote": 0.4231,
+       "abweichung_pp": 0.22
+      },
+      "erste_haelfte": {
+       "n": 226556,
+       "brier": 0.166,
+       "mittel_modell": 0.4232,
+       "trefferquote": 0.4096,
+       "abweichung_pp": -1.36
+      },
+      "zweite_haelfte": {
+       "n": 225360,
+       "brier": 0.1703,
+       "mittel_modell": 0.4195,
+       "trefferquote": 0.4294,
+       "abweichung_pp": 0.99
+      },
+      "rolle_unter_20_min": {
+       "n": 123883,
+       "brier": 0.1805,
+       "mittel_modell": 0.3765,
+       "trefferquote": 0.3806,
+       "abweichung_pp": 0.4
+      },
+      "rolle_20_28_min": {
+       "n": 129547,
+       "brier": 0.1679,
+       "mittel_modell": 0.4257,
+       "trefferquote": 0.4309,
+       "abweichung_pp": 0.52
+      },
+      "rolle_ueber_28_min": {
+       "n": 198486,
+       "brier": 0.1607,
+       "mittel_modell": 0.4466,
+       "trefferquote": 0.4364,
+       "abweichung_pp": -1.02
+      },
+      "erwartete_punkte_unter_10": {
+       "n": 193061,
+       "brier": 0.1779,
+       "mittel_modell": 0.3917,
+       "trefferquote": 0.4028,
+       "abweichung_pp": 1.11
+      },
+      "erwartete_punkte_10_20": {
+       "n": 177877,
+       "brier": 0.1622,
+       "mittel_modell": 0.4387,
+       "trefferquote": 0.4299,
+       "abweichung_pp": -0.88
+      },
+      "erwartete_punkte_ueber_20": {
+       "n": 80978,
+       "brier": 0.1582,
+       "mittel_modell": 0.454,
+       "trefferquote": 0.4363,
+       "abweichung_pp": -1.78
+      }
+     }
+    },
+    "B": {
+     "n": 416561,
+     "brier": 0.1809,
+     "brier_ci95": [
+      0.1794,
+      0.1826
+     ],
+     "logloss": 0.5435,
+     "logloss_ci95": [
+      0.539,
+      0.5481
+     ],
+     "mittel_modell": 0.4176,
+     "trefferquote": 0.4666,
+     "abweichung_pp": 4.9,
+     "brier_basisrate": 0.2489,
+     "steigung": 0.862,
+     "stufen": [
+      {
+       "stufe": "5-10 %",
+       "n": 65410,
+       "modell": 0.0725,
+       "treffer": 0.1203,
+       "abweichung_pp": 4.78,
+       "ci95_pp": [
+        4.39,
+        5.23
+       ]
+      },
+      {
+       "stufe": "10-15 %",
+       "n": 41516,
+       "modell": 0.1235,
+       "treffer": 0.1902,
+       "abweichung_pp": 6.67,
+       "ci95_pp": [
+        6.09,
+        7.23
+       ]
+      },
+      {
+       "stufe": "15-20 %",
+       "n": 31434,
+       "modell": 0.1739,
+       "treffer": 0.2497,
+       "abweichung_pp": 7.58,
+       "ci95_pp": [
+        6.95,
+        8.16
+       ]
+      },
+      {
+       "stufe": "20-25 %",
+       "n": 25726,
+       "modell": 0.2243,
+       "treffer": 0.3046,
+       "abweichung_pp": 8.03,
+       "ci95_pp": [
+        7.35,
+        8.71
+       ]
+      },
+      {
+       "stufe": "25-30 %",
+       "n": 22184,
+       "modell": 0.2745,
+       "treffer": 0.3557,
+       "abweichung_pp": 8.12,
+       "ci95_pp": [
+        7.46,
+        8.74
+       ]
+      },
+      {
+       "stufe": "30-35 %",
+       "n": 19832,
+       "modell": 0.3246,
+       "treffer": 0.4037,
+       "abweichung_pp": 7.91,
+       "ci95_pp": [
+        7.2,
+        8.45
+       ]
+      },
+      {
+       "stufe": "35-40 %",
+       "n": 18114,
+       "modell": 0.3746,
+       "treffer": 0.4485,
+       "abweichung_pp": 7.39,
+       "ci95_pp": [
+        6.58,
+        8.12
+       ]
+      },
+      {
+       "stufe": "40-45 %",
+       "n": 16991,
+       "modell": 0.4248,
+       "treffer": 0.4977,
+       "abweichung_pp": 7.29,
+       "ci95_pp": [
+        6.39,
+        8.03
+       ]
+      },
+      {
+       "stufe": "45-50 %",
+       "n": 16220,
+       "modell": 0.4748,
+       "treffer": 0.5433,
+       "abweichung_pp": 6.85,
+       "ci95_pp": [
+        6.03,
+        7.59
+       ]
+      },
+      {
+       "stufe": "50-55 %",
+       "n": 15508,
+       "modell": 0.525,
+       "treffer": 0.5862,
+       "abweichung_pp": 6.13,
+       "ci95_pp": [
+        5.33,
+        7.02
+       ]
+      },
+      {
+       "stufe": "55-60 %",
+       "n": 15292,
+       "modell": 0.575,
+       "treffer": 0.6267,
+       "abweichung_pp": 5.18,
+       "ci95_pp": [
+        4.52,
+        6.16
+       ]
+      },
+      {
+       "stufe": "60-65 %",
+       "n": 15316,
+       "modell": 0.6252,
+       "treffer": 0.6707,
+       "abweichung_pp": 4.55,
+       "ci95_pp": [
+        3.85,
+        5.33
+       ]
+      },
+      {
+       "stufe": "65-70 %",
+       "n": 15458,
+       "modell": 0.675,
+       "treffer": 0.7032,
+       "abweichung_pp": 2.82,
+       "ci95_pp": [
+        2.02,
+        3.51
+       ]
+      },
+      {
+       "stufe": "70-75 %",
+       "n": 15885,
+       "modell": 0.7252,
+       "treffer": 0.751,
+       "abweichung_pp": 2.57,
+       "ci95_pp": [
+        1.87,
+        3.33
+       ]
+      },
+      {
+       "stufe": "75-80 %",
+       "n": 17025,
+       "modell": 0.7752,
+       "treffer": 0.7836,
+       "abweichung_pp": 0.84,
+       "ci95_pp": [
+        0.13,
+        1.39
+       ]
+      },
+      {
+       "stufe": "80-85 %",
+       "n": 18382,
+       "modell": 0.8253,
+       "treffer": 0.8249,
+       "abweichung_pp": -0.03,
+       "ci95_pp": [
+        -0.67,
+        0.51
+       ]
+      },
+      {
+       "stufe": "85-90 %",
+       "n": 20720,
+       "modell": 0.8756,
+       "treffer": 0.8687,
+       "abweichung_pp": -0.69,
+       "ci95_pp": [
+        -1.22,
+        -0.18
+       ]
+      },
+      {
+       "stufe": "90-95 %",
+       "n": 25548,
+       "modell": 0.9262,
+       "treffer": 0.9153,
+       "abweichung_pp": -1.08,
+       "ci95_pp": [
+        -1.46,
+        -0.71
+       ]
+      }
+     ],
+     "steigung_stufen": 0.863,
+     "steigung_stufen_ci95": [
+      0.852,
+      0.873
+     ],
+     "abdeckung": {
+      "gedeckt_insgesamt": false,
+      "mittlere_abweichung_pp": 5.1,
+      "stufen_ueber_6pp": [
+       "10-15 %",
+       "15-20 %",
+       "20-25 %",
+       "25-30 %",
+       "30-35 %",
+       "35-40 %",
+       "40-45 %",
+       "45-50 %",
+       "50-55 %"
+      ],
+      "stufen_gedeckt_ab100": [
+       "5-10 %",
+       "55-60 %",
+       "60-65 %",
+       "65-70 %",
+       "70-75 %",
+       "75-80 %",
+       "80-85 %",
+       "85-90 %",
+       "90-95 %"
+      ],
+      "bereiche": {
+       "niedrig 5-35 %": {
+        "n": 206102,
+        "mittlere_abweichung_pp": 6.65,
+        "max_abweichung_pp_ab100": 8.12,
+        "gedeckt": false
+       },
+       "mittel 35-65 %": {
+        "n": 97441,
+        "mittlere_abweichung_pp": 6.29,
+        "max_abweichung_pp_ab100": 7.39,
+        "gedeckt": false
+       },
+       "hoch 65-95 %": {
+        "n": 113018,
+        "mittlere_abweichung_pp": 1.25,
+        "max_abweichung_pp_ab100": 2.82,
+        "gedeckt": true
+       }
+      }
+     },
+     "punktfehler": {
+      "minuten": {
+       "n": 25783,
+       "bias": -1.66,
+       "bias_ci95": [
+        -1.799,
+        -1.53
+       ],
+       "mae": 5.641,
+       "mae_ci95": [
+        5.558,
+        5.731
+       ]
+      },
+      "punkte": {
+       "n": 25783,
+       "bias": -1.05,
+       "bias_ci95": [
+        -1.129,
+        -0.968
+       ],
+       "mae": 4.702,
+       "mae_ci95": [
+        4.651,
+        4.754
+       ]
+      }
+     },
+     "minuten_nach_rolle": {
+      "unter 20 Min": {
+       "n": 14055,
+       "bias": -2.997,
+       "bias_ci95": [
+        -3.198,
+        -2.826
+       ],
+       "mae": 6.563,
+       "mittel_erwartet": 13.81,
+       "mittel_tatsaechlich": 16.81
+      },
+      "20-28 Min": {
+       "n": 3469,
+       "bias": -1.51,
+       "bias_ci95": [
+        -1.746,
+        -1.253
+       ],
+       "mae": 5.648,
+       "mittel_erwartet": 24.09,
+       "mittel_tatsaechlich": 25.6
+      },
+      "ueber 28 Min": {
+       "n": 8259,
+       "bias": 0.551,
+       "bias_ci95": [
+        0.369,
+        0.73
+       ],
+       "mae": 4.068,
+       "mittel_erwartet": 32.76,
+       "mittel_tatsaechlich": 32.21
+      }
+     },
+     "aufteilungen": {
+      "heim": {
+       "n": 210913,
+       "brier": 0.1806,
+       "mittel_modell": 0.4179,
+       "trefferquote": 0.4629,
+       "abweichung_pp": 4.5
+      },
+      "gast": {
+       "n": 205648,
+       "brier": 0.1811,
+       "mittel_modell": 0.4174,
+       "trefferquote": 0.4705,
+       "abweichung_pp": 5.31
+      },
+      "grosser_abstand_ab_15": {
+       "n": 151176,
+       "brier": 0.1779,
+       "mittel_modell": 0.4135,
+       "trefferquote": 0.4383,
+       "abweichung_pp": 2.48
+      },
+      "enges_spiel_bis_6": {
+       "n": 121430,
+       "brier": 0.1846,
+       "mittel_modell": 0.4212,
+       "trefferquote": 0.4945,
+       "abweichung_pp": 7.34
+      },
+      "mit_overtime": {
+       "n": 18646,
+       "brier": 0.2031,
+       "mittel_modell": 0.4187,
+       "trefferquote": 0.5539,
+       "abweichung_pp": 13.52
+      },
+      "ohne_overtime": {
+       "n": 397915,
+       "brier": 0.1798,
+       "mittel_modell": 0.4176,
+       "trefferquote": 0.4625,
+       "abweichung_pp": 4.49
+      },
+      "erste_15_teamspiele": {
+       "n": 75668,
+       "brier": 0.1801,
+       "mittel_modell": 0.4202,
+       "trefferquote": 0.4533,
+       "abweichung_pp": 3.31
+      },
+      "rest_der_saison": {
+       "n": 340893,
+       "brier": 0.1811,
+       "mittel_modell": 0.4171,
+       "trefferquote": 0.4696,
+       "abweichung_pp": 5.25
+      },
+      "erste_haelfte": {
+       "n": 208085,
+       "brier": 0.1784,
+       "mittel_modell": 0.4197,
+       "trefferquote": 0.4592,
+       "abweichung_pp": 3.95
+      },
+      "zweite_haelfte": {
+       "n": 208476,
+       "brier": 0.1834,
+       "mittel_modell": 0.4155,
+       "trefferquote": 0.474,
+       "abweichung_pp": 5.85
+      },
+      "rolle_unter_20_min": {
+       "n": 172722,
+       "brier": 0.1966,
+       "mittel_modell": 0.3821,
+       "trefferquote": 0.4546,
+       "abweichung_pp": 7.26
+      },
+      "rolle_20_28_min": {
+       "n": 59993,
+       "brier": 0.1806,
+       "mittel_modell": 0.4313,
+       "trefferquote": 0.4914,
+       "abweichung_pp": 6.0
+      },
+      "rolle_ueber_28_min": {
+       "n": 183846,
+       "brier": 0.1662,
+       "mittel_modell": 0.4466,
+       "trefferquote": 0.4698,
+       "abweichung_pp": 2.32
+      },
+      "erwartete_punkte_unter_10": {
+       "n": 207535,
+       "brier": 0.1942,
+       "mittel_modell": 0.3893,
+       "trefferquote": 0.4613,
+       "abweichung_pp": 7.2
+      },
+      "erwartete_punkte_10_20": {
+       "n": 142228,
+       "brier": 0.1689,
+       "mittel_modell": 0.4414,
+       "trefferquote": 0.4657,
+       "abweichung_pp": 2.43
+      },
+      "erwartete_punkte_ueber_20": {
+       "n": 66798,
+       "brier": 0.1651,
+       "mittel_modell": 0.455,
+       "trefferquote": 0.4848,
+       "abweichung_pp": 2.98
+      }
+     }
+    },
+    "C": {
+     "n": 459627,
+     "brier": 0.1669,
+     "brier_ci95": [
+      0.1657,
+      0.1682
+     ],
+     "logloss": 0.5076,
+     "logloss_ci95": [
+      0.5036,
+      0.5108
+     ],
+     "mittel_modell": 0.4221,
+     "trefferquote": 0.4079,
+     "abweichung_pp": -1.42,
+     "brier_basisrate": 0.2415,
+     "steigung": 0.912,
+     "stufen": [
+      {
+       "stufe": "5-10 %",
+       "n": 71080,
+       "modell": 0.0725,
+       "treffer": 0.0784,
+       "abweichung_pp": 0.59,
+       "ci95_pp": [
+        0.3,
+        0.86
+       ]
+      },
+      {
+       "stufe": "10-15 %",
+       "n": 45276,
+       "modell": 0.1237,
+       "treffer": 0.1283,
+       "abweichung_pp": 0.47,
+       "ci95_pp": [
+        0.03,
+        0.87
+       ]
+      },
+      {
+       "stufe": "15-20 %",
+       "n": 34194,
+       "modell": 0.1741,
+       "treffer": 0.175,
+       "abweichung_pp": 0.09,
+       "ci95_pp": [
+        -0.38,
+        0.48
+       ]
+      },
+      {
+       "stufe": "20-25 %",
+       "n": 28077,
+       "modell": 0.2243,
+       "treffer": 0.223,
+       "abweichung_pp": -0.13,
+       "ci95_pp": [
+        -0.68,
+        0.38
+       ]
+      },
+      {
+       "stufe": "25-30 %",
+       "n": 24266,
+       "modell": 0.2745,
+       "treffer": 0.2695,
+       "abweichung_pp": -0.5,
+       "ci95_pp": [
+        -1.09,
+        0.05
+       ]
+      },
+      {
+       "stufe": "30-35 %",
+       "n": 21777,
+       "modell": 0.3246,
+       "treffer": 0.3173,
+       "abweichung_pp": -0.73,
+       "ci95_pp": [
+        -1.26,
+        -0.2
+       ]
+      },
+      {
+       "stufe": "35-40 %",
+       "n": 19938,
+       "modell": 0.3748,
+       "treffer": 0.3612,
+       "abweichung_pp": -1.36,
+       "ci95_pp": [
+        -1.91,
+        -0.68
+       ]
+      },
+      {
+       "stufe": "40-45 %",
+       "n": 18671,
+       "modell": 0.4248,
+       "treffer": 0.4074,
+       "abweichung_pp": -1.74,
+       "ci95_pp": [
+        -2.37,
+        -1.07
+       ]
+      },
+      {
+       "stufe": "45-50 %",
+       "n": 17768,
+       "modell": 0.4748,
+       "treffer": 0.4572,
+       "abweichung_pp": -1.76,
+       "ci95_pp": [
+        -2.49,
+        -1.11
+       ]
+      },
+      {
+       "stufe": "50-55 %",
+       "n": 17233,
+       "modell": 0.5249,
+       "treffer": 0.505,
+       "abweichung_pp": -1.99,
+       "ci95_pp": [
+        -2.72,
+        -1.18
+       ]
+      },
+      {
+       "stufe": "55-60 %",
+       "n": 16942,
+       "modell": 0.575,
+       "treffer": 0.5518,
+       "abweichung_pp": -2.32,
+       "ci95_pp": [
+        -2.93,
+        -1.62
+       ]
+      },
+      {
+       "stufe": "60-65 %",
+       "n": 16967,
+       "modell": 0.6253,
+       "treffer": 0.6005,
+       "abweichung_pp": -2.47,
+       "ci95_pp": [
+        -3.12,
+        -1.79
+       ]
+      },
+      {
+       "stufe": "65-70 %",
+       "n": 17067,
+       "modell": 0.6751,
+       "treffer": 0.636,
+       "abweichung_pp": -3.9,
+       "ci95_pp": [
+        -4.56,
+        -3.25
+       ]
+      },
+      {
+       "stufe": "70-75 %",
+       "n": 17893,
+       "modell": 0.7252,
+       "treffer": 0.694,
+       "abweichung_pp": -3.13,
+       "ci95_pp": [
+        -3.71,
+        -2.44
+       ]
+      },
+      {
+       "stufe": "75-80 %",
+       "n": 18992,
+       "modell": 0.7753,
+       "treffer": 0.7354,
+       "abweichung_pp": -4.0,
+       "ci95_pp": [
+        -4.65,
+        -3.37
+       ]
+      },
+      {
+       "stufe": "80-85 %",
+       "n": 20591,
+       "modell": 0.8254,
+       "treffer": 0.7833,
+       "abweichung_pp": -4.21,
+       "ci95_pp": [
+        -4.82,
+        -3.65
+       ]
+      },
+      {
+       "stufe": "85-90 %",
+       "n": 23605,
+       "modell": 0.8756,
+       "treffer": 0.8375,
+       "abweichung_pp": -3.81,
+       "ci95_pp": [
+        -4.26,
+        -3.27
+       ]
+      },
+      {
+       "stufe": "90-95 %",
+       "n": 29290,
+       "modell": 0.9263,
+       "treffer": 0.8908,
+       "abweichung_pp": -3.55,
+       "ci95_pp": [
+        -4.01,
+        -3.11
+       ]
+      }
+     ],
+     "steigung_stufen": 0.913,
+     "steigung_stufen_ci95": [
+      0.9,
+      0.924
+     ],
+     "abdeckung": {
+      "gedeckt_insgesamt": true,
+      "mittlere_abweichung_pp": 1.7,
+      "stufen_ueber_6pp": [],
+      "stufen_gedeckt_ab100": [
+       "5-10 %",
+       "10-15 %",
+       "15-20 %",
+       "20-25 %",
+       "25-30 %",
+       "30-35 %",
+       "35-40 %",
+       "40-45 %",
+       "45-50 %",
+       "50-55 %",
+       "55-60 %",
+       "60-65 %",
+       "65-70 %",
+       "70-75 %",
+       "75-80 %",
+       "80-85 %",
+       "85-90 %",
+       "90-95 %"
+      ],
+      "bereiche": {
+       "niedrig 5-35 %": {
+        "n": 224670,
+        "mittlere_abweichung_pp": 0.44,
+        "max_abweichung_pp_ab100": 0.73,
+        "gedeckt": true
+       },
+       "mittel 35-65 %": {
+        "n": 107519,
+        "mittlere_abweichung_pp": 1.92,
+        "max_abweichung_pp_ab100": 2.47,
+        "gedeckt": true
+       },
+       "hoch 65-95 %": {
+        "n": 127438,
+        "mittlere_abweichung_pp": 3.76,
+        "max_abweichung_pp_ab100": 4.21,
+        "gedeckt": false
+       }
+      }
+     },
+     "punktfehler": {
+      "minuten": {
+       "n": 25783,
+       "bias": 0.483,
+       "bias_ci95": [
+        0.405,
+        0.56
+       ],
+       "mae": 5.784,
+       "mae_ci95": [
+        5.704,
+        5.863
+       ]
+      },
+      "punkte": {
+       "n": 25783,
+       "bias": 0.189,
+       "bias_ci95": [
+        0.133,
+        0.246
+       ],
+       "mae": 4.709,
+       "mae_ci95": [
+        4.656,
+        4.759
+       ]
+      }
+     },
+     "minuten_nach_rolle": {
+      "unter 20 Min": {
+       "n": 12584,
+       "bias": -2.639,
+       "bias_ci95": [
+        -2.813,
+        -2.503
+       ],
+       "mae": 6.156,
+       "mittel_erwartet": 13.0,
+       "mittel_tatsaechlich": 15.64
+      },
+      "20-28 Min": {
+       "n": 1427,
+       "bias": 0.464,
+       "bias_ci95": [
+        0.101,
+        0.844
+       ],
+       "mae": 5.553,
+       "mittel_erwartet": 23.84,
+       "mittel_tatsaechlich": 23.38
+      },
+      "ueber 28 Min": {
+       "n": 11772,
+       "bias": 3.822,
+       "bias_ci95": [
+        3.647,
+        3.992
+       ],
+       "mae": 5.414,
+       "mittel_erwartet": 34.48,
+       "mittel_tatsaechlich": 30.66
+      }
+     },
+     "aufteilungen": {
+      "heim": {
+       "n": 232927,
+       "brier": 0.1665,
+       "mittel_modell": 0.4222,
+       "trefferquote": 0.4047,
+       "abweichung_pp": -1.75
+      },
+      "gast": {
+       "n": 226700,
+       "brier": 0.1674,
+       "mittel_modell": 0.4219,
+       "trefferquote": 0.4112,
+       "abweichung_pp": -1.08
+      },
+      "grosser_abstand_ab_15": {
+       "n": 166258,
+       "brier": 0.1673,
+       "mittel_modell": 0.4181,
+       "trefferquote": 0.3829,
+       "abweichung_pp": -3.52
+      },
+      "enges_spiel_bis_6": {
+       "n": 134621,
+       "brier": 0.1669,
+       "mittel_modell": 0.4255,
+       "trefferquote": 0.4313,
+       "abweichung_pp": 0.58
+      },
+      "mit_overtime": {
+       "n": 21385,
+       "brier": 0.1794,
+       "mittel_modell": 0.4232,
+       "trefferquote": 0.4747,
+       "abweichung_pp": 5.15
+      },
+      "ohne_overtime": {
+       "n": 438242,
+       "brier": 0.1663,
+       "mittel_modell": 0.422,
+       "trefferquote": 0.4046,
+       "abweichung_pp": -1.74
+      },
+      "erste_15_teamspiele": {
+       "n": 82381,
+       "brier": 0.1687,
+       "mittel_modell": 0.4238,
+       "trefferquote": 0.4017,
+       "abweichung_pp": -2.21
+      },
+      "rest_der_saison": {
+       "n": 377246,
+       "brier": 0.1665,
+       "mittel_modell": 0.4217,
+       "trefferquote": 0.4092,
+       "abweichung_pp": -1.24
+      },
+      "erste_haelfte": {
+       "n": 226740,
+       "brier": 0.167,
+       "mittel_modell": 0.4234,
+       "trefferquote": 0.4067,
+       "abweichung_pp": -1.67
+      },
+      "zweite_haelfte": {
+       "n": 232887,
+       "brier": 0.1669,
+       "mittel_modell": 0.4208,
+       "trefferquote": 0.409,
+       "abweichung_pp": -1.17
+      },
+      "rolle_unter_20_min": {
+       "n": 152475,
+       "brier": 0.1899,
+       "mittel_modell": 0.3771,
+       "trefferquote": 0.435,
+       "abweichung_pp": 5.78
+      },
+      "rolle_20_28_min": {
+       "n": 25307,
+       "brier": 0.1655,
+       "mittel_modell": 0.4264,
+       "trefferquote": 0.4292,
+       "abweichung_pp": 0.29
+      },
+      "rolle_ueber_28_min": {
+       "n": 281845,
+       "brier": 0.1547,
+       "mittel_modell": 0.446,
+       "trefferquote": 0.3913,
+       "abweichung_pp": -5.46
+      },
+      "erwartete_punkte_unter_10": {
+       "n": 173004,
+       "brier": 0.1866,
+       "mittel_modell": 0.3824,
+       "trefferquote": 0.4311,
+       "abweichung_pp": 4.87
+      },
+      "erwartete_punkte_10_20": {
+       "n": 183936,
+       "brier": 0.1544,
+       "mittel_modell": 0.4416,
+       "trefferquote": 0.3781,
+       "abweichung_pp": -6.35
+      },
+      "erwartete_punkte_ueber_20": {
+       "n": 102687,
+       "brier": 0.1564,
+       "mittel_modell": 0.454,
+       "trefferquote": 0.4222,
+       "abweichung_pp": -3.18
+      }
+     }
+    }
+   },
+   "naiv": {
+    "beschreibung": "p = 1 - Phi((k - 0,5 - Saisonschnitt) / 6.0); Saisonschnitt = Punkte des Spielers in der laufenden Saison vor D (ab 5 Spielen, sonst Verlauf ab 5 Spielen), fester Streuwert",
+    "n": 449792,
+    "anteil_von_A": 0.995,
+    "brier_naiv": 0.1705,
+    "brier_A_gleiche_zeilen": 0.1679,
+    "differenz_naiv_minus_A": 0.0026,
+    "differenz_ci95": [
+     0.0021,
+     0.0032
+    ],
+    "steigung_naiv": 0.832
+   },
+   "varianten_vergleich": {
+    "B_minus_A": {
+     "gemeinsame_zeilen": 404603,
+     "brier_A": 0.1787,
+     "brier_B": 0.1842,
+     "differenz": 0.00544,
+     "ci95": [
+      0.00467,
+      0.00623
+     ],
+     "zeilen_nur_in_A": 47313,
+     "zeilen_nur_in_B": 11958
+    },
+    "C_minus_A": {
+     "gemeinsame_zeilen": 411450,
+     "brier_A": 0.1781,
+     "brier_C": 0.1796,
+     "differenz": 0.00147,
+     "ci95": [
+      0.00044,
+      0.00237
+     ],
+     "zeilen_nur_in_A": 40466,
+     "zeilen_nur_in_C": 48177
+    }
+   }
+  },
+  "2025-26": {
+   "spielerzeilen": 26232,
+   "spiele": 1230,
+   "spieler": 566,
+   "uebersprungene_spieler": 336,
+   "anteil_uebersprungen": 0.0126,
+   "gespielte_spieler_gesamt": 26568,
+   "team_spiele": 2460,
+   "kader_ø": 15.59,
+   "rotation_B_ø": 10.0,
+   "ausfaelle_C_ø_je_teamspiel": 2.19,
+   "teamabgleich_gelungen_B": 1.0,
+   "faktor_f_B_ø": 0.955,
+   "varianten": {
+    "A": {
+     "n": 465898,
+     "brier": 0.1663,
+     "brier_ci95": [
+      0.1649,
+      0.1676
+     ],
+     "logloss": 0.5058,
+     "logloss_ci95": [
+      0.5024,
+      0.5092
+     ],
+     "mittel_modell": 0.4225,
+     "trefferquote": 0.4175,
+     "abweichung_pp": -0.5,
+     "brier_basisrate": 0.2432,
+     "steigung": 0.925,
+     "stufen": [
+      {
+       "stufe": "5-10 %",
+       "n": 72243,
+       "modell": 0.0725,
+       "treffer": 0.0776,
+       "abweichung_pp": 0.51,
+       "ci95_pp": [
+        0.21,
+        0.84
+       ]
+      },
+      {
+       "stufe": "10-15 %",
+       "n": 45693,
+       "modell": 0.1236,
+       "treffer": 0.1287,
+       "abweichung_pp": 0.51,
+       "ci95_pp": [
+        0.02,
+        1.02
+       ]
+      },
+      {
+       "stufe": "15-20 %",
+       "n": 34596,
+       "modell": 0.174,
+       "treffer": 0.1808,
+       "abweichung_pp": 0.68,
+       "ci95_pp": [
+        0.19,
+        1.25
+       ]
+      },
+      {
+       "stufe": "20-25 %",
+       "n": 28361,
+       "modell": 0.2243,
+       "treffer": 0.2363,
+       "abweichung_pp": 1.21,
+       "ci95_pp": [
+        0.58,
+        1.84
+       ]
+      },
+      {
+       "stufe": "25-30 %",
+       "n": 24690,
+       "modell": 0.2744,
+       "treffer": 0.2806,
+       "abweichung_pp": 0.61,
+       "ci95_pp": [
+        -0.01,
+        1.24
+       ]
+      },
+      {
+       "stufe": "30-35 %",
+       "n": 21941,
+       "modell": 0.3246,
+       "treffer": 0.3295,
+       "abweichung_pp": 0.49,
+       "ci95_pp": [
+        -0.2,
+        1.17
+       ]
+      },
+      {
+       "stufe": "35-40 %",
+       "n": 20142,
+       "modell": 0.3746,
+       "treffer": 0.3758,
+       "abweichung_pp": 0.12,
+       "ci95_pp": [
+        -0.55,
+        0.88
+       ]
+      },
+      {
+       "stufe": "40-45 %",
+       "n": 18932,
+       "modell": 0.4245,
+       "treffer": 0.4261,
+       "abweichung_pp": 0.16,
+       "ci95_pp": [
+        -0.55,
+        0.96
+       ]
+      },
+      {
+       "stufe": "45-50 %",
+       "n": 18062,
+       "modell": 0.4749,
+       "treffer": 0.4734,
+       "abweichung_pp": -0.14,
+       "ci95_pp": [
+        -0.91,
+        0.68
+       ]
+      },
+      {
+       "stufe": "50-55 %",
+       "n": 17445,
+       "modell": 0.5249,
+       "treffer": 0.52,
+       "abweichung_pp": -0.49,
+       "ci95_pp": [
+        -1.3,
+        0.26
+       ]
+      },
+      {
+       "stufe": "55-60 %",
+       "n": 17199,
+       "modell": 0.5751,
+       "treffer": 0.5669,
+       "abweichung_pp": -0.82,
+       "ci95_pp": [
+        -1.6,
+        -0.15
+       ]
+      },
+      {
+       "stufe": "60-65 %",
+       "n": 17100,
+       "modell": 0.6251,
+       "treffer": 0.6168,
+       "abweichung_pp": -0.83,
+       "ci95_pp": [
+        -1.47,
+        -0.04
+       ]
+      },
+      {
+       "stufe": "65-70 %",
+       "n": 17353,
+       "modell": 0.6751,
+       "treffer": 0.6618,
+       "abweichung_pp": -1.33,
+       "ci95_pp": [
+        -2.1,
+        -0.57
+       ]
+      },
+      {
+       "stufe": "70-75 %",
+       "n": 18094,
+       "modell": 0.7253,
+       "treffer": 0.706,
+       "abweichung_pp": -1.92,
+       "ci95_pp": [
+        -2.51,
+        -1.23
+       ]
+      },
+      {
+       "stufe": "75-80 %",
+       "n": 19092,
+       "modell": 0.7755,
+       "treffer": 0.7504,
+       "abweichung_pp": -2.51,
+       "ci95_pp": [
+        -3.1,
+        -1.88
+       ]
+      },
+      {
+       "stufe": "80-85 %",
+       "n": 20790,
+       "modell": 0.8255,
+       "treffer": 0.793,
+       "abweichung_pp": -3.25,
+       "ci95_pp": [
+        -3.82,
+        -2.73
+       ]
+      },
+      {
+       "stufe": "85-90 %",
+       "n": 24087,
+       "modell": 0.8758,
+       "treffer": 0.8457,
+       "abweichung_pp": -3.01,
+       "ci95_pp": [
+        -3.5,
+        -2.53
+       ]
+      },
+      {
+       "stufe": "90-95 %",
+       "n": 30078,
+       "modell": 0.9264,
+       "treffer": 0.8949,
+       "abweichung_pp": -3.15,
+       "ci95_pp": [
+        -3.56,
+        -2.71
+       ]
+      }
+     ],
+     "steigung_stufen": 0.926,
+     "steigung_stufen_ci95": [
+      0.914,
+      0.935
+     ],
+     "abdeckung": {
+      "gedeckt_insgesamt": true,
+      "mittlere_abweichung_pp": 1.14,
+      "stufen_ueber_6pp": [],
+      "stufen_gedeckt_ab100": [
+       "5-10 %",
+       "10-15 %",
+       "15-20 %",
+       "20-25 %",
+       "25-30 %",
+       "30-35 %",
+       "35-40 %",
+       "40-45 %",
+       "45-50 %",
+       "50-55 %",
+       "55-60 %",
+       "60-65 %",
+       "65-70 %",
+       "70-75 %",
+       "75-80 %",
+       "80-85 %",
+       "85-90 %",
+       "90-95 %"
+      ],
+      "bereiche": {
+       "niedrig 5-35 %": {
+        "n": 227524,
+        "mittlere_abweichung_pp": 0.63,
+        "max_abweichung_pp_ab100": 1.21,
+        "gedeckt": true
+       },
+       "mittel 35-65 %": {
+        "n": 108880,
+        "mittlere_abweichung_pp": 0.41,
+        "max_abweichung_pp_ab100": 0.83,
+        "gedeckt": true
+       },
+       "hoch 65-95 %": {
+        "n": 129494,
+        "mittlere_abweichung_pp": 2.63,
+        "max_abweichung_pp_ab100": 3.25,
+        "gedeckt": true
+       }
+      }
+     },
+     "punktfehler": {
+      "minuten": {
+       "n": 26232,
+       "bias": 0.112,
+       "bias_ci95": [
+        -0.027,
+        0.227
+       ],
+       "mae": 5.203,
+       "mae_ci95": [
+        5.132,
+        5.284
+       ]
+      },
+      "punkte": {
+       "n": 26232,
+       "bias": 0.045,
+       "bias_ci95": [
+        -0.053,
+        0.131
+       ],
+       "mae": 4.669,
+       "mae_ci95": [
+        4.623,
+        4.722
+       ]
+      }
+     },
+     "minuten_nach_rolle": {
+      "unter 20 Min": {
+       "n": 9996,
+       "bias": -0.545,
+       "bias_ci95": [
+        -0.758,
+        -0.324
+       ],
+       "mae": 6.105,
+       "mittel_erwartet": 13.92,
+       "mittel_tatsaechlich": 14.47
+      },
+      "20-28 Min": {
+       "n": 8490,
+       "bias": 0.185,
+       "bias_ci95": [
+        0.031,
+        0.354
+       ],
+       "mae": 5.117,
+       "mittel_erwartet": 24.11,
+       "mittel_tatsaechlich": 23.92
+      },
+      "ueber 28 Min": {
+       "n": 7746,
+       "bias": 0.879,
+       "bias_ci95": [
+        0.699,
+        1.055
+       ],
+       "mae": 4.132,
+       "mittel_erwartet": 32.27,
+       "mittel_tatsaechlich": 31.39
+      }
+     },
+     "aufteilungen": {
+      "heim": {
+       "n": 233586,
+       "brier": 0.166,
+       "mittel_modell": 0.4225,
+       "trefferquote": 0.4205,
+       "abweichung_pp": -0.2
+      },
+      "gast": {
+       "n": 232312,
+       "brier": 0.1666,
+       "mittel_modell": 0.4224,
+       "trefferquote": 0.4145,
+       "abweichung_pp": -0.79
+      },
+      "grosser_abstand_ab_15": {
+       "n": 180776,
+       "brier": 0.1668,
+       "mittel_modell": 0.4181,
+       "trefferquote": 0.4026,
+       "abweichung_pp": -1.55
+      },
+      "enges_spiel_bis_6": {
+       "n": 130725,
+       "brier": 0.1683,
+       "mittel_modell": 0.4253,
+       "trefferquote": 0.431,
+       "abweichung_pp": 0.57
+      },
+      "mit_overtime": {
+       "n": 20209,
+       "brier": 0.1823,
+       "mittel_modell": 0.4264,
+       "trefferquote": 0.4836,
+       "abweichung_pp": 5.72
+      },
+      "ohne_overtime": {
+       "n": 445689,
+       "brier": 0.1656,
+       "mittel_modell": 0.4223,
+       "trefferquote": 0.4145,
+       "abweichung_pp": -0.78
+      },
+      "erste_15_teamspiele": {
+       "n": 85693,
+       "brier": 0.1657,
+       "mittel_modell": 0.4264,
+       "trefferquote": 0.4092,
+       "abweichung_pp": -1.72
+      },
+      "rest_der_saison": {
+       "n": 380205,
+       "brier": 0.1664,
+       "mittel_modell": 0.4216,
+       "trefferquote": 0.4194,
+       "abweichung_pp": -0.22
+      },
+      "erste_haelfte": {
+       "n": 234687,
+       "brier": 0.1642,
+       "mittel_modell": 0.4241,
+       "trefferquote": 0.4095,
+       "abweichung_pp": -1.46
+      },
+      "zweite_haelfte": {
+       "n": 231211,
+       "brier": 0.1684,
+       "mittel_modell": 0.4208,
+       "trefferquote": 0.4256,
+       "abweichung_pp": 0.48
+      },
+      "rolle_unter_20_min": {
+       "n": 129048,
+       "brier": 0.1784,
+       "mittel_modell": 0.3789,
+       "trefferquote": 0.3795,
+       "abweichung_pp": 0.06
+      },
+      "rolle_20_28_min": {
+       "n": 155843,
+       "brier": 0.1659,
+       "mittel_modell": 0.4261,
+       "trefferquote": 0.4256,
+       "abweichung_pp": -0.05
+      },
+      "rolle_ueber_28_min": {
+       "n": 181007,
+       "brier": 0.158,
+       "mittel_modell": 0.4504,
+       "trefferquote": 0.4377,
+       "abweichung_pp": -1.28
+      },
+      "erwartete_punkte_unter_10": {
+       "n": 195020,
+       "brier": 0.1748,
+       "mittel_modell": 0.3926,
+       "trefferquote": 0.3943,
+       "abweichung_pp": 0.17
+      },
+      "erwartete_punkte_10_20": {
+       "n": 195490,
+       "brier": 0.1626,
+       "mittel_modell": 0.4378,
+       "trefferquote": 0.4325,
+       "abweichung_pp": -0.53
+      },
+      "erwartete_punkte_ueber_20": {
+       "n": 75388,
+       "brier": 0.1538,
+       "mittel_modell": 0.4598,
+       "trefferquote": 0.4385,
+       "abweichung_pp": -2.13
+      }
+     }
+    },
+    "B": {
+     "n": 430122,
+     "brier": 0.1784,
+     "brier_ci95": [
+      0.1767,
+      0.1799
+     ],
+     "logloss": 0.5373,
+     "logloss_ci95": [
+      0.5336,
+      0.5408
+     ],
+     "mittel_modell": 0.4189,
+     "trefferquote": 0.4643,
+     "abweichung_pp": 4.53,
+     "brier_basisrate": 0.2487,
+     "steigung": 0.877,
+     "stufen": [
+      {
+       "stufe": "5-10 %",
+       "n": 67434,
+       "modell": 0.0725,
+       "treffer": 0.1167,
+       "abweichung_pp": 4.42,
+       "ci95_pp": [
+        4.0,
+        4.84
+       ]
+      },
+      {
+       "stufe": "10-15 %",
+       "n": 42643,
+       "modell": 0.1236,
+       "treffer": 0.182,
+       "abweichung_pp": 5.84,
+       "ci95_pp": [
+        5.24,
+        6.35
+       ]
+      },
+      {
+       "stufe": "15-20 %",
+       "n": 32147,
+       "modell": 0.174,
+       "treffer": 0.2393,
+       "abweichung_pp": 6.53,
+       "ci95_pp": [
+        5.87,
+        7.08
+       ]
+      },
+      {
+       "stufe": "20-25 %",
+       "n": 26456,
+       "modell": 0.2243,
+       "treffer": 0.2969,
+       "abweichung_pp": 7.26,
+       "ci95_pp": [
+        6.54,
+        7.87
+       ]
+      },
+      {
+       "stufe": "25-30 %",
+       "n": 22887,
+       "modell": 0.2745,
+       "treffer": 0.3446,
+       "abweichung_pp": 7.01,
+       "ci95_pp": [
+        6.33,
+        7.68
+       ]
+      },
+      {
+       "stufe": "30-35 %",
+       "n": 20440,
+       "modell": 0.3247,
+       "treffer": 0.3977,
+       "abweichung_pp": 7.29,
+       "ci95_pp": [
+        6.6,
+        8.02
+       ]
+      },
+      {
+       "stufe": "35-40 %",
+       "n": 18718,
+       "modell": 0.3748,
+       "treffer": 0.4479,
+       "abweichung_pp": 7.3,
+       "ci95_pp": [
+        6.65,
+        8.11
+       ]
+      },
+      {
+       "stufe": "40-45 %",
+       "n": 17525,
+       "modell": 0.4249,
+       "treffer": 0.4956,
+       "abweichung_pp": 7.07,
+       "ci95_pp": [
+        6.31,
+        7.87
+       ]
+      },
+      {
+       "stufe": "45-50 %",
+       "n": 16662,
+       "modell": 0.4749,
+       "treffer": 0.5398,
+       "abweichung_pp": 6.48,
+       "ci95_pp": [
+        5.74,
+        7.19
+       ]
+      },
+      {
+       "stufe": "50-55 %",
+       "n": 16125,
+       "modell": 0.525,
+       "treffer": 0.5827,
+       "abweichung_pp": 5.77,
+       "ci95_pp": [
+        4.89,
+        6.44
+       ]
+      },
+      {
+       "stufe": "55-60 %",
+       "n": 15813,
+       "modell": 0.5749,
+       "treffer": 0.6278,
+       "abweichung_pp": 5.29,
+       "ci95_pp": [
+        4.56,
+        5.9
+       ]
+      },
+      {
+       "stufe": "60-65 %",
+       "n": 15854,
+       "modell": 0.625,
+       "treffer": 0.673,
+       "abweichung_pp": 4.8,
+       "ci95_pp": [
+        4.11,
+        5.48
+       ]
+      },
+      {
+       "stufe": "65-70 %",
+       "n": 15995,
+       "modell": 0.6751,
+       "treffer": 0.7084,
+       "abweichung_pp": 3.33,
+       "ci95_pp": [
+        2.68,
+        3.94
+       ]
+      },
+      {
+       "stufe": "70-75 %",
+       "n": 16590,
+       "modell": 0.7253,
+       "treffer": 0.7506,
+       "abweichung_pp": 2.52,
+       "ci95_pp": [
+        1.79,
+        3.26
+       ]
+      },
+      {
+       "stufe": "75-80 %",
+       "n": 17536,
+       "modell": 0.7753,
+       "treffer": 0.7856,
+       "abweichung_pp": 1.03,
+       "ci95_pp": [
+        0.26,
+        1.64
+       ]
+      },
+      {
+       "stufe": "80-85 %",
+       "n": 18982,
+       "modell": 0.8255,
+       "treffer": 0.8309,
+       "abweichung_pp": 0.54,
+       "ci95_pp": [
+        -0.02,
+        1.09
+       ]
+      },
+      {
+       "stufe": "85-90 %",
+       "n": 21717,
+       "modell": 0.8756,
+       "treffer": 0.8664,
+       "abweichung_pp": -0.92,
+       "ci95_pp": [
+        -1.41,
+        -0.42
+       ]
+      },
+      {
+       "stufe": "90-95 %",
+       "n": 26598,
+       "modell": 0.9263,
+       "treffer": 0.9134,
+       "abweichung_pp": -1.29,
+       "ci95_pp": [
+        -1.73,
+        -0.78
+       ]
+      }
+     ],
+     "steigung_stufen": 0.877,
+     "steigung_stufen_ci95": [
+      0.866,
+      0.888
+     ],
+     "abdeckung": {
+      "gedeckt_insgesamt": false,
+      "mittlere_abweichung_pp": 4.78,
+      "stufen_ueber_6pp": [
+       "15-20 %",
+       "20-25 %",
+       "25-30 %",
+       "30-35 %",
+       "35-40 %",
+       "40-45 %",
+       "45-50 %"
+      ],
+      "stufen_gedeckt_ab100": [
+       "5-10 %",
+       "10-15 %",
+       "50-55 %",
+       "55-60 %",
+       "60-65 %",
+       "65-70 %",
+       "70-75 %",
+       "75-80 %",
+       "80-85 %",
+       "85-90 %",
+       "90-95 %"
+      ],
+      "bereiche": {
+       "niedrig 5-35 %": {
+        "n": 212007,
+        "mittlere_abweichung_pp": 5.94,
+        "max_abweichung_pp_ab100": 7.29,
+        "gedeckt": false
+       },
+       "mittel 35-65 %": {
+        "n": 100697,
+        "mittlere_abweichung_pp": 6.17,
+        "max_abweichung_pp_ab100": 7.3,
+        "gedeckt": false
+       },
+       "hoch 65-95 %": {
+        "n": 117418,
+        "mittlere_abweichung_pp": 1.51,
+        "max_abweichung_pp_ab100": 3.33,
+        "gedeckt": true
+       }
+      }
+     },
+     "punktfehler": {
+      "minuten": {
+       "n": 26232,
+       "bias": -1.315,
+       "bias_ci95": [
+        -1.46,
+        -1.199
+       ],
+       "mae": 5.568,
+       "mae_ci95": [
+        5.497,
+        5.656
+       ]
+      },
+      "punkte": {
+       "n": 26232,
+       "bias": -0.967,
+       "bias_ci95": [
+        -1.059,
+        -0.882
+       ],
+       "mae": 4.69,
+       "mae_ci95": [
+        4.644,
+        4.744
+       ]
+      }
+     },
+     "minuten_nach_rolle": {
+      "unter 20 Min": {
+       "n": 14128,
+       "bias": -2.487,
+       "bias_ci95": [
+        -2.657,
+        -2.315
+       ],
+       "mae": 6.476,
+       "mittel_erwartet": 14.34,
+       "mittel_tatsaechlich": 16.82
+      },
+      "20-28 Min": {
+       "n": 4466,
+       "bias": -1.259,
+       "bias_ci95": [
+        -1.462,
+        -1.026
+       ],
+       "mae": 5.163,
+       "mittel_erwartet": 24.05,
+       "mittel_tatsaechlich": 25.31
+      },
+      "ueber 28 Min": {
+       "n": 7638,
+       "bias": 0.818,
+       "bias_ci95": [
+        0.646,
+        0.997
+       ],
+       "mae": 4.124,
+       "mittel_erwartet": 32.26,
+       "mittel_tatsaechlich": 31.44
+      }
+     },
+     "aufteilungen": {
+      "heim": {
+       "n": 217201,
+       "brier": 0.1774,
+       "mittel_modell": 0.4191,
+       "trefferquote": 0.464,
+       "abweichung_pp": 4.48
+      },
+      "gast": {
+       "n": 212921,
+       "brier": 0.1795,
+       "mittel_modell": 0.4187,
+       "trefferquote": 0.4645,
+       "abweichung_pp": 4.58
+      },
+      "grosser_abstand_ab_15": {
+       "n": 168263,
+       "brier": 0.1774,
+       "mittel_modell": 0.4148,
+       "trefferquote": 0.4438,
+       "abweichung_pp": 2.89
+      },
+      "enges_spiel_bis_6": {
+       "n": 120038,
+       "brier": 0.1806,
+       "mittel_modell": 0.4221,
+       "trefferquote": 0.482,
+       "abweichung_pp": 5.99
+      },
+      "mit_overtime": {
+       "n": 18610,
+       "brier": 0.1988,
+       "mittel_modell": 0.423,
+       "trefferquote": 0.5367,
+       "abweichung_pp": 11.37
+      },
+      "ohne_overtime": {
+       "n": 411512,
+       "brier": 0.1775,
+       "mittel_modell": 0.4188,
+       "trefferquote": 0.461,
+       "abweichung_pp": 4.22
+      },
+      "erste_15_teamspiele": {
+       "n": 78718,
+       "brier": 0.1781,
+       "mittel_modell": 0.4223,
+       "trefferquote": 0.4592,
+       "abweichung_pp": 3.69
+      },
+      "rest_der_saison": {
+       "n": 351404,
+       "brier": 0.1785,
+       "mittel_modell": 0.4182,
+       "trefferquote": 0.4654,
+       "abweichung_pp": 4.72
+      },
+      "erste_haelfte": {
+       "n": 216013,
+       "brier": 0.1762,
+       "mittel_modell": 0.4205,
+       "trefferquote": 0.4578,
+       "abweichung_pp": 3.73
+      },
+      "zweite_haelfte": {
+       "n": 214109,
+       "brier": 0.1807,
+       "mittel_modell": 0.4174,
+       "trefferquote": 0.4708,
+       "abweichung_pp": 5.34
+      },
+      "rolle_unter_20_min": {
+       "n": 181222,
+       "brier": 0.1927,
+       "mittel_modell": 0.3857,
+       "trefferquote": 0.4473,
+       "abweichung_pp": 6.16
+      },
+      "rolle_20_28_min": {
+       "n": 78834,
+       "brier": 0.1771,
+       "mittel_modell": 0.427,
+       "trefferquote": 0.4801,
+       "abweichung_pp": 5.31
+      },
+      "rolle_ueber_28_min": {
+       "n": 170066,
+       "brier": 0.1637,
+       "mittel_modell": 0.4506,
+       "trefferquote": 0.475,
+       "abweichung_pp": 2.44
+      },
+      "erwartete_punkte_unter_10": {
+       "n": 212627,
+       "brier": 0.1907,
+       "mittel_modell": 0.3911,
+       "trefferquote": 0.4508,
+       "abweichung_pp": 5.97
+      },
+      "erwartete_punkte_10_20": {
+       "n": 158117,
+       "brier": 0.1688,
+       "mittel_modell": 0.441,
+       "trefferquote": 0.4732,
+       "abweichung_pp": 3.22
+      },
+      "erwartete_punkte_ueber_20": {
+       "n": 59378,
+       "brier": 0.1597,
+       "mittel_modell": 0.4598,
+       "trefferquote": 0.4885,
+       "abweichung_pp": 2.87
+      }
+     }
+    },
+    "C": {
+     "n": 472881,
+     "brier": 0.1664,
+     "brier_ci95": [
+      0.1651,
+      0.1677
+     ],
+     "logloss": 0.5063,
+     "logloss_ci95": [
+      0.5032,
+      0.5092
+     ],
+     "mittel_modell": 0.4233,
+     "trefferquote": 0.4044,
+     "abweichung_pp": -1.89,
+     "brier_basisrate": 0.2409,
+     "steigung": 0.913,
+     "stufen": [
+      {
+       "stufe": "5-10 %",
+       "n": 73110,
+       "modell": 0.0725,
+       "treffer": 0.0766,
+       "abweichung_pp": 0.41,
+       "ci95_pp": [
+        0.15,
+        0.66
+       ]
+      },
+      {
+       "stufe": "10-15 %",
+       "n": 46188,
+       "modell": 0.1236,
+       "treffer": 0.124,
+       "abweichung_pp": 0.04,
+       "ci95_pp": [
+        -0.29,
+        0.39
+       ]
+      },
+      {
+       "stufe": "15-20 %",
+       "n": 34981,
+       "modell": 0.174,
+       "treffer": 0.1729,
+       "abweichung_pp": -0.1,
+       "ci95_pp": [
+        -0.55,
+        0.3
+       ]
+      },
+      {
+       "stufe": "20-25 %",
+       "n": 28765,
+       "modell": 0.2243,
+       "treffer": 0.2178,
+       "abweichung_pp": -0.65,
+       "ci95_pp": [
+        -1.1,
+        -0.17
+       ]
+      },
+      {
+       "stufe": "25-30 %",
+       "n": 24970,
+       "modell": 0.2745,
+       "treffer": 0.2644,
+       "abweichung_pp": -1.01,
+       "ci95_pp": [
+        -1.6,
+        -0.55
+       ]
+      },
+      {
+       "stufe": "30-35 %",
+       "n": 22215,
+       "modell": 0.3245,
+       "treffer": 0.3095,
+       "abweichung_pp": -1.5,
+       "ci95_pp": [
+        -2.04,
+        -0.97
+       ]
+      },
+      {
+       "stufe": "35-40 %",
+       "n": 20602,
+       "modell": 0.3748,
+       "treffer": 0.3529,
+       "abweichung_pp": -2.19,
+       "ci95_pp": [
+        -2.79,
+        -1.56
+       ]
+      },
+      {
+       "stufe": "40-45 %",
+       "n": 19012,
+       "modell": 0.4248,
+       "treffer": 0.4037,
+       "abweichung_pp": -2.1,
+       "ci95_pp": [
+        -2.76,
+        -1.43
+       ]
+      },
+      {
+       "stufe": "45-50 %",
+       "n": 18424,
+       "modell": 0.4748,
+       "treffer": 0.4504,
+       "abweichung_pp": -2.44,
+       "ci95_pp": [
+        -3.13,
+        -1.71
+       ]
+      },
+      {
+       "stufe": "50-55 %",
+       "n": 17728,
+       "modell": 0.5251,
+       "treffer": 0.4913,
+       "abweichung_pp": -3.38,
+       "ci95_pp": [
+        -4.01,
+        -2.69
+       ]
+      },
+      {
+       "stufe": "55-60 %",
+       "n": 17413,
+       "modell": 0.5751,
+       "treffer": 0.5417,
+       "abweichung_pp": -3.34,
+       "ci95_pp": [
+        -4.02,
+        -2.57
+       ]
+      },
+      {
+       "stufe": "60-65 %",
+       "n": 17463,
+       "modell": 0.625,
+       "treffer": 0.5912,
+       "abweichung_pp": -3.38,
+       "ci95_pp": [
+        -4.06,
+        -2.73
+       ]
+      },
+      {
+       "stufe": "65-70 %",
+       "n": 17691,
+       "modell": 0.6751,
+       "treffer": 0.6357,
+       "abweichung_pp": -3.94,
+       "ci95_pp": [
+        -4.56,
+        -3.23
+       ]
+      },
+      {
+       "stufe": "70-75 %",
+       "n": 18451,
+       "modell": 0.7252,
+       "treffer": 0.6845,
+       "abweichung_pp": -4.07,
+       "ci95_pp": [
+        -4.65,
+        -3.44
+       ]
+      },
+      {
+       "stufe": "75-80 %",
+       "n": 19623,
+       "modell": 0.7752,
+       "treffer": 0.7309,
+       "abweichung_pp": -4.44,
+       "ci95_pp": [
+        -5.18,
+        -3.78
+       ]
+      },
+      {
+       "stufe": "80-85 %",
+       "n": 21473,
+       "modell": 0.8256,
+       "treffer": 0.7834,
+       "abweichung_pp": -4.22,
+       "ci95_pp": [
+        -4.73,
+        -3.73
+       ]
+      },
+      {
+       "stufe": "85-90 %",
+       "n": 24376,
+       "modell": 0.8757,
+       "treffer": 0.8342,
+       "abweichung_pp": -4.15,
+       "ci95_pp": [
+        -4.69,
+        -3.65
+       ]
+      },
+      {
+       "stufe": "90-95 %",
+       "n": 30396,
+       "modell": 0.9263,
+       "treffer": 0.8888,
+       "abweichung_pp": -3.75,
+       "ci95_pp": [
+        -4.15,
+        -3.2
+       ]
+      }
+     ],
+     "steigung_stufen": 0.914,
+     "steigung_stufen_ci95": [
+      0.902,
+      0.928
+     ],
+     "abdeckung": {
+      "gedeckt_insgesamt": true,
+      "mittlere_abweichung_pp": 2.02,
+      "stufen_ueber_6pp": [],
+      "stufen_gedeckt_ab100": [
+       "5-10 %",
+       "10-15 %",
+       "15-20 %",
+       "20-25 %",
+       "25-30 %",
+       "30-35 %",
+       "35-40 %",
+       "40-45 %",
+       "45-50 %",
+       "50-55 %",
+       "55-60 %",
+       "60-65 %",
+       "65-70 %",
+       "70-75 %",
+       "75-80 %",
+       "80-85 %",
+       "85-90 %",
+       "90-95 %"
+      ],
+      "bereiche": {
+       "niedrig 5-35 %": {
+        "n": 230229,
+        "mittlere_abweichung_pp": 0.49,
+        "max_abweichung_pp_ab100": 1.5,
+        "gedeckt": true
+       },
+       "mittel 35-65 %": {
+        "n": 110642,
+        "mittlere_abweichung_pp": 2.78,
+        "max_abweichung_pp_ab100": 3.38,
+        "gedeckt": true
+       },
+       "hoch 65-95 %": {
+        "n": 132010,
+        "mittlere_abweichung_pp": 4.07,
+        "max_abweichung_pp_ab100": 4.44,
+        "gedeckt": false
+       }
+      }
+     },
+     "punktfehler": {
+      "minuten": {
+       "n": 26232,
+       "bias": 0.716,
+       "bias_ci95": [
+        0.63,
+        0.794
+       ],
+       "mae": 6.006,
+       "mae_ci95": [
+        5.929,
+        6.097
+       ]
+      },
+      "punkte": {
+       "n": 26232,
+       "bias": 0.306,
+       "bias_ci95": [
+        0.244,
+        0.363
+       ],
+       "mae": 4.751,
+       "mae_ci95": [
+        4.708,
+        4.803
+       ]
+      }
+     },
+     "minuten_nach_rolle": {
+      "unter 20 Min": {
+       "n": 13030,
+       "bias": -2.628,
+       "bias_ci95": [
+        -2.794,
+        -2.475
+       ],
+       "mae": 6.328,
+       "mittel_erwartet": 13.37,
+       "mittel_tatsaechlich": 16.0
+      },
+      "20-28 Min": {
+       "n": 1605,
+       "bias": 0.904,
+       "bias_ci95": [
+        0.564,
+        1.209
+       ],
+       "mae": 5.303,
+       "mittel_erwartet": 24.03,
+       "mittel_tatsaechlich": 23.13
+      },
+      "ueber 28 Min": {
+       "n": 11597,
+       "bias": 4.447,
+       "bias_ci95": [
+        4.283,
+        4.623
+       ],
+       "mae": 5.741,
+       "mittel_erwartet": 34.22,
+       "mittel_tatsaechlich": 29.77
+      }
+     },
+     "aufteilungen": {
+      "heim": {
+       "n": 238601,
+       "brier": 0.166,
+       "mittel_modell": 0.4233,
+       "trefferquote": 0.4037,
+       "abweichung_pp": -1.96
+      },
+      "gast": {
+       "n": 234280,
+       "brier": 0.1669,
+       "mittel_modell": 0.4232,
+       "trefferquote": 0.405,
+       "abweichung_pp": -1.82
+      },
+      "grosser_abstand_ab_15": {
+       "n": 185217,
+       "brier": 0.1683,
+       "mittel_modell": 0.4192,
+       "trefferquote": 0.385,
+       "abweichung_pp": -3.42
+      },
+      "enges_spiel_bis_6": {
+       "n": 132100,
+       "brier": 0.1674,
+       "mittel_modell": 0.4262,
+       "trefferquote": 0.4208,
+       "abweichung_pp": -0.55
+      },
+      "mit_overtime": {
+       "n": 20324,
+       "brier": 0.1787,
+       "mittel_modell": 0.4277,
+       "trefferquote": 0.48,
+       "abweichung_pp": 5.23
+      },
+      "ohne_overtime": {
+       "n": 452557,
+       "brier": 0.1659,
+       "mittel_modell": 0.4231,
+       "trefferquote": 0.401,
+       "abweichung_pp": -2.21
+      },
+      "erste_15_teamspiele": {
+       "n": 85790,
+       "brier": 0.1675,
+       "mittel_modell": 0.4261,
+       "trefferquote": 0.4026,
+       "abweichung_pp": -2.35
+      },
+      "rest_der_saison": {
+       "n": 387091,
+       "brier": 0.1662,
+       "mittel_modell": 0.4227,
+       "trefferquote": 0.4048,
+       "abweichung_pp": -1.79
+      },
+      "erste_haelfte": {
+       "n": 235130,
+       "brier": 0.1657,
+       "mittel_modell": 0.4242,
+       "trefferquote": 0.4027,
+       "abweichung_pp": -2.15
+      },
+      "zweite_haelfte": {
+       "n": 237751,
+       "brier": 0.1671,
+       "mittel_modell": 0.4224,
+       "trefferquote": 0.406,
+       "abweichung_pp": -1.63
+      },
+      "rolle_unter_20_min": {
+       "n": 163390,
+       "brier": 0.1898,
+       "mittel_modell": 0.3799,
+       "trefferquote": 0.4369,
+       "abweichung_pp": 5.7
+      },
+      "rolle_20_28_min": {
+       "n": 29068,
+       "brier": 0.1661,
+       "mittel_modell": 0.4236,
+       "trefferquote": 0.4148,
+       "abweichung_pp": -0.88
+      },
+      "rolle_ueber_28_min": {
+       "n": 280423,
+       "brier": 0.1529,
+       "mittel_modell": 0.4485,
+       "trefferquote": 0.3844,
+       "abweichung_pp": -6.42
+      },
+      "erwartete_punkte_unter_10": {
+       "n": 178582,
+       "brier": 0.1874,
+       "mittel_modell": 0.3834,
+       "trefferquote": 0.4318,
+       "abweichung_pp": 4.84
+      },
+      "erwartete_punkte_10_20": {
+       "n": 192587,
+       "brier": 0.1543,
+       "mittel_modell": 0.4421,
+       "trefferquote": 0.3761,
+       "abweichung_pp": -6.6
+      },
+      "erwartete_punkte_ueber_20": {
+       "n": 101712,
+       "brier": 0.1525,
+       "mittel_modell": 0.4575,
+       "trefferquote": 0.4098,
+       "abweichung_pp": -4.78
+      }
+     }
+    }
+   },
+   "naiv": {
+    "beschreibung": "p = 1 - Phi((k - 0,5 - Saisonschnitt) / 6.0); Saisonschnitt = Punkte des Spielers in der laufenden Saison vor D (ab 5 Spielen, sonst Verlauf ab 5 Spielen), fester Streuwert",
+    "n": 463235,
+    "anteil_von_A": 0.994,
+    "brier_naiv": 0.1688,
+    "brier_A_gleiche_zeilen": 0.166,
+    "differenz_naiv_minus_A": 0.0029,
+    "differenz_ci95": [
+     0.0023,
+     0.0034
+    ],
+    "steigung_naiv": 0.84
+   },
+   "varianten_vergleich": {
+    "B_minus_A": {
+     "gemeinsame_zeilen": 417975,
+     "brier_A": 0.1768,
+     "brier_B": 0.1816,
+     "differenz": 0.00478,
+     "ci95": [
+      0.00407,
+      0.00561
+     ],
+     "zeilen_nur_in_A": 47923,
+     "zeilen_nur_in_B": 12147
+    },
+    "C_minus_A": {
+     "gemeinsame_zeilen": 423340,
+     "brier_A": 0.1763,
+     "brier_C": 0.1793,
+     "differenz": 0.00298,
+     "ci95": [
+      0.00189,
+      0.004
+     ],
+     "zeilen_nur_in_A": 42558,
+     "zeilen_nur_in_C": 49541
+    }
+   }
+  }
+ },
+ "beide": {
+  "spielerzeilen": 52015,
+  "spiele": 2460,
+  "spieler": 662,
+  "uebersprungene_spieler": 759,
+  "anteil_uebersprungen": 0.0144,
+  "gespielte_spieler_gesamt": 52774,
+  "team_spiele": 4920,
+  "kader_ø": 0.0,
+  "rotation_B_ø": 0.0,
+  "ausfaelle_C_ø_je_teamspiel": 0.0,
+  "teamabgleich_gelungen_B": 0.0,
+  "faktor_f_B_ø": 0.0,
+  "varianten": {
+   "A": {
+    "n": 917814,
+    "brier": 0.1672,
+    "brier_ci95": [
+     0.1663,
+     0.1682
+    ],
+    "logloss": 0.5081,
+    "logloss_ci95": [
+     0.5055,
+     0.5106
+    ],
+    "mittel_modell": 0.4219,
+    "trefferquote": 0.4185,
+    "abweichung_pp": -0.35,
+    "brier_basisrate": 0.2434,
+    "steigung": 0.918,
+    "stufen": [
+     {
+      "stufe": "5-10 %",
+      "n": 142482,
+      "modell": 0.0725,
+      "treffer": 0.0789,
+      "abweichung_pp": 0.64,
+      "ci95_pp": [
+       0.41,
+       0.87
+      ]
+     },
+     {
+      "stufe": "10-15 %",
+      "n": 90293,
+      "modell": 0.1236,
+      "treffer": 0.1324,
+      "abweichung_pp": 0.88,
+      "ci95_pp": [
+       0.54,
+       1.25
+      ]
+     },
+     {
+      "stufe": "15-20 %",
+      "n": 68327,
+      "modell": 0.174,
+      "treffer": 0.1849,
+      "abweichung_pp": 1.09,
+      "ci95_pp": [
+       0.7,
+       1.5
+      ]
+     },
+     {
+      "stufe": "20-25 %",
+      "n": 56142,
+      "modell": 0.2243,
+      "treffer": 0.2378,
+      "abweichung_pp": 1.35,
+      "ci95_pp": [
+       0.82,
+       1.79
+      ]
+     },
+     {
+      "stufe": "25-30 %",
+      "n": 48523,
+      "modell": 0.2745,
+      "treffer": 0.2837,
+      "abweichung_pp": 0.92,
+      "ci95_pp": [
+       0.41,
+       1.45
+      ]
+     },
+     {
+      "stufe": "30-35 %",
+      "n": 43328,
+      "modell": 0.3246,
+      "treffer": 0.3344,
+      "abweichung_pp": 0.98,
+      "ci95_pp": [
+       0.53,
+       1.47
+      ]
+     },
+     {
+      "stufe": "35-40 %",
+      "n": 39667,
+      "modell": 0.3746,
+      "treffer": 0.3795,
+      "abweichung_pp": 0.49,
+      "ci95_pp": [
+       -0.05,
+       0.95
+      ]
+     },
+     {
+      "stufe": "40-45 %",
+      "n": 37272,
+      "modell": 0.4246,
+      "treffer": 0.4284,
+      "abweichung_pp": 0.39,
+      "ci95_pp": [
+       -0.21,
+       0.97
+      ]
+     },
+     {
+      "stufe": "45-50 %",
+      "n": 35561,
+      "modell": 0.4749,
+      "treffer": 0.4748,
+      "abweichung_pp": -0.0,
+      "ci95_pp": [
+       -0.57,
+       0.53
+      ]
+     },
+     {
+      "stufe": "50-55 %",
+      "n": 34299,
+      "modell": 0.5249,
+      "treffer": 0.5209,
+      "abweichung_pp": -0.39,
+      "ci95_pp": [
+       -1.01,
+       0.13
+      ]
+     },
+     {
+      "stufe": "55-60 %",
+      "n": 33673,
+      "modell": 0.5751,
+      "treffer": 0.5662,
+      "abweichung_pp": -0.88,
+      "ci95_pp": [
+       -1.57,
+       -0.35
+      ]
+     },
+     {
+      "stufe": "60-65 %",
+      "n": 33703,
+      "modell": 0.6251,
+      "treffer": 0.6163,
+      "abweichung_pp": -0.88,
+      "ci95_pp": [
+       -1.48,
+       -0.36
+      ]
+     },
+     {
+      "stufe": "65-70 %",
+      "n": 34148,
+      "modell": 0.675,
+      "treffer": 0.6599,
+      "abweichung_pp": -1.52,
+      "ci95_pp": [
+       -2.1,
+       -1.03
+      ]
+     },
+     {
+      "stufe": "70-75 %",
+      "n": 35453,
+      "modell": 0.7253,
+      "treffer": 0.7061,
+      "abweichung_pp": -1.92,
+      "ci95_pp": [
+       -2.42,
+       -1.4
+      ]
+     },
+     {
+      "stufe": "75-80 %",
+      "n": 37673,
+      "modell": 0.7754,
+      "treffer": 0.749,
+      "abweichung_pp": -2.64,
+      "ci95_pp": [
+       -3.08,
+       -2.19
+      ]
+     },
+     {
+      "stufe": "80-85 %",
+      "n": 40915,
+      "modell": 0.8255,
+      "treffer": 0.7933,
+      "abweichung_pp": -3.22,
+      "ci95_pp": [
+       -3.62,
+       -2.83
+      ]
+     },
+     {
+      "stufe": "85-90 %",
+      "n": 47140,
+      "modell": 0.8757,
+      "treffer": 0.8435,
+      "abweichung_pp": -3.22,
+      "ci95_pp": [
+       -3.6,
+       -2.87
+      ]
+     },
+     {
+      "stufe": "90-95 %",
+      "n": 59215,
+      "modell": 0.9263,
+      "treffer": 0.8957,
+      "abweichung_pp": -3.07,
+      "ci95_pp": [
+       -3.4,
+       -2.78
+      ]
+     }
+    ],
+    "steigung_stufen": 0.918,
+    "steigung_stufen_ci95": [
+     0.909,
+     0.925
+    ],
+    "abdeckung": {
+     "gedeckt_insgesamt": true,
+     "mittlere_abweichung_pp": 1.31,
+     "stufen_ueber_6pp": [],
+     "stufen_gedeckt_ab100": [
+      "5-10 %",
+      "10-15 %",
+      "15-20 %",
+      "20-25 %",
+      "25-30 %",
+      "30-35 %",
+      "35-40 %",
+      "40-45 %",
+      "45-50 %",
+      "50-55 %",
+      "55-60 %",
+      "60-65 %",
+      "65-70 %",
+      "70-75 %",
+      "75-80 %",
+      "80-85 %",
+      "85-90 %",
+      "90-95 %"
+     ],
+     "bereiche": {
+      "niedrig 5-35 %": {
+       "n": 449095,
+       "mittlere_abweichung_pp": 0.91,
+       "max_abweichung_pp_ab100": 1.35,
+       "gedeckt": true
+      },
+      "mittel 35-65 %": {
+       "n": 214175,
+       "mittlere_abweichung_pp": 0.5,
+       "max_abweichung_pp_ab100": 0.88,
+       "gedeckt": true
+      },
+      "hoch 65-95 %": {
+       "n": 254544,
+       "mittlere_abweichung_pp": 2.69,
+       "max_abweichung_pp_ab100": 3.22,
+       "gedeckt": true
+      }
+     }
+    },
+    "punktfehler": {
+     "minuten": {
+      "n": 52015,
+      "bias": 0.042,
+      "bias_ci95": [
+       -0.054,
+       0.142
+      ],
+      "mae": 5.209,
+      "mae_ci95": [
+       5.159,
+       5.266
+      ]
+     },
+     "punkte": {
+      "n": 52015,
+      "bias": 0.005,
+      "bias_ci95": [
+       -0.057,
+       0.065
+      ],
+      "mae": 4.672,
+      "mae_ci95": [
+       4.635,
+       4.71
+      ]
+     }
+    },
+    "minuten_nach_rolle": {
+     "unter 20 Min": {
+      "n": 19960,
+      "bias": -0.677,
+      "bias_ci95": [
+       -0.887,
+       -0.498
+      ],
+      "mae": 6.114,
+      "mittel_erwartet": 13.66,
+      "mittel_tatsaechlich": 14.33
+     },
+     "20-28 Min": {
+      "n": 15741,
+      "bias": 0.171,
+      "bias_ci95": [
+       0.047,
+       0.294
+      ],
+      "mae": 5.194,
+      "mittel_erwartet": 24.18,
+      "mittel_tatsaechlich": 24.01
+     },
+     "ueber 28 Min": {
+      "n": 16314,
+      "bias": 0.796,
+      "bias_ci95": [
+       0.662,
+       0.936
+      ],
+      "mae": 4.117,
+      "mittel_erwartet": 32.54,
+      "mittel_tatsaechlich": 31.74
+     }
+    },
+    "aufteilungen": {
+     "heim": {
+      "n": 460415,
+      "brier": 0.1675,
+      "mittel_modell": 0.422,
+      "trefferquote": 0.4208,
+      "abweichung_pp": -0.12
+     },
+     "gast": {
+      "n": 457399,
+      "brier": 0.1669,
+      "mittel_modell": 0.4218,
+      "trefferquote": 0.4161,
+      "abweichung_pp": -0.57
+     },
+     "grosser_abstand_ab_15": {
+      "n": 344317,
+      "brier": 0.1666,
+      "mittel_modell": 0.4178,
+      "trefferquote": 0.3985,
+      "abweichung_pp": -1.93
+     },
+     "enges_spiel_bis_6": {
+      "n": 263110,
+      "brier": 0.1689,
+      "mittel_modell": 0.425,
+      "trefferquote": 0.4373,
+      "abweichung_pp": 1.22
+     },
+     "mit_overtime": {
+      "n": 40740,
+      "brier": 0.1829,
+      "mittel_modell": 0.4244,
+      "trefferquote": 0.4904,
+      "abweichung_pp": 6.6
+     },
+     "ohne_overtime": {
+      "n": 877074,
+      "brier": 0.1665,
+      "mittel_modell": 0.4218,
+      "trefferquote": 0.4151,
+      "abweichung_pp": -0.67
+     },
+     "erste_15_teamspiele": {
+      "n": 168210,
+      "brier": 0.1668,
+      "mittel_modell": 0.4251,
+      "trefferquote": 0.4063,
+      "abweichung_pp": -1.88
+     },
+     "rest_der_saison": {
+      "n": 749604,
+      "brier": 0.1673,
+      "mittel_modell": 0.4212,
+      "trefferquote": 0.4212,
+      "abweichung_pp": -0.0
+     },
+     "erste_haelfte": {
+      "n": 461243,
+      "brier": 0.1651,
+      "mittel_modell": 0.4237,
+      "trefferquote": 0.4096,
+      "abweichung_pp": -1.41
+     },
+     "zweite_haelfte": {
+      "n": 456571,
+      "brier": 0.1693,
+      "mittel_modell": 0.4202,
+      "trefferquote": 0.4275,
+      "abweichung_pp": 0.73
+     },
+     "rolle_unter_20_min": {
+      "n": 252931,
+      "brier": 0.1794,
+      "mittel_modell": 0.3777,
+      "trefferquote": 0.38,
+      "abweichung_pp": 0.23
+     },
+     "rolle_20_28_min": {
+      "n": 285390,
+      "brier": 0.1668,
+      "mittel_modell": 0.4259,
+      "trefferquote": 0.428,
+      "abweichung_pp": 0.21
+     },
+     "rolle_ueber_28_min": {
+      "n": 379493,
+      "brier": 0.1594,
+      "mittel_modell": 0.4484,
+      "trefferquote": 0.437,
+      "abweichung_pp": -1.14
+     },
+     "erwartete_punkte_unter_10": {
+      "n": 388081,
+      "brier": 0.1763,
+      "mittel_modell": 0.3922,
+      "trefferquote": 0.3986,
+      "abweichung_pp": 0.64
+     },
+     "erwartete_punkte_10_20": {
+      "n": 373367,
+      "brier": 0.1624,
+      "mittel_modell": 0.4383,
+      "trefferquote": 0.4313,
+      "abweichung_pp": -0.7
+     },
+     "erwartete_punkte_ueber_20": {
+      "n": 156366,
+      "brier": 0.1561,
+      "mittel_modell": 0.4568,
+      "trefferquote": 0.4374,
+      "abweichung_pp": -1.95
+     }
+    }
+   },
+   "B": {
+    "n": 846683,
+    "brier": 0.1796,
+    "brier_ci95": [
+     0.1786,
+     0.1808
+    ],
+    "logloss": 0.5403,
+    "logloss_ci95": [
+     0.5375,
+     0.5431
+    ],
+    "mittel_modell": 0.4183,
+    "trefferquote": 0.4654,
+    "abweichung_pp": 4.71,
+    "brier_basisrate": 0.2488,
+    "steigung": 0.869,
+    "stufen": [
+     {
+      "stufe": "5-10 %",
+      "n": 132844,
+      "modell": 0.0725,
+      "treffer": 0.1185,
+      "abweichung_pp": 4.6,
+      "ci95_pp": [
+       4.32,
+       4.88
+      ]
+     },
+     {
+      "stufe": "10-15 %",
+      "n": 84159,
+      "modell": 0.1235,
+      "treffer": 0.186,
+      "abweichung_pp": 6.25,
+      "ci95_pp": [
+       5.84,
+       6.59
+      ]
+     },
+     {
+      "stufe": "15-20 %",
+      "n": 63581,
+      "modell": 0.174,
+      "treffer": 0.2444,
+      "abweichung_pp": 7.05,
+      "ci95_pp": [
+       6.62,
+       7.44
+      ]
+     },
+     {
+      "stufe": "20-25 %",
+      "n": 52182,
+      "modell": 0.2243,
+      "treffer": 0.3007,
+      "abweichung_pp": 7.64,
+      "ci95_pp": [
+       7.17,
+       8.18
+      ]
+     },
+     {
+      "stufe": "25-30 %",
+      "n": 45071,
+      "modell": 0.2745,
+      "treffer": 0.35,
+      "abweichung_pp": 7.55,
+      "ci95_pp": [
+       7.02,
+       8.07
+      ]
+     },
+     {
+      "stufe": "30-35 %",
+      "n": 40272,
+      "modell": 0.3246,
+      "treffer": 0.4006,
+      "abweichung_pp": 7.6,
+      "ci95_pp": [
+       7.07,
+       8.13
+      ]
+     },
+     {
+      "stufe": "35-40 %",
+      "n": 36832,
+      "modell": 0.3747,
+      "treffer": 0.4482,
+      "abweichung_pp": 7.35,
+      "ci95_pp": [
+       6.8,
+       7.82
+      ]
+     },
+     {
+      "stufe": "40-45 %",
+      "n": 34516,
+      "modell": 0.4248,
+      "treffer": 0.4966,
+      "abweichung_pp": 7.18,
+      "ci95_pp": [
+       6.66,
+       7.71
+      ]
+     },
+     {
+      "stufe": "45-50 %",
+      "n": 32882,
+      "modell": 0.4749,
+      "treffer": 0.5415,
+      "abweichung_pp": 6.67,
+      "ci95_pp": [
+       6.09,
+       7.3
+      ]
+     },
+     {
+      "stufe": "50-55 %",
+      "n": 31633,
+      "modell": 0.525,
+      "treffer": 0.5844,
+      "abweichung_pp": 5.94,
+      "ci95_pp": [
+       5.42,
+       6.48
+      ]
+     },
+     {
+      "stufe": "55-60 %",
+      "n": 31105,
+      "modell": 0.575,
+      "treffer": 0.6273,
+      "abweichung_pp": 5.23,
+      "ci95_pp": [
+       4.62,
+       5.82
+      ]
+     },
+     {
+      "stufe": "60-65 %",
+      "n": 31170,
+      "modell": 0.6251,
+      "treffer": 0.6719,
+      "abweichung_pp": 4.68,
+      "ci95_pp": [
+       4.1,
+       5.2
+      ]
+     },
+     {
+      "stufe": "65-70 %",
+      "n": 31453,
+      "modell": 0.6751,
+      "treffer": 0.7058,
+      "abweichung_pp": 3.08,
+      "ci95_pp": [
+       2.49,
+       3.62
+      ]
+     },
+     {
+      "stufe": "70-75 %",
+      "n": 32475,
+      "modell": 0.7253,
+      "treffer": 0.7508,
+      "abweichung_pp": 2.55,
+      "ci95_pp": [
+       2.14,
+       3.04
+      ]
+     },
+     {
+      "stufe": "75-80 %",
+      "n": 34561,
+      "modell": 0.7753,
+      "treffer": 0.7846,
+      "abweichung_pp": 0.94,
+      "ci95_pp": [
+       0.52,
+       1.38
+      ]
+     },
+     {
+      "stufe": "80-85 %",
+      "n": 37364,
+      "modell": 0.8254,
+      "treffer": 0.828,
+      "abweichung_pp": 0.26,
+      "ci95_pp": [
+       -0.15,
+       0.71
+      ]
+     },
+     {
+      "stufe": "85-90 %",
+      "n": 42437,
+      "modell": 0.8756,
+      "treffer": 0.8675,
+      "abweichung_pp": -0.81,
+      "ci95_pp": [
+       -1.18,
+       -0.47
+      ]
+     },
+     {
+      "stufe": "90-95 %",
+      "n": 52146,
+      "modell": 0.9262,
+      "treffer": 0.9143,
+      "abweichung_pp": -1.19,
+      "ci95_pp": [
+       -1.52,
+       -0.89
+      ]
+     }
+    ],
+    "steigung_stufen": 0.87,
+    "steigung_stufen_ci95": [
+     0.862,
+     0.877
+    ],
+    "abdeckung": {
+     "gedeckt_insgesamt": false,
+     "mittlere_abweichung_pp": 4.94,
+     "stufen_ueber_6pp": [
+      "10-15 %",
+      "15-20 %",
+      "20-25 %",
+      "25-30 %",
+      "30-35 %",
+      "35-40 %",
+      "40-45 %",
+      "45-50 %"
+     ],
+     "stufen_gedeckt_ab100": [
+      "5-10 %",
+      "50-55 %",
+      "55-60 %",
+      "60-65 %",
+      "65-70 %",
+      "70-75 %",
+      "75-80 %",
+      "80-85 %",
+      "85-90 %",
+      "90-95 %"
+     ],
+     "bereiche": {
+      "niedrig 5-35 %": {
+       "n": 418109,
+       "mittlere_abweichung_pp": 6.29,
+       "max_abweichung_pp_ab100": 7.64,
+       "gedeckt": false
+      },
+      "mittel 35-65 %": {
+       "n": 198138,
+       "mittlere_abweichung_pp": 6.23,
+       "max_abweichung_pp_ab100": 7.35,
+       "gedeckt": false
+      },
+      "hoch 65-95 %": {
+       "n": 230436,
+       "mittlere_abweichung_pp": 1.38,
+       "max_abweichung_pp_ab100": 3.08,
+       "gedeckt": true
+      }
+     }
+    },
+    "punktfehler": {
+     "minuten": {
+      "n": 52015,
+      "bias": -1.486,
+      "bias_ci95": [
+       -1.581,
+       -1.396
+      ],
+      "mae": 5.604,
+      "mae_ci95": [
+       5.547,
+       5.667
+      ]
+     },
+     "punkte": {
+      "n": 52015,
+      "bias": -1.008,
+      "bias_ci95": [
+       -1.064,
+       -0.953
+      ],
+      "mae": 4.696,
+      "mae_ci95": [
+       4.659,
+       4.734
+      ]
+     }
+    },
+    "minuten_nach_rolle": {
+     "unter 20 Min": {
+      "n": 28183,
+      "bias": -2.741,
+      "bias_ci95": [
+       -2.889,
+       -2.601
+      ],
+      "mae": 6.52,
+      "mittel_erwartet": 14.07,
+      "mittel_tatsaechlich": 16.82
+     },
+     "20-28 Min": {
+      "n": 7935,
+      "bias": -1.368,
+      "bias_ci95": [
+       -1.531,
+       -1.206
+      ],
+      "mae": 5.375,
+      "mittel_erwartet": 24.07,
+      "mittel_tatsaechlich": 25.44
+     },
+     "ueber 28 Min": {
+      "n": 15897,
+      "bias": 0.679,
+      "bias_ci95": [
+       0.547,
+       0.824
+      ],
+      "mae": 4.095,
+      "mittel_erwartet": 32.52,
+      "mittel_tatsaechlich": 31.84
+     }
+    },
+    "aufteilungen": {
+     "heim": {
+      "n": 428114,
+      "brier": 0.179,
+      "mittel_modell": 0.4185,
+      "trefferquote": 0.4634,
+      "abweichung_pp": 4.49
+     },
+     "gast": {
+      "n": 418569,
+      "brier": 0.1803,
+      "mittel_modell": 0.4181,
+      "trefferquote": 0.4674,
+      "abweichung_pp": 4.94
+     },
+     "grosser_abstand_ab_15": {
+      "n": 319439,
+      "brier": 0.1777,
+      "mittel_modell": 0.4142,
+      "trefferquote": 0.4412,
+      "abweichung_pp": 2.7
+     },
+     "enges_spiel_bis_6": {
+      "n": 241468,
+      "brier": 0.1826,
+      "mittel_modell": 0.4216,
+      "trefferquote": 0.4883,
+      "abweichung_pp": 6.67
+     },
+     "mit_overtime": {
+      "n": 37256,
+      "brier": 0.2009,
+      "mittel_modell": 0.4209,
+      "trefferquote": 0.5453,
+      "abweichung_pp": 12.44
+     },
+     "ohne_overtime": {
+      "n": 809427,
+      "brier": 0.1786,
+      "mittel_modell": 0.4182,
+      "trefferquote": 0.4617,
+      "abweichung_pp": 4.36
+     },
+     "erste_15_teamspiele": {
+      "n": 154386,
+      "brier": 0.1791,
+      "mittel_modell": 0.4213,
+      "trefferquote": 0.4563,
+      "abweichung_pp": 3.5
+     },
+     "rest_der_saison": {
+      "n": 692297,
+      "brier": 0.1798,
+      "mittel_modell": 0.4176,
+      "trefferquote": 0.4674,
+      "abweichung_pp": 4.98
+     },
+     "erste_haelfte": {
+      "n": 424098,
+      "brier": 0.1773,
+      "mittel_modell": 0.4201,
+      "trefferquote": 0.4585,
+      "abweichung_pp": 3.84
+     },
+     "zweite_haelfte": {
+      "n": 422585,
+      "brier": 0.182,
+      "mittel_modell": 0.4165,
+      "trefferquote": 0.4724,
+      "abweichung_pp": 5.59
+     },
+     "rolle_unter_20_min": {
+      "n": 353944,
+      "brier": 0.1946,
+      "mittel_modell": 0.3839,
+      "trefferquote": 0.4509,
+      "abweichung_pp": 6.69
+     },
+     "rolle_20_28_min": {
+      "n": 138827,
+      "brier": 0.1786,
+      "mittel_modell": 0.4289,
+      "trefferquote": 0.485,
+      "abweichung_pp": 5.61
+     },
+     "rolle_ueber_28_min": {
+      "n": 353912,
+      "brier": 0.165,
+      "mittel_modell": 0.4485,
+      "trefferquote": 0.4723,
+      "abweichung_pp": 2.38
+     },
+     "erwartete_punkte_unter_10": {
+      "n": 420162,
+      "brier": 0.1924,
+      "mittel_modell": 0.3902,
+      "trefferquote": 0.456,
+      "abweichung_pp": 6.58
+     },
+     "erwartete_punkte_10_20": {
+      "n": 300345,
+      "brier": 0.1689,
+      "mittel_modell": 0.4412,
+      "trefferquote": 0.4697,
+      "abweichung_pp": 2.84
+     },
+     "erwartete_punkte_ueber_20": {
+      "n": 126176,
+      "brier": 0.1626,
+      "mittel_modell": 0.4573,
+      "trefferquote": 0.4866,
+      "abweichung_pp": 2.93
+     }
+    }
+   },
+   "C": {
+    "n": 932508,
+    "brier": 0.1667,
+    "brier_ci95": [
+     0.1657,
+     0.1675
+    ],
+    "logloss": 0.507,
+    "logloss_ci95": [
+     0.5048,
+     0.5091
+    ],
+    "mittel_modell": 0.4227,
+    "trefferquote": 0.4061,
+    "abweichung_pp": -1.66,
+    "brier_basisrate": 0.2412,
+    "steigung": 0.913,
+    "stufen": [
+     {
+      "stufe": "5-10 %",
+      "n": 144190,
+      "modell": 0.0725,
+      "treffer": 0.0775,
+      "abweichung_pp": 0.5,
+      "ci95_pp": [
+       0.32,
+       0.68
+      ]
+     },
+     {
+      "stufe": "10-15 %",
+      "n": 91464,
+      "modell": 0.1236,
+      "treffer": 0.1261,
+      "abweichung_pp": 0.25,
+      "ci95_pp": [
+       0.03,
+       0.49
+      ]
+     },
+     {
+      "stufe": "15-20 %",
+      "n": 69175,
+      "modell": 0.174,
+      "treffer": 0.174,
+      "abweichung_pp": -0.01,
+      "ci95_pp": [
+       -0.32,
+       0.32
+      ]
+     },
+     {
+      "stufe": "20-25 %",
+      "n": 56842,
+      "modell": 0.2243,
+      "treffer": 0.2204,
+      "abweichung_pp": -0.39,
+      "ci95_pp": [
+       -0.71,
+       -0.01
+      ]
+     },
+     {
+      "stufe": "25-30 %",
+      "n": 49236,
+      "modell": 0.2745,
+      "treffer": 0.2669,
+      "abweichung_pp": -0.76,
+      "ci95_pp": [
+       -1.1,
+       -0.44
+      ]
+     },
+     {
+      "stufe": "30-35 %",
+      "n": 43992,
+      "modell": 0.3245,
+      "treffer": 0.3134,
+      "abweichung_pp": -1.12,
+      "ci95_pp": [
+       -1.51,
+       -0.68
+      ]
+     },
+     {
+      "stufe": "35-40 %",
+      "n": 40540,
+      "modell": 0.3748,
+      "treffer": 0.357,
+      "abweichung_pp": -1.78,
+      "ci95_pp": [
+       -2.22,
+       -1.44
+      ]
+     },
+     {
+      "stufe": "40-45 %",
+      "n": 37683,
+      "modell": 0.4248,
+      "treffer": 0.4056,
+      "abweichung_pp": -1.92,
+      "ci95_pp": [
+       -2.43,
+       -1.46
+      ]
+     },
+     {
+      "stufe": "45-50 %",
+      "n": 36192,
+      "modell": 0.4748,
+      "treffer": 0.4537,
+      "abweichung_pp": -2.11,
+      "ci95_pp": [
+       -2.58,
+       -1.64
+      ]
+     },
+     {
+      "stufe": "50-55 %",
+      "n": 34961,
+      "modell": 0.525,
+      "treffer": 0.498,
+      "abweichung_pp": -2.7,
+      "ci95_pp": [
+       -3.22,
+       -2.28
+      ]
+     },
+     {
+      "stufe": "55-60 %",
+      "n": 34355,
+      "modell": 0.575,
+      "treffer": 0.5467,
+      "abweichung_pp": -2.83,
+      "ci95_pp": [
+       -3.29,
+       -2.32
+      ]
+     },
+     {
+      "stufe": "60-65 %",
+      "n": 34430,
+      "modell": 0.6251,
+      "treffer": 0.5958,
+      "abweichung_pp": -2.93,
+      "ci95_pp": [
+       -3.45,
+       -2.49
+      ]
+     },
+     {
+      "stufe": "65-70 %",
+      "n": 34758,
+      "modell": 0.6751,
+      "treffer": 0.6359,
+      "abweichung_pp": -3.92,
+      "ci95_pp": [
+       -4.52,
+       -3.52
+      ]
+     },
+     {
+      "stufe": "70-75 %",
+      "n": 36344,
+      "modell": 0.7252,
+      "treffer": 0.6892,
+      "abweichung_pp": -3.61,
+      "ci95_pp": [
+       -4.14,
+       -3.22
+      ]
+     },
+     {
+      "stufe": "75-80 %",
+      "n": 38615,
+      "modell": 0.7753,
+      "treffer": 0.7331,
+      "abweichung_pp": -4.22,
+      "ci95_pp": [
+       -4.66,
+       -3.8
+      ]
+     },
+     {
+      "stufe": "80-85 %",
+      "n": 42064,
+      "modell": 0.8255,
+      "treffer": 0.7834,
+      "abweichung_pp": -4.22,
+      "ci95_pp": [
+       -4.64,
+       -3.78
+      ]
+     },
+     {
+      "stufe": "85-90 %",
+      "n": 47981,
+      "modell": 0.8757,
+      "treffer": 0.8358,
+      "abweichung_pp": -3.98,
+      "ci95_pp": [
+       -4.43,
+       -3.63
+      ]
+     },
+     {
+      "stufe": "90-95 %",
+      "n": 59686,
+      "modell": 0.9263,
+      "treffer": 0.8898,
+      "abweichung_pp": -3.65,
+      "ci95_pp": [
+       -4.05,
+       -3.35
+      ]
+     }
+    ],
+    "steigung_stufen": 0.913,
+    "steigung_stufen_ci95": [
+     0.905,
+     0.919
+    ],
+    "abdeckung": {
+     "gedeckt_insgesamt": true,
+     "mittlere_abweichung_pp": 1.86,
+     "stufen_ueber_6pp": [],
+     "stufen_gedeckt_ab100": [
+      "5-10 %",
+      "10-15 %",
+      "15-20 %",
+      "20-25 %",
+      "25-30 %",
+      "30-35 %",
+      "35-40 %",
+      "40-45 %",
+      "45-50 %",
+      "50-55 %",
+      "55-60 %",
+      "60-65 %",
+      "65-70 %",
+      "70-75 %",
+      "75-80 %",
+      "80-85 %",
+      "85-90 %",
+      "90-95 %"
+     ],
+     "bereiche": {
+      "niedrig 5-35 %": {
+       "n": 454899,
+       "mittlere_abweichung_pp": 0.45,
+       "max_abweichung_pp_ab100": 1.12,
+       "gedeckt": true
+      },
+      "mittel 35-65 %": {
+       "n": 218161,
+       "mittlere_abweichung_pp": 2.35,
+       "max_abweichung_pp_ab100": 2.93,
+       "gedeckt": true
+      },
+      "hoch 65-95 %": {
+       "n": 259448,
+       "mittlere_abweichung_pp": 3.92,
+       "max_abweichung_pp_ab100": 4.22,
+       "gedeckt": false
+      }
+     }
+    },
+    "punktfehler": {
+     "minuten": {
+      "n": 52015,
+      "bias": 0.6,
+      "bias_ci95": [
+       0.541,
+       0.659
+      ],
+      "mae": 5.896,
+      "mae_ci95": [
+       5.833,
+       5.962
+      ]
+     },
+     "punkte": {
+      "n": 52015,
+      "bias": 0.248,
+      "bias_ci95": [
+       0.204,
+       0.292
+      ],
+      "mae": 4.73,
+      "mae_ci95": [
+       4.697,
+       4.77
+      ]
+     }
+    },
+    "minuten_nach_rolle": {
+     "unter 20 Min": {
+      "n": 25614,
+      "bias": -2.633,
+      "bias_ci95": [
+       -2.773,
+       -2.511
+      ],
+      "mae": 6.244,
+      "mittel_erwartet": 13.19,
+      "mittel_tatsaechlich": 15.82
+     },
+     "20-28 Min": {
+      "n": 3032,
+      "bias": 0.697,
+      "bias_ci95": [
+       0.45,
+       0.969
+      ],
+      "mae": 5.421,
+      "mittel_erwartet": 23.94,
+      "mittel_tatsaechlich": 23.25
+     },
+     "ueber 28 Min": {
+      "n": 23369,
+      "bias": 4.132,
+      "bias_ci95": [
+       4.006,
+       4.259
+      ],
+      "mae": 5.576,
+      "mittel_erwartet": 34.35,
+      "mittel_tatsaechlich": 30.22
+     }
+    },
+    "aufteilungen": {
+     "heim": {
+      "n": 471528,
+      "brier": 0.1662,
+      "mittel_modell": 0.4228,
+      "trefferquote": 0.4042,
+      "abweichung_pp": -1.85
+     },
+     "gast": {
+      "n": 460980,
+      "brier": 0.1672,
+      "mittel_modell": 0.4226,
+      "trefferquote": 0.408,
+      "abweichung_pp": -1.45
+     },
+     "grosser_abstand_ab_15": {
+      "n": 351475,
+      "brier": 0.1678,
+      "mittel_modell": 0.4187,
+      "trefferquote": 0.384,
+      "abweichung_pp": -3.47
+     },
+     "enges_spiel_bis_6": {
+      "n": 266721,
+      "brier": 0.1671,
+      "mittel_modell": 0.4259,
+      "trefferquote": 0.4261,
+      "abweichung_pp": 0.02
+     },
+     "mit_overtime": {
+      "n": 41709,
+      "brier": 0.179,
+      "mittel_modell": 0.4254,
+      "trefferquote": 0.4773,
+      "abweichung_pp": 5.19
+     },
+     "ohne_overtime": {
+      "n": 890799,
+      "brier": 0.1661,
+      "mittel_modell": 0.4225,
+      "trefferquote": 0.4028,
+      "abweichung_pp": -1.98
+     },
+     "erste_15_teamspiele": {
+      "n": 168171,
+      "brier": 0.1681,
+      "mittel_modell": 0.4249,
+      "trefferquote": 0.4022,
+      "abweichung_pp": -2.28
+     },
+     "rest_der_saison": {
+      "n": 764337,
+      "brier": 0.1664,
+      "mittel_modell": 0.4222,
+      "trefferquote": 0.407,
+      "abweichung_pp": -1.52
+     },
+     "erste_haelfte": {
+      "n": 461870,
+      "brier": 0.1663,
+      "mittel_modell": 0.4238,
+      "trefferquote": 0.4047,
+      "abweichung_pp": -1.91
+     },
+     "zweite_haelfte": {
+      "n": 470638,
+      "brier": 0.167,
+      "mittel_modell": 0.4216,
+      "trefferquote": 0.4075,
+      "abweichung_pp": -1.41
+     },
+     "rolle_unter_20_min": {
+      "n": 315865,
+      "brier": 0.1898,
+      "mittel_modell": 0.3785,
+      "trefferquote": 0.4359,
+      "abweichung_pp": 5.74
+     },
+     "rolle_20_28_min": {
+      "n": 54375,
+      "brier": 0.1658,
+      "mittel_modell": 0.4249,
+      "trefferquote": 0.4215,
+      "abweichung_pp": -0.34
+     },
+     "rolle_ueber_28_min": {
+      "n": 562268,
+      "brier": 0.1538,
+      "mittel_modell": 0.4472,
+      "trefferquote": 0.3879,
+      "abweichung_pp": -5.94
+     },
+     "erwartete_punkte_unter_10": {
+      "n": 351586,
+      "brier": 0.187,
+      "mittel_modell": 0.3829,
+      "trefferquote": 0.4315,
+      "abweichung_pp": 4.85
+     },
+     "erwartete_punkte_10_20": {
+      "n": 376523,
+      "brier": 0.1543,
+      "mittel_modell": 0.4418,
+      "trefferquote": 0.3771,
+      "abweichung_pp": -6.48
+     },
+     "erwartete_punkte_ueber_20": {
+      "n": 204399,
+      "brier": 0.1545,
+      "mittel_modell": 0.4557,
+      "trefferquote": 0.416,
+      "abweichung_pp": -3.97
+     }
+    }
+   }
+  },
+  "naiv": {
+   "beschreibung": "p = 1 - Phi((k - 0,5 - Saisonschnitt) / 6.0); Saisonschnitt = Punkte des Spielers in der laufenden Saison vor D (ab 5 Spielen, sonst Verlauf ab 5 Spielen), fester Streuwert",
+   "n": 913027,
+   "anteil_von_A": 0.995,
+   "brier_naiv": 0.1697,
+   "brier_A_gleiche_zeilen": 0.1669,
+   "differenz_naiv_minus_A": 0.0028,
+   "differenz_ci95": [
+    0.0023,
+    0.0032
+   ],
+   "steigung_naiv": 0.836
+  },
+  "varianten_vergleich": {
+   "B_minus_A": {
+    "gemeinsame_zeilen": 822578,
+    "brier_A": 0.1778,
+    "brier_B": 0.1829,
+    "differenz": 0.0051,
+    "ci95": [
+     0.00462,
+     0.0056
+    ],
+    "zeilen_nur_in_A": 95236,
+    "zeilen_nur_in_B": 24105
+   },
+   "C_minus_A": {
+    "gemeinsame_zeilen": 834790,
+    "brier_A": 0.1772,
+    "brier_C": 0.1795,
+    "differenz": 0.00224,
+    "ci95": [
+     0.00156,
+     0.00292
+    ],
+    "zeilen_nur_in_A": 83024,
+    "zeilen_nur_in_C": 97718
+   }
+  }
+ },
+ "kontrollen": {
+  "direkt": {
+   "ok": true,
+   "stichproben": [
+    {
+     "spiel": "0022500598",
+     "datum": "2026-01-17",
+     "spieler": "Donte DiVincenzo",
+     "identisch": true,
+     "verlauf_zeilen": 104
+    },
+    {
+     "spiel": "0022500598",
+     "datum": "2026-01-17",
+     "spieler": "De'Aaron Fox",
+     "identisch": true,
+     "verlauf_zeilen": 94
+    },
+    {
+     "spiel": "0022500598",
+     "datum": "2026-01-17",
+     "spieler": "Jaylen Clark",
+     "identisch": true,
+     "verlauf_zeilen": 79
+    },
+    {
+     "spiel": "0022501034",
+     "datum": "2026-03-22",
+     "spieler": "Leaky Black",
+     "identisch": true,
+     "verlauf_zeilen": 5
+    },
+    {
+     "spiel": "0022501034",
+     "datum": "2026-03-22",
+     "spieler": "Mohamed Diawara",
+     "identisch": true,
+     "verlauf_zeilen": 60
+    },
+    {
+     "spiel": "0022501034",
+     "datum": "2026-03-22",
+     "spieler": "Jeremy Sochan",
+     "identisch": true,
+     "verlauf_zeilen": 93
+    },
+    {
+     "spiel": "0022500644",
+     "datum": "2026-01-25",
+     "spieler": "Julius Randle",
+     "identisch": true,
+     "verlauf_zeilen": 114
+    },
+    {
+     "spiel": "0022500644",
+     "datum": "2026-01-25",
+     "spieler": "Trayce Jackson-Davis",
+     "identisch": true,
+     "verlauf_zeilen": 94
+    },
+    {
+     "spiel": "0022500644",
+     "datum": "2026-01-25",
+     "spieler": "Moses Moody",
+     "identisch": true,
+     "verlauf_zeilen": 118
+    },
+    {
+     "spiel": "0022500596",
+     "datum": "2026-01-17",
+     "spieler": "Mikal Bridges",
+     "identisch": true,
+     "verlauf_zeilen": 123
+    },
+    {
+     "spiel": "0022500596",
+     "datum": "2026-01-17",
+     "spieler": "OG Anunoby",
+     "identisch": true,
+     "verlauf_zeilen": 105
+    },
+    {
+     "spiel": "0022500596",
+     "datum": "2026-01-17",
+     "spieler": "Mohamed Diawara",
+     "identisch": true,
+     "verlauf_zeilen": 33
+    },
+    {
+     "spiel": "0022500823",
+     "datum": "2026-02-22",
+     "spieler": "Marcus Smart",
+     "identisch": true,
+     "verlauf_zeilen": 79
+    },
+    {
+     "spiel": "0022500823",
+     "datum": "2026-02-22",
+     "spieler": "Nikola Vučević",
+     "identisch": true,
+     "verlauf_zeilen": 125
+    },
+    {
+     "spiel": "0022500823",
+     "datum": "2026-02-22",
+     "spieler": "Luka Garza",
+     "identisch": true,
+     "verlauf_zeilen": 85
+    }
+   ]
+  },
+  "geprueft_zeilen": 26396951,
+  "aufrufe": 337563,
+  "juengste_zeile": "2026-04-10",
+  "spiele": {
+   "2024-25": {
+    "vertauscht": 0,
+    "neutraler_ort_heim_aus_bdl": 5,
+    "spiele_in_datei": 1230,
+    "spiele_ausgewertet": 1230
+   },
+   "2025-26": {
+    "vertauscht": 0,
+    "neutraler_ort_heim_aus_bdl": 5,
+    "spiele_in_datei": 1230,
+    "spiele_ausgewertet": 1230
+   }
+  }
+ },
+ "ppm_vergleich": {
+  "tage": [
+   "2025-10-24",
+   "2025-10-28",
+   "2025-11-03",
+   "2025-11-16",
+   "2025-11-18",
+   "2025-12-01",
+   "2025-12-17",
+   "2025-12-26",
+   "2025-12-28",
+   "2026-01-03",
+   "2026-01-23",
+   "2026-01-27",
+   "2026-01-29",
+   "2026-02-05",
+   "2026-02-26",
+   "2026-02-27",
+   "2026-03-14",
+   "2026-03-18",
+   "2026-03-25",
+   "2026-04-07"
+  ],
+  "ppm_produktiv": 0.47901090257413936,
+  "ppm_kausal_min": 0.47182432645789396,
+  "ppm_kausal_max": 0.4751149289772483,
+  "brier_A": 0.1647,
+  "brier_B_produktiv": 0.1772,
+  "brier_B_kausal": 0.1772,
+  "brier_C_produktiv": 0.1643,
+  "brier_C_kausal": 0.1643,
+  "zeilen_B": 55067
+ },
+ "laufzeit_sekunden": 1022
+}

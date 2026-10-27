@@ -11,6 +11,7 @@ import time
 
 import streamlit as st
 
+from data import bet_categories as bc
 from data import day_bets_store as ds
 from ui import player_bet_entry as pe
 from ui.score_cards import fmt_num
@@ -82,9 +83,10 @@ def line_problem(line: dict) -> str | None:
     return None
 
 
-def save_slip(key: str, slip: list[dict], options: dict, save_fn=None, now: float | None = None) -> dict:
+def save_slip(key: str, slip: list[dict], options: dict, save_fn=None, now: float | None = None, categories=None) -> dict:
     """Jede Zeile einzeln ueber save_player_bet speichern (Quote und Einsatz wie im Schein). Rueckgabe {'saved': [Zeilen], 'failed': [(Zeile, Meldung)], 'remaining': [Zeilen],
-    'messages': [...]}: gespeicherte Zeilen stehen nicht mehr im Schein, fehlgeschlagene bleiben mit Meldung; nie wird eine Ausnahme geworfen."""
+    'messages': [...]}: gespeicherte Zeilen stehen nicht mehr im Schein, fehlgeschlagene bleiben mit Meldung; nie wird eine Ausnahme geworfen.
+    categories: Kategorien der Spieler-Wetten (Liste aus player_ta/player_raw, mindestens eine); eine Zeile kann mit line['categories'] abweichen. Ohne Angabe (None) wird save_fn wie bisher ohne dieses Argument gerufen."""
     save_fn = save_fn or pe.save_player_bet
     now = now if now is not None else time.time()
     by_id = {int(p["person_id"]): p for p in options["players"]}
@@ -98,7 +100,9 @@ def save_slip(key: str, slip: list[dict], options: dict, save_fn=None, now: floa
             failed.append((line, problem))
             continue
         try:
-            ok, msg = save_fn(key, player, line["milestone"], repr(float(line["odds"])), round(float(line["stake"]), 2), options, now=now)
+            cat = line.get("categories") if line.get("categories") is not None else categories
+            extra = {"categories": cat} if cat is not None else {}
+            ok, msg = save_fn(key, player, line["milestone"], repr(float(line["odds"])), round(float(line["stake"]), 2), options, now=now, **extra)
         except Exception as e:
             ok, msg = False, f"Unerwarteter Fehler ({type(e).__name__}); nichts geändert."
         (saved if ok else failed).append(line if ok else (line, msg))
@@ -113,11 +117,11 @@ def locked_for_component(options: dict) -> dict:
     return {str(p["person_id"]): int(p["current_bet"]["milestone"]) for p in options["players"] if p.get("current_bet") and p["current_bet"].get("active", True)}
 
 
-def process_action(key: str, action, options: dict, done_nonces: set, save_fn=None, now: float | None = None) -> dict | None:
+def process_action(key: str, action, options: dict, done_nonces: set, save_fn=None, now: float | None = None, categories=None) -> dict | None:
     """Aktion {action:'save', nonce, game_key, items:[{player, name, milestone, quote, stake}]} der Komponente ausfuehren. Streamlit liefert den letzten Komponentenwert bei JEDEM Rerun erneut:
     eine nonce wird darum nur EINMAL ausgefuehrt (done_nonces wird ergaenzt). Rueckgabe None (nichts zu tun / schon erledigt / fremdes Spiel) oder
     {'nonce', 'saved': [person_id], 'failed': [{'player', 'name', 'milestone', 'reason'}], 'count'}. Geprueft je Zeile: Spieler und Meilenstein in der eingelesenen Betano-Liste, nur eine Wette je Spieler,
-    Spieler ohne gespeicherte Wette, Einsatz > 0; gespeichert wird ueber save_slip (-> save_player_bet, die Funktion des Formulars) mit der Quote vom Klick. Wirft nie."""
+    Spieler ohne gespeicherte Wette, Einsatz > 0; gespeichert wird ueber save_slip (-> save_player_bet, die Funktion des Formulars) mit der Quote vom Klick. categories: Kategorien der Wetten dieses Klicks (aus der Auswahl neben den Karten). Wirft nie."""
     if not isinstance(action, dict) or action.get("action") != "save" or not str(action.get("nonce") or "").strip():
         return None
     nonce = str(action["nonce"])
@@ -150,7 +154,7 @@ def process_action(key: str, action, options: dict, done_nonces: set, save_fn=No
                 lines.append({"person_id": pid, "name": name, "team": player.get("team"), "milestone": n, "odds": float(it["quote"]), "stake": float(str(it["stake"]).replace(",", "."))})
             except (KeyError, TypeError, ValueError):
                 fail("Quote oder Einsatz ist keine Zahl")
-    res = save_slip(key, lines, options, save_fn=save_fn, now=now)
+    res = save_slip(key, lines, options, save_fn=save_fn, now=now, categories=categories)
     saved = [int(l["person_id"]) for l in res["saved"]]
     failed += [{"player": int(l["person_id"]), "name": l["name"], "milestone": int(l["milestone"]), "reason": m} for l, m in res["failed"]]
     return {"nonce": nonce, "saved": saved, "failed": failed, "count": len(saved)}
@@ -189,10 +193,10 @@ def _on_clear(key: str) -> None:
     ss[_slip_key(key)] = []
 
 
-def _on_save_all(key: str, options: dict) -> None:
+def _on_save_all(key: str, options: dict, mode: str = "team") -> None:
     ss = st.session_state
     slip = [{**l, "stake": ss.get(_stake_key(key, l["person_id"]), l["stake"])} for l in ss.get(_slip_key(key), [])]
-    res = save_slip(key, slip, options)
+    res = save_slip(key, slip, options, categories=ss.get(f"slip_cat_{key}_{mode}"))
     for l in res["saved"]:
         ss.pop(_stake_key(key, l["person_id"]), None)
     ss[_slip_key(key)] = res["remaining"]
@@ -244,6 +248,9 @@ def render_bet_slip(key: str, entries: dict, mode: str = "team") -> None:
         shown = [{**l, "stake": ss.get(_stake_key(key, l["person_id"]), l["stake"])} for l in slip]
         t = totals(shown)
         st.caption(f"{t['n']} Wette(n) · Gesamteinsatz {fmt_num(t['stake'], 2)} € · Ø Quote {fmt_num(t['avg_odds'], 2)}")
+        names = bc.names()
+        st.multiselect("Kategorien", list(bc.PLAYER_IDS), default=[bc.default_player_category(mode)], format_func=lambda c: names[c], key=f"slip_cat_{key}_{mode}",
+                       help="Mehrfachauswahl, mindestens eine. Vorbelegt aus dem angezeigten Modus; die andere Kategorie kann zusätzlich gewählt werden.")
         b1, b2, _ = st.columns([1, 1, 4])
-        b1.button("Alle speichern", key=f"slip_save_{key}", type="primary", on_click=_on_save_all, args=(key, options))
+        b1.button("Alle speichern", key=f"slip_save_{key}", type="primary", on_click=_on_save_all, args=(key, options, mode))
         b2.button("Leeren", key=f"slip_clear_{key}", on_click=_on_clear, args=(key,))

@@ -12,6 +12,7 @@ from pathlib import Path
 import streamlit as st
 import streamlit.components.v1 as components
 
+from data import bet_categories as bc
 from data import day_bets_store as ds
 from ui import bet_slip as bs
 from ui import player_bet_entry as pe
@@ -26,14 +27,17 @@ def is_selectable(key: str, now: float | None = None) -> bool:
     return not ds.load_error() and ds.is_bet_editable(pe.game_parts(key)["start_utc"], now if now is not None else time.time())
 
 
-def render_bet_cards(key: str, entries: dict, cards_html: str, css: str, default_stake: float = bs.DEFAULT_STAKE) -> None:
-    """Komponente zeichnen, eine neue Speicher-Aktion genau einmal ausfuehren und danach die App einmal neu laufen lassen (Ergebnis + gesperrte Meilensteine)."""
+def render_bet_cards(key: str, entries: dict, cards_html: str, css: str, default_stake: float = bs.DEFAULT_STAKE, mode: str = "team") -> None:
+    """Kategorien-Auswahl (Voreinstellung aus dem Modus: Teamabgleich -> player_ta, roh -> player_raw) und Komponente zeichnen, eine neue Speicher-Aktion genau einmal ausfuehren und danach die App einmal neu laufen lassen (Ergebnis + gesperrte Meilensteine)."""
     ss = st.session_state
     options = ds.player_bet_options(key, entries=entries)
+    names = bc.names()
+    categories = st.multiselect("Kategorien der Wetten aus diesem Schein", list(bc.PLAYER_IDS), default=[bc.default_player_category(mode)], format_func=lambda c: names[c],
+                                key=f"bc_cat_{key}_{mode}", help="Mehrfachauswahl, mindestens eine. Vorbelegt aus dem angezeigten Modus (Teamabgleich oder roh); die andere Kategorie kann zusätzlich gewählt werden. Gilt für alle Wetten, die mit „Alle speichern“ gespeichert werden.")
     result = (ss.get(RESULT_KEY) or {}).get(key)
     value = _component(html=cards_html, css=css, game_key=key, locked=bs.locked_for_component(options), default_stake=default_stake, result=result, key=f"bet_cards_{key}", default=None)
     done = ss.setdefault(DONE_KEY, set())
-    res = bs.process_action(key, value, options, done)
+    res = bs.process_action(key, value, options, done, categories=categories)
     if res is not None:
         ss.setdefault(RESULT_KEY, {})[key] = res
         st.rerun()

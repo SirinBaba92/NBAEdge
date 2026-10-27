@@ -1,0 +1,327 @@
+ZUSAMMENFASSUNG Team-Test Runde 2 (nur Messung; KEINE Änderung am Produktivmodell, KEINE Empfehlung für die App; Referenz A = aktuelles Modell, reines Modell ohne Markt-Mischung)
+Regel: Verbesserung nur bei negativer Brier-Differenz zu A in der Testgruppe, Intervall ohne 0 und gleichem Vorzeichen in BEIDEN Richtungen (G1->G2, G2->G1; Gruppen = ungerade/gerade Saisonstartjahre 2017-2025).
+Belastbar besser als A (nach Regel): Teil 1 'K und MOV-Form (Raster cur K=6..28 [eff. K ca. 31-143], 538 ' bei Sieger, Spread; Teil 1 'Kombination K/MOV + keep + total_keep (Training-Wahl)' bei Sieger, Spread; Teil 4 'Form-Zusatzterm (N = 5/10/15/20, gewaehlt im Training)' bei Sieger; Teil 4 'Form-Zusatzterm N = 20' bei Sieger; Teil 4 'Form-Zusatzterm N = 30' bei Sieger, Spread; Teil 4 'Form-Zusatzterm N = 40' bei Sieger
+   Teil 1 v3-elo-k-mov: Sieger Δ -0.00216 / -0.00134; Spread Δ -0.00183 / -0.00110 (beide Richtungen, Intervall ohne 0).
+   Teil 1 v3-elo-kombi: Sieger Δ -0.00216 / -0.00134; Spread Δ -0.00183 / -0.00110 (beide Richtungen, Intervall ohne 0).
+   Teil 4 v3-form-n: Sieger Δ -0.00057 / -0.00085 (beide Richtungen, Intervall ohne 0).
+   Teil 4 v3-form-n20: Sieger Δ -0.00057 / -0.00085 (beide Richtungen, Intervall ohne 0).
+   Teil 4 v3-form-n30: Sieger Δ -0.00093 / -0.00128; Spread Δ -0.00117 / -0.00075 (beide Richtungen, Intervall ohne 0).
+   Teil 4 v3-form-n40: Sieger Δ -0.00120 / -0.00157 (beide Richtungen, Intervall ohne 0).
+Kein belastbarer Unterschied/schlechter: T1 v3-elo-keep; T1 v3-total-keep; T2 v3-zeitplan-ruhe; T2 v3-zeitplan-reise; T2 v3-zeitplan-hoehe; T2 v3-zeitplan-alles; T3 v3-ausfaelle-top3; T4 v3-form-n5; T4 v3-form-n10; T4 v3-form-n15; T4 v3-form-schatten (schlechter: Total, Teamtotal); T5 v3-sigma-statisch; T5 v3-sigma-dynamisch; T5 v3-student-t; T5 v3-sigma-dynamisch-t.
+Teil 1 K/MOV: gewählt G1->G2: cur-K12 (eff. K 61.4, Rand: nein), G2->G1: cur-K10 (eff. K 51.2, Rand: nein) gegen Produktiv cur-K20 (eff. K 102.4); der MOV-Multiplikator (ln) ist schon vorhanden, die 538-Form war nie besser. Saisonübergang (keep 0,9) und total_keep: kein belastbarer Unterschied. Wirkt nur auf Sieger/Spread/Teamtotal (Total hängt nicht an K). Vorsicht: Sigma 13,2 wurde mit K = 20 bestimmt.
+Teil 4 Form: gewähltes N = G1->G2: 20, G2->G1: 20 = Rand des Rasters (Optimum eventuell darüber; N = 30: Verbesserung/Verbesserung bei Sieger/Spread; N = 40 nur Sieger). Das Modell hat schon einen Form-Term; der Gewinn ist klein (Brier -0,0004 bis -0,0013).
+Teil 5 Ränder (Linien bei ±1..2 Sigma, Spread): A <15 %: Modell 0.0447/Treffer 0.0515, >85 %: 0.9553/0.9479 (A leicht zu sicher an den Rändern, ca. 0,7 PP); Student-t df ca. 15 und dynamische Sigma ändern Brier/Log-Loss nur in der 5. Stelle (kein belastbarer Unterschied). Statisch geschätzte Sigma Spread ca. 13,9 statt 13,2 (Total 18,8, Teamtotal 11,7).
+Teil 2 Effekte auf den Spread in Punkten (alle Spiele, Koeffizient ± SE; positiv = Heim besser als Modell): b2b_heim -1.90±0.50, b2b_gast +1.94±0.48, 3in4_heim -0.20±0.36, 3in4_gast +0.74±0.36, reise_gast_1000km +0.02±0.17, hoehe_DEN_UTA_heim +1.69±0.54.
+Teil 3 Star-Ausfälle (Obergrenze, nachträglich bekannt; 3534 Spiele 2024-26): Spread je fehlendem Heim-Top-Spieler Rang 1/2/3: -2.4±0.7/-2.1±0.6/-1.7±0.6; Total je Ausfall (beide Seiten): -0.9±0.8/-1.0±0.8/-0.7±0.7.
+Teil 5 Residuen (alle Spiele): Schiefe/Überschusskurtosis Spread 0.008/0.457, Total 0.222/0.359, Teamtotal 0.089/0.109 (Normal = 0/0).
+Teil 4 Schattenvariante (Form-Formel allein, Ersatzformel; keine Kandidatin): Sieger +0.00113 [-0.00095; +0.00335] | +0.00394 [+0.00196; +0.00582] => kein belastbarer Unterschied ; Spread +0.00161 [-0.00041; +0.00363] | +0.00436 [+0.00244; +0.00615] => kein belastbarer Unterschied ; Total +0.00362 [+0.00225; +0.00506] | +0.00237 [+0.00115; +0.00377] => schlechter ; Teamtotal +0.00304 [+0.00192; +0.00412] | +0.00227 [+0.00132; +0.00324] => schlechter.
+Teil 6 Treffer bei Modell > Betano um >= 3/5/8 PP (Zeilen: Trefferquote; Betano-Chance im Mittel): win 14: 0.286/11: 0.182/7: 0.286; spread 66: 0.242/59: 0.271/43: 0.349; total 68: 0.471/31: 0.355/19: 0.368; tt 151: 0.43/109: 0.422/50: 0.38 (Spiele ab 22.10.2026, `--market-vs-model` wiederholbar).
+Teil 6 Modell gegen Markt (ZU WENIG DATEN FÜR SCHLÜSSE, 29 Spiele): win: n=29, Brier Modell 0.2169 / Betano 0.1889; spread: n=126, Brier Modell 0.268 / Betano 0.2491; total: n=203, Brier Modell 0.2551 / Betano 0.2466; tt: n=406, Brier Modell 0.2604 / Betano 0.2471.
+Einschränkungen: Konstanten/Sigmas/ELO-Parameter wurden teils auf denselben Saisons abgestimmt (nicht vollständig unabhängig); Parameter kommen aus der jeweils anderen Gruppe (auch aus der Zukunft); Ausfälle Teil 3 nachträglich bekannt; Linien = Raster um den Modell-Mittelwert (keine historischen Quoten). Laufzeit 0 s.
+
+==================================================================================================================================
+Team-Test Runde 2. Details: Kopf von analysis/backtest_team_round2.py
+==================================================================================================================================
+
+TEIL 1 (Laufzeit 59 s; 10777 Auswertungsspiele, G1 5993, G2 4784; Brier A {'win': 0.22145, 'spread': 0.24122, 'total': 0.24529, 'tt': 0.23844})
+  effektives K = mittlere Update-Staerke pro Spiel: cur = K x 2,2 x ln(Marge+1) (Produktiv: K = 20, MOV-Multiplikator vorhanden); 538 = K x (Marge+3)^0.8 / (7,5 + 0,006 x Rating-Vorsprung des Siegers) (Autokorrelations-Korrektur).
+  effektives K: {"cur-K6": 30.7, "cur-K8": 41.0, "cur-K10": 51.2, "cur-K12": 61.4, "cur-K16": 81.9, "cur-K20": 102.4, "cur-K24": 122.9, "cur-K28": 143.3, "538-K40": 45.5, "538-K60": 68.3, "538-K80": 91.0, "538-K100": 113.8, "538-K120": 136.6, "538-K150": 170.7}
+
+  VARIANTE v3-elo-k-mov: K und MOV-Form (Raster cur K=6..28 [eff. K ca. 31-143], 538 K=40..150; Raster nach unten erweitert)
+    G1->G2 (Testspiele 4784): Sieger A 0.2250 V 0.2229 Δ -0.00216 [-0.00299; -0.00128] ΔLL -0.00440 | Spread A 0.2414 V 0.2396 Δ -0.00183 [-0.00269; -0.00105] ΔLL -0.00381 | Total A 0.2449 V 0.2449 Δ +0.00000 [+0.00000; +0.00000] ΔLL +0.00000 | Teamtotal A 0.2382 V 0.2376 Δ -0.00069 [-0.00097; -0.00041] ΔLL -0.00145
+    G2->G1 (Testspiele 5993): Sieger A 0.2186 V 0.2172 Δ -0.00134 [-0.00234; -0.00046] ΔLL -0.00217 | Spread A 0.2411 V 0.2400 Δ -0.00110 [-0.00209; -0.00016] ΔLL -0.00229 | Total A 0.2456 V 0.2456 Δ +0.00000 [+0.00000; +0.00000] ΔLL +0.00000 | Teamtotal A 0.2386 V 0.2385 Δ -0.00012 [-0.00047; +0.00018] ΔLL -0.00026
+    Urteil: Sieger: Verbesserung; Spread: Verbesserung; Total: kein belastbarer Unterschied; Teamtotal: kein belastbarer Unterschied
+    Parameter G1->G2: {"gewaehlt": "cur-K12", "effektives_k": 61.4, "raster_brier_spread_training": {"cur-K6": 0.241357, "cur-K8": 0.240411, "cur-K10": 0.239982, "cur-K12": 0.239864, "cur-K16": 0.240212, "cur-K20": 0.241086, "cur-K24": 0.242348, "cur-K28": 0.243932, "538-K40": 0.242066, "538-K60": 0.242088, "538-K80": 0.242976, "538-K100": 0.244573, "538-K120": 0.246958, "538-K150": 0.274983}, "am_rand": false}
+    Parameter G2->G1: {"gewaehlt": "cur-K10", "effektives_k": 51.2, "raster_brier_spread_training": {"cur-K6": 0.240207, "cur-K8": 0.239608, "cur-K10": 0.239455, "cur-K12": 0.239566, "cur-K16": 0.24027, "cur-K20": 0.241395, "cur-K24": 0.242838, "cur-K28": 0.244558, "538-K40": 0.241507, "538-K60": 0.242171, "538-K80": 0.243577, "538-K100": 0.245643, "538-K120": 0.248532, "538-K150": 0.273437}, "am_rand": false}
+    Kalibrierung spread (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.35 PP (gut); V 0.18 / 0.36 (gut)
+    Kalibrierung total (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.16 PP (gut); V 0.14 / 0.16 (gut)
+    Kalibrierung tt (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.08 PP / max Stufe 0.14 PP (gut); V 0.08 / 0.89 (gut)
+    Ränder spread (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0447/0.0515 (n 21554); >85 %: 0.9553/0.9479 (n 21554) Brier 0.07819 LL 0.28237 | V <15 %: 0.0577/0.0637 (n 24963); >85 %: 0.9424/0.9361 (n 24926) Brier 0.07793 LL 0.28107
+    Ränder total (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0551/0.06 (n 23949); >85 %: 0.9451/0.949 (n 23875) Brier 0.07161 LL 0.26162 | V <15 %: 0.0551/0.06 (n 23949); >85 %: 0.9451/0.949 (n 23875) Brier 0.07161 LL 0.26162
+    Ränder tt (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0662/0.0706 (n 53259); >85 %: 0.9334/0.9359 (n 53526) Brier 0.07299 LL 0.2661 | V <15 %: 0.0656/0.0694 (n 53544); >85 %: 0.9343/0.9372 (n 53675) Brier 0.07289 LL 0.2655
+
+  VARIANTE v3-elo-keep: Saisonuebergang Rating (keep 1,0..0,6; 1,0 = Produktiv)
+    G1->G2 (Testspiele 4784): Sieger A 0.2250 V 0.2250 Δ -0.00006 [-0.00020; +0.00008] ΔLL -0.00014 | Spread A 0.2414 V 0.2414 Δ -0.00005 [-0.00018; +0.00009] ΔLL -0.00010 | Total A 0.2449 V 0.2449 Δ +0.00000 [+0.00000; +0.00000] ΔLL +0.00000 | Teamtotal A 0.2382 V 0.2382 Δ -0.00002 [-0.00006; +0.00003] ΔLL -0.00003
+    G2->G1 (Testspiele 5993): Sieger A 0.2186 V 0.2186 Δ +0.00003 [-0.00010; +0.00014] ΔLL +0.00007 | Spread A 0.2411 V 0.2410 Δ -0.00005 [-0.00018; +0.00010] ΔLL -0.00009 | Total A 0.2456 V 0.2456 Δ +0.00000 [+0.00000; +0.00000] ΔLL +0.00000 | Teamtotal A 0.2386 V 0.2386 Δ +0.00001 [-0.00003; +0.00006] ΔLL +0.00002
+    Urteil: Sieger: kein belastbarer Unterschied; Spread: kein belastbarer Unterschied; Total: kein belastbarer Unterschied; Teamtotal: kein belastbarer Unterschied
+    Parameter G1->G2: {"keep": 0.9, "raster_brier_spread_training": {"1.0": 0.241086, "0.9": 0.241042, "0.8": 0.241059, "0.7": 0.24113, "0.6": 0.241245}, "am_rand": false}
+    Parameter G2->G1: {"keep": 0.9, "raster_brier_spread_training": {"1.0": 0.241395, "0.9": 0.241348, "0.8": 0.241357, "0.7": 0.241414, "0.6": 0.241511}, "am_rand": false}
+    Kalibrierung spread (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.35 PP (gut); V 0.16 / 0.39 (gut)
+    Kalibrierung total (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.16 PP (gut); V 0.14 / 0.16 (gut)
+    Kalibrierung tt (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.08 PP / max Stufe 0.14 PP (gut); V 0.1 / 0.15 (gut)
+    Ränder spread (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0447/0.0515 (n 21554); >85 %: 0.9553/0.9479 (n 21554) Brier 0.07819 LL 0.28237 | V <15 %: 0.0456/0.0527 (n 21754); >85 %: 0.9544/0.9471 (n 21749) Brier 0.07818 LL 0.28233
+    Ränder total (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0551/0.06 (n 23949); >85 %: 0.9451/0.949 (n 23875) Brier 0.07161 LL 0.26162 | V <15 %: 0.0551/0.06 (n 23949); >85 %: 0.9451/0.949 (n 23875) Brier 0.07161 LL 0.26162
+    Ränder tt (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0662/0.0706 (n 53259); >85 %: 0.9334/0.9359 (n 53526) Brier 0.07299 LL 0.2661 | V <15 %: 0.0662/0.0703 (n 53232); >85 %: 0.9334/0.936 (n 53579) Brier 0.07299 LL 0.26607
+
+  VARIANTE v3-total-keep: Saisonuebergang Total (total_keep 1,0..0,55)
+    G1->G2 (Testspiele 4784): Sieger A 0.2250 V 0.2250 Δ +0.00000 [+0.00000; +0.00000] ΔLL +0.00000 | Spread A 0.2414 V 0.2414 Δ +0.00000 [+0.00000; +0.00000] ΔLL +0.00000 | Total A 0.2449 V 0.2449 Δ +0.00000 [+0.00000; +0.00000] ΔLL +0.00000 | Teamtotal A 0.2382 V 0.2382 Δ +0.00000 [+0.00000; +0.00000] ΔLL +0.00000
+    G2->G1 (Testspiele 5993): Sieger A 0.2186 V 0.2186 Δ +0.00000 [+0.00000; +0.00000] ΔLL +0.00000 | Spread A 0.2411 V 0.2411 Δ +0.00000 [+0.00000; +0.00000] ΔLL +0.00000 | Total A 0.2456 V 0.2457 Δ +0.00007 [-0.00014; +0.00028] ΔLL +0.00014 | Teamtotal A 0.2386 V 0.2387 Δ +0.00006 [-0.00007; +0.00018] ΔLL +0.00012
+    Urteil: Sieger: kein belastbarer Unterschied; Spread: kein belastbarer Unterschied; Total: kein belastbarer Unterschied; Teamtotal: kein belastbarer Unterschied
+    Parameter G1->G2: {"total_keep": 1.0, "raster_brier_total_training": {"1.0": 0.245644, "0.85": 0.245657, "0.7": 0.245712, "0.55": 0.245808}, "am_rand": true}
+    Parameter G2->G1: {"total_keep": 0.7, "raster_brier_total_training": {"1.0": 0.244849, "0.85": 0.24473, "0.7": 0.244675, "0.55": 0.244682}, "am_rand": false}
+    Kalibrierung spread (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.35 PP (gut); V 0.14 / 0.35 (gut)
+    Kalibrierung total (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.16 PP (gut); V 0.19 / 0.22 (gut)
+    Kalibrierung tt (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.08 PP / max Stufe 0.14 PP (gut); V 0.11 / 6.24 (nicht gut)
+    Ränder spread (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0447/0.0515 (n 21554); >85 %: 0.9553/0.9479 (n 21554) Brier 0.07819 LL 0.28237 | V <15 %: 0.0447/0.0515 (n 21554); >85 %: 0.9553/0.9479 (n 21554) Brier 0.07819 LL 0.28237
+    Ränder total (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0551/0.06 (n 23949); >85 %: 0.9451/0.949 (n 23875) Brier 0.07161 LL 0.26162 | V <15 %: 0.0562/0.0623 (n 24307); >85 %: 0.9449/0.9489 (n 23920) Brier 0.07161 LL 0.26166
+    Ränder tt (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0662/0.0706 (n 53259); >85 %: 0.9334/0.9359 (n 53526) Brier 0.07299 LL 0.2661 | V <15 %: 0.0664/0.071 (n 53512); >85 %: 0.9337/0.9368 (n 53295) Brier 0.07299 LL 0.26611
+
+  VARIANTE v3-elo-kombi: Kombination K/MOV + keep + total_keep (Training-Wahl)
+    G1->G2 (Testspiele 4784): Sieger A 0.2250 V 0.2229 Δ -0.00216 [-0.00299; -0.00128] ΔLL -0.00440 | Spread A 0.2414 V 0.2396 Δ -0.00183 [-0.00269; -0.00105] ΔLL -0.00381 | Total A 0.2449 V 0.2449 Δ +0.00000 [+0.00000; +0.00000] ΔLL +0.00000 | Teamtotal A 0.2382 V 0.2376 Δ -0.00069 [-0.00097; -0.00041] ΔLL -0.00145
+    G2->G1 (Testspiele 5993): Sieger A 0.2186 V 0.2172 Δ -0.00134 [-0.00234; -0.00046] ΔLL -0.00217 | Spread A 0.2411 V 0.2400 Δ -0.00110 [-0.00209; -0.00016] ΔLL -0.00229 | Total A 0.2456 V 0.2457 Δ +0.00007 [-0.00014; +0.00028] ΔLL +0.00014 | Teamtotal A 0.2386 V 0.2385 Δ -0.00006 [-0.00041; +0.00027] ΔLL -0.00013
+    Urteil: Sieger: Verbesserung; Spread: Verbesserung; Total: kein belastbarer Unterschied; Teamtotal: kein belastbarer Unterschied
+    Parameter G1->G2: {"k_mov": "cur-K12", "keep": 1.0, "total_keep": 1.0}
+    Parameter G2->G1: {"k_mov": "cur-K10", "keep": 1.0, "total_keep": 0.7}
+    Kalibrierung spread (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.35 PP (gut); V 0.18 / 0.36 (gut)
+    Kalibrierung total (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.16 PP (gut); V 0.19 / 0.22 (gut)
+    Kalibrierung tt (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.08 PP / max Stufe 0.14 PP (gut); V 0.1 / 0.75 (gut)
+    Ränder spread (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0447/0.0515 (n 21554); >85 %: 0.9553/0.9479 (n 21554) Brier 0.07819 LL 0.28237 | V <15 %: 0.0577/0.0637 (n 24963); >85 %: 0.9424/0.9361 (n 24926) Brier 0.07793 LL 0.28107
+    Ränder total (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0551/0.06 (n 23949); >85 %: 0.9451/0.949 (n 23875) Brier 0.07161 LL 0.26162 | V <15 %: 0.0562/0.0623 (n 24307); >85 %: 0.9449/0.9489 (n 23920) Brier 0.07161 LL 0.26166
+    Ränder tt (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0662/0.0706 (n 53259); >85 %: 0.9334/0.9359 (n 53526) Brier 0.07299 LL 0.2661 | V <15 %: 0.0656/0.0698 (n 53691); >85 %: 0.9344/0.9375 (n 53539) Brier 0.07289 LL 0.26551
+
+TEIL 2 (Laufzeit 7 s; 10777 Auswertungsspiele, G1 5993, G2 4784; Brier A {'win': 0.22145, 'spread': 0.24122, 'total': 0.24529, 'tt': 0.23844})
+  additive Anpassung auf Spread und Total (OLS der Modell-Residuen im Training, Merkmale am Training zentriert); das Produktivmodell enthaelt bereits Ruhetage-Terme (Back-to-Back -1,5 ELO, >= 3 Tage +0,45 ELO, d. h. ca. 0,03 Punkte).
+  Koeffizienten (Punkte ± SE, alle Spiele): b2b_heim: Spread -1.90±0.50, Total -0.99±0.68; b2b_gast: Spread +1.94±0.48, Total +0.71±0.65; 3in4_heim: Spread -0.20±0.36, Total +0.02±0.49; 3in4_gast: Spread +0.74±0.36, Total -0.62±0.49; ruhetage_heim_minus_gast: Spread +0.09±0.22, Total -0.36±0.30; auswaertsserie_gast_spiel: Spread +0.13±0.11, Total +0.14±0.15; reise_gast_1000km: Spread +0.02±0.17, Total +0.29±0.24; reise_heim_1000km: Spread -0.30±0.15, Total -0.20±0.21; zeitzone_gast_ost+: Spread +0.27±0.14, Total -0.01±0.20; zeitzone_heim_ost+: Spread -0.27±0.18, Total +0.12±0.25; hoehe_DEN_UTA_heim: Spread +1.69±0.54, Total +0.95±0.73
+
+  VARIANTE v3-zeitplan-ruhe: Ruhe (b2b, 3-in-4, Ruhetage)
+    G1->G2 (Testspiele 4784): Sieger A 0.2250 V 0.2241 Δ -0.00091 [-0.00182; -0.00001] ΔLL -0.00203 | Spread A 0.2414 V 0.2406 Δ -0.00078 [-0.00166; +0.00004] ΔLL -0.00163 | Total A 0.2449 V 0.2450 Δ +0.00013 [-0.00015; +0.00037] ΔLL +0.00026 | Teamtotal A 0.2382 V 0.2379 Δ -0.00030 [-0.00063; +0.00001] ΔLL -0.00063
+    G2->G1 (Testspiele 5993): Sieger A 0.2186 V 0.2179 Δ -0.00070 [-0.00158; +0.00012] ΔLL -0.00157 | Spread A 0.2411 V 0.2399 Δ -0.00121 [-0.00200; -0.00034] ΔLL -0.00250 | Total A 0.2456 V 0.2459 Δ +0.00026 [-0.00006; +0.00058] ΔLL +0.00052 | Teamtotal A 0.2386 V 0.2384 Δ -0.00023 [-0.00056; +0.00011] ΔLL -0.00049
+    Urteil: Sieger: kein belastbarer Unterschied; Spread: kein belastbarer Unterschied; Total: kein belastbarer Unterschied; Teamtotal: kein belastbarer Unterschied
+    Parameter G1->G2: {"spread": {"b2b_heim": [-2.095, 0.673], "b2b_gast": [1.588, 0.635], "3in4_heim": [-0.548, 0.484], "3in4_gast": [0.926, 0.489], "ruhetage_heim_minus_gast": [0.009, 0.289]}, "total": {"b2b_heim": [-1.569, 0.912], "b2b_gast": [1.182, 0.86], "3in4_heim": [0.277, 0.656], "3in4_gast": [0.021, 0.662], "ruhetage_heim_minus_gast": [-0.582, 0.392]}}
+    Parameter G2->G1: {"spread": {"b2b_heim": [-1.545, 0.735], "b2b_gast": [2.303, 0.707], "3in4_heim": [0.112, 0.531], "3in4_gast": [0.678, 0.534], "ruhetage_heim_minus_gast": [0.155, 0.333]}, "total": {"b2b_heim": [-0.231, 1.006], "b2b_gast": [-0.085, 0.967], "3in4_heim": [-0.384, 0.727], "3in4_gast": [-1.277, 0.73], "ruhetage_heim_minus_gast": [-0.124, 0.456]}}
+    Kalibrierung spread (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.35 PP (gut); V 0.23 / 1.14 (gut)
+    Kalibrierung total (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.16 PP (gut); V 0.28 / 1.01 (gut)
+    Kalibrierung tt (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.08 PP / max Stufe 0.14 PP (gut); V 0.15 / 0.52 (gut)
+    Ränder spread (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0447/0.0515 (n 21554); >85 %: 0.9553/0.9479 (n 21554) Brier 0.07819 LL 0.28237 | V <15 %: 0.0538/0.0607 (n 23795); >85 %: 0.9472/0.9399 (n 23681) Brier 0.07802 LL 0.28138
+    Ränder total (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0551/0.06 (n 23949); >85 %: 0.9451/0.949 (n 23875) Brier 0.07161 LL 0.26162 | V <15 %: 0.0576/0.0631 (n 24746); >85 %: 0.9386/0.9413 (n 25789) Brier 0.07163 LL 0.26175
+    Ränder tt (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0662/0.0706 (n 53259); >85 %: 0.9334/0.9359 (n 53526) Brier 0.07299 LL 0.2661 | V <15 %: 0.0642/0.0679 (n 52513); >85 %: 0.9328/0.9346 (n 54592) Brier 0.07295 LL 0.26589
+
+  VARIANTE v3-zeitplan-reise: Reise (Auswaertsserie, km, Zeitzone)
+    G1->G2 (Testspiele 4784): Sieger A 0.2250 V 0.2255 Δ +0.00047 [+0.00007; +0.00090] ΔLL +0.00106 | Spread A 0.2414 V 0.2417 Δ +0.00033 [-0.00004; +0.00075] ΔLL +0.00069 | Total A 0.2449 V 0.2449 Δ +0.00001 [-0.00017; +0.00019] ΔLL +0.00002 | Teamtotal A 0.2382 V 0.2384 Δ +0.00011 [-0.00006; +0.00028] ΔLL +0.00023
+    G2->G1 (Testspiele 5993): Sieger A 0.2186 V 0.2189 Δ +0.00035 [-0.00002; +0.00071] ΔLL +0.00072 | Spread A 0.2411 V 0.2413 Δ +0.00022 [-0.00015; +0.00061] ΔLL +0.00047 | Total A 0.2456 V 0.2459 Δ +0.00025 [-0.00010; +0.00062] ΔLL +0.00052 | Teamtotal A 0.2386 V 0.2387 Δ +0.00015 [-0.00006; +0.00039] ΔLL +0.00032
+    Urteil: Sieger: kein belastbarer Unterschied; Spread: kein belastbarer Unterschied; Total: kein belastbarer Unterschied; Teamtotal: kein belastbarer Unterschied
+    Parameter G1->G2: {"spread": {"auswaertsserie_gast_spiel": [0.213, 0.147], "reise_gast_1000km": [0.102, 0.23], "reise_heim_1000km": [-0.322, 0.206], "zeitzone_gast_ost+": [0.38, 0.192], "zeitzone_heim_ost+": [-0.289, 0.25]}, "total": {"auswaertsserie_gast_spiel": [0.165, 0.198], "reise_gast_1000km": [-0.08, 0.311], "reise_heim_1000km": [-0.116, 0.279], "zeitzone_gast_ost+": [0.045, 0.26], "zeitzone_heim_ost+": [0.257, 0.337]}}
+    Parameter G2->G1: {"spread": {"auswaertsserie_gast_spiel": [0.147, 0.157], "reise_gast_1000km": [-0.564, 0.258], "reise_heim_1000km": [-0.104, 0.23], "zeitzone_gast_ost+": [0.073, 0.219], "zeitzone_heim_ost+": [-0.26, 0.277]}, "total": {"auswaertsserie_gast_spiel": [0.073, 0.214], "reise_gast_1000km": [0.873, 0.353], "reise_heim_1000km": [-0.283, 0.313], "zeitzone_gast_ost+": [-0.114, 0.299], "zeitzone_heim_ost+": [-0.12, 0.378]}}
+    Kalibrierung spread (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.35 PP (gut); V 0.26 / 1.28 (gut)
+    Kalibrierung total (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.16 PP (gut); V 0.15 / 10.73 (nicht gut)
+    Kalibrierung tt (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.08 PP / max Stufe 0.14 PP (gut); V 0.19 / 5.56 (gut)
+    Ränder spread (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0447/0.0515 (n 21554); >85 %: 0.9553/0.9479 (n 21554) Brier 0.07819 LL 0.28237 | V <15 %: 0.0505/0.0568 (n 22906); >85 %: 0.9494/0.9422 (n 22849) Brier 0.0782 LL 0.28234
+    Ränder total (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0551/0.06 (n 23949); >85 %: 0.9451/0.949 (n 23875) Brier 0.07161 LL 0.26162 | V <15 %: 0.0589/0.0644 (n 25043); >85 %: 0.9423/0.9449 (n 24782) Brier 0.07165 LL 0.26182
+    Ränder tt (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0662/0.0706 (n 53259); >85 %: 0.9334/0.9359 (n 53526) Brier 0.07299 LL 0.2661 | V <15 %: 0.0663/0.0713 (n 53532); >85 %: 0.9341/0.9366 (n 53434) Brier 0.07301 LL 0.26619
+
+  VARIANTE v3-zeitplan-hoehe: Hoehe (Denver/Utah)
+    G1->G2 (Testspiele 4784): Sieger A 0.2250 V 0.2248 Δ -0.00019 [-0.00042; +0.00004] ΔLL -0.00043 | Spread A 0.2414 V 0.2412 Δ -0.00023 [-0.00046; +0.00001] ΔLL -0.00047 | Total A 0.2449 V 0.2449 Δ +0.00002 [-0.00017; +0.00022] ΔLL +0.00004 | Teamtotal A 0.2382 V 0.2381 Δ -0.00012 [-0.00026; +0.00002] ΔLL -0.00026
+    G2->G1 (Testspiele 5993): Sieger A 0.2186 V 0.2184 Δ -0.00017 [-0.00054; +0.00022] ΔLL -0.00030 | Spread A 0.2411 V 0.2410 Δ -0.00010 [-0.00044; +0.00029] ΔLL -0.00020 | Total A 0.2456 V 0.2456 Δ -0.00002 [-0.00007; +0.00002] ΔLL -0.00005 | Teamtotal A 0.2386 V 0.2386 Δ -0.00002 [-0.00014; +0.00011] ΔLL -0.00004
+    Urteil: Sieger: kein belastbarer Unterschied; Spread: kein belastbarer Unterschied; Total: kein belastbarer Unterschied; Teamtotal: kein belastbarer Unterschied
+    Parameter G1->G2: {"spread": {"hoehe_DEN_UTA_heim": [1.292, 0.721]}, "total": {"hoehe_DEN_UTA_heim": [1.465, 0.973]}}
+    Parameter G2->G1: {"spread": {"hoehe_DEN_UTA_heim": [2.223, 0.804]}, "total": {"hoehe_DEN_UTA_heim": [0.366, 1.097]}}
+    Kalibrierung spread (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.35 PP (gut); V 0.11 / 0.52 (gut)
+    Kalibrierung total (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.16 PP (gut); V 0.13 / 0.17 (gut)
+    Kalibrierung tt (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.08 PP / max Stufe 0.14 PP (gut); V 0.12 / 0.22 (gut)
+    Ränder spread (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0447/0.0515 (n 21554); >85 %: 0.9553/0.9479 (n 21554) Brier 0.07819 LL 0.28237 | V <15 %: 0.0448/0.0515 (n 21554); >85 %: 0.9524/0.9452 (n 22272) Brier 0.07817 LL 0.2822
+    Ränder total (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0551/0.06 (n 23949); >85 %: 0.9451/0.949 (n 23875) Brier 0.07161 LL 0.26162 | V <15 %: 0.0568/0.0623 (n 24392); >85 %: 0.946/0.9496 (n 23705) Brier 0.07161 LL 0.26164
+    Ränder tt (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0662/0.0706 (n 53259); >85 %: 0.9334/0.9359 (n 53526) Brier 0.07299 LL 0.2661 | V <15 %: 0.0668/0.071 (n 53691); >85 %: 0.9342/0.9368 (n 53145) Brier 0.07298 LL 0.26608
+
+  VARIANTE v3-zeitplan-alles: alles zusammen
+    G1->G2 (Testspiele 4784): Sieger A 0.2250 V 0.2245 Δ -0.00053 [-0.00154; +0.00050] ΔLL -0.00118 | Spread A 0.2414 V 0.2408 Δ -0.00055 [-0.00155; +0.00044] ΔLL -0.00114 | Total A 0.2449 V 0.2450 Δ +0.00015 [-0.00023; +0.00050] ΔLL +0.00031 | Teamtotal A 0.2382 V 0.2380 Δ -0.00028 [-0.00068; +0.00007] ΔLL -0.00059
+    G2->G1 (Testspiele 5993): Sieger A 0.2186 V 0.2179 Δ -0.00069 [-0.00162; +0.00027] ΔLL -0.00154 | Spread A 0.2411 V 0.2399 Δ -0.00117 [-0.00206; -0.00015] ΔLL -0.00241 | Total A 0.2456 V 0.2461 Δ +0.00042 [-0.00002; +0.00089] ΔLL +0.00085 | Teamtotal A 0.2386 V 0.2384 Δ -0.00016 [-0.00056; +0.00027] ΔLL -0.00034
+    Urteil: Sieger: kein belastbarer Unterschied; Spread: kein belastbarer Unterschied; Total: kein belastbarer Unterschied; Teamtotal: kein belastbarer Unterschied
+    Parameter G1->G2: {"spread": {"b2b_heim": [-2.174, 0.674], "b2b_gast": [1.715, 0.639], "3in4_heim": [-0.461, 0.485], "3in4_gast": [0.833, 0.491], "ruhetage_heim_minus_gast": [0.042, 0.29], "auswaertsserie_gast_spiel": [0.151, 0.147], "reise_gast_1000km": [0.289, 0.235], "reise_heim_1000km": [-0.395, 0.207], "zeitzone_gast_ost+": [0.4, 0.192], "zeitzone_heim_ost+": [-0.282, 0.249], "hoehe_DEN_UTA_heim": [1.202, 0.722]}, "total": {"b2b_heim": [-1.622, 0.914], "b2b_gast": [1.189, 0.867], "3in4_heim": [0.335, 0.658], "3in4_gast": [-0.075, 0.666], "ruhetage_heim_minus_gast": [-0.587, 0.393], "auswaertsserie_gast_spiel": [0.153, 0.199], "reise_gast_1000km": [-0.085, 0.319], "reise_heim_1000km": [-0.139, 0.281], "ze
+    Parameter G2->G1: {"spread": {"b2b_heim": [-1.578, 0.736], "b2b_gast": [2.188, 0.713], "3in4_heim": [0.129, 0.532], "3in4_gast": [0.621, 0.536], "ruhetage_heim_minus_gast": [0.164, 0.334], "auswaertsserie_gast_spiel": [0.093, 0.157], "reise_gast_1000km": [-0.324, 0.263], "reise_heim_1000km": [-0.162, 0.231], "zeitzone_gast_ost+": [0.116, 0.219], "zeitzone_heim_ost+": [-0.248, 0.277], "hoehe_DEN_UTA_heim": [2.272, 0.804]}, "total": {"b2b_heim": [-0.242, 1.008], "b2b_gast": [0.135, 0.977], "3in4_heim": [-0.365, 0.729], "3in4_gast": [-1.285, 0.734], "ruhetage_heim_minus_gast": [-0.072, 0.457], "auswaertsserie_gast_spiel": [0.116, 0.216], "reise_gast_1000km": [0.785, 0.36], "reise_heim_1000km": [-0.3, 0.316], "ze
+    Kalibrierung spread (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.35 PP (gut); V 0.3 / 6.01 (nicht gut)
+    Kalibrierung total (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.16 PP (gut); V 0.24 / 5.91 (gut)
+    Kalibrierung tt (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.08 PP / max Stufe 0.14 PP (gut); V 0.19 / 2.0 (gut)
+    Ränder spread (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0447/0.0515 (n 21554); >85 %: 0.9553/0.9479 (n 21554) Brier 0.07819 LL 0.28237 | V <15 %: 0.0575/0.0635 (n 24836); >85 %: 0.945/0.9381 (n 24268) Brier 0.07799 LL 0.28115
+    Ränder total (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0551/0.06 (n 23949); >85 %: 0.9451/0.949 (n 23875) Brier 0.07161 LL 0.26162 | V <15 %: 0.06/0.0663 (n 25441); >85 %: 0.94/0.9422 (n 25552) Brier 0.07167 LL 0.26195
+    Ränder tt (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0662/0.0706 (n 53259); >85 %: 0.9334/0.9359 (n 53526) Brier 0.07299 LL 0.2661 | V <15 %: 0.0649/0.0687 (n 53137); >85 %: 0.934/0.9358 (n 54076) Brier 0.07296 LL 0.26595
+
+TEIL 3 (Laufzeit 2 s; 10777 Auswertungsspiele, G1 5993, G2 4784; Brier A {'win': 0.22145, 'spread': 0.24122, 'total': 0.24529, 'tt': 0.23844})
+  OBERGRENZE: Ausfaelle sind hier nachtraeglich aus dem tatsaechlichen Einsatz bekannt (wer von den Top-3 der letzten 10 Teamspiele nicht gespielt hat); vor dem Spiel sind sie nur teilweise bekannt. Daten nur fuer 2024-25 und 2025-26 (2023-24 nur als Vorlauf). Richtungen: 2024-25 -> 2025-26 und umgekehrt.
+  Abdeckung: {"2024-25": {"spiele": 1230, "mit_ausfall_heim": 291, "mit_ausfall_gast": 328}, "2025-26": {"spiele": 1230, "mit_ausfall_heim": 295, "mit_ausfall_gast": 307}}
+  Effekt alle Spiele: {"spiele": 3534, "spread_pkt_je_Rolle": [[-2.43, 0.65], [-2.14, 0.6], [-1.72, 0.57]], "total_pkt_je_Rolle": [[-0.9, 0.8], [-1.0, 0.76], [-0.67, 0.71]]}
+
+  VARIANTE v3-ausfaelle-top3: Star-Ausfaelle Top-3 (Rolle 1/2/3), Anpassung Spread und Total
+    24-25->25-26 (Testspiele 1230): Sieger A 0.2100 V 0.2078 Δ -0.00216 [-0.00381; -0.00040] ΔLL -0.00498 | Spread A 0.2424 V 0.2396 Δ -0.00281 [-0.00464; -0.00093] ΔLL -0.00585 | Total A 0.2452 V 0.2462 Δ +0.00102 [-0.00065; +0.00250] ΔLL +0.00210 | Teamtotal A 0.2385 V 0.2386 Δ +0.00007 [-0.00100; +0.00117] ΔLL +0.00019
+    25-26->24-25 (Testspiele 1230): Sieger A 0.2150 V 0.2141 Δ -0.00092 [-0.00357; +0.00178] ΔLL -0.00227 | Spread A 0.2408 V 0.2398 Δ -0.00101 [-0.00369; +0.00197] ΔLL -0.00205 | Total A 0.2457 V 0.2458 Δ +0.00010 [-0.00022; +0.00045] ΔLL +0.00020 | Teamtotal A 0.2390 V 0.2387 Δ -0.00027 [-0.00128; +0.00080] ΔLL -0.00053
+    Urteil: Sieger: kein belastbarer Unterschied; Spread: kein belastbarer Unterschied; Total: kein belastbarer Unterschied; Teamtotal: kein belastbarer Unterschied
+    Parameter 24-25->25-26: {"spread_pkt_je_Rolle(Heim-Ausfall)": [[-1.95, 1.06], [-1.96, 1.01], [-0.93, 0.92]], "total_pkt_je_Rolle(beide Seiten)": [[-1.84, 1.3], [-1.44, 1.27], [-0.92, 1.16]], "zeilen_training": 1230}
+    Parameter 25-26->24-25: {"spread_pkt_je_Rolle(Heim-Ausfall)": [[-2.84, 1.12], [-2.79, 0.99], [-2.5, 0.96]], "total_pkt_je_Rolle(beide Seiten)": [[-0.4, 1.38], [0.44, 1.29], [0.35, 1.24]], "zeilen_training": 1230}
+    Kalibrierung spread (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.24 PP / max Stufe 0.49 PP (gut); V 0.36 / 2.01 (gut)
+    Kalibrierung total (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.2 PP / max Stufe 0.35 PP (gut); V 0.53 / 11.19 (nicht gut)
+    Kalibrierung tt (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.12 PP / max Stufe 0.18 PP (gut); V 0.28 / 8.52 (nicht gut)
+
+TEIL 4 (Laufzeit 23 s; 10777 Auswertungsspiele, G1 5993, G2 4784; Brier A {'win': 0.22145, 'spread': 0.24122, 'total': 0.24529, 'tt': 0.23844})
+  Zusatzterm auf den ELO-Spread: Koeffizient x (mittlere Punktedifferenz der letzten N Spiele Heim minus Gast), beim Total Koeffizient x mittleres Total der letzten N Spiele (OLS im Training, zentriert). Das Produktivmodell enthaelt schon einen Form-Term (gewichtete Siegquote der letzten 10 Spiele x 40 ELO).
+
+  VARIANTE v3-form-n: Form-Zusatzterm (N = 5/10/15/20, gewaehlt im Training)
+    G1->G2 (Testspiele 4784): Sieger A 0.2250 V 0.2245 Δ -0.00057 [-0.00102; -0.00010] ΔLL -0.00123 | Spread A 0.2414 V 0.2406 Δ -0.00079 [-0.00132; -0.00025] ΔLL -0.00163 | Total A 0.2449 V 0.2444 Δ -0.00047 [-0.00088; -0.00011] ΔLL -0.00096 | Teamtotal A 0.2382 V 0.2377 Δ -0.00054 [-0.00082; -0.00025] ΔLL -0.00114
+    G2->G1 (Testspiele 5993): Sieger A 0.2186 V 0.2177 Δ -0.00085 [-0.00133; -0.00036] ΔLL -0.00196 | Spread A 0.2411 V 0.2407 Δ -0.00042 [-0.00098; +0.00022] ΔLL -0.00087 | Total A 0.2456 V 0.2451 Δ -0.00051 [-0.00126; +0.00014] ΔLL -0.00103 | Teamtotal A 0.2386 V 0.2382 Δ -0.00035 [-0.00082; +0.00008] ΔLL -0.00074
+    Urteil: Sieger: Verbesserung; Spread: kein belastbarer Unterschied; Total: kein belastbarer Unterschied; Teamtotal: kein belastbarer Unterschied
+    Parameter G1->G2: {"spread": {"form_diff": [0.091, 0.022], "form_total": [-0.007, 0.021]}, "total": {"form_diff": [-0.027, 0.029], "form_total": [0.106, 0.028]}, "N": 20, "raster_brier_summe_training": {"5": 0.486159, "10": 0.485965, "15": 0.485953, "20": 0.485797}, "am_rand": true}
+    Parameter G2->G1: {"spread": {"form_diff": [0.104, 0.025], "form_total": [-0.032, 0.032]}, "total": {"form_diff": [-0.029, 0.034], "form_total": [0.153, 0.043]}, "N": 20, "raster_brier_summe_training": {"5": 0.485748, "10": 0.48553, "15": 0.485273, "20": 0.484802}, "am_rand": true}
+    Kalibrierung spread (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.35 PP (gut); V 0.25 / 2.77 (gut)
+    Kalibrierung total (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.16 PP (gut); V 0.27 / 2.51 (gut)
+    Kalibrierung tt (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.08 PP / max Stufe 0.14 PP (gut); V 0.2 / 0.41 (gut)
+    Ränder spread (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0447/0.0515 (n 21554); >85 %: 0.9553/0.9479 (n 21554) Brier 0.07819 LL 0.28237 | V <15 %: 0.0542/0.0605 (n 23787); >85 %: 0.9453/0.9383 (n 24031) Brier 0.07812 LL 0.28189
+    Ränder total (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0551/0.06 (n 23949); >85 %: 0.9451/0.949 (n 23875) Brier 0.07161 LL 0.26162 | V <15 %: 0.0601/0.0651 (n 25797); >85 %: 0.9383/0.943 (n 25963) Brier 0.07157 LL 0.26143
+    Ränder tt (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0662/0.0706 (n 53259); >85 %: 0.9334/0.9359 (n 53526) Brier 0.07299 LL 0.2661 | V <15 %: 0.0654/0.0689 (n 53620); >85 %: 0.934/0.9364 (n 53585) Brier 0.07294 LL 0.26587
+
+  VARIANTE v3-form-n5: Form-Zusatzterm N = 5
+    G1->G2 (Testspiele 4784): Sieger A 0.2250 V 0.2250 Δ -0.00003 [-0.00015; +0.00009] ΔLL -0.00009 | Spread A 0.2414 V 0.2413 Δ -0.00008 [-0.00019; +0.00004] ΔLL -0.00016 | Total A 0.2449 V 0.2445 Δ -0.00040 [-0.00085; +0.00000] ΔLL -0.00081 | Teamtotal A 0.2382 V 0.2381 Δ -0.00015 [-0.00042; +0.00009] ΔLL -0.00031
+    G2->G1 (Testspiele 5993): Sieger A 0.2186 V 0.2185 Δ -0.00012 [-0.00025; +0.00002] ΔLL -0.00030 | Spread A 0.2411 V 0.2411 Δ -0.00003 [-0.00018; +0.00013] ΔLL -0.00005 | Total A 0.2456 V 0.2450 Δ -0.00062 [-0.00113; -0.00013] ΔLL -0.00127 | Teamtotal A 0.2386 V 0.2384 Δ -0.00023 [-0.00053; +0.00006] ΔLL -0.00049
+    Urteil: Sieger: kein belastbarer Unterschied; Spread: kein belastbarer Unterschied; Total: kein belastbarer Unterschied; Teamtotal: kein belastbarer Unterschied
+    Parameter G1->G2: {"spread": {"form_diff": [0.014, 0.016], "form_total": [-0.004, 0.017]}, "total": {"form_diff": [-0.018, 0.021], "form_total": [0.091, 0.023]}}
+    Parameter G2->G1: {"spread": {"form_diff": [0.019, 0.017], "form_total": [-0.009, 0.024]}, "total": {"form_diff": [-0.017, 0.024], "form_total": [0.091, 0.033]}}
+    Kalibrierung spread (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.35 PP (gut); V 0.09 / 0.28 (gut)
+    Kalibrierung total (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.16 PP (gut); V 0.27 / 0.33 (gut)
+    Kalibrierung tt (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.08 PP / max Stufe 0.14 PP (gut); V 0.09 / 0.33 (gut)
+    Ränder spread (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0447/0.0515 (n 21554); >85 %: 0.9553/0.9479 (n 21554) Brier 0.07819 LL 0.28237 | V <15 %: 0.0457/0.0522 (n 21761); >85 %: 0.9541/0.9469 (n 21823) Brier 0.07819 LL 0.28234
+    Ränder total (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0551/0.06 (n 23949); >85 %: 0.9451/0.949 (n 23875) Brier 0.07161 LL 0.26162 | V <15 %: 0.0602/0.0646 (n 25657); >85 %: 0.9392/0.943 (n 25720) Brier 0.07156 LL 0.26141
+    Ränder tt (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0662/0.0706 (n 53259); >85 %: 0.9334/0.9359 (n 53526) Brier 0.07299 LL 0.2661 | V <15 %: 0.0657/0.0686 (n 53392); >85 %: 0.9337/0.9366 (n 53680) Brier 0.07295 LL 0.2659
+
+  VARIANTE v3-form-n10: Form-Zusatzterm N = 10
+    G1->G2 (Testspiele 4784): Sieger A 0.2250 V 0.2248 Δ -0.00018 [-0.00054; +0.00015] ΔLL -0.00044 | Spread A 0.2414 V 0.2410 Δ -0.00035 [-0.00072; +0.00004] ΔLL -0.00071 | Total A 0.2449 V 0.2445 Δ -0.00030 [-0.00076; +0.00010] ΔLL -0.00062 | Teamtotal A 0.2382 V 0.2380 Δ -0.00023 [-0.00054; +0.00006] ΔLL -0.00049
+    G2->G1 (Testspiele 5993): Sieger A 0.2186 V 0.2182 Δ -0.00042 [-0.00071; -0.00013] ΔLL -0.00103 | Spread A 0.2411 V 0.2409 Δ -0.00016 [-0.00049; +0.00019] ΔLL -0.00034 | Total A 0.2456 V 0.2450 Δ -0.00064 [-0.00119; -0.00015] ΔLL -0.00130 | Teamtotal A 0.2386 V 0.2382 Δ -0.00038 [-0.00070; -0.00007] ΔLL -0.00080
+    Urteil: Sieger: kein belastbarer Unterschied; Spread: kein belastbarer Unterschied; Total: kein belastbarer Unterschied; Teamtotal: kein belastbarer Unterschied
+    Parameter G1->G2: {"spread": {"form_diff": [0.054, 0.019], "form_total": [-0.009, 0.019]}, "total": {"form_diff": [-0.03, 0.025], "form_total": [0.107, 0.026]}}
+    Parameter G2->G1: {"spread": {"form_diff": [0.05, 0.022], "form_total": [-0.022, 0.028]}, "total": {"form_diff": [-0.013, 0.029], "form_total": [0.102, 0.039]}}
+    Kalibrierung spread (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.35 PP (gut); V 0.13 / 0.21 (gut)
+    Kalibrierung total (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.16 PP (gut); V 0.19 / 2.35 (gut)
+    Kalibrierung tt (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.08 PP / max Stufe 0.14 PP (gut); V 0.07 / 0.17 (gut)
+    Ränder spread (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0447/0.0515 (n 21554); >85 %: 0.9553/0.9479 (n 21554) Brier 0.07819 LL 0.28237 | V <15 %: 0.0506/0.0573 (n 22851); >85 %: 0.9491/0.9423 (n 22979) Brier 0.07817 LL 0.28217
+    Ränder total (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0551/0.06 (n 23949); >85 %: 0.9451/0.949 (n 23875) Brier 0.07161 LL 0.26162 | V <15 %: 0.0603/0.0646 (n 25689); >85 %: 0.9388/0.9426 (n 25851) Brier 0.07156 LL 0.26139
+    Ränder tt (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0662/0.0706 (n 53259); >85 %: 0.9334/0.9359 (n 53526) Brier 0.07299 LL 0.2661 | V <15 %: 0.0657/0.0687 (n 53468); >85 %: 0.9339/0.9359 (n 53669) Brier 0.07295 LL 0.26591
+
+  VARIANTE v3-form-n15: Form-Zusatzterm N = 15
+    G1->G2 (Testspiele 4784): Sieger A 0.2250 V 0.2247 Δ -0.00034 [-0.00072; +0.00004] ΔLL -0.00077 | Spread A 0.2414 V 0.2409 Δ -0.00045 [-0.00091; +0.00001] ΔLL -0.00093 | Total A 0.2449 V 0.2444 Δ -0.00041 [-0.00084; -0.00003] ΔLL -0.00084 | Teamtotal A 0.2382 V 0.2379 Δ -0.00040 [-0.00068; -0.00011] ΔLL -0.00084
+    G2->G1 (Testspiele 5993): Sieger A 0.2186 V 0.2180 Δ -0.00056 [-0.00090; -0.00020] ΔLL -0.00132 | Spread A 0.2411 V 0.2408 Δ -0.00025 [-0.00066; +0.00018] ΔLL -0.00053 | Total A 0.2456 V 0.2451 Δ -0.00057 [-0.00124; +0.00002] ΔLL -0.00116 | Teamtotal A 0.2386 V 0.2382 Δ -0.00036 [-0.00077; +0.00000] ΔLL -0.00076
+    Urteil: Sieger: kein belastbarer Unterschied; Spread: kein belastbarer Unterschied; Total: kein belastbarer Unterschied; Teamtotal: kein belastbarer Unterschied
+    Parameter G1->G2: {"spread": {"form_diff": [0.071, 0.02], "form_total": [-0.007, 0.02]}, "total": {"form_diff": [-0.038, 0.028], "form_total": [0.105, 0.027]}}
+    Parameter G2->G1: {"spread": {"form_diff": [0.07, 0.024], "form_total": [-0.021, 0.03]}, "total": {"form_diff": [-0.018, 0.032], "form_total": [0.133, 0.042]}}
+    Kalibrierung spread (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.35 PP (gut); V 0.14 / 0.16 (gut)
+    Kalibrierung total (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.16 PP (gut); V 0.28 / 0.41 (gut)
+    Kalibrierung tt (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.08 PP / max Stufe 0.14 PP (gut); V 0.08 / 0.32 (gut)
+    Ränder spread (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0447/0.0515 (n 21554); >85 %: 0.9553/0.9479 (n 21554) Brier 0.07819 LL 0.28237 | V <15 %: 0.0521/0.0586 (n 23226); >85 %: 0.9476/0.9409 (n 23353) Brier 0.07815 LL 0.28204
+    Ränder total (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0551/0.06 (n 23949); >85 %: 0.9451/0.949 (n 23875) Brier 0.07161 LL 0.26162 | V <15 %: 0.0603/0.065 (n 25785); >85 %: 0.9386/0.9429 (n 25892) Brier 0.07156 LL 0.2614
+    Ränder tt (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0662/0.0706 (n 53259); >85 %: 0.9334/0.9359 (n 53526) Brier 0.07299 LL 0.2661 | V <15 %: 0.0655/0.0689 (n 53547); >85 %: 0.9338/0.9362 (n 53664) Brier 0.07295 LL 0.26591
+
+  VARIANTE v3-form-n20: Form-Zusatzterm N = 20
+    G1->G2 (Testspiele 4784): Sieger A 0.2250 V 0.2245 Δ -0.00057 [-0.00102; -0.00010] ΔLL -0.00123 | Spread A 0.2414 V 0.2406 Δ -0.00079 [-0.00132; -0.00025] ΔLL -0.00163 | Total A 0.2449 V 0.2444 Δ -0.00047 [-0.00088; -0.00011] ΔLL -0.00096 | Teamtotal A 0.2382 V 0.2377 Δ -0.00054 [-0.00082; -0.00025] ΔLL -0.00114
+    G2->G1 (Testspiele 5993): Sieger A 0.2186 V 0.2177 Δ -0.00085 [-0.00133; -0.00036] ΔLL -0.00196 | Spread A 0.2411 V 0.2407 Δ -0.00042 [-0.00098; +0.00022] ΔLL -0.00087 | Total A 0.2456 V 0.2451 Δ -0.00051 [-0.00126; +0.00014] ΔLL -0.00103 | Teamtotal A 0.2386 V 0.2382 Δ -0.00035 [-0.00082; +0.00008] ΔLL -0.00074
+    Urteil: Sieger: Verbesserung; Spread: kein belastbarer Unterschied; Total: kein belastbarer Unterschied; Teamtotal: kein belastbarer Unterschied
+    Parameter G1->G2: {"spread": {"form_diff": [0.091, 0.022], "form_total": [-0.007, 0.021]}, "total": {"form_diff": [-0.027, 0.029], "form_total": [0.106, 0.028]}}
+    Parameter G2->G1: {"spread": {"form_diff": [0.104, 0.025], "form_total": [-0.032, 0.032]}, "total": {"form_diff": [-0.029, 0.034], "form_total": [0.153, 0.043]}}
+    Kalibrierung spread (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.35 PP (gut); V 0.25 / 2.77 (gut)
+    Kalibrierung total (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.16 PP (gut); V 0.27 / 2.51 (gut)
+    Kalibrierung tt (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.08 PP / max Stufe 0.14 PP (gut); V 0.2 / 0.41 (gut)
+    Ränder spread (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0447/0.0515 (n 21554); >85 %: 0.9553/0.9479 (n 21554) Brier 0.07819 LL 0.28237 | V <15 %: 0.0542/0.0605 (n 23787); >85 %: 0.9453/0.9383 (n 24031) Brier 0.07812 LL 0.28189
+    Ränder total (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0551/0.06 (n 23949); >85 %: 0.9451/0.949 (n 23875) Brier 0.07161 LL 0.26162 | V <15 %: 0.0601/0.0651 (n 25797); >85 %: 0.9383/0.943 (n 25963) Brier 0.07157 LL 0.26143
+    Ränder tt (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0662/0.0706 (n 53259); >85 %: 0.9334/0.9359 (n 53526) Brier 0.07299 LL 0.2661 | V <15 %: 0.0654/0.0689 (n 53620); >85 %: 0.934/0.9364 (n 53585) Brier 0.07294 LL 0.26587
+
+  VARIANTE v3-form-n30: Form-Zusatzterm N = 30
+    G1->G2 (Testspiele 4784): Sieger A 0.2250 V 0.2241 Δ -0.00093 [-0.00150; -0.00031] ΔLL -0.00198 | Spread A 0.2414 V 0.2402 Δ -0.00117 [-0.00186; -0.00050] ΔLL -0.00242 | Total A 0.2449 V 0.2444 Δ -0.00046 [-0.00079; -0.00014] ΔLL -0.00094 | Teamtotal A 0.2382 V 0.2376 Δ -0.00067 [-0.00096; -0.00038] ΔLL -0.00141
+    G2->G1 (Testspiele 5993): Sieger A 0.2186 V 0.2173 Δ -0.00128 [-0.00183; -0.00072] ΔLL -0.00291 | Spread A 0.2411 V 0.2403 Δ -0.00075 [-0.00144; -0.00004] ΔLL -0.00157 | Total A 0.2456 V 0.2455 Δ -0.00014 [-0.00101; +0.00060] ΔLL -0.00028 | Teamtotal A 0.2386 V 0.2384 Δ -0.00020 [-0.00076; +0.00032] ΔLL -0.00042
+    Urteil: Sieger: Verbesserung; Spread: Verbesserung; Total: kein belastbarer Unterschied; Teamtotal: kein belastbarer Unterschied
+    Parameter G1->G2: {"spread": {"form_diff": [0.125, 0.023], "form_total": [-0.003, 0.022]}, "total": {"form_diff": [-0.022, 0.031], "form_total": [0.093, 0.029]}}
+    Parameter G2->G1: {"spread": {"form_diff": [0.13, 0.027], "form_total": [-0.029, 0.033]}, "total": {"form_diff": [-0.041, 0.037], "form_total": [0.187, 0.046]}}
+    Kalibrierung spread (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.35 PP (gut); V 0.14 / 1.35 (gut)
+    Kalibrierung total (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.16 PP (gut); V 0.28 / 1.94 (gut)
+    Kalibrierung tt (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.08 PP / max Stufe 0.14 PP (gut); V 0.14 / 1.27 (gut)
+    Ränder spread (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0447/0.0515 (n 21554); >85 %: 0.9553/0.9479 (n 21554) Brier 0.07819 LL 0.28237 | V <15 %: 0.0554/0.0617 (n 24152); >85 %: 0.9442/0.9376 (n 24354) Brier 0.07809 LL 0.28167
+    Ränder total (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0551/0.06 (n 23949); >85 %: 0.9451/0.949 (n 23875) Brier 0.07161 LL 0.26162 | V <15 %: 0.0595/0.0658 (n 25719); >85 %: 0.9384/0.9428 (n 25909) Brier 0.0716 LL 0.26157
+    Ränder tt (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0662/0.0706 (n 53259); >85 %: 0.9334/0.9359 (n 53526) Brier 0.07299 LL 0.2661 | V <15 %: 0.0652/0.0692 (n 53736); >85 %: 0.9341/0.9369 (n 53540) Brier 0.07295 LL 0.26591
+
+  VARIANTE v3-form-n40: Form-Zusatzterm N = 40
+    G1->G2 (Testspiele 4784): Sieger A 0.2250 V 0.2238 Δ -0.00120 [-0.00181; -0.00057] ΔLL -0.00262 | Spread A 0.2414 V 0.2399 Δ -0.00146 [-0.00216; -0.00074] ΔLL -0.00301 | Total A 0.2449 V 0.2443 Δ -0.00053 [-0.00085; -0.00023] ΔLL -0.00108 | Teamtotal A 0.2382 V 0.2374 Δ -0.00084 [-0.00115; -0.00053] ΔLL -0.00175
+    G2->G1 (Testspiele 5993): Sieger A 0.2186 V 0.2170 Δ -0.00157 [-0.00230; -0.00084] ΔLL -0.00351 | Spread A 0.2411 V 0.2403 Δ -0.00080 [-0.00165; +0.00010] ΔLL -0.00167 | Total A 0.2456 V 0.2456 Δ -0.00005 [-0.00104; +0.00076] ΔLL -0.00009 | Teamtotal A 0.2386 V 0.2385 Δ -0.00012 [-0.00075; +0.00047] ΔLL -0.00025
+    Urteil: Sieger: Verbesserung; Spread: kein belastbarer Unterschied; Total: kein belastbarer Unterschied; Teamtotal: kein belastbarer Unterschied
+    Parameter G1->G2: {"spread": {"form_diff": [0.139, 0.024], "form_total": [-0.003, 0.022]}, "total": {"form_diff": [-0.021, 0.033], "form_total": [0.096, 0.03]}}
+    Parameter G2->G1: {"spread": {"form_diff": [0.163, 0.028], "form_total": [-0.056, 0.035]}, "total": {"form_diff": [-0.046, 0.039], "form_total": [0.212, 0.047]}}
+    Kalibrierung spread (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.35 PP (gut); V 0.13 / 0.94 (gut)
+    Kalibrierung total (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.16 PP (gut); V 0.36 / 1.75 (gut)
+    Kalibrierung tt (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.08 PP / max Stufe 0.14 PP (gut); V 0.12 / 2.76 (gut)
+    Ränder spread (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0447/0.0515 (n 21554); >85 %: 0.9553/0.9479 (n 21554) Brier 0.07819 LL 0.28237 | V <15 %: 0.0565/0.063 (n 24473); >85 %: 0.9431/0.9367 (n 24753) Brier 0.07808 LL 0.28163
+    Ränder total (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0551/0.06 (n 23949); >85 %: 0.9451/0.949 (n 23875) Brier 0.07161 LL 0.26162 | V <15 %: 0.0594/0.066 (n 25712); >85 %: 0.9381/0.9426 (n 26004) Brier 0.07161 LL 0.26161
+    Ränder tt (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0662/0.0706 (n 53259); >85 %: 0.9334/0.9359 (n 53526) Brier 0.07299 LL 0.2661 | V <15 %: 0.0649/0.0689 (n 53672); >85 %: 0.9341/0.9369 (n 53611) Brier 0.07295 LL 0.26593
+
+  VARIANTE v3-form-schatten: Schatten: Form-Rating-Formel allein (Punktedifferenz der letzten 10 Spiele, Spread = a + s x Differenz, Total = a + b x mittleres Total)  [NUR mitlaufen lassen, keine Kandidatin. Formel nicht auffindbar, einfache Ersatzformel.]
+    G1->G2 (Testspiele 4784): Sieger A 0.2250 V 0.2262 Δ +0.00113 [-0.00095; +0.00335] ΔLL +0.00266 | Spread A 0.2414 V 0.2430 Δ +0.00161 [-0.00041; +0.00363] ΔLL +0.00354 | Total A 0.2449 V 0.2485 Δ +0.00362 [+0.00225; +0.00506] ΔLL +0.00765 | Teamtotal A 0.2382 V 0.2413 Δ +0.00304 [+0.00192; +0.00412] ΔLL +0.00657
+    G2->G1 (Testspiele 5993): Sieger A 0.2186 V 0.2225 Δ +0.00394 [+0.00196; +0.00582] ΔLL +0.00909 | Spread A 0.2411 V 0.2455 Δ +0.00436 [+0.00244; +0.00615] ΔLL +0.00948 | Total A 0.2456 V 0.2480 Δ +0.00237 [+0.00115; +0.00377] ΔLL +0.00492 | Teamtotal A 0.2386 V 0.2409 Δ +0.00227 [+0.00132; +0.00324] ΔLL +0.00490
+    Urteil: Sieger: kein belastbarer Unterschied; Spread: kein belastbarer Unterschied; Total: schlechter; Teamtotal: schlechter
+    Parameter G1->G2: {"spread": "2.00 + 0.573 x Form10", "total": "1.6 + 0.994 x Total10"}
+    Parameter G2->G1: {"spread": "2.09 + 0.541 x Form10", "total": "24.3 + 0.895 x Total10"}
+    Kalibrierung spread (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.35 PP (gut); V 3.05 / 12.42 (nicht gut)
+    Kalibrierung total (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.16 PP (gut); V 2.37 / 14.0 (nicht gut)
+    Kalibrierung tt (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.08 PP / max Stufe 0.14 PP (gut); V 1.75 / 12.3 (nicht gut)
+    Ränder spread (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0447/0.0515 (n 21554); >85 %: 0.9553/0.9479 (n 21554) Brier 0.07819 LL 0.28237 | V <15 %: 0.0592/0.0675 (n 25776); >85 %: 0.9408/0.932 (n 25632) Brier 0.07868 LL 0.2844
+    Ränder total (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0551/0.06 (n 23949); >85 %: 0.9451/0.949 (n 23875) Brier 0.07161 LL 0.26162 | V <15 %: 0.0603/0.0651 (n 25325); >85 %: 0.938/0.9363 (n 27506) Brier 0.07208 LL 0.26405
+    Ränder tt (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0662/0.0706 (n 53259); >85 %: 0.9334/0.9359 (n 53526) Brier 0.07299 LL 0.2661 | V <15 %: 0.0641/0.0682 (n 52206); >85 %: 0.9364/0.9338 (n 54985) Brier 0.07346 LL 0.26828
+
+TEIL 5 (Laufzeit 17 s; 10777 Auswertungsspiele, G1 5993, G2 4784; Brier A {'win': 0.22145, 'spread': 0.24122, 'total': 0.24529, 'tt': 0.23844})
+  Residuen spread: {"n": 10777, "mittel": -0.039, "sd": 13.892, "schiefe": 0.008, "ueberschuss_kurtosis": 0.457, "quantile_1_5_50_95_99": [-33.86, -22.84, 0.13, 22.94, 33.69], "anteil_ueber_2sd": 0.0505}
+  Residuen total: {"n": 10777, "mittel": 0.298, "sd": 18.845, "schiefe": 0.222, "ueberschuss_kurtosis": 0.359, "quantile_1_5_50_95_99": [-41.11, -29.69, -0.28, 31.76, 46.89], "anteil_ueber_2sd": 0.0444}
+  Residuen tt: {"n": 21554, "mittel": 0.149, "sd": 11.706, "schiefe": 0.089, "ueberschuss_kurtosis": 0.109, "quantile_1_5_50_95_99": [-26.46, -18.86, 0.04, 19.65, 28.39], "anteil_ueber_2sd": 0.0451}
+  Streuung Residuen spread: {"nach_favoritenstaerke_|Spread|": {"0-3": {"n": 4160, "sd": 14.0, "mittel": 0.02}, "3-6": {"n": 3215, "sd": 13.83, "mittel": -0.25}, "6-9": {"n": 1930, "sd": 13.81, "mittel": -0.08}, "9+": {"n": 1472, "sd": 13.81, "mittel": 0.31}}, "nach_modell_total(Tempo)": {"niedrig": {"n": 3557, "sd": 13.3, "mittel": 0.07}, "mittel": {"n": 3663, "sd": 14.1, "mittel": -0.19}, "hoch": {"n": 3557, "sd": 14.25, "mittel": 0.01}}, "nach_monat": {"10": {"n": 682, "sd": 13.65}, "11": {"n": 1754, "sd": 13.25}, "12": {"n": 1773, "sd": 13.85}, "1": {"n": 2040, "sd": 13.98}, "2": {"n": 1549, "sd": 13.94}, "3": {"n": 1881, "sd": 13.8}, "4": {"n": 883, "sd": 15.31}}}
+  Streuung Residuen total: {"nach_modell_total(Linie/Tempo)": {"niedrig": {"n": 3557, "sd": 18.37, "mittel": -0.67}, "mittel": {"n": 3663, "sd": 19.04, "mittel": 0.12}, "hoch": {"n": 3557, "sd": 19.05, "mittel": 1.45}}, "nach_favoritenstaerke_|Spread|": {"0-3": {"n": 4160, "sd": 18.46, "mittel": 0.16}, "3-6": {"n": 3215, "sd": 19.26, "mittel": 0.11}, "6-9": {"n": 1930, "sd": 18.43, "mittel": 0.59}, "9+": {"n": 1472, "sd": 19.51, "mittel": 0.71}}, "nach_monat": {"10": {"n": 682, "sd": 20.51, "mittel": -0.55}, "11": {"n": 1754, "sd": 18.64, "mittel": -0.28}, "12": {"n": 1773, "sd": 18.48, "mittel": 0.71}, "1": {"n": 2040, "sd": 19.0, "mittel": 0.11}, "2": {"n": 1549, "sd": 18.81, "mittel": 0.97}, "3": {"n": 1881, "sd": 18.45, "mittel": -0.36}, "4": {"n": 883, "sd": 18.91, "mittel": 1.31}}}
+  Streuung Residuen tt: {"nach_erwarteten_Teampunkten": {"<108": {"n": 4330, "sd": 11.23, "mittel": -0.26}, "108-112": {"n": 5961, "sd": 11.72, "mittel": -0.11}, "112-116": {"n": 6658, "sd": 11.77, "mittel": 0.27}, "116+": {"n": 4605, "sd": 12.01, "mittel": 0.7}}}
+
+  VARIANTE v3-sigma-statisch: Sigma neu geschaetzt (statisch, Normal)
+    G1->G2 (Testspiele 4784): Sieger A 0.2250 V 0.2251 Δ +0.00003 [-0.00015; +0.00022] ΔLL +0.00013 | Spread A 0.2414 V 0.2414 Δ +0.00001 [-0.00003; +0.00005] ΔLL +0.00002 | Total A 0.2449 V 0.2449 Δ +0.00001 [+0.00000; +0.00001] ΔLL +0.00001 | Teamtotal A 0.2382 V 0.2382 Δ +0.00000 [-0.00000; +0.00001] ΔLL +0.00001
+    G2->G1 (Testspiele 5993): Sieger A 0.2186 V 0.2188 Δ +0.00016 [+0.00002; +0.00029] ΔLL +0.00047 | Spread A 0.2411 V 0.2411 Δ +0.00002 [-0.00001; +0.00006] ΔLL +0.00004 | Total A 0.2456 V 0.2456 Δ -0.00000 [-0.00001; +0.00001] ΔLL -0.00000 | Teamtotal A 0.2386 V 0.2386 Δ +0.00000 [-0.00001; +0.00001] ΔLL +0.00000
+    Urteil: Sieger: kein belastbarer Unterschied; Spread: kein belastbarer Unterschied; Total: kein belastbarer Unterschied; Teamtotal: kein belastbarer Unterschied
+    Parameter G1->G2: {"spread": {"sigma_basis": 13.923, "koeff_log_sigma": null, "df": null, "sigma_produktiv": 13.2}, "total": {"sigma_basis": 18.804, "koeff_log_sigma": null, "df": null, "sigma_produktiv": 18.6}, "tt": {"sigma_basis": 11.699, "koeff_log_sigma": null, "df": null, "sigma_produktiv": 11.6}}
+    Parameter G2->G1: {"spread": {"sigma_basis": 13.853, "koeff_log_sigma": null, "df": null, "sigma_produktiv": 13.2}, "total": {"sigma_basis": 18.903, "koeff_log_sigma": null, "df": null, "sigma_produktiv": 18.6}, "tt": {"sigma_basis": 11.718, "koeff_log_sigma": null, "df": null, "sigma_produktiv": 11.6}}
+    Kalibrierung spread (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.35 PP (gut); V 0.31 / 0.55 (gut)
+    Kalibrierung total (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.16 PP (gut); V 0.22 / 0.31 (gut)
+    Kalibrierung tt (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.08 PP / max Stufe 0.14 PP (gut); V 0.17 / 0.23 (gut)
+    Ränder spread (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0447/0.0515 (n 21554); >85 %: 0.9553/0.9479 (n 21554) Brier 0.07819 LL 0.28237 | V <15 %: 0.0527/0.0515 (n 21554); >85 %: 0.9472/0.9479 (n 21554) Brier 0.0782 LL 0.28205
+    Ränder total (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0551/0.06 (n 23949); >85 %: 0.9451/0.949 (n 23875) Brier 0.07161 LL 0.26162 | V <15 %: 0.0471/0.0504 (n 21605); >85 %: 0.9529/0.9595 (n 21609) Brier 0.07162 LL 0.26167
+    Ränder tt (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0662/0.0706 (n 53259); >85 %: 0.9334/0.9359 (n 53526) Brier 0.07299 LL 0.2661 | V <15 %: 0.0639/0.0667 (n 50828); >85 %: 0.9357/0.9399 (n 51142) Brier 0.07299 LL 0.2661
+
+  VARIANTE v3-sigma-dynamisch: dynamische Sigma (Favoritenstaerke, Tempo) Normal
+    G1->G2 (Testspiele 4784): Sieger A 0.2250 V 0.2250 Δ -0.00002 [-0.00024; +0.00019] ΔLL -0.00000 | Spread A 0.2414 V 0.2414 Δ -0.00001 [-0.00006; +0.00005] ΔLL -0.00003 | Total A 0.2449 V 0.2449 Δ +0.00001 [+0.00000; +0.00002] ΔLL +0.00003 | Teamtotal A 0.2382 V 0.2382 Δ +0.00001 [-0.00001; +0.00002] ΔLL +0.00001
+    G2->G1 (Testspiele 5993): Sieger A 0.2186 V 0.2187 Δ +0.00015 [+0.00002; +0.00028] ΔLL +0.00044 | Spread A 0.2411 V 0.2411 Δ +0.00002 [-0.00002; +0.00005] ΔLL +0.00004 | Total A 0.2456 V 0.2457 Δ +0.00001 [-0.00001; +0.00002] ΔLL +0.00001 | Teamtotal A 0.2386 V 0.2386 Δ -0.00000 [-0.00002; +0.00001] ΔLL -0.00001
+    Urteil: Sieger: kein belastbarer Unterschied; Spread: kein belastbarer Unterschied; Total: kein belastbarer Unterschied; Teamtotal: kein belastbarer Unterschied
+    Parameter G1->G2: {"spread": {"sigma_basis": 13.893, "koeff_log_sigma": [-0.0034, 0.0052], "df": null, "sigma_produktiv": 13.2}, "total": {"sigma_basis": 18.796, "koeff_log_sigma": [0.0023, 0.0006], "df": null, "sigma_produktiv": 18.6}, "tt": {"sigma_basis": 11.686, "koeff_log_sigma": [0.0062, -0.001], "df": null, "sigma_produktiv": 11.6}}
+    Parameter G2->G1: {"spread": {"sigma_basis": 13.853, "koeff_log_sigma": [-0.0006, -0.0003], "df": null, "sigma_produktiv": 13.2}, "total": {"sigma_basis": 18.892, "koeff_log_sigma": [0.0028, 0.005], "df": null, "sigma_produktiv": 18.6}, "tt": {"sigma_basis": 11.715, "koeff_log_sigma": [0.0029, 0.003], "df": null, "sigma_produktiv": 11.6}}
+    Kalibrierung spread (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.35 PP (gut); V 0.34 / 1.03 (gut)
+    Kalibrierung total (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.16 PP (gut); V 0.22 / 0.27 (gut)
+    Kalibrierung tt (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.08 PP / max Stufe 0.14 PP (gut); V 0.18 / 0.29 (gut)
+    Ränder spread (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0447/0.0515 (n 21554); >85 %: 0.9553/0.9479 (n 21554) Brier 0.07819 LL 0.28237 | V <15 %: 0.0536/0.0516 (n 21562); >85 %: 0.9463/0.9478 (n 21566) Brier 0.07825 LL 0.28231
+    Ränder total (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0551/0.06 (n 23949); >85 %: 0.9451/0.949 (n 23875) Brier 0.07161 LL 0.26162 | V <15 %: 0.0543/0.0574 (n 23327); >85 %: 0.946/0.9506 (n 23228) Brier 0.07161 LL 0.26166
+    Ränder tt (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0662/0.0706 (n 53259); >85 %: 0.9334/0.9359 (n 53526) Brier 0.07299 LL 0.2661 | V <15 %: 0.0636/0.0653 (n 50600); >85 %: 0.9362/0.9401 (n 50826) Brier 0.07298 LL 0.26605
+
+  VARIANTE v3-student-t: Student-t (statisch, df im Training)
+    G1->G2 (Testspiele 4784): Sieger A 0.2250 V 0.2250 Δ +0.00001 [-0.00002; +0.00003] ΔLL +0.00003 | Spread A 0.2414 V 0.2414 Δ -0.00000 [-0.00000; +0.00000] ΔLL -0.00000 | Total A 0.2449 V 0.2448 Δ -0.00001 [-0.00001; +0.00000] ΔLL -0.00001 | Teamtotal A 0.2382 V 0.2382 Δ +0.00000 [-0.00000; +0.00000] ΔLL +0.00000
+    G2->G1 (Testspiele 5993): Sieger A 0.2186 V 0.2186 Δ +0.00002 [+0.00000; +0.00003] ΔLL +0.00006 | Spread A 0.2411 V 0.2411 Δ +0.00000 [-0.00000; +0.00000] ΔLL +0.00000 | Total A 0.2456 V 0.2457 Δ +0.00001 [-0.00000; +0.00002] ΔLL +0.00002 | Teamtotal A 0.2386 V 0.2386 Δ +0.00000 [-0.00000; +0.00000] ΔLL +0.00000
+    Urteil: Sieger: kein belastbarer Unterschied; Spread: kein belastbarer Unterschied; Total: kein belastbarer Unterschied; Teamtotal: kein belastbarer Unterschied
+    Parameter G1->G2: {"spread": {"sigma_basis": 12.963, "koeff_log_sigma": null, "df": 14.93, "sigma_produktiv": 13.2}, "total": {"sigma_basis": 18.272, "koeff_log_sigma": null, "df": 36.04, "sigma_produktiv": 18.6}, "tt": {"sigma_basis": 11.564, "koeff_log_sigma": null, "df": 87.31, "sigma_produktiv": 11.6}}
+    Parameter G2->G1: {"spread": {"sigma_basis": 12.943, "koeff_log_sigma": null, "df": 15.68, "sigma_produktiv": 13.2}, "total": {"sigma_basis": 17.896, "koeff_log_sigma": null, "df": 19.49, "sigma_produktiv": 18.6}, "tt": {"sigma_basis": 11.455, "koeff_log_sigma": null, "df": 45.16, "sigma_produktiv": 11.6}}
+    Kalibrierung spread (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.35 PP (gut); V 0.15 / 0.35 (gut)
+    Kalibrierung total (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.16 PP (gut); V 0.06 / 0.11 (gut)
+    Kalibrierung tt (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.08 PP / max Stufe 0.14 PP (gut); V 0.07 / 0.15 (gut)
+    Ränder spread (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0447/0.0515 (n 21554); >85 %: 0.9553/0.9479 (n 21554) Brier 0.07819 LL 0.28237 | V <15 %: 0.0514/0.0515 (n 21554); >85 %: 0.9486/0.9479 (n 21554) Brier 0.07816 LL 0.28188
+    Ränder total (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0551/0.06 (n 23949); >85 %: 0.9451/0.949 (n 23875) Brier 0.07161 LL 0.26162 | V <15 %: 0.0624/0.067 (n 25622); >85 %: 0.9379/0.9426 (n 25526) Brier 0.07161 LL 0.26164
+    Ränder tt (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0662/0.0706 (n 53259); >85 %: 0.9334/0.9359 (n 53526) Brier 0.07299 LL 0.2661 | V <15 %: 0.067/0.0704 (n 53093); >85 %: 0.9326/0.9358 (n 53360) Brier 0.07299 LL 0.2661
+
+  VARIANTE v3-sigma-dynamisch-t: dynamische Sigma + Student-t
+    G1->G2 (Testspiele 4784): Sieger A 0.2250 V 0.2250 Δ -0.00005 [-0.00018; +0.00008] ΔLL -0.00011 | Spread A 0.2414 V 0.2414 Δ -0.00003 [-0.00007; -0.00000] ΔLL -0.00007 | Total A 0.2449 V 0.2449 Δ -0.00000 [-0.00001; +0.00001] ΔLL +0.00000 | Teamtotal A 0.2382 V 0.2382 Δ +0.00001 [-0.00001; +0.00002] ΔLL +0.00001
+    G2->G1 (Testspiele 5993): Sieger A 0.2186 V 0.2186 Δ +0.00000 [-0.00000; +0.00001] ΔLL +0.00002 | Spread A 0.2411 V 0.2411 Δ -0.00001 [-0.00001; -0.00000] ΔLL -0.00002 | Total A 0.2456 V 0.2457 Δ +0.00002 [-0.00000; +0.00003] ΔLL +0.00003 | Teamtotal A 0.2386 V 0.2386 Δ -0.00000 [-0.00001; +0.00001] ΔLL -0.00001
+    Urteil: Sieger: kein belastbarer Unterschied; Spread: kein belastbarer Unterschied; Total: kein belastbarer Unterschied; Teamtotal: kein belastbarer Unterschied
+    Parameter G1->G2: {"spread": {"sigma_basis": 12.946, "koeff_log_sigma": [-0.0046, 0.0056], "df": 15.12, "sigma_produktiv": 13.2}, "total": {"sigma_basis": 18.284, "koeff_log_sigma": [0.0022, 0.0008], "df": 37.35, "sigma_produktiv": 18.6}, "tt": {"sigma_basis": 11.686, "koeff_log_sigma": [0.0062, -0.001], "df": 1197287.55, "sigma_produktiv": 11.6}}
+    Parameter G2->G1: {"spread": {"sigma_basis": 12.943, "koeff_log_sigma": [-0.0008, -0.0], "df": 15.68, "sigma_produktiv": 13.2}, "total": {"sigma_basis": 17.902, "koeff_log_sigma": [0.0023, 0.0052], "df": 19.79, "sigma_produktiv": 18.6}, "tt": {"sigma_basis": 11.464, "koeff_log_sigma": [0.0027, 0.0029], "df": 47.3, "sigma_produktiv": 11.6}}
+    Kalibrierung spread (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.35 PP (gut); V 0.08 / 0.22 (gut)
+    Kalibrierung total (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.14 PP / max Stufe 0.16 PP (gut); V 0.07 / 0.12 (gut)
+    Kalibrierung tt (gepoolte Testzeilen, Hauptraster): A mittl. Abw. 0.08 PP / max Stufe 0.14 PP (gut); V 0.1 / 0.2 (gut)
+    Ränder spread (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0447/0.0515 (n 21554); >85 %: 0.9553/0.9479 (n 21554) Brier 0.07819 LL 0.28237 | V <15 %: 0.0529/0.0524 (n 21710); >85 %: 0.9469/0.9467 (n 21735) Brier 0.07819 LL 0.28209
+    Ränder total (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0551/0.06 (n 23949); >85 %: 0.9451/0.949 (n 23875) Brier 0.07161 LL 0.26162 | V <15 %: 0.0626/0.0657 (n 25788); >85 %: 0.9379/0.9414 (n 25648) Brier 0.07161 LL 0.26163
+    Ränder tt (Linien bei ±1..2 Sigma; Modell/Treffer): A <15 %: 0.0662/0.0706 (n 53259); >85 %: 0.9334/0.9359 (n 53526) Brier 0.07299 LL 0.2661 | V <15 %: 0.0656/0.0675 (n 52011); >85 %: 0.9342/0.9375 (n 52223) Brier 0.07298 LL 0.26605
+
+TEIL 6: MODELL GEGEN MARKT (--market-vs-model)
+  ZU WENIG DATEN FUER SCHLUESSE (wenige Spiele, Zeilen eines Spiels korreliert, kein Intervall belastbar). Nur Beschreibung. Das Modell ist hier die ANGEZEIGTE Projektion (mit Markt-Mischung Spread 25 %, Total 32-55 %), nicht das reine Modell; die Betano-Chance ist ohne Marge (1/Quote normiert).
+  Spiele verwendet 29, ohne Version/Eintrag 0
+  win: {"zeilen": 29, "brier_modell": 0.2169, "brier_betano": 0.1889, "differenz_modell_minus_betano": 0.028, "mittel_modell": 0.571, "mittel_betano": 0.549, "trefferquote": 0.414, "modell_ueber_betano_ab_3pp": {"zeilen": 14, "trefferquote": 0.286, "mittel_betano": 0.504}, "modell_ueber_betano_ab_5pp": {"zeilen": 11, "trefferquote": 0.182, "mittel_betano": 0.435}, "modell_ueber_betano_ab_8pp": {"zeilen": 7, "trefferquote": 0.286, "mittel_betano": 0.396}}
+  spread: {"zeilen": 126, "brier_modell": 0.268, "brier_betano": 0.2491, "differenz_modell_minus_betano": 0.0189, "mittel_modell": 0.528, "mittel_betano": 0.501, "trefferquote": 0.254, "modell_ueber_betano_ab_3pp": {"zeilen": 66, "trefferquote": 0.242, "mittel_betano": 0.504}, "modell_ueber_betano_ab_5pp": {"zeilen": 59, "trefferquote": 0.271, "mittel_betano": 0.505}, "modell_ueber_betano_ab_8pp": {"zeilen": 43, "trefferquote": 0.349, "mittel_betano": 0.501}}
+  total: {"zeilen": 203, "brier_modell": 0.2551, "brier_betano": 0.2466, "differenz_modell_minus_betano": 0.0085, "mittel_modell": 0.507, "mittel_betano": 0.502, "trefferquote": 0.438, "modell_ueber_betano_ab_3pp": {"zeilen": 68, "trefferquote": 0.471, "mittel_betano": 0.503}, "modell_ueber_betano_ab_5pp": {"zeilen": 31, "trefferquote": 0.355, "mittel_betano": 0.506}, "modell_ueber_betano_ab_8pp": {"zeilen": 19, "trefferquote": 0.368, "mittel_betano": 0.508}}
+  tt: {"zeilen": 406, "brier_modell": 0.2604, "brier_betano": 0.2471, "differenz_modell_minus_betano": 0.0133, "mittel_modell": 0.506, "mittel_betano": 0.502, "trefferquote": 0.49, "modell_ueber_betano_ab_3pp": {"zeilen": 151, "trefferquote": 0.43, "mittel_betano": 0.505}, "modell_ueber_betano_ab_5pp": {"zeilen": 109, "trefferquote": 0.422, "mittel_betano": 0.511}, "modell_ueber_betano_ab_8pp": {"zeilen": 50, "trefferquote": 0.38, "mittel_betano": 0.514}}
+

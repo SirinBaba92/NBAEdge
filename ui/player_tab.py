@@ -249,7 +249,7 @@ def _render_table(key: str, entry: dict, mode: str, sort: str, state, show_all: 
         # vor dem Anpfiff: anklickbare Karten mit Wettschein (Komponente); der Ausfall-Kasten bleibt ein normaler Streamlit-Teil darueber
         if absences["out"] or absences["doubtful"]:
             st.markdown(flat(pv.absence_box_html(absences)), unsafe_allow_html=True)
-        render_bet_cards(key, cached_entries(), pv.render_cards_html(model), pv.PLAYER_CSS + pv.CARDS_CSS)
+        render_bet_cards(key, cached_entries(), pv.render_cards_html(model), pv.PLAYER_CSS + pv.CARDS_CSS, mode=mode)
     else:
         st.markdown(flat(pv.render_table_html(model) if table_view else pv.render_cards_html(model, absences)), unsafe_allow_html=True)
     if model["hidden_rows"]:

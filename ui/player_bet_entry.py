@@ -11,6 +11,7 @@ import time
 
 import streamlit as st
 
+from data import bet_categories as bc
 from data import day_bets_store as ds
 from ui.score_cards import fmt_num
 
@@ -36,9 +37,10 @@ def bet_text(bet: dict) -> str:
     return f"{bet['name']}: mindestens {bet['milestone']} Punkte · Quote {odds} · Einsatz {stake}"
 
 
-def save_player_bet(key: str, option_player: dict, milestone: int, odds_text, stake, options: dict, now: float | None = None) -> tuple[bool, str]:
+def save_player_bet(key: str, option_player: dict, milestone: int, odds_text, stake, options: dict, now: float | None = None, categories=None) -> tuple[bool, str]:
     """Spieler-Wette speichern (setzen oder aendern). Rueckgabe (ok, Meldung); jeder Fehler wird eine verstaendliche deutsche Meldung, nichts wird geworfen.
-    Nur Meilensteine aus der eingelesenen Liste sind zulaessig; Quelle der Quote: 'gespeichert' (unveraendert aus der Betano-Eingabe), sonst 'manuell'."""
+    Nur Meilensteine aus der eingelesenen Liste sind zulaessig; Quelle der Quote: 'gespeichert' (unveraendert aus der Betano-Eingabe), sonst 'manuell'.
+    categories: Liste aus player_ta | player_raw (data/bet_categories.py), mindestens eine; ohne Angabe bleiben die Kategorien einer bestehenden Wette erhalten."""
     g = game_parts(key)
     try:
         pre = ds.prefill_player_bet(options, option_player["person_id"], milestone)
@@ -47,7 +49,7 @@ def save_player_bet(key: str, option_player: dict, milestone: int, odds_text, st
         odds = ds.parse_odds_optional(odds_text)
         source = None if odds is None else ("gespeichert" if abs(pre["odds"] - odds) < 1e-9 else "manuell")
         res = ds.set_player_bet(g["game_date"], g["start_utc"], g["home"], g["away"], option_player["person_id"], option_player["name"], option_player.get("team"), milestone,
-                                odds=odds, stake=stake if stake else None, odds_source=source, odds_ref=pre["odds_ref"], now=now)
+                                odds=odds, stake=stake if stake else None, odds_source=source, odds_ref=pre["odds_ref"], now=now, categories=categories)
     except ds.GameStartedError as e:
         return False, f"{LOCK_TEXT}: {e}"
     except ds.BetInputError as e:
@@ -76,7 +78,7 @@ def remove_player_bet(key: str, option_player: dict, now: float | None = None) -
 
 
 def _token(bet: dict | None) -> str:
-    return "neu" if not bet or not bet.get("active") else hashlib.md5(str(bet.get("updated_at")).encode()).hexdigest()[:8]
+    return "neu" if not bet or not bet.get("active") else hashlib.md5(f"{bet.get('updated_at')}|{bet.get('categories', bet.get('category'))}".encode()).hexdigest()[:8]
 
 
 # ----------------------------------------------------------------------------------------------- Knopf-Aktionen (laufen VOR dem Neuaufbau)
@@ -86,9 +88,9 @@ def _set_msg(key: str, result: tuple[bool, str]) -> None:
         st.session_state["pe_dirty"] = True
 
 
-def _on_save(key: str, player: dict, milestone_key: str, odds_key: str, stake_key: str, options: dict) -> None:
+def _on_save(key: str, player: dict, milestone_key: str, odds_key: str, stake_key: str, options: dict, category_key: str | None = None) -> None:
     ss = st.session_state
-    _set_msg(key, save_player_bet(key, player, ss.get(milestone_key), ss.get(odds_key), ss.get(stake_key), options))
+    _set_msg(key, save_player_bet(key, player, ss.get(milestone_key), ss.get(odds_key), ss.get(stake_key), options, categories=ss.get(category_key) if category_key else None))
 
 
 def _on_remove(key: str, player: dict) -> None:
@@ -141,15 +143,20 @@ def render_player_bet_entry(key: str, entries: dict) -> None:
         by_ms = {o["milestone"]: o for o in player["options"]}
         start_ms = cur["milestone"] if cur and cur["milestone"] in by_ms else ms[0]
         p = f"pe_{hashlib.md5(key.encode()).hexdigest()[:6]}_{pid}_{_token(cur)}"
-        c1, c2, c3 = st.columns([2.2, 1, 1])
+        c1, c2, c3, c4 = st.columns([2.2, 1, 1, 1.2])
         m = c1.selectbox("Meilenstein (mindestens N Punkte, Over)", ms, index=ms.index(start_ms), format_func=lambda n: option_label(by_ms[n]), key=f"{p}_ms")
         same = bool(cur and cur["milestone"] == m)
         start_text = fmt_num(cur["odds"], 2) if same and cur.get("odds") is not None else fmt_num(by_ms[m]["odds"], 2)
         c2.text_input("Quote (optional)", value=start_text, key=f"{p}_odds_{m}", help="Vorbelegt aus der Betano-Eingabe; überschreibbar oder leer lassen.")
         c3.number_input("Einsatz (optional)", min_value=0.0, value=(cur or {}).get("stake"), step=1.0, format="%.2f", key=f"{p}_stake")
+        names = bc.names()
+        mode_default = bc.default_player_category(st.session_state.get("pl_mode", "team"))
+        start_cat = [c for c in bc.normalize((cur or {}).get("categories", (cur or {}).get("category"))) if c in bc.PLAYER_IDS] or [mode_default]
+        c4.multiselect("Kategorien", list(bc.PLAYER_IDS), default=start_cat, format_func=lambda c: names[c], key=f"{p}_cat",
+                       help="Mehrfachauswahl, mindestens eine. Vorbelegt aus dem angezeigten Modus (Teamabgleich oder roh); die andere Kategorie kann zusätzlich gewählt werden.")
         stamp = by_ms[m].get("updated_at")
         st.caption(f"Quote vorbelegt aus Betano" + (f", Stand {stamp[11:16]}" if stamp else "") + ". Pro Spieler höchstens eine Wette; Ändern ersetzt sie (der alte Stand bleibt als Verlauf).")
         b1, b2, _ = st.columns([1, 1.3, 4])
-        b1.button("Speichern", key=f"{p}_save", type="primary", on_click=_on_save, args=(key, player, f"{p}_ms", f"{p}_odds_{m}", f"{p}_stake", options))
+        b1.button("Speichern", key=f"{p}_save", type="primary", on_click=_on_save, args=(key, player, f"{p}_ms", f"{p}_odds_{m}", f"{p}_stake", options, f"{p}_cat"))
         if cur:
             b2.button("Wette entfernen", key=f"{p}_remove", on_click=_on_remove, args=(key, player))

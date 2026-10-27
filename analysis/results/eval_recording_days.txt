@@ -1,0 +1,192 @@
+ZUSAMMENFASSUNG (UNGEPRÜFT, kleine Stichprobe: Spieler sind die unabhängigen Beobachtungen, nicht die Zeilen; reine Beschreibung, keine Parameter-Empfehlungen)
+Umfang (Hauptauswertung, Snapshots vor Anpfiff, Variante ohne Ausfälle): 28 Spiele an 4 Tagen (22.-25.10.), 353 Spieler, 2918 Zeilen; 6 von 359 gelisteten Spielern ohne Einsatz (nicht gewertet).
+Brier: Buchmacher 0.2214 [0.2148; 0.2284], roh 0.2427 [0.2295; 0.2562], Teamabgleich 0.2510 [0.2326; 0.2688] (Intervalle nach Spielern).
+  roh minus Teamabgleich -0.0083 [-0.0214; +0.0037] (roh etwas besser, nicht abgesichert); roh minus Buchmacher +0.0213 [+0.0078; +0.0346]; Teamabgleich minus Buchmacher +0.0296 [+0.0130; +0.0473]: der Buchmacher ist besser als beide Modellvarianten.
+  Mittlere Chance gegen Trefferquote (41.3 %): Buchmacher 45.8 % (inkl. Marge, in allen Stufen ca. 4-5 PP zu hoch), roh 43.8 %, Teamabgleich 34.1 % (7 PP zu niedrig).
+Kalibrierung roh: bei kleinen Chancen zu niedrig (0-20 %: Modell 12 % / Treffer 30 %, n 340), bei hohen zu hoch (60-80 %: 68/56; 80-100 %: 86/61, n 102): zu extrem. Teamabgleich schiebt alles nach unten (0-20 %: 11/33, n 775).
+Rolle/Stars: Spieler unter 20 Min.: Minuten roh -2.7 (Teamabgleich -3.9) gegen echt, Treffer minus Modell roh +6.6 PP, Teamabgleich +11.1 PP: die Bank wird NICHT zu hoch, sondern (stärker mit Teamabgleich) zu niedrig eingeschätzt.
+  Stars (erwartete Punkte roh >= 20, 79 Spieler): Punkte-Bias roh +1.95, Teamabgleich -0.28; Treffer minus Modell roh -6.2 PP (zu hoch), Teamabgleich +5.2 PP.
+Leiter: niedrigster Meilenstein roh -1.2 PP (Treffer 65 %; kein Hinweis auf zu hohe Chancen), Teamabgleich +8.6; Hauptlinie roh -2.6 / Teamabgleich +8.0; höchster Meilenstein roh -5.5 (zu hoch) / Teamabgleich +2.5.
+Abstand zu Betano (Punkt 5): Die Trefferquote liegt in 5 von 6 Stufen (roh) bzw. 3 von 6 (Teamabgleich) näher bei der Betano-Chance als beim Modell. Bei Modell >= +10 PP über Betano (roh, n 601): Modell 61 %, Betano 44 %, Treffer 43 % - die Differenz war kein Vorteil.
+  Flacher Einsatz auf alle 2918 Zeilen: -0.107 je Einheit (Marge); je Stufe meist negativ (Abschnitt 5), nur Beschreibung.
+Team-Ebene: Summe der erwarteten Rotationsminuten roh Median 265 (Spanne 229-300, Ziel 240), Faktor f Median 0.93 (Spanne 0.80-1.06); Team-Punkte Prognose Ø 116.3 gegen echt 114.4 (Bias +1.9, MAE 9.9, n 54).
+  Deutung: Die rohe Summe der Rotation liegt über 240 Minuten; der Teamabgleich kürzt Bank-Minuten und skaliert die Punkte mit f herunter - das senkt die Chancen insgesamt unter die tatsächliche Trefferquote.
+Je Tag: Buchmacher in jedem Tag am besten; roh besser als Teamabgleich am 23., 24., 25.10. (22.10.: Teamabgleich besser, nur 2 Spiele). Overtime (1 Spiel, 73 Zeilen): roh schlechter als der Buchmacher.
+Ausfall-Varianten (nur wo vorhanden, 25 Spiele, 2541 Zeilen): Brier Teamabgleich 0.2535 -> mit Ausfällen 0.2554 (Differenz +0.0019 [-0.0085; +0.0128]): kein messbarer Unterschied.
+Gespeicherte Spieler-Wetten seit 22.10.: 143 aktiv, abgerechnet 132 (gewonnen 90, verloren 42), nicht gespielt 1, offen 10; Einsatz 1320, Gewinn/Verlust -25.30.
+Einschränkungen: nur 4 Tage/28 Spiele/353 Spieler; Zeilen eines Spielers korreliert; Meilensteine nur mit Betano-Leiter; Betano-Chance enthält die Marge; Prognose-Stand = Snapshot vor Anpfiff; Spiele, deren Snapshot nach Anpfiff erstellt wurde (21.10., Heat@Hornets 24.10.), nicht in der Hauptauswertung.
+
+==================================================================================================================================
+Auswertung roh / Teamabgleich / Betano über die Aufnahme-Tage. Rechenweg: analysis/eval_player_forecasts.py (load_snapshots, game_results) plus eigene Zusatzrechnung (nur lesend). Bootstrap 1000 Ziehungen nach Spielern ((Tag, Spieler) als Gruppe).
+==================================================================================================================================
+
+1. UMFANG
+  Snapshots vorhanden: 2026-10-21, 2026-10-22, 2026-10-23, 2026-10-24, 2026-10-25, 2026-10-26. Vollständig auswertbar (Snapshot vor Anpfiff und Ergebnis aus Recorder-Boxscore bzw. Liga-Datei): 22.10., 23.10., 24.10., 25.10.
+  Nicht in der Hauptauswertung: 21.10. (alle 3 Spiele: Snapshot nach Anpfiff erstellt), 24.10. Heat @ Hornets (nach Anpfiff erstellt), 26.10. (Atlanta @ Houston: noch keine Ergebnisse). Nach Anpfiff erstellt: 467 Zeilen, 55 Spieler.
+
+Tag (alle Snapshots)  Spiele  Spieler gelistet  Spieler gespielt  Zeilen
+--------------------  ------  ----------------  ----------------  ------
+          2026-10-21       3                46                43     366
+          2026-10-22       2                28                28     239
+          2026-10-23      12               167               166    1341
+          2026-10-24       8                84                82     694
+          2026-10-25       7                92                89     745
+  Hauptauswertung: 28 Spiele, 353 Spieler, 2918 Zeilen; gelistet 359, ohne Einsatz (0 Minuten oder nicht im Boxscore, nicht gewertet) 6 = 1.7 %, ohne Prognose 0.
+  Auffällige Betano-Leiter (nicht monoton, ⚠): 8 Spieler, 16 Zeilen; unten einmal mit, einmal ohne gerechnet.
+
+2. BRIER, LOG-LOSS, KALIBRIERUNG
+  alle Zeilen: n 2918 Zeilen / 353 Spieler, Trefferquote 41.3 %
+        Variante   Brier    95 %-Intervall  Log-Loss  Ø Chance  Treffer minus Chance PP
+    ------------  ------  ----------------  --------  --------  -----------------------
+      Buchmacher  0.2214  [0.2148; 0.2284]    0.6337    45.8 %                     -4.5
+             roh  0.2427  [0.2295; 0.2562]    0.7588    43.8 %                     -2.5
+    Teamabgleich  0.2510  [0.2326; 0.2688]    0.8052    34.1 %                     +7.2
+  ohne auffällige Leitern: n 2902 Zeilen / 353 Spieler, Trefferquote 41.4 %
+        Variante   Brier    95 %-Intervall  Log-Loss  Ø Chance  Treffer minus Chance PP
+    ------------  ------  ----------------  --------  --------  -----------------------
+      Buchmacher  0.2219  [0.2151; 0.2290]    0.6349    45.8 %                     -4.5
+             roh  0.2434  [0.2299; 0.2568]    0.7610    43.8 %                     -2.4
+    Teamabgleich  0.2517  [0.2328; 0.2697]    0.8076    34.1 %                     +7.2
+  nur auffällige Leitern: n 16 Zeilen / 8 Spieler (zu klein für Aussagen): Brier Buchmacher 0.1225, roh 0.1063, Teamabgleich 0.1210
+  Paarvergleich Brier (negativ = erstgenannte besser): raw minus team -0.0083 [-0.0214; +0.0037]; raw minus bookmaker +0.0213 [+0.0078; +0.0346]; team minus bookmaker +0.0296 [+0.0130; +0.0473]
+  Kalibrierung nach Stufen, Buchmacher (alle Zeilen; Intervall nach Spielern):
+       Stufe     n  Spieler  Modell %  Treffer %  Abw. PP  95 %-Intervall
+    --------  ----  -------  --------  ---------  -------  --------------
+      0-20 %    71       58      17.8       12.7     -5.2   [-12.7; +4.3]
+     20-40 %  1073      353      30.8       26.3     -4.5    [-8.9; -0.1]
+     40-60 %  1133      353      49.7       45.4     -4.3    [-9.3; +0.7]
+     60-80 %   633      348      67.0       62.4     -4.6   [-10.1; +0.8]
+    80-100 %     8        6      81.8       75.0     -6.8  [-31.8; +19.0]
+  Kalibrierung nach Stufen, roh (alle Zeilen; Intervall nach Spielern):
+       Stufe    n  Spieler  Modell %  Treffer %  Abw. PP  95 %-Intervall
+    --------  ---  -------  --------  ---------  -------  --------------
+      0-20 %  340      135      12.2       29.7    +17.6   [+8.1; +26.2]
+     20-40 %  953      320      30.6       32.2     +1.6    [-3.4; +6.8]
+     40-60 %  976      335      49.6       44.2     -5.4   [-10.3; -0.2]
+     60-80 %  547      234      68.2       55.8    -12.5   [-18.8; -5.8]
+    80-100 %  102       58      86.2       60.8    -25.4  [-38.4; -12.7]
+  Kalibrierung nach Stufen, Teamabgleich (alle Zeilen; Intervall nach Spielern):
+       Stufe     n  Spieler  Modell %  Treffer %  Abw. PP  95 %-Intervall
+    --------  ----  -------  --------  ---------  -------  --------------
+      0-20 %   775      224      11.0       33.3    +22.3  [+15.4; +28.7]
+     20-40 %  1072      339      29.7       36.3     +6.6   [+1.7; +11.7]
+     40-60 %   747      297      49.1       48.2     -1.0    [-6.9; +5.4]
+     60-80 %   295      151      67.8       61.4     -6.4   [-14.5; +2.0]
+    80-100 %    29       16      86.9       62.1    -24.8   [-47.6; -3.0]
+  Kalibrierung ohne auffällige Leitern: Abweichungen in PP je Stufe: Buchmacher: 0-20 % -5.0, 20-40 % -4.4, 40-60 % -4.3, 60-80 % -4.6, 80-100 % -14.2; roh: 0-20 % +18.0, 20-40 % +1.7, 40-60 % -5.4, 60-80 % -12.6, 80-100 % -25.8; Teamabgleich: 0-20 % +22.6, 20-40 % +6.6, 40-60 % -1.1, 60-80 % -6.6, 80-100 % -24.8
+
+3. NACH ROLLE (erwartete Minuten roh) UND STARS (je Gruppe: Spieler / Zeilen; Punkte- und Minutenfehler = erwartet minus echt; Brier und Treffer minus mittlere Chance je Variante)
+  Rolle unter 20 Min: 33 Spieler / 253 Zeilen; Ø erwartete Minuten roh 17.6, echt 20.3; Ø echte Punkte 8.8
+    Punkte-Bias roh -0.46 (MAE 4.06), Teamabgleich -1.19 (MAE 4.26); Minuten-Bias roh -2.66 (MAE 6.21), Teamabgleich -3.93 (MAE 6.85)
+    Brier / Treffer minus Chance (PP): Buchmacher 0.2221 / +1.3; roh 0.2318 / +6.6; Teamabgleich 0.2516 / +11.1
+  Rolle 20-28 Min: 125 Spieler / 1004 Zeilen; Ø erwartete Minuten roh 24.7, echt 24.9; Ø echte Punkte 11.6
+    Punkte-Bias roh +0.40 (MAE 4.81), Teamabgleich -1.94 (MAE 4.98); Minuten-Bias roh -0.21 (MAE 4.81), Teamabgleich -3.85 (MAE 6.29)
+    Brier / Treffer minus Chance (PP): Buchmacher 0.2152 / -3.1; roh 0.2357 / -0.4; Teamabgleich 0.2560 / +13.6
+  Rolle ueber 28 Min: 195 Spieler / 1661 Zeilen; Ø erwartete Minuten roh 31.8, echt 31.0; Ø echte Punkte 17.1
+    Punkte-Bias roh +1.56 (MAE 6.01), Teamabgleich +0.04 (MAE 5.73); Minuten-Bias roh +0.78 (MAE 4.18), Teamabgleich +0.37 (MAE 4.20)
+    Brier / Treffer minus Chance (PP): Buchmacher 0.2251 / -6.2; roh 0.2485 / -5.1; Teamabgleich 0.2479 / +2.7
+  Stars (erwartete Punkte roh >= 20): 79 Spieler / 683 Zeilen; Ø erwartete Minuten roh 33.0, echt 32.9; Ø echte Punkte 22.0
+    Punkte-Bias roh +1.95 (MAE 6.67), Teamabgleich -0.28 (MAE 6.52); Minuten-Bias roh +0.04 (MAE 3.78), Teamabgleich -0.37 (MAE 3.89)
+    Brier / Treffer minus Chance (PP): Buchmacher 0.2313 / -3.9; roh 0.2556 / -6.2; Teamabgleich 0.2653 / +5.2
+  Rest (unter 20): 274 Spieler / 2235 Zeilen; Ø erwartete Minuten roh 26.5, echt 26.4; Ø echte Punkte 12.2
+    Punkte-Bias roh +0.67 (MAE 5.03), Teamabgleich -0.92 (MAE 4.98); Minuten-Bias roh +0.12 (MAE 4.83), Teamabgleich -1.86 (MAE 5.57)
+    Brier / Treffer minus Chance (PP): Buchmacher 0.2184 / -4.7; roh 0.2387 / -1.3; Teamabgleich 0.2466 / +7.8
+  in Rotation (Top 10): 331 Spieler / 2742 Zeilen; Ø erwartete Minuten roh 28.6, echt 28.4; Ø echte Punkte 14.7
+    Punkte-Bias roh +1.04 (MAE 5.56), Teamabgleich -0.81 (MAE 5.48); Minuten-Bias roh +0.25 (MAE 4.49), Teamabgleich -1.49 (MAE 5.13)
+    Brier / Treffer minus Chance (PP): Buchmacher 0.2230 / -4.4; roh 0.2460 / -2.6; Teamabgleich 0.2548 / +7.6
+  nicht in Rotation: 22 Spieler / 176 Zeilen; Ø erwartete Minuten roh 17.8, echt 19.9; Ø echte Punkte 8.9
+    Punkte-Bias roh -0.25 (MAE 3.03), Teamabgleich -0.25 (MAE 3.03); Minuten-Bias roh -2.07 (MAE 6.08), Teamabgleich -2.07 (MAE 6.08)
+    Brier / Treffer minus Chance (PP): Buchmacher 0.1963 / -5.6; roh 0.1911 / +0.2; Teamabgleich 0.1911 / +0.2
+
+4. POSITION IN DER LEITER (je Spieler: niedrigster Meilenstein, Hauptlinie = Quote nahe 2,0, höchster Meilenstein; Intervalle nach Spielern)
+  niedrigster Meilenstein: 353 Zeilen/Spieler, Trefferquote 64.6 %
+        Variante   Brier    95 %-Intervall  Ø Chance  Treffer minus Chance PP
+    ------------  ------  ----------------  --------  -----------------------
+      Buchmacher  0.2298  [0.2100; 0.2494]    69.0 %                     -4.4
+             roh  0.2489  [0.2269; 0.2718]    65.8 %                     -1.2
+    Teamabgleich  0.2623  [0.2442; 0.2814]    56.0 %                     +8.6
+  Hauptlinie (Quote nahe 2,0): 353 Zeilen/Spieler, Trefferquote 46.2 %
+        Variante   Brier    95 %-Intervall  Ø Chance  Treffer minus Chance PP
+    ------------  ------  ----------------  --------  -----------------------
+      Buchmacher  0.2501  [0.2474; 0.2526]    50.7 %                     -4.5
+             roh  0.2801  [0.2623; 0.2983]    48.8 %                     -2.6
+    Teamabgleich  0.2831  [0.2619; 0.3044]    38.2 %                     +8.0
+  hoechster Meilenstein: 353 Zeilen/Spieler, Trefferquote 18.7 %
+        Variante   Brier    95 %-Intervall  Ø Chance  Treffer minus Chance PP
+    ------------  ------  ----------------  --------  -----------------------
+      Buchmacher  0.1589  [0.1391; 0.1795]    25.3 %                     -6.6
+             roh  0.1684  [0.1469; 0.1904]    24.2 %                     -5.5
+    Teamabgleich  0.1629  [0.1360; 0.1911]    16.2 %                     +2.5
+
+5. WERT DES ABSTANDS (Modell minus Betano inkl. Marge; nur Over, nur Meilensteine mit Betano-Linie). 'näher an' = ob die Trefferquote näher bei der Modell- oder bei der Betano-Chance liegt; Gewinn = flacher Einsatz 1 auf alle Zeilen der Stufe (Quote des Snapshots), nur Beschreibung.
+  Variante roh:
+         Stufe    n  Spieler  Modell %  Betano %  Treffer %  Treffer-Modell  Treffer-Betano  näher an  Gewinn/Einheit
+    ----------  ---  -------  --------  --------  ---------  --------------  --------------  --------  --------------
+     <= -10 PP  794      130      30.1      49.8       44.2           +14.1            -5.6    Betano           -0.13
+    -10 bis -5  412      120      36.9      44.4       43.7            +6.8            -0.7    Betano           -0.02
+      -5 bis 0  376      113      40.8      43.5       33.8            -7.0            -9.7    Modell           -0.27
+      0 bis +5  385      123      46.9      44.3       39.5            -7.4            -4.8    Betano           -0.09
+    +5 bis +10  350      115      52.6      45.2       38.9           -13.7            -6.3    Betano           -0.14
+     >= +10 PP  601      103      61.4      44.4       43.3           -18.2            -1.1    Betano           -0.03
+    ohne auffällige Leitern: <= -10 PP n 789 Treffer 44 % (näher an Betano); -10 bis -5 n 409 Treffer 44 % (näher an Betano); -5 bis 0 n 373 Treffer 34 % (näher an Modell); 0 bis +5 n 385 Treffer 39 % (näher an Betano); +5 bis +10 n 348 Treffer 39 % (näher an Betano); >= +10 PP n 598 Treffer 43 % (näher an Betano)
+  Variante Teamabgleich:
+         Stufe     n  Spieler  Modell %  Betano %  Treffer %  Treffer-Modell  Treffer-Betano  näher an  Gewinn/Einheit
+    ----------  ----  -------  --------  --------  ---------  --------------  --------------  --------  --------------
+     <= -10 PP  1517      219      24.8      47.5       43.2           +18.5            -4.3    Betano           -0.10
+    -10 bis -5   390      133      33.2      40.8       33.3            +0.1            -7.5    Modell           -0.18
+      -5 bis 0   379      108      41.2      43.7       36.9            -4.3            -6.7    Modell           -0.20
+      0 bis +5   302       91      48.2      45.9       50.7            +2.5            +4.7    Modell           +0.14
+    +5 bis +10   182       58      53.0      45.7       40.1           -12.9            -5.6    Betano           -0.11
+     >= +10 PP   148       32      62.6      46.8       36.5           -26.1           -10.3    Betano           -0.23
+    ohne auffällige Leitern: <= -10 PP n 1506 Treffer 43 % (näher an Betano); -10 bis -5 n 387 Treffer 33 % (näher an Modell); -5 bis 0 n 378 Treffer 37 % (näher an Modell); 0 bis +5 n 301 Treffer 50 % (näher an Modell); +5 bis +10 n 182 Treffer 40 % (näher an Betano); >= +10 PP n 148 Treffer 36 % (näher an Betano)
+  Flacher Einsatz auf alle 2918 Zeilen: -0.107 je Einheit.
+
+6. TEAM-EBENE (Teamspiele der Hauptauswertung)
+  56 Teamspiele. Summe der erwarteten Rotationsminuten roh (Ziel 240): Min 229, Median 265, Mittel 268, Max 300.
+  Faktor f des Teamabgleichs: Min 0.795, Median 0.935, Mittel 0.935, Max 1.060; unter 0,8: 2 Teamspiele.
+  Team-Punkte-Prognose gegen echt: n 54, Ø Prognose 116.3, Ø echt 114.4, Bias (Prognose minus echt) +1.89, MAE 9.93 (2 Teamspiele ohne Recorder-Endstand).
+  Mit Overtime: n 2, Bias -18.0; ohne Overtime: n 52, Bias +2.65.
+
+7. JE TAG UND OVERTIME (Brier je Variante, alle Zeilen der Hauptauswertung)
+         Tag  Zeilen  Spieler  Buchmacher     roh  Teamabgleich  Treffer %
+  ----------  ------  -------  ----------  ------  ------------  ---------
+  2026-10-22     239       28      0.1924  0.2394        0.1945       30.1
+  2026-10-23    1341      166      0.2255  0.2545        0.2577       38.5
+  2026-10-24     593       70      0.2259  0.2291        0.2556       48.2
+  2026-10-25     745       89      0.2197  0.2332        0.2534       44.6
+  Spiele mit Overtime: 2026-10-24 New Orleans Pelicans @ Denver Nuggets; OT unbekannt (Ergebnis aus Liga-Datei): 2026-10-23 Portland Trail Blazers @ Sacramento Kings.
+  mit ot: 73 Zeilen/9 Spieler, Brier Buchmacher 0.2389, roh 0.2782, Teamabgleich 0.2547, Treffer 58.9 %
+  ohne ot: 2746 Zeilen/333 Spieler, Brier Buchmacher 0.2207, roh 0.2394, Teamabgleich 0.2491, Treffer 40.5 %
+
+8. AUSFALL-VARIANTEN (<Tag>.absences.json, nur Spiele mit Variante vor Anpfiff, gleiche Zeilen wie die Hauptauswertung; Spieler, die in der Variante als fehlt geführt werden, entfallen)
+  25 Spiele, 2541 Zeilen. Brier: Teamabgleich ohne Ausfälle 0.2535 (Ø Chance 33.8 %), mit Ausfällen 0.2554 (37.7 %), roh 0.2415 (unverändert), Buchmacher 0.2245; Trefferquote 41.9 %.
+  Differenz Teamabgleich mit minus ohne Ausfälle +0.0019 [-0.0085; +0.0128]. Eingetragene Ausfälle (fehlt / fraglich) je Spiel:
+    2026-10-23 New York Knicks @ Boston Celtics: fehlt Devin Carter; fraglich - (138 Zeilen)
+    2026-10-23 Atlanta Hawks @ Charlotte Hornets: fehlt Mouhamed Gueye, Henri Veesaar, Kylan Boswell, Kon Knueppel, Coby White, Grant Williams; fraglich Jock Landale, Jalen Wilson (140 Zeilen)
+    2026-10-23 Dallas Mavericks @ Indiana Pacers: fehlt Caleb Martin, Santi Aldama, Tarik Biberovic, Dereck Lively II, Johnny Furphy, T.J. McConnell; fraglich Jett Howard, Aaron Nesmith, Ben Sheppard (137 Zeilen)
+    2026-10-23 Minnesota Timberwolves @ Orlando Magic: fehlt Donte DiVincenzo, Anthony Black, Jonathan Isaac, Noah Penda, Izaiyah Nelson; fraglich - (110 Zeilen)
+    2026-10-23 Toronto Raptors @ Washington Wizards: fehlt Nate Bittle, AJ Dybantsa, Jamir Watkins, Tristan Vukcevic; fraglich Felix Okpara (61 Zeilen)
+    2026-10-23 Detroit Pistons @ Miami Heat: fehlt -; fraglich Taurean Prince (130 Zeilen)
+    2026-10-23 Houston Rockets @ San Antonio Spurs: fehlt Tobias Harris, Jayden Quaintance; fraglich Steven Adams, Reed Sheppard, De'Aaron Fox, Keldon Johnson (98 Zeilen)
+    2026-10-23 New Orleans Pelicans @ Utah Jazz: fehlt Trey Alexander, Jusuf Nurkić; fraglich Tony Bradley (69 Zeilen)
+    2026-10-23 Memphis Grizzlies @ Golden State Warriors: fehlt Moses Moody, Kristaps Porziņģis, Jimmy Butler III; fraglich Cedric Coward, Isaiah Stewart, Charles Bassey, Brandin Podziemski (134 Zeilen)
+    2026-10-23 LA Clippers @ Los Angeles Lakers: fehlt Bradley Beal, Brandon Ingram, Jordan Miller, Max Strus, Yanic Konan Niederhäuser, Adou Thiero, Cameron Carr; fraglich Jake LaRavia (87 Zeilen)
+    2026-10-23 Portland Trail Blazers @ Sacramento Kings: fehlt -; fraglich - (99 Zeilen)
+    2026-10-24 Brooklyn Nets @ Cleveland Cavaliers: fehlt Tyler Bilodeau; fraglich - (96 Zeilen)
+    2026-10-24 Milwaukee Bucks @ Philadelphia 76ers: fehlt LeBron James, Tacko Fall, Dominick Barlow, Ariel Hukporti; fraglich Dean Wade (80 Zeilen)
+    2026-10-24 Washington Wizards @ Chicago Bulls: fehlt AJ Dybantsa, Tristan Vukcevic, Jamir Watkins, Nic Claxton; fraglich Noa Essengue (91 Zeilen)
+    2026-10-24 San Antonio Spurs @ Dallas Mavericks: fehlt Jayden Quaintance, Tobias Harris, Caleb Martin, Jett Howard, Tarik Biberovic, Santi Aldama, Cooper Flagg, Dereck Lively II; fraglich Zaccharie Risacher, Morez Johnson Jr., Kyrie Irving, Max Christie (68 Zeilen)
+    2026-10-24 Houston Rockets @ Atlanta Hawks: fehlt Fred VanVleet, Steven Adams, Henri Veesaar, Mouhamed Gueye; fraglich Marcus Smart, Reed Sheppard (122 Zeilen)
+    2026-10-24 New Orleans Pelicans @ Denver Nuggets: fehlt Spencer Jones, Cameron Johnson, Julian Strawther, Yves Missi; fraglich Alpha Diallo (73 Zeilen)
+    2026-10-24 Golden State Warriors @ Phoenix Suns: fehlt Brandin Podziemski, Kristaps Porziņģis, Jimmy Butler III, Moses Moody, Oso Ighodaro, Mark Williams; fraglich Stephen Curry, Charles Bassey, Luke Kennard (63 Zeilen)
+    2026-10-25 Los Angeles Lakers @ Utah Jazz: fehlt Adou Thiero, Cameron Carr, Jusuf Nurkić, Trey Alexander; fraglich - (115 Zeilen)
+    2026-10-25 Indiana Pacers @ Brooklyn Nets: fehlt Ben Sheppard, Johnny Furphy, T.J. McConnell, Mikel Brown Jr.; fraglich Aaron Nesmith, Tyler Bilodeau (102 Zeilen)
+    2026-10-25 Toronto Raptors @ Minnesota Timberwolves: fehlt Nate Bittle, Donte DiVincenzo; fraglich - (125 Zeilen)
+    2026-10-25 Orlando Magic @ New York Knicks: fehlt Jonathan Isaac, Paolo Banchero, Noah Penda, Izaiyah Nelson; fraglich Jose Alvarado, Anthony Black (102 Zeilen)
+    2026-10-25 LA Clippers @ Oklahoma City Thunder: fehlt Bradley Beal, Max Strus, Jordan Miller, Yanic Konan Niederhäuser, Brandon Ingram, Otega Oweh, Nikola Topić, Thomas Sorber; fraglich - (135 Zeilen)
+    2026-10-25 Detroit Pistons @ Philadelphia 76ers: fehlt Jalen Duren, Tacko Fall, Dominick Barlow, Ariel Hukporti; fraglich Ausar Thompson, LeBron James, Joel Embiid, Jabari Walker (84 Zeilen)
+    2026-10-25 Memphis Grizzlies @ Sacramento Kings: fehlt Zach Edey, Ben Simmons, Dylan Cardwell, Maxime Raynaud; fraglich Cedric Coward, Keegan Murray (82 Zeilen)
+
+9. GESPEICHERTE SPIELER-WETTEN (data/tracking/day_bets.json, aktive Wetten ab 22.10., Ergebnis aus Recorder/Liga-Datei)
+  143 Wetten; abgerechnet 132 (gewonnen 90, verloren 42); nicht gespielt 1; offen/ohne Ergebnis 10; Einsatz (abgerechnet) 1320.00; Gewinn/Verlust -25.30; ohne Quote oder Einsatz 0.
+  Trefferquote der abgerechneten Wetten 68.2 %, mittlere Quote 1.44 (Break-even-Quote bei dieser Trefferquote 1.47). Nur Beschreibung, 132 Wetten sind eine kleine Stichprobe.

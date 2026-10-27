@@ -1,0 +1,9153 @@
+{
+ "version": 1,
+ "hinweis": "Schwellwert-Test: nur Messung, keine Wettempfehlung.",
+ "historisch": {
+  "teil": 1,
+  "spiele": 10777,
+  "spieltage": 1458,
+  "saisons": [
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "spiele_je_saison": {
+   "2017": 1230,
+   "2018": 1230,
+   "2019": 1059,
+   "2020": 1081,
+   "2021": 1230,
+   "2022": 1236,
+   "2023": 1237,
+   "2024": 1237,
+   "2025": 1237
+  },
+  "tabelle": {
+   "win": {
+    "alle": {
+     "50": {
+      "gepoolt": {
+       "tipps": 10777,
+       "richtig": 6855,
+       "falsch": 3922,
+       "trefferquote_pct": 63.61,
+       "mittel_modell_pct": 63.49,
+       "differenz_pp": 0.12,
+       "ci95_pp": [
+        -0.74,
+        1.09
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 1230,
+        "richtig": 783,
+        "falsch": 447,
+        "trefferquote_pct": 63.66,
+        "mittel_modell_pct": 63.27,
+        "differenz_pp": 0.39
+       },
+       "2018": {
+        "tipps": 1230,
+        "richtig": 799,
+        "falsch": 431,
+        "trefferquote_pct": 64.96,
+        "mittel_modell_pct": 63.07,
+        "differenz_pp": 1.89
+       },
+       "2019": {
+        "tipps": 1059,
+        "richtig": 689,
+        "falsch": 370,
+        "trefferquote_pct": 65.06,
+        "mittel_modell_pct": 63.67,
+        "differenz_pp": 1.39
+       },
+       "2020": {
+        "tipps": 1081,
+        "richtig": 658,
+        "falsch": 423,
+        "trefferquote_pct": 60.87,
+        "mittel_modell_pct": 62.87,
+        "differenz_pp": -2.0
+       },
+       "2021": {
+        "tipps": 1230,
+        "richtig": 754,
+        "falsch": 476,
+        "trefferquote_pct": 61.3,
+        "mittel_modell_pct": 63.5,
+        "differenz_pp": -2.2
+       },
+       "2022": {
+        "tipps": 1236,
+        "richtig": 741,
+        "falsch": 495,
+        "trefferquote_pct": 59.95,
+        "mittel_modell_pct": 61.59,
+        "differenz_pp": -1.64
+       },
+       "2023": {
+        "tipps": 1237,
+        "richtig": 793,
+        "falsch": 444,
+        "trefferquote_pct": 64.11,
+        "mittel_modell_pct": 64.11,
+        "differenz_pp": -0.0
+       },
+       "2024": {
+        "tipps": 1237,
+        "richtig": 809,
+        "falsch": 428,
+        "trefferquote_pct": 65.4,
+        "mittel_modell_pct": 64.62,
+        "differenz_pp": 0.78
+       },
+       "2025": {
+        "tipps": 1237,
+        "richtig": 829,
+        "falsch": 408,
+        "trefferquote_pct": 67.02,
+        "mittel_modell_pct": 64.68,
+        "differenz_pp": 2.34
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.667
+     },
+     "55": {
+      "gepoolt": {
+       "tipps": 8428,
+       "richtig": 5625,
+       "falsch": 2803,
+       "trefferquote_pct": 66.74,
+       "mittel_modell_pct": 66.56,
+       "differenz_pp": 0.18,
+       "ci95_pp": [
+        -0.85,
+        1.25
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 953,
+        "richtig": 640,
+        "falsch": 313,
+        "trefferquote_pct": 67.16,
+        "mittel_modell_pct": 66.37,
+        "differenz_pp": 0.78
+       },
+       "2018": {
+        "tipps": 963,
+        "richtig": 649,
+        "falsch": 314,
+        "trefferquote_pct": 67.39,
+        "mittel_modell_pct": 66.0,
+        "differenz_pp": 1.39
+       },
+       "2019": {
+        "tipps": 824,
+        "richtig": 554,
+        "falsch": 270,
+        "trefferquote_pct": 67.23,
+        "mittel_modell_pct": 66.85,
+        "differenz_pp": 0.38
+       },
+       "2020": {
+        "tipps": 827,
+        "richtig": 528,
+        "falsch": 299,
+        "trefferquote_pct": 63.85,
+        "mittel_modell_pct": 66.04,
+        "differenz_pp": -2.2
+       },
+       "2021": {
+        "tipps": 972,
+        "richtig": 643,
+        "falsch": 329,
+        "trefferquote_pct": 66.15,
+        "mittel_modell_pct": 66.42,
+        "differenz_pp": -0.26
+       },
+       "2022": {
+        "tipps": 941,
+        "richtig": 600,
+        "falsch": 341,
+        "trefferquote_pct": 63.76,
+        "mittel_modell_pct": 64.47,
+        "differenz_pp": -0.71
+       },
+       "2023": {
+        "tipps": 972,
+        "richtig": 648,
+        "falsch": 324,
+        "trefferquote_pct": 66.67,
+        "mittel_modell_pct": 67.27,
+        "differenz_pp": -0.61
+       },
+       "2024": {
+        "tipps": 988,
+        "richtig": 672,
+        "falsch": 316,
+        "trefferquote_pct": 68.02,
+        "mittel_modell_pct": 67.68,
+        "differenz_pp": 0.33
+       },
+       "2025": {
+        "tipps": 988,
+        "richtig": 691,
+        "falsch": 297,
+        "trefferquote_pct": 69.94,
+        "mittel_modell_pct": 67.76,
+        "differenz_pp": 2.18
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.556
+     },
+     "60": {
+      "gepoolt": {
+       "tipps": 6163,
+       "richtig": 4349,
+       "falsch": 1814,
+       "trefferquote_pct": 70.57,
+       "mittel_modell_pct": 69.9,
+       "differenz_pp": 0.67,
+       "ci95_pp": [
+        -0.42,
+        1.77
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 692,
+        "richtig": 498,
+        "falsch": 194,
+        "trefferquote_pct": 71.97,
+        "mittel_modell_pct": 69.71,
+        "differenz_pp": 2.26
+       },
+       "2018": {
+        "tipps": 699,
+        "richtig": 494,
+        "falsch": 205,
+        "trefferquote_pct": 70.67,
+        "mittel_modell_pct": 69.22,
+        "differenz_pp": 1.45
+       },
+       "2019": {
+        "tipps": 599,
+        "richtig": 430,
+        "falsch": 169,
+        "trefferquote_pct": 71.79,
+        "mittel_modell_pct": 70.39,
+        "differenz_pp": 1.4
+       },
+       "2020": {
+        "tipps": 596,
+        "richtig": 396,
+        "falsch": 200,
+        "trefferquote_pct": 66.44,
+        "mittel_modell_pct": 69.28,
+        "differenz_pp": -2.84
+       },
+       "2021": {
+        "tipps": 728,
+        "richtig": 508,
+        "falsch": 220,
+        "trefferquote_pct": 69.78,
+        "mittel_modell_pct": 69.43,
+        "differenz_pp": 0.35
+       },
+       "2022": {
+        "tipps": 619,
+        "richtig": 414,
+        "falsch": 205,
+        "trefferquote_pct": 66.88,
+        "mittel_modell_pct": 68.16,
+        "differenz_pp": -1.28
+       },
+       "2023": {
+        "tipps": 727,
+        "richtig": 519,
+        "falsch": 208,
+        "trefferquote_pct": 71.39,
+        "mittel_modell_pct": 70.63,
+        "differenz_pp": 0.76
+       },
+       "2024": {
+        "tipps": 759,
+        "richtig": 539,
+        "falsch": 220,
+        "trefferquote_pct": 71.01,
+        "mittel_modell_pct": 70.71,
+        "differenz_pp": 0.3
+       },
+       "2025": {
+        "tipps": 744,
+        "richtig": 551,
+        "falsch": 193,
+        "trefferquote_pct": 74.06,
+        "mittel_modell_pct": 71.17,
+        "differenz_pp": 2.89
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.778
+     },
+     "65": {
+      "gepoolt": {
+       "tipps": 4237,
+       "richtig": 3143,
+       "falsch": 1094,
+       "trefferquote_pct": 74.18,
+       "mittel_modell_pct": 73.3,
+       "differenz_pp": 0.88,
+       "ci95_pp": [
+        -0.4,
+        2.21
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 472,
+        "richtig": 358,
+        "falsch": 114,
+        "trefferquote_pct": 75.85,
+        "mittel_modell_pct": 73.02,
+        "differenz_pp": 2.83
+       },
+       "2018": {
+        "tipps": 452,
+        "richtig": 335,
+        "falsch": 117,
+        "trefferquote_pct": 74.12,
+        "mittel_modell_pct": 72.95,
+        "differenz_pp": 1.17
+       },
+       "2019": {
+        "tipps": 425,
+        "richtig": 314,
+        "falsch": 111,
+        "trefferquote_pct": 73.88,
+        "mittel_modell_pct": 73.68,
+        "differenz_pp": 0.2
+       },
+       "2020": {
+        "tipps": 396,
+        "richtig": 287,
+        "falsch": 109,
+        "trefferquote_pct": 72.47,
+        "mittel_modell_pct": 72.74,
+        "differenz_pp": -0.27
+       },
+       "2021": {
+        "tipps": 494,
+        "richtig": 353,
+        "falsch": 141,
+        "trefferquote_pct": 71.46,
+        "mittel_modell_pct": 72.77,
+        "differenz_pp": -1.31
+       },
+       "2022": {
+        "tipps": 386,
+        "richtig": 258,
+        "falsch": 128,
+        "trefferquote_pct": 66.84,
+        "mittel_modell_pct": 71.62,
+        "differenz_pp": -4.78
+       },
+       "2023": {
+        "tipps": 517,
+        "richtig": 394,
+        "falsch": 123,
+        "trefferquote_pct": 76.21,
+        "mittel_modell_pct": 74.03,
+        "differenz_pp": 2.18
+       },
+       "2024": {
+        "tipps": 555,
+        "richtig": 420,
+        "falsch": 135,
+        "trefferquote_pct": 75.68,
+        "mittel_modell_pct": 73.76,
+        "differenz_pp": 1.91
+       },
+       "2025": {
+        "tipps": 540,
+        "richtig": 424,
+        "falsch": 116,
+        "trefferquote_pct": 78.52,
+        "mittel_modell_pct": 74.46,
+        "differenz_pp": 4.06
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.667
+     },
+     "70": {
+      "gepoolt": {
+       "tipps": 2673,
+       "richtig": 2083,
+       "falsch": 590,
+       "trefferquote_pct": 77.93,
+       "mittel_modell_pct": 76.75,
+       "differenz_pp": 1.18,
+       "ci95_pp": [
+        -0.27,
+        2.66
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 295,
+        "richtig": 234,
+        "falsch": 61,
+        "trefferquote_pct": 79.32,
+        "mittel_modell_pct": 76.39,
+        "differenz_pp": 2.93
+       },
+       "2018": {
+        "tipps": 281,
+        "richtig": 216,
+        "falsch": 65,
+        "trefferquote_pct": 76.87,
+        "mittel_modell_pct": 76.44,
+        "differenz_pp": 0.43
+       },
+       "2019": {
+        "tipps": 289,
+        "richtig": 218,
+        "falsch": 71,
+        "trefferquote_pct": 75.43,
+        "mittel_modell_pct": 76.57,
+        "differenz_pp": -1.14
+       },
+       "2020": {
+        "tipps": 224,
+        "richtig": 169,
+        "falsch": 55,
+        "trefferquote_pct": 75.45,
+        "mittel_modell_pct": 76.77,
+        "differenz_pp": -1.32
+       },
+       "2021": {
+        "tipps": 300,
+        "richtig": 223,
+        "falsch": 77,
+        "trefferquote_pct": 74.33,
+        "mittel_modell_pct": 76.19,
+        "differenz_pp": -1.86
+       },
+       "2022": {
+        "tipps": 210,
+        "richtig": 149,
+        "falsch": 61,
+        "trefferquote_pct": 70.95,
+        "mittel_modell_pct": 75.33,
+        "differenz_pp": -4.38
+       },
+       "2023": {
+        "tipps": 351,
+        "richtig": 287,
+        "falsch": 64,
+        "trefferquote_pct": 81.77,
+        "mittel_modell_pct": 77.15,
+        "differenz_pp": 4.62
+       },
+       "2024": {
+        "tipps": 362,
+        "richtig": 289,
+        "falsch": 73,
+        "trefferquote_pct": 79.83,
+        "mittel_modell_pct": 77.12,
+        "differenz_pp": 2.72
+       },
+       "2025": {
+        "tipps": 361,
+        "richtig": 298,
+        "falsch": 63,
+        "trefferquote_pct": 82.55,
+        "mittel_modell_pct": 77.98,
+        "differenz_pp": 4.57
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.556
+     },
+     "75": {
+      "gepoolt": {
+       "tipps": 1501,
+       "richtig": 1226,
+       "falsch": 275,
+       "trefferquote_pct": 81.68,
+       "mittel_modell_pct": 80.1,
+       "differenz_pp": 1.58,
+       "ci95_pp": [
+        -0.4,
+        3.51
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 152,
+        "richtig": 126,
+        "falsch": 26,
+        "trefferquote_pct": 82.89,
+        "mittel_modell_pct": 80.08,
+        "differenz_pp": 2.81
+       },
+       "2018": {
+        "tipps": 161,
+        "richtig": 134,
+        "falsch": 27,
+        "trefferquote_pct": 83.23,
+        "mittel_modell_pct": 79.54,
+        "differenz_pp": 3.69
+       },
+       "2019": {
+        "tipps": 157,
+        "richtig": 129,
+        "falsch": 28,
+        "trefferquote_pct": 82.17,
+        "mittel_modell_pct": 79.97,
+        "differenz_pp": 2.19
+       },
+       "2020": {
+        "tipps": 130,
+        "richtig": 101,
+        "falsch": 29,
+        "trefferquote_pct": 77.69,
+        "mittel_modell_pct": 79.97,
+        "differenz_pp": -2.28
+       },
+       "2021": {
+        "tipps": 163,
+        "richtig": 119,
+        "falsch": 44,
+        "trefferquote_pct": 73.01,
+        "mittel_modell_pct": 79.38,
+        "differenz_pp": -6.37
+       },
+       "2022": {
+        "tipps": 90,
+        "richtig": 68,
+        "falsch": 22,
+        "trefferquote_pct": 75.56,
+        "mittel_modell_pct": 79.01,
+        "differenz_pp": -3.45
+       },
+       "2023": {
+        "tipps": 197,
+        "richtig": 170,
+        "falsch": 27,
+        "trefferquote_pct": 86.29,
+        "mittel_modell_pct": 80.69,
+        "differenz_pp": 5.6
+       },
+       "2024": {
+        "tipps": 216,
+        "richtig": 181,
+        "falsch": 35,
+        "trefferquote_pct": 83.8,
+        "mittel_modell_pct": 80.3,
+        "differenz_pp": 3.49
+       },
+       "2025": {
+        "tipps": 235,
+        "richtig": 198,
+        "falsch": 37,
+        "trefferquote_pct": 84.26,
+        "mittel_modell_pct": 80.86,
+        "differenz_pp": 3.39
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.667
+     },
+     "80": {
+      "gepoolt": {
+       "tipps": 626,
+       "richtig": 540,
+       "falsch": 86,
+       "trefferquote_pct": 86.26,
+       "mittel_modell_pct": 83.82,
+       "differenz_pp": 2.45,
+       "ci95_pp": [
+        -0.07,
+        5.05
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 67,
+        "richtig": 56,
+        "falsch": 11,
+        "trefferquote_pct": 83.58,
+        "mittel_modell_pct": 83.69,
+        "differenz_pp": -0.11
+       },
+       "2018": {
+        "tipps": 55,
+        "richtig": 50,
+        "falsch": 5,
+        "trefferquote_pct": 90.91,
+        "mittel_modell_pct": 83.38,
+        "differenz_pp": 7.53
+       },
+       "2019": {
+        "tipps": 61,
+        "richtig": 59,
+        "falsch": 2,
+        "trefferquote_pct": 96.72,
+        "mittel_modell_pct": 83.85,
+        "differenz_pp": 12.88
+       },
+       "2020": {
+        "tipps": 61,
+        "richtig": 50,
+        "falsch": 11,
+        "trefferquote_pct": 81.97,
+        "mittel_modell_pct": 83.07,
+        "differenz_pp": -1.1
+       },
+       "2021": {
+        "tipps": 56,
+        "richtig": 45,
+        "falsch": 11,
+        "trefferquote_pct": 80.36,
+        "mittel_modell_pct": 83.03,
+        "differenz_pp": -2.67
+       },
+       "2022": {
+        "tipps": 28,
+        "richtig": 19,
+        "falsch": 9,
+        "trefferquote_pct": 67.86,
+        "mittel_modell_pct": 82.56,
+        "differenz_pp": -14.71
+       },
+       "2023": {
+        "tipps": 96,
+        "richtig": 86,
+        "falsch": 10,
+        "trefferquote_pct": 89.58,
+        "mittel_modell_pct": 83.97,
+        "differenz_pp": 5.61
+       },
+       "2024": {
+        "tipps": 91,
+        "richtig": 82,
+        "falsch": 9,
+        "trefferquote_pct": 90.11,
+        "mittel_modell_pct": 84.3,
+        "differenz_pp": 5.81
+       },
+       "2025": {
+        "tipps": 111,
+        "richtig": 93,
+        "falsch": 18,
+        "trefferquote_pct": 83.78,
+        "mittel_modell_pct": 84.69,
+        "differenz_pp": -0.9
+       }
+      },
+      "saisons_bewertet": 8,
+      "anteil_saisons_treffer_ge_modell": 0.5
+     },
+     "85": {
+      "gepoolt": {
+       "tipps": 177,
+       "richtig": 158,
+       "falsch": 19,
+       "trefferquote_pct": 89.27,
+       "mittel_modell_pct": 87.93,
+       "differenz_pp": 1.34,
+       "ci95_pp": [
+        -3.08,
+        5.78
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 15,
+        "richtig": 11,
+        "falsch": 4,
+        "trefferquote_pct": 73.33,
+        "mittel_modell_pct": 88.84,
+        "differenz_pp": -15.5
+       },
+       "2018": {
+        "tipps": 14,
+        "richtig": 13,
+        "falsch": 1,
+        "trefferquote_pct": 92.86,
+        "mittel_modell_pct": 87.39,
+        "differenz_pp": 5.46
+       },
+       "2019": {
+        "tipps": 19,
+        "richtig": 18,
+        "falsch": 1,
+        "trefferquote_pct": 94.74,
+        "mittel_modell_pct": 87.99,
+        "differenz_pp": 6.75
+       },
+       "2020": {
+        "tipps": 8,
+        "richtig": 8,
+        "falsch": 0,
+        "trefferquote_pct": 100.0,
+        "mittel_modell_pct": 86.87,
+        "differenz_pp": 13.13
+       },
+       "2021": {
+        "tipps": 8,
+        "richtig": 6,
+        "falsch": 2,
+        "trefferquote_pct": 75.0,
+        "mittel_modell_pct": 87.68,
+        "differenz_pp": -12.68
+       },
+       "2022": {
+        "tipps": 4,
+        "richtig": 4,
+        "falsch": 0,
+        "trefferquote_pct": 100.0,
+        "mittel_modell_pct": 86.78,
+        "differenz_pp": 13.22
+       },
+       "2023": {
+        "tipps": 30,
+        "richtig": 27,
+        "falsch": 3,
+        "trefferquote_pct": 90.0,
+        "mittel_modell_pct": 87.7,
+        "differenz_pp": 2.3
+       },
+       "2024": {
+        "tipps": 33,
+        "richtig": 29,
+        "falsch": 4,
+        "trefferquote_pct": 87.88,
+        "mittel_modell_pct": 87.83,
+        "differenz_pp": 0.05
+       },
+       "2025": {
+        "tipps": 46,
+        "richtig": 42,
+        "falsch": 4,
+        "trefferquote_pct": 91.3,
+        "mittel_modell_pct": 88.31,
+        "differenz_pp": 3.0
+       }
+      },
+      "saisons_bewertet": 3,
+      "anteil_saisons_treffer_ge_modell": 1.0
+     },
+     "90": {
+      "gepoolt": {
+       "tipps": 28,
+       "richtig": 26,
+       "falsch": 2,
+       "trefferquote_pct": 92.86,
+       "mittel_modell_pct": 92.09,
+       "differenz_pp": 0.77,
+       "ci95_pp": [
+        -9.94,
+        8.1
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 4,
+        "richtig": 4,
+        "falsch": 0,
+        "trefferquote_pct": 100.0,
+        "mittel_modell_pct": 93.75,
+        "differenz_pp": 6.25
+       },
+       "2018": {
+        "tipps": 2,
+        "richtig": 2,
+        "falsch": 0,
+        "trefferquote_pct": 100.0,
+        "mittel_modell_pct": 91.24,
+        "differenz_pp": 8.76
+       },
+       "2019": {
+        "tipps": 4,
+        "richtig": 4,
+        "falsch": 0,
+        "trefferquote_pct": 100.0,
+        "mittel_modell_pct": 91.64,
+        "differenz_pp": 8.36
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 1,
+        "richtig": 1,
+        "falsch": 0,
+        "trefferquote_pct": 100.0,
+        "mittel_modell_pct": 91.0,
+        "differenz_pp": 9.0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 3,
+        "richtig": 2,
+        "falsch": 1,
+        "trefferquote_pct": 66.67,
+        "mittel_modell_pct": 92.44,
+        "differenz_pp": -25.78
+       },
+       "2024": {
+        "tipps": 5,
+        "richtig": 4,
+        "falsch": 1,
+        "trefferquote_pct": 80.0,
+        "mittel_modell_pct": 90.76,
+        "differenz_pp": -10.76
+       },
+       "2025": {
+        "tipps": 9,
+        "richtig": 9,
+        "falsch": 0,
+        "trefferquote_pct": 100.0,
+        "mittel_modell_pct": 92.48,
+        "differenz_pp": 7.52
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     }
+    }
+   },
+   "total": {
+    "alle": {
+     "50": {
+      "gepoolt": {
+       "tipps": 59209,
+       "richtig": 32882,
+       "falsch": 26327,
+       "trefferquote_pct": 55.54,
+       "mittel_modell_pct": 55.85,
+       "differenz_pp": -0.32,
+       "ci95_pp": [
+        -1.23,
+        0.54
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 6740,
+        "richtig": 3627,
+        "falsch": 3113,
+        "trefferquote_pct": 53.81,
+        "mittel_modell_pct": 55.86,
+        "differenz_pp": -2.05
+       },
+       "2018": {
+        "tipps": 6753,
+        "richtig": 3856,
+        "falsch": 2897,
+        "trefferquote_pct": 57.1,
+        "mittel_modell_pct": 55.86,
+        "differenz_pp": 1.24
+       },
+       "2019": {
+        "tipps": 5804,
+        "richtig": 3201,
+        "falsch": 2603,
+        "trefferquote_pct": 55.15,
+        "mittel_modell_pct": 55.86,
+        "differenz_pp": -0.7
+       },
+       "2020": {
+        "tipps": 5968,
+        "richtig": 3263,
+        "falsch": 2705,
+        "trefferquote_pct": 54.67,
+        "mittel_modell_pct": 55.84,
+        "differenz_pp": -1.17
+       },
+       "2021": {
+        "tipps": 6771,
+        "richtig": 3844,
+        "falsch": 2927,
+        "trefferquote_pct": 56.77,
+        "mittel_modell_pct": 55.85,
+        "differenz_pp": 0.92
+       },
+       "2022": {
+        "tipps": 6798,
+        "richtig": 3866,
+        "falsch": 2932,
+        "trefferquote_pct": 56.87,
+        "mittel_modell_pct": 55.86,
+        "differenz_pp": 1.01
+       },
+       "2023": {
+        "tipps": 6791,
+        "richtig": 3565,
+        "falsch": 3226,
+        "trefferquote_pct": 52.5,
+        "mittel_modell_pct": 55.88,
+        "differenz_pp": -3.38
+       },
+       "2024": {
+        "tipps": 6796,
+        "richtig": 3910,
+        "falsch": 2886,
+        "trefferquote_pct": 57.53,
+        "mittel_modell_pct": 55.85,
+        "differenz_pp": 1.69
+       },
+       "2025": {
+        "tipps": 6788,
+        "richtig": 3750,
+        "falsch": 3038,
+        "trefferquote_pct": 55.24,
+        "mittel_modell_pct": 55.84,
+        "differenz_pp": -0.6
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.444
+     },
+     "55": {
+      "gepoolt": {
+       "tipps": 34029,
+       "richtig": 19726,
+       "falsch": 14303,
+       "trefferquote_pct": 57.97,
+       "mittel_modell_pct": 58.33,
+       "differenz_pp": -0.36,
+       "ci95_pp": [
+        -1.25,
+        0.54
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 3869,
+        "richtig": 2174,
+        "falsch": 1695,
+        "trefferquote_pct": 56.19,
+        "mittel_modell_pct": 58.34,
+        "differenz_pp": -2.15
+       },
+       "2018": {
+        "tipps": 3896,
+        "richtig": 2332,
+        "falsch": 1564,
+        "trefferquote_pct": 59.86,
+        "mittel_modell_pct": 58.32,
+        "differenz_pp": 1.54
+       },
+       "2019": {
+        "tipps": 3335,
+        "richtig": 1896,
+        "falsch": 1439,
+        "trefferquote_pct": 56.85,
+        "mittel_modell_pct": 58.33,
+        "differenz_pp": -1.48
+       },
+       "2020": {
+        "tipps": 3415,
+        "richtig": 1960,
+        "falsch": 1455,
+        "trefferquote_pct": 57.39,
+        "mittel_modell_pct": 58.34,
+        "differenz_pp": -0.95
+       },
+       "2021": {
+        "tipps": 3899,
+        "richtig": 2315,
+        "falsch": 1584,
+        "trefferquote_pct": 59.37,
+        "mittel_modell_pct": 58.32,
+        "differenz_pp": 1.05
+       },
+       "2022": {
+        "tipps": 3898,
+        "richtig": 2331,
+        "falsch": 1567,
+        "trefferquote_pct": 59.8,
+        "mittel_modell_pct": 58.35,
+        "differenz_pp": 1.45
+       },
+       "2023": {
+        "tipps": 3917,
+        "richtig": 2159,
+        "falsch": 1758,
+        "trefferquote_pct": 55.12,
+        "mittel_modell_pct": 58.34,
+        "differenz_pp": -3.22
+       },
+       "2024": {
+        "tipps": 3903,
+        "richtig": 2328,
+        "falsch": 1575,
+        "trefferquote_pct": 59.65,
+        "mittel_modell_pct": 58.32,
+        "differenz_pp": 1.32
+       },
+       "2025": {
+        "tipps": 3897,
+        "richtig": 2231,
+        "falsch": 1666,
+        "trefferquote_pct": 57.25,
+        "mittel_modell_pct": 58.32,
+        "differenz_pp": -1.07
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.444
+     },
+     "60": {
+      "gepoolt": {
+       "tipps": 8495,
+       "richtig": 5145,
+       "falsch": 3350,
+       "trefferquote_pct": 60.57,
+       "mittel_modell_pct": 60.81,
+       "differenz_pp": -0.24,
+       "ci95_pp": [
+        -1.21,
+        0.76
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 977,
+        "richtig": 589,
+        "falsch": 388,
+        "trefferquote_pct": 60.29,
+        "mittel_modell_pct": 60.79,
+        "differenz_pp": -0.5
+       },
+       "2018": {
+        "tipps": 954,
+        "richtig": 586,
+        "falsch": 368,
+        "trefferquote_pct": 61.43,
+        "mittel_modell_pct": 60.82,
+        "differenz_pp": 0.61
+       },
+       "2019": {
+        "tipps": 840,
+        "richtig": 504,
+        "falsch": 336,
+        "trefferquote_pct": 60.0,
+        "mittel_modell_pct": 60.79,
+        "differenz_pp": -0.79
+       },
+       "2020": {
+        "tipps": 854,
+        "richtig": 509,
+        "falsch": 345,
+        "trefferquote_pct": 59.6,
+        "mittel_modell_pct": 60.82,
+        "differenz_pp": -1.22
+       },
+       "2021": {
+        "tipps": 946,
+        "richtig": 567,
+        "falsch": 379,
+        "trefferquote_pct": 59.94,
+        "mittel_modell_pct": 60.84,
+        "differenz_pp": -0.9
+       },
+       "2022": {
+        "tipps": 997,
+        "richtig": 626,
+        "falsch": 371,
+        "trefferquote_pct": 62.79,
+        "mittel_modell_pct": 60.8,
+        "differenz_pp": 1.99
+       },
+       "2023": {
+        "tipps": 1004,
+        "richtig": 582,
+        "falsch": 422,
+        "trefferquote_pct": 57.97,
+        "mittel_modell_pct": 60.8,
+        "differenz_pp": -2.83
+       },
+       "2024": {
+        "tipps": 962,
+        "richtig": 604,
+        "falsch": 358,
+        "trefferquote_pct": 62.79,
+        "mittel_modell_pct": 60.8,
+        "differenz_pp": 1.98
+       },
+       "2025": {
+        "tipps": 961,
+        "richtig": 578,
+        "falsch": 383,
+        "trefferquote_pct": 60.15,
+        "mittel_modell_pct": 60.8,
+        "differenz_pp": -0.65
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.333
+     },
+     "65": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "70": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "75": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "80": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "85": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "90": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     }
+    },
+    "haupt": {
+     "50": {
+      "gepoolt": {
+       "tipps": 5324,
+       "richtig": 2669,
+       "falsch": 2655,
+       "trefferquote_pct": 50.13,
+       "mittel_modell_pct": 50.53,
+       "differenz_pp": -0.4,
+       "ci95_pp": [
+        -1.68,
+        0.85
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 590,
+        "richtig": 291,
+        "falsch": 299,
+        "trefferquote_pct": 49.32,
+        "mittel_modell_pct": 50.53,
+        "differenz_pp": -1.21
+       },
+       "2018": {
+        "tipps": 603,
+        "richtig": 286,
+        "falsch": 317,
+        "trefferquote_pct": 47.43,
+        "mittel_modell_pct": 50.55,
+        "differenz_pp": -3.12
+       },
+       "2019": {
+        "tipps": 509,
+        "richtig": 267,
+        "falsch": 242,
+        "trefferquote_pct": 52.46,
+        "mittel_modell_pct": 50.52,
+        "differenz_pp": 1.93
+       },
+       "2020": {
+        "tipps": 563,
+        "richtig": 267,
+        "falsch": 296,
+        "trefferquote_pct": 47.42,
+        "mittel_modell_pct": 50.52,
+        "differenz_pp": -3.09
+       },
+       "2021": {
+        "tipps": 621,
+        "richtig": 315,
+        "falsch": 306,
+        "trefferquote_pct": 50.72,
+        "mittel_modell_pct": 50.55,
+        "differenz_pp": 0.18
+       },
+       "2022": {
+        "tipps": 618,
+        "richtig": 326,
+        "falsch": 292,
+        "trefferquote_pct": 52.75,
+        "mittel_modell_pct": 50.53,
+        "differenz_pp": 2.22
+       },
+       "2023": {
+        "tipps": 606,
+        "richtig": 284,
+        "falsch": 322,
+        "trefferquote_pct": 46.86,
+        "mittel_modell_pct": 50.55,
+        "differenz_pp": -3.69
+       },
+       "2024": {
+        "tipps": 611,
+        "richtig": 328,
+        "falsch": 283,
+        "trefferquote_pct": 53.68,
+        "mittel_modell_pct": 50.52,
+        "differenz_pp": 3.16
+       },
+       "2025": {
+        "tipps": 603,
+        "richtig": 305,
+        "falsch": 298,
+        "trefferquote_pct": 50.58,
+        "mittel_modell_pct": 50.53,
+        "differenz_pp": 0.05
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.556
+     },
+     "55": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "60": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "65": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "70": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "75": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "80": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "85": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "90": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     }
+    },
+    "unter1": {
+     "50": {
+      "gepoolt": {
+       "tipps": 10777,
+       "richtig": 5576,
+       "falsch": 5201,
+       "trefferquote_pct": 51.74,
+       "mittel_modell_pct": 52.14,
+       "differenz_pp": -0.4,
+       "ci95_pp": [
+        -1.28,
+        0.53
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 1230,
+        "richtig": 613,
+        "falsch": 617,
+        "trefferquote_pct": 49.84,
+        "mittel_modell_pct": 52.13,
+        "differenz_pp": -2.29
+       },
+       "2018": {
+        "tipps": 1230,
+        "richtig": 654,
+        "falsch": 576,
+        "trefferquote_pct": 53.17,
+        "mittel_modell_pct": 52.13,
+        "differenz_pp": 1.04
+       },
+       "2019": {
+        "tipps": 1059,
+        "richtig": 553,
+        "falsch": 506,
+        "trefferquote_pct": 52.22,
+        "mittel_modell_pct": 52.12,
+        "differenz_pp": 0.1
+       },
+       "2020": {
+        "tipps": 1081,
+        "richtig": 549,
+        "falsch": 532,
+        "trefferquote_pct": 50.79,
+        "mittel_modell_pct": 52.15,
+        "differenz_pp": -1.37
+       },
+       "2021": {
+        "tipps": 1230,
+        "richtig": 651,
+        "falsch": 579,
+        "trefferquote_pct": 52.93,
+        "mittel_modell_pct": 52.14,
+        "differenz_pp": 0.79
+       },
+       "2022": {
+        "tipps": 1236,
+        "richtig": 647,
+        "falsch": 589,
+        "trefferquote_pct": 52.35,
+        "mittel_modell_pct": 52.15,
+        "differenz_pp": 0.19
+       },
+       "2023": {
+        "tipps": 1237,
+        "richtig": 595,
+        "falsch": 642,
+        "trefferquote_pct": 48.1,
+        "mittel_modell_pct": 52.15,
+        "differenz_pp": -4.05
+       },
+       "2024": {
+        "tipps": 1237,
+        "richtig": 668,
+        "falsch": 569,
+        "trefferquote_pct": 54.0,
+        "mittel_modell_pct": 52.13,
+        "differenz_pp": 1.87
+       },
+       "2025": {
+        "tipps": 1237,
+        "richtig": 646,
+        "falsch": 591,
+        "trefferquote_pct": 52.22,
+        "mittel_modell_pct": 52.12,
+        "differenz_pp": 0.1
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.667
+     },
+     "55": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "60": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "65": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "70": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "75": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "80": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "85": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "90": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     }
+    },
+    "unter2": {
+     "50": {
+      "gepoolt": {
+       "tipps": 10777,
+       "richtig": 5821,
+       "falsch": 4956,
+       "trefferquote_pct": 54.01,
+       "mittel_modell_pct": 54.27,
+       "differenz_pp": -0.26,
+       "ci95_pp": [
+        -1.15,
+        0.67
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 1230,
+        "richtig": 636,
+        "falsch": 594,
+        "trefferquote_pct": 51.71,
+        "mittel_modell_pct": 54.26,
+        "differenz_pp": -2.56
+       },
+       "2018": {
+        "tipps": 1230,
+        "richtig": 686,
+        "falsch": 544,
+        "trefferquote_pct": 55.77,
+        "mittel_modell_pct": 54.27,
+        "differenz_pp": 1.5
+       },
+       "2019": {
+        "tipps": 1059,
+        "richtig": 570,
+        "falsch": 489,
+        "trefferquote_pct": 53.82,
+        "mittel_modell_pct": 54.26,
+        "differenz_pp": -0.44
+       },
+       "2020": {
+        "tipps": 1081,
+        "richtig": 573,
+        "falsch": 508,
+        "trefferquote_pct": 53.01,
+        "mittel_modell_pct": 54.29,
+        "differenz_pp": -1.28
+       },
+       "2021": {
+        "tipps": 1230,
+        "richtig": 679,
+        "falsch": 551,
+        "trefferquote_pct": 55.2,
+        "mittel_modell_pct": 54.28,
+        "differenz_pp": 0.93
+       },
+       "2022": {
+        "tipps": 1236,
+        "richtig": 687,
+        "falsch": 549,
+        "trefferquote_pct": 55.58,
+        "mittel_modell_pct": 54.29,
+        "differenz_pp": 1.29
+       },
+       "2023": {
+        "tipps": 1237,
+        "richtig": 626,
+        "falsch": 611,
+        "trefferquote_pct": 50.61,
+        "mittel_modell_pct": 54.29,
+        "differenz_pp": -3.69
+       },
+       "2024": {
+        "tipps": 1237,
+        "richtig": 693,
+        "falsch": 544,
+        "trefferquote_pct": 56.02,
+        "mittel_modell_pct": 54.26,
+        "differenz_pp": 1.76
+       },
+       "2025": {
+        "tipps": 1237,
+        "richtig": 671,
+        "falsch": 566,
+        "trefferquote_pct": 54.24,
+        "mittel_modell_pct": 54.26,
+        "differenz_pp": -0.01
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.444
+     },
+     "55": {
+      "gepoolt": {
+       "tipps": 1698,
+       "richtig": 910,
+       "falsch": 788,
+       "trefferquote_pct": 53.59,
+       "mittel_modell_pct": 55.18,
+       "differenz_pp": -1.59,
+       "ci95_pp": [
+        -4.04,
+        0.81
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 179,
+        "richtig": 87,
+        "falsch": 92,
+        "trefferquote_pct": 48.6,
+        "mittel_modell_pct": 55.19,
+        "differenz_pp": -6.59
+       },
+       "2018": {
+        "tipps": 206,
+        "richtig": 102,
+        "falsch": 104,
+        "trefferquote_pct": 49.51,
+        "mittel_modell_pct": 55.18,
+        "differenz_pp": -5.67
+       },
+       "2019": {
+        "tipps": 158,
+        "richtig": 85,
+        "falsch": 73,
+        "trefferquote_pct": 53.8,
+        "mittel_modell_pct": 55.17,
+        "differenz_pp": -1.38
+       },
+       "2020": {
+        "tipps": 172,
+        "richtig": 86,
+        "falsch": 86,
+        "trefferquote_pct": 50.0,
+        "mittel_modell_pct": 55.18,
+        "differenz_pp": -5.18
+       },
+       "2021": {
+        "tipps": 209,
+        "richtig": 116,
+        "falsch": 93,
+        "trefferquote_pct": 55.5,
+        "mittel_modell_pct": 55.19,
+        "differenz_pp": 0.31
+       },
+       "2022": {
+        "tipps": 190,
+        "richtig": 125,
+        "falsch": 65,
+        "trefferquote_pct": 65.79,
+        "mittel_modell_pct": 55.17,
+        "differenz_pp": 10.62
+       },
+       "2023": {
+        "tipps": 206,
+        "richtig": 99,
+        "falsch": 107,
+        "trefferquote_pct": 48.06,
+        "mittel_modell_pct": 55.18,
+        "differenz_pp": -7.12
+       },
+       "2024": {
+        "tipps": 192,
+        "richtig": 107,
+        "falsch": 85,
+        "trefferquote_pct": 55.73,
+        "mittel_modell_pct": 55.16,
+        "differenz_pp": 0.57
+       },
+       "2025": {
+        "tipps": 186,
+        "richtig": 103,
+        "falsch": 83,
+        "trefferquote_pct": 55.38,
+        "mittel_modell_pct": 55.17,
+        "differenz_pp": 0.2
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.444
+     },
+     "60": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "65": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "70": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "75": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "80": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "85": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "90": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     }
+    },
+    "unter3": {
+     "50": {
+      "gepoolt": {
+       "tipps": 10777,
+       "richtig": 6047,
+       "falsch": 4730,
+       "trefferquote_pct": 56.11,
+       "mittel_modell_pct": 56.4,
+       "differenz_pp": -0.29,
+       "ci95_pp": [
+        -1.21,
+        0.61
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 1230,
+        "richtig": 668,
+        "falsch": 562,
+        "trefferquote_pct": 54.31,
+        "mittel_modell_pct": 56.39,
+        "differenz_pp": -2.08
+       },
+       "2018": {
+        "tipps": 1230,
+        "richtig": 715,
+        "falsch": 515,
+        "trefferquote_pct": 58.13,
+        "mittel_modell_pct": 56.4,
+        "differenz_pp": 1.73
+       },
+       "2019": {
+        "tipps": 1059,
+        "richtig": 581,
+        "falsch": 478,
+        "trefferquote_pct": 54.86,
+        "mittel_modell_pct": 56.39,
+        "differenz_pp": -1.52
+       },
+       "2020": {
+        "tipps": 1081,
+        "richtig": 597,
+        "falsch": 484,
+        "trefferquote_pct": 55.23,
+        "mittel_modell_pct": 56.41,
+        "differenz_pp": -1.19
+       },
+       "2021": {
+        "tipps": 1230,
+        "richtig": 706,
+        "falsch": 524,
+        "trefferquote_pct": 57.4,
+        "mittel_modell_pct": 56.4,
+        "differenz_pp": 1.0
+       },
+       "2022": {
+        "tipps": 1236,
+        "richtig": 711,
+        "falsch": 525,
+        "trefferquote_pct": 57.52,
+        "mittel_modell_pct": 56.41,
+        "differenz_pp": 1.11
+       },
+       "2023": {
+        "tipps": 1237,
+        "richtig": 658,
+        "falsch": 579,
+        "trefferquote_pct": 53.19,
+        "mittel_modell_pct": 56.42,
+        "differenz_pp": -3.22
+       },
+       "2024": {
+        "tipps": 1237,
+        "richtig": 718,
+        "falsch": 519,
+        "trefferquote_pct": 58.04,
+        "mittel_modell_pct": 56.39,
+        "differenz_pp": 1.65
+       },
+       "2025": {
+        "tipps": 1237,
+        "richtig": 693,
+        "falsch": 544,
+        "trefferquote_pct": 56.02,
+        "mittel_modell_pct": 56.38,
+        "differenz_pp": -0.36
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.444
+     },
+     "55": {
+      "gepoolt": {
+       "tipps": 10777,
+       "richtig": 6047,
+       "falsch": 4730,
+       "trefferquote_pct": 56.11,
+       "mittel_modell_pct": 56.4,
+       "differenz_pp": -0.29,
+       "ci95_pp": [
+        -1.21,
+        0.61
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 1230,
+        "richtig": 668,
+        "falsch": 562,
+        "trefferquote_pct": 54.31,
+        "mittel_modell_pct": 56.39,
+        "differenz_pp": -2.08
+       },
+       "2018": {
+        "tipps": 1230,
+        "richtig": 715,
+        "falsch": 515,
+        "trefferquote_pct": 58.13,
+        "mittel_modell_pct": 56.4,
+        "differenz_pp": 1.73
+       },
+       "2019": {
+        "tipps": 1059,
+        "richtig": 581,
+        "falsch": 478,
+        "trefferquote_pct": 54.86,
+        "mittel_modell_pct": 56.39,
+        "differenz_pp": -1.52
+       },
+       "2020": {
+        "tipps": 1081,
+        "richtig": 597,
+        "falsch": 484,
+        "trefferquote_pct": 55.23,
+        "mittel_modell_pct": 56.41,
+        "differenz_pp": -1.19
+       },
+       "2021": {
+        "tipps": 1230,
+        "richtig": 706,
+        "falsch": 524,
+        "trefferquote_pct": 57.4,
+        "mittel_modell_pct": 56.4,
+        "differenz_pp": 1.0
+       },
+       "2022": {
+        "tipps": 1236,
+        "richtig": 711,
+        "falsch": 525,
+        "trefferquote_pct": 57.52,
+        "mittel_modell_pct": 56.41,
+        "differenz_pp": 1.11
+       },
+       "2023": {
+        "tipps": 1237,
+        "richtig": 658,
+        "falsch": 579,
+        "trefferquote_pct": 53.19,
+        "mittel_modell_pct": 56.42,
+        "differenz_pp": -3.22
+       },
+       "2024": {
+        "tipps": 1237,
+        "richtig": 718,
+        "falsch": 519,
+        "trefferquote_pct": 58.04,
+        "mittel_modell_pct": 56.39,
+        "differenz_pp": 1.65
+       },
+       "2025": {
+        "tipps": 1237,
+        "richtig": 693,
+        "falsch": 544,
+        "trefferquote_pct": 56.02,
+        "mittel_modell_pct": 56.38,
+        "differenz_pp": -0.36
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.444
+     },
+     "60": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "65": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "70": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "75": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "80": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "85": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "90": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     }
+    },
+    "unter4": {
+     "50": {
+      "gepoolt": {
+       "tipps": 10777,
+       "richtig": 6284,
+       "falsch": 4493,
+       "trefferquote_pct": 58.31,
+       "mittel_modell_pct": 58.51,
+       "differenz_pp": -0.2,
+       "ci95_pp": [
+        -1.12,
+        0.7
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 1230,
+        "richtig": 700,
+        "falsch": 530,
+        "trefferquote_pct": 56.91,
+        "mittel_modell_pct": 58.5,
+        "differenz_pp": -1.59
+       },
+       "2018": {
+        "tipps": 1230,
+        "richtig": 745,
+        "falsch": 485,
+        "trefferquote_pct": 60.57,
+        "mittel_modell_pct": 58.5,
+        "differenz_pp": 2.07
+       },
+       "2019": {
+        "tipps": 1059,
+        "richtig": 607,
+        "falsch": 452,
+        "trefferquote_pct": 57.32,
+        "mittel_modell_pct": 58.49,
+        "differenz_pp": -1.17
+       },
+       "2020": {
+        "tipps": 1081,
+        "richtig": 624,
+        "falsch": 457,
+        "trefferquote_pct": 57.72,
+        "mittel_modell_pct": 58.52,
+        "differenz_pp": -0.8
+       },
+       "2021": {
+        "tipps": 1230,
+        "richtig": 736,
+        "falsch": 494,
+        "trefferquote_pct": 59.84,
+        "mittel_modell_pct": 58.51,
+        "differenz_pp": 1.33
+       },
+       "2022": {
+        "tipps": 1236,
+        "richtig": 734,
+        "falsch": 502,
+        "trefferquote_pct": 59.39,
+        "mittel_modell_pct": 58.52,
+        "differenz_pp": 0.86
+       },
+       "2023": {
+        "tipps": 1237,
+        "richtig": 686,
+        "falsch": 551,
+        "trefferquote_pct": 55.46,
+        "mittel_modell_pct": 58.52,
+        "differenz_pp": -3.07
+       },
+       "2024": {
+        "tipps": 1237,
+        "richtig": 744,
+        "falsch": 493,
+        "trefferquote_pct": 60.15,
+        "mittel_modell_pct": 58.5,
+        "differenz_pp": 1.65
+       },
+       "2025": {
+        "tipps": 1237,
+        "richtig": 708,
+        "falsch": 529,
+        "trefferquote_pct": 57.24,
+        "mittel_modell_pct": 58.49,
+        "differenz_pp": -1.25
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.444
+     },
+     "55": {
+      "gepoolt": {
+       "tipps": 10777,
+       "richtig": 6284,
+       "falsch": 4493,
+       "trefferquote_pct": 58.31,
+       "mittel_modell_pct": 58.51,
+       "differenz_pp": -0.2,
+       "ci95_pp": [
+        -1.12,
+        0.7
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 1230,
+        "richtig": 700,
+        "falsch": 530,
+        "trefferquote_pct": 56.91,
+        "mittel_modell_pct": 58.5,
+        "differenz_pp": -1.59
+       },
+       "2018": {
+        "tipps": 1230,
+        "richtig": 745,
+        "falsch": 485,
+        "trefferquote_pct": 60.57,
+        "mittel_modell_pct": 58.5,
+        "differenz_pp": 2.07
+       },
+       "2019": {
+        "tipps": 1059,
+        "richtig": 607,
+        "falsch": 452,
+        "trefferquote_pct": 57.32,
+        "mittel_modell_pct": 58.49,
+        "differenz_pp": -1.17
+       },
+       "2020": {
+        "tipps": 1081,
+        "richtig": 624,
+        "falsch": 457,
+        "trefferquote_pct": 57.72,
+        "mittel_modell_pct": 58.52,
+        "differenz_pp": -0.8
+       },
+       "2021": {
+        "tipps": 1230,
+        "richtig": 736,
+        "falsch": 494,
+        "trefferquote_pct": 59.84,
+        "mittel_modell_pct": 58.51,
+        "differenz_pp": 1.33
+       },
+       "2022": {
+        "tipps": 1236,
+        "richtig": 734,
+        "falsch": 502,
+        "trefferquote_pct": 59.39,
+        "mittel_modell_pct": 58.52,
+        "differenz_pp": 0.86
+       },
+       "2023": {
+        "tipps": 1237,
+        "richtig": 686,
+        "falsch": 551,
+        "trefferquote_pct": 55.46,
+        "mittel_modell_pct": 58.52,
+        "differenz_pp": -3.07
+       },
+       "2024": {
+        "tipps": 1237,
+        "richtig": 744,
+        "falsch": 493,
+        "trefferquote_pct": 60.15,
+        "mittel_modell_pct": 58.5,
+        "differenz_pp": 1.65
+       },
+       "2025": {
+        "tipps": 1237,
+        "richtig": 708,
+        "falsch": 529,
+        "trefferquote_pct": 57.24,
+        "mittel_modell_pct": 58.49,
+        "differenz_pp": -1.25
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.444
+     },
+     "60": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "65": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "70": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "75": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "80": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "85": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "90": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     }
+    },
+    "unter5": {
+     "50": {
+      "gepoolt": {
+       "tipps": 10777,
+       "richtig": 6485,
+       "falsch": 4292,
+       "trefferquote_pct": 60.17,
+       "mittel_modell_pct": 60.59,
+       "differenz_pp": -0.41,
+       "ci95_pp": [
+        -1.32,
+        0.48
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 1230,
+        "richtig": 719,
+        "falsch": 511,
+        "trefferquote_pct": 58.46,
+        "mittel_modell_pct": 60.58,
+        "differenz_pp": -2.12
+       },
+       "2018": {
+        "tipps": 1230,
+        "richtig": 770,
+        "falsch": 460,
+        "trefferquote_pct": 62.6,
+        "mittel_modell_pct": 60.59,
+        "differenz_pp": 2.02
+       },
+       "2019": {
+        "tipps": 1059,
+        "richtig": 623,
+        "falsch": 436,
+        "trefferquote_pct": 58.83,
+        "mittel_modell_pct": 60.58,
+        "differenz_pp": -1.75
+       },
+       "2020": {
+        "tipps": 1081,
+        "richtig": 653,
+        "falsch": 428,
+        "trefferquote_pct": 60.41,
+        "mittel_modell_pct": 60.6,
+        "differenz_pp": -0.2
+       },
+       "2021": {
+        "tipps": 1230,
+        "richtig": 757,
+        "falsch": 473,
+        "trefferquote_pct": 61.54,
+        "mittel_modell_pct": 60.59,
+        "differenz_pp": 0.95
+       },
+       "2022": {
+        "tipps": 1236,
+        "richtig": 761,
+        "falsch": 475,
+        "trefferquote_pct": 61.57,
+        "mittel_modell_pct": 60.6,
+        "differenz_pp": 0.97
+       },
+       "2023": {
+        "tipps": 1237,
+        "richtig": 716,
+        "falsch": 521,
+        "trefferquote_pct": 57.88,
+        "mittel_modell_pct": 60.61,
+        "differenz_pp": -2.72
+       },
+       "2024": {
+        "tipps": 1237,
+        "richtig": 759,
+        "falsch": 478,
+        "trefferquote_pct": 61.36,
+        "mittel_modell_pct": 60.58,
+        "differenz_pp": 0.78
+       },
+       "2025": {
+        "tipps": 1237,
+        "richtig": 727,
+        "falsch": 510,
+        "trefferquote_pct": 58.77,
+        "mittel_modell_pct": 60.57,
+        "differenz_pp": -1.8
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.444
+     },
+     "55": {
+      "gepoolt": {
+       "tipps": 10777,
+       "richtig": 6485,
+       "falsch": 4292,
+       "trefferquote_pct": 60.17,
+       "mittel_modell_pct": 60.59,
+       "differenz_pp": -0.41,
+       "ci95_pp": [
+        -1.32,
+        0.48
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 1230,
+        "richtig": 719,
+        "falsch": 511,
+        "trefferquote_pct": 58.46,
+        "mittel_modell_pct": 60.58,
+        "differenz_pp": -2.12
+       },
+       "2018": {
+        "tipps": 1230,
+        "richtig": 770,
+        "falsch": 460,
+        "trefferquote_pct": 62.6,
+        "mittel_modell_pct": 60.59,
+        "differenz_pp": 2.02
+       },
+       "2019": {
+        "tipps": 1059,
+        "richtig": 623,
+        "falsch": 436,
+        "trefferquote_pct": 58.83,
+        "mittel_modell_pct": 60.58,
+        "differenz_pp": -1.75
+       },
+       "2020": {
+        "tipps": 1081,
+        "richtig": 653,
+        "falsch": 428,
+        "trefferquote_pct": 60.41,
+        "mittel_modell_pct": 60.6,
+        "differenz_pp": -0.2
+       },
+       "2021": {
+        "tipps": 1230,
+        "richtig": 757,
+        "falsch": 473,
+        "trefferquote_pct": 61.54,
+        "mittel_modell_pct": 60.59,
+        "differenz_pp": 0.95
+       },
+       "2022": {
+        "tipps": 1236,
+        "richtig": 761,
+        "falsch": 475,
+        "trefferquote_pct": 61.57,
+        "mittel_modell_pct": 60.6,
+        "differenz_pp": 0.97
+       },
+       "2023": {
+        "tipps": 1237,
+        "richtig": 716,
+        "falsch": 521,
+        "trefferquote_pct": 57.88,
+        "mittel_modell_pct": 60.61,
+        "differenz_pp": -2.72
+       },
+       "2024": {
+        "tipps": 1237,
+        "richtig": 759,
+        "falsch": 478,
+        "trefferquote_pct": 61.36,
+        "mittel_modell_pct": 60.58,
+        "differenz_pp": 0.78
+       },
+       "2025": {
+        "tipps": 1237,
+        "richtig": 727,
+        "falsch": 510,
+        "trefferquote_pct": 58.77,
+        "mittel_modell_pct": 60.57,
+        "differenz_pp": -1.8
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.444
+     },
+     "60": {
+      "gepoolt": {
+       "tipps": 8495,
+       "richtig": 5145,
+       "falsch": 3350,
+       "trefferquote_pct": 60.57,
+       "mittel_modell_pct": 60.81,
+       "differenz_pp": -0.24,
+       "ci95_pp": [
+        -1.21,
+        0.76
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 977,
+        "richtig": 589,
+        "falsch": 388,
+        "trefferquote_pct": 60.29,
+        "mittel_modell_pct": 60.79,
+        "differenz_pp": -0.5
+       },
+       "2018": {
+        "tipps": 954,
+        "richtig": 586,
+        "falsch": 368,
+        "trefferquote_pct": 61.43,
+        "mittel_modell_pct": 60.82,
+        "differenz_pp": 0.61
+       },
+       "2019": {
+        "tipps": 840,
+        "richtig": 504,
+        "falsch": 336,
+        "trefferquote_pct": 60.0,
+        "mittel_modell_pct": 60.79,
+        "differenz_pp": -0.79
+       },
+       "2020": {
+        "tipps": 854,
+        "richtig": 509,
+        "falsch": 345,
+        "trefferquote_pct": 59.6,
+        "mittel_modell_pct": 60.82,
+        "differenz_pp": -1.22
+       },
+       "2021": {
+        "tipps": 946,
+        "richtig": 567,
+        "falsch": 379,
+        "trefferquote_pct": 59.94,
+        "mittel_modell_pct": 60.84,
+        "differenz_pp": -0.9
+       },
+       "2022": {
+        "tipps": 997,
+        "richtig": 626,
+        "falsch": 371,
+        "trefferquote_pct": 62.79,
+        "mittel_modell_pct": 60.8,
+        "differenz_pp": 1.99
+       },
+       "2023": {
+        "tipps": 1004,
+        "richtig": 582,
+        "falsch": 422,
+        "trefferquote_pct": 57.97,
+        "mittel_modell_pct": 60.8,
+        "differenz_pp": -2.83
+       },
+       "2024": {
+        "tipps": 962,
+        "richtig": 604,
+        "falsch": 358,
+        "trefferquote_pct": 62.79,
+        "mittel_modell_pct": 60.8,
+        "differenz_pp": 1.98
+       },
+       "2025": {
+        "tipps": 961,
+        "richtig": 578,
+        "falsch": 383,
+        "trefferquote_pct": 60.15,
+        "mittel_modell_pct": 60.8,
+        "differenz_pp": -0.65
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.333
+     },
+     "65": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "70": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "75": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "80": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "85": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "90": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     }
+    }
+   },
+   "tt": {
+    "alle": {
+     "50": {
+      "gepoolt": {
+       "tipps": 118665,
+       "richtig": 70603,
+       "falsch": 48062,
+       "trefferquote_pct": 59.5,
+       "mittel_modell_pct": 59.29,
+       "differenz_pp": 0.21,
+       "ci95_pp": [
+        -0.42,
+        0.88
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 13494,
+        "richtig": 8076,
+        "falsch": 5418,
+        "trefferquote_pct": 59.85,
+        "mittel_modell_pct": 59.29,
+        "differenz_pp": 0.56
+       },
+       "2018": {
+        "tipps": 13546,
+        "richtig": 8285,
+        "falsch": 5261,
+        "trefferquote_pct": 61.16,
+        "mittel_modell_pct": 59.3,
+        "differenz_pp": 1.86
+       },
+       "2019": {
+        "tipps": 11676,
+        "richtig": 6922,
+        "falsch": 4754,
+        "trefferquote_pct": 59.28,
+        "mittel_modell_pct": 59.3,
+        "differenz_pp": -0.02
+       },
+       "2020": {
+        "tipps": 11943,
+        "richtig": 6980,
+        "falsch": 4963,
+        "trefferquote_pct": 58.44,
+        "mittel_modell_pct": 59.29,
+        "differenz_pp": -0.85
+       },
+       "2021": {
+        "tipps": 13559,
+        "richtig": 8104,
+        "falsch": 5455,
+        "trefferquote_pct": 59.77,
+        "mittel_modell_pct": 59.29,
+        "differenz_pp": 0.48
+       },
+       "2022": {
+        "tipps": 13619,
+        "richtig": 8152,
+        "falsch": 5467,
+        "trefferquote_pct": 59.86,
+        "mittel_modell_pct": 59.29,
+        "differenz_pp": 0.57
+       },
+       "2023": {
+        "tipps": 13629,
+        "richtig": 7857,
+        "falsch": 5772,
+        "trefferquote_pct": 57.65,
+        "mittel_modell_pct": 59.29,
+        "differenz_pp": -1.64
+       },
+       "2024": {
+        "tipps": 13588,
+        "richtig": 8101,
+        "falsch": 5487,
+        "trefferquote_pct": 59.62,
+        "mittel_modell_pct": 59.29,
+        "differenz_pp": 0.32
+       },
+       "2025": {
+        "tipps": 13611,
+        "richtig": 8126,
+        "falsch": 5485,
+        "trefferquote_pct": 59.7,
+        "mittel_modell_pct": 59.28,
+        "differenz_pp": 0.42
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.667
+     },
+     "55": {
+      "gepoolt": {
+       "tipps": 87140,
+       "richtig": 53999,
+       "falsch": 33141,
+       "trefferquote_pct": 61.97,
+       "mittel_modell_pct": 61.74,
+       "differenz_pp": 0.22,
+       "ci95_pp": [
+        -0.4,
+        0.92
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 9945,
+        "richtig": 6213,
+        "falsch": 3732,
+        "trefferquote_pct": 62.47,
+        "mittel_modell_pct": 61.71,
+        "differenz_pp": 0.77
+       },
+       "2018": {
+        "tipps": 9965,
+        "richtig": 6329,
+        "falsch": 3636,
+        "trefferquote_pct": 63.51,
+        "mittel_modell_pct": 61.74,
+        "differenz_pp": 1.77
+       },
+       "2019": {
+        "tipps": 8573,
+        "richtig": 5310,
+        "falsch": 3263,
+        "trefferquote_pct": 61.94,
+        "mittel_modell_pct": 61.76,
+        "differenz_pp": 0.18
+       },
+       "2020": {
+        "tipps": 8737,
+        "richtig": 5323,
+        "falsch": 3414,
+        "trefferquote_pct": 60.92,
+        "mittel_modell_pct": 61.78,
+        "differenz_pp": -0.86
+       },
+       "2021": {
+        "tipps": 9945,
+        "richtig": 6187,
+        "falsch": 3758,
+        "trefferquote_pct": 62.21,
+        "mittel_modell_pct": 61.76,
+        "differenz_pp": 0.46
+       },
+       "2022": {
+        "tipps": 9980,
+        "richtig": 6228,
+        "falsch": 3752,
+        "trefferquote_pct": 62.4,
+        "mittel_modell_pct": 61.76,
+        "differenz_pp": 0.65
+       },
+       "2023": {
+        "tipps": 9980,
+        "richtig": 5981,
+        "falsch": 3999,
+        "trefferquote_pct": 59.93,
+        "mittel_modell_pct": 61.76,
+        "differenz_pp": -1.83
+       },
+       "2024": {
+        "tipps": 10006,
+        "richtig": 6206,
+        "falsch": 3800,
+        "trefferquote_pct": 62.02,
+        "mittel_modell_pct": 61.72,
+        "differenz_pp": 0.3
+       },
+       "2025": {
+        "tipps": 10009,
+        "richtig": 6222,
+        "falsch": 3787,
+        "trefferquote_pct": 62.16,
+        "mittel_modell_pct": 61.72,
+        "differenz_pp": 0.44
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.778
+     },
+     "60": {
+      "gepoolt": {
+       "tipps": 55347,
+       "richtig": 35607,
+       "falsch": 19740,
+       "trefferquote_pct": 64.33,
+       "mittel_modell_pct": 64.17,
+       "differenz_pp": 0.16,
+       "ci95_pp": [
+        -0.48,
+        0.84
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 6261,
+        "richtig": 4033,
+        "falsch": 2228,
+        "trefferquote_pct": 64.41,
+        "mittel_modell_pct": 64.17,
+        "differenz_pp": 0.24
+       },
+       "2018": {
+        "tipps": 6305,
+        "richtig": 4160,
+        "falsch": 2145,
+        "trefferquote_pct": 65.98,
+        "mittel_modell_pct": 64.2,
+        "differenz_pp": 1.78
+       },
+       "2019": {
+        "tipps": 5472,
+        "richtig": 3525,
+        "falsch": 1947,
+        "trefferquote_pct": 64.42,
+        "mittel_modell_pct": 64.17,
+        "differenz_pp": 0.25
+       },
+       "2020": {
+        "tipps": 5585,
+        "richtig": 3526,
+        "falsch": 2059,
+        "trefferquote_pct": 63.13,
+        "mittel_modell_pct": 64.18,
+        "differenz_pp": -1.05
+       },
+       "2021": {
+        "tipps": 6327,
+        "richtig": 4084,
+        "falsch": 2243,
+        "trefferquote_pct": 64.55,
+        "mittel_modell_pct": 64.18,
+        "differenz_pp": 0.37
+       },
+       "2022": {
+        "tipps": 6367,
+        "richtig": 4146,
+        "falsch": 2221,
+        "trefferquote_pct": 65.12,
+        "mittel_modell_pct": 64.16,
+        "differenz_pp": 0.95
+       },
+       "2023": {
+        "tipps": 6367,
+        "richtig": 3987,
+        "falsch": 2380,
+        "trefferquote_pct": 62.62,
+        "mittel_modell_pct": 64.17,
+        "differenz_pp": -1.55
+       },
+       "2024": {
+        "tipps": 6322,
+        "richtig": 4078,
+        "falsch": 2244,
+        "trefferquote_pct": 64.5,
+        "mittel_modell_pct": 64.18,
+        "differenz_pp": 0.33
+       },
+       "2025": {
+        "tipps": 6341,
+        "richtig": 4068,
+        "falsch": 2273,
+        "trefferquote_pct": 64.15,
+        "mittel_modell_pct": 64.16,
+        "differenz_pp": -0.01
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.667
+     },
+     "65": {
+      "gepoolt": {
+       "tipps": 22192,
+       "richtig": 14806,
+       "falsch": 7386,
+       "trefferquote_pct": 66.72,
+       "mittel_modell_pct": 66.64,
+       "differenz_pp": 0.08,
+       "ci95_pp": [
+        -0.57,
+        0.77
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 2534,
+        "richtig": 1694,
+        "falsch": 840,
+        "trefferquote_pct": 66.85,
+        "mittel_modell_pct": 66.61,
+        "differenz_pp": 0.25
+       },
+       "2018": {
+        "tipps": 2544,
+        "richtig": 1751,
+        "falsch": 793,
+        "trefferquote_pct": 68.83,
+        "mittel_modell_pct": 66.65,
+        "differenz_pp": 2.18
+       },
+       "2019": {
+        "tipps": 2194,
+        "richtig": 1472,
+        "falsch": 722,
+        "trefferquote_pct": 67.09,
+        "mittel_modell_pct": 66.65,
+        "differenz_pp": 0.44
+       },
+       "2020": {
+        "tipps": 2219,
+        "richtig": 1450,
+        "falsch": 769,
+        "trefferquote_pct": 65.34,
+        "mittel_modell_pct": 66.68,
+        "differenz_pp": -1.33
+       },
+       "2021": {
+        "tipps": 2530,
+        "richtig": 1690,
+        "falsch": 840,
+        "trefferquote_pct": 66.8,
+        "mittel_modell_pct": 66.65,
+        "differenz_pp": 0.15
+       },
+       "2022": {
+        "tipps": 2534,
+        "richtig": 1698,
+        "falsch": 836,
+        "trefferquote_pct": 67.01,
+        "mittel_modell_pct": 66.65,
+        "differenz_pp": 0.36
+       },
+       "2023": {
+        "tipps": 2532,
+        "richtig": 1641,
+        "falsch": 891,
+        "trefferquote_pct": 64.81,
+        "mittel_modell_pct": 66.65,
+        "differenz_pp": -1.84
+       },
+       "2024": {
+        "tipps": 2553,
+        "richtig": 1701,
+        "falsch": 852,
+        "trefferquote_pct": 66.63,
+        "mittel_modell_pct": 66.62,
+        "differenz_pp": 0.01
+       },
+       "2025": {
+        "tipps": 2552,
+        "richtig": 1709,
+        "falsch": 843,
+        "trefferquote_pct": 66.97,
+        "mittel_modell_pct": 66.62,
+        "differenz_pp": 0.35
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.778
+     },
+     "70": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "75": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "80": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "85": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "90": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     }
+    },
+    "haupt": {
+     "50": {
+      "gepoolt": {
+       "tipps": 10895,
+       "richtig": 5554,
+       "falsch": 5341,
+       "trefferquote_pct": 50.98,
+       "mittel_modell_pct": 50.87,
+       "differenz_pp": 0.11,
+       "ci95_pp": [
+        -0.81,
+        1.09
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 1194,
+        "richtig": 600,
+        "falsch": 594,
+        "trefferquote_pct": 50.25,
+        "mittel_modell_pct": 50.86,
+        "differenz_pp": -0.61
+       },
+       "2018": {
+        "tipps": 1246,
+        "richtig": 677,
+        "falsch": 569,
+        "trefferquote_pct": 54.33,
+        "mittel_modell_pct": 50.89,
+        "differenz_pp": 3.45
+       },
+       "2019": {
+        "tipps": 1086,
+        "richtig": 523,
+        "falsch": 563,
+        "trefferquote_pct": 48.16,
+        "mittel_modell_pct": 50.87,
+        "differenz_pp": -2.72
+       },
+       "2020": {
+        "tipps": 1133,
+        "richtig": 569,
+        "falsch": 564,
+        "trefferquote_pct": 50.22,
+        "mittel_modell_pct": 50.86,
+        "differenz_pp": -0.64
+       },
+       "2021": {
+        "tipps": 1259,
+        "richtig": 646,
+        "falsch": 613,
+        "trefferquote_pct": 51.31,
+        "mittel_modell_pct": 50.88,
+        "differenz_pp": 0.43
+       },
+       "2022": {
+        "tipps": 1259,
+        "richtig": 640,
+        "falsch": 619,
+        "trefferquote_pct": 50.83,
+        "mittel_modell_pct": 50.86,
+        "differenz_pp": -0.02
+       },
+       "2023": {
+        "tipps": 1259,
+        "richtig": 640,
+        "falsch": 619,
+        "trefferquote_pct": 50.83,
+        "mittel_modell_pct": 50.86,
+        "differenz_pp": -0.03
+       },
+       "2024": {
+        "tipps": 1218,
+        "richtig": 624,
+        "falsch": 594,
+        "trefferquote_pct": 51.23,
+        "mittel_modell_pct": 50.87,
+        "differenz_pp": 0.36
+       },
+       "2025": {
+        "tipps": 1241,
+        "richtig": 635,
+        "falsch": 606,
+        "trefferquote_pct": 51.17,
+        "mittel_modell_pct": 50.85,
+        "differenz_pp": 0.32
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.444
+     },
+     "55": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "60": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "65": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "70": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "75": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "80": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "85": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "90": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     }
+    },
+    "unter1": {
+     "50": {
+      "gepoolt": {
+       "tipps": 21554,
+       "richtig": 11550,
+       "falsch": 10004,
+       "trefferquote_pct": 53.59,
+       "mittel_modell_pct": 53.45,
+       "differenz_pp": 0.14,
+       "ci95_pp": [
+        -0.52,
+        0.88
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 2460,
+        "richtig": 1332,
+        "falsch": 1128,
+        "trefferquote_pct": 54.15,
+        "mittel_modell_pct": 53.41,
+        "differenz_pp": 0.74
+       },
+       "2018": {
+        "tipps": 2460,
+        "richtig": 1355,
+        "falsch": 1105,
+        "trefferquote_pct": 55.08,
+        "mittel_modell_pct": 53.46,
+        "differenz_pp": 1.62
+       },
+       "2019": {
+        "tipps": 2118,
+        "richtig": 1131,
+        "falsch": 987,
+        "trefferquote_pct": 53.4,
+        "mittel_modell_pct": 53.47,
+        "differenz_pp": -0.07
+       },
+       "2020": {
+        "tipps": 2162,
+        "richtig": 1142,
+        "falsch": 1020,
+        "trefferquote_pct": 52.82,
+        "mittel_modell_pct": 53.49,
+        "differenz_pp": -0.66
+       },
+       "2021": {
+        "tipps": 2460,
+        "richtig": 1328,
+        "falsch": 1132,
+        "trefferquote_pct": 53.98,
+        "mittel_modell_pct": 53.46,
+        "differenz_pp": 0.52
+       },
+       "2022": {
+        "tipps": 2472,
+        "richtig": 1327,
+        "falsch": 1145,
+        "trefferquote_pct": 53.68,
+        "mittel_modell_pct": 53.45,
+        "differenz_pp": 0.23
+       },
+       "2023": {
+        "tipps": 2474,
+        "richtig": 1276,
+        "falsch": 1198,
+        "trefferquote_pct": 51.58,
+        "mittel_modell_pct": 53.45,
+        "differenz_pp": -1.88
+       },
+       "2024": {
+        "tipps": 2474,
+        "richtig": 1323,
+        "falsch": 1151,
+        "trefferquote_pct": 53.48,
+        "mittel_modell_pct": 53.43,
+        "differenz_pp": 0.05
+       },
+       "2025": {
+        "tipps": 2474,
+        "richtig": 1336,
+        "falsch": 1138,
+        "trefferquote_pct": 54.0,
+        "mittel_modell_pct": 53.43,
+        "differenz_pp": 0.57
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.667
+     },
+     "55": {
+      "gepoolt": {
+       "tipps": 924,
+       "richtig": 500,
+       "falsch": 424,
+       "trefferquote_pct": 54.11,
+       "mittel_modell_pct": 55.07,
+       "differenz_pp": -0.96,
+       "ci95_pp": [
+        -3.85,
+        2.15
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 105,
+        "richtig": 69,
+        "falsch": 36,
+        "trefferquote_pct": 65.71,
+        "mittel_modell_pct": 55.07,
+        "differenz_pp": 10.65
+       },
+       "2018": {
+        "tipps": 125,
+        "richtig": 76,
+        "falsch": 49,
+        "trefferquote_pct": 60.8,
+        "mittel_modell_pct": 55.07,
+        "differenz_pp": 5.73
+       },
+       "2019": {
+        "tipps": 101,
+        "richtig": 42,
+        "falsch": 59,
+        "trefferquote_pct": 41.58,
+        "mittel_modell_pct": 55.08,
+        "differenz_pp": -13.49
+       },
+       "2020": {
+        "tipps": 89,
+        "richtig": 54,
+        "falsch": 35,
+        "trefferquote_pct": 60.67,
+        "mittel_modell_pct": 55.07,
+        "differenz_pp": 5.61
+       },
+       "2021": {
+        "tipps": 105,
+        "richtig": 57,
+        "falsch": 48,
+        "trefferquote_pct": 54.29,
+        "mittel_modell_pct": 55.07,
+        "differenz_pp": -0.79
+       },
+       "2022": {
+        "tipps": 92,
+        "richtig": 43,
+        "falsch": 49,
+        "trefferquote_pct": 46.74,
+        "mittel_modell_pct": 55.07,
+        "differenz_pp": -8.33
+       },
+       "2023": {
+        "tipps": 84,
+        "richtig": 40,
+        "falsch": 44,
+        "trefferquote_pct": 47.62,
+        "mittel_modell_pct": 55.07,
+        "differenz_pp": -7.45
+       },
+       "2024": {
+        "tipps": 110,
+        "richtig": 52,
+        "falsch": 58,
+        "trefferquote_pct": 47.27,
+        "mittel_modell_pct": 55.07,
+        "differenz_pp": -7.8
+       },
+       "2025": {
+        "tipps": 113,
+        "richtig": 67,
+        "falsch": 46,
+        "trefferquote_pct": 59.29,
+        "mittel_modell_pct": 55.07,
+        "differenz_pp": 4.22
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.444
+     },
+     "60": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "65": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "70": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "75": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "80": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "85": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "90": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     }
+    },
+    "unter2": {
+     "50": {
+      "gepoolt": {
+       "tipps": 21554,
+       "richtig": 12343,
+       "falsch": 9211,
+       "trefferquote_pct": 57.27,
+       "mittel_modell_pct": 56.86,
+       "differenz_pp": 0.41,
+       "ci95_pp": [
+        -0.28,
+        1.16
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 2460,
+        "richtig": 1430,
+        "falsch": 1030,
+        "trefferquote_pct": 58.13,
+        "mittel_modell_pct": 56.82,
+        "differenz_pp": 1.31
+       },
+       "2018": {
+        "tipps": 2460,
+        "richtig": 1443,
+        "falsch": 1017,
+        "trefferquote_pct": 58.66,
+        "mittel_modell_pct": 56.87,
+        "differenz_pp": 1.79
+       },
+       "2019": {
+        "tipps": 2118,
+        "richtig": 1207,
+        "falsch": 911,
+        "trefferquote_pct": 56.99,
+        "mittel_modell_pct": 56.88,
+        "differenz_pp": 0.11
+       },
+       "2020": {
+        "tipps": 2162,
+        "richtig": 1217,
+        "falsch": 945,
+        "trefferquote_pct": 56.29,
+        "mittel_modell_pct": 56.89,
+        "differenz_pp": -0.6
+       },
+       "2021": {
+        "tipps": 2460,
+        "richtig": 1413,
+        "falsch": 1047,
+        "trefferquote_pct": 57.44,
+        "mittel_modell_pct": 56.87,
+        "differenz_pp": 0.57
+       },
+       "2022": {
+        "tipps": 2472,
+        "richtig": 1422,
+        "falsch": 1050,
+        "trefferquote_pct": 57.52,
+        "mittel_modell_pct": 56.86,
+        "differenz_pp": 0.66
+       },
+       "2023": {
+        "tipps": 2474,
+        "richtig": 1363,
+        "falsch": 1111,
+        "trefferquote_pct": 55.09,
+        "mittel_modell_pct": 56.86,
+        "differenz_pp": -1.77
+       },
+       "2024": {
+        "tipps": 2474,
+        "richtig": 1419,
+        "falsch": 1055,
+        "trefferquote_pct": 57.36,
+        "mittel_modell_pct": 56.84,
+        "differenz_pp": 0.52
+       },
+       "2025": {
+        "tipps": 2474,
+        "richtig": 1429,
+        "falsch": 1045,
+        "trefferquote_pct": 57.76,
+        "mittel_modell_pct": 56.84,
+        "differenz_pp": 0.92
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.778
+     },
+     "55": {
+      "gepoolt": {
+       "tipps": 21554,
+       "richtig": 12343,
+       "falsch": 9211,
+       "trefferquote_pct": 57.27,
+       "mittel_modell_pct": 56.86,
+       "differenz_pp": 0.41,
+       "ci95_pp": [
+        -0.28,
+        1.16
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 2460,
+        "richtig": 1430,
+        "falsch": 1030,
+        "trefferquote_pct": 58.13,
+        "mittel_modell_pct": 56.82,
+        "differenz_pp": 1.31
+       },
+       "2018": {
+        "tipps": 2460,
+        "richtig": 1443,
+        "falsch": 1017,
+        "trefferquote_pct": 58.66,
+        "mittel_modell_pct": 56.87,
+        "differenz_pp": 1.79
+       },
+       "2019": {
+        "tipps": 2118,
+        "richtig": 1207,
+        "falsch": 911,
+        "trefferquote_pct": 56.99,
+        "mittel_modell_pct": 56.88,
+        "differenz_pp": 0.11
+       },
+       "2020": {
+        "tipps": 2162,
+        "richtig": 1217,
+        "falsch": 945,
+        "trefferquote_pct": 56.29,
+        "mittel_modell_pct": 56.89,
+        "differenz_pp": -0.6
+       },
+       "2021": {
+        "tipps": 2460,
+        "richtig": 1413,
+        "falsch": 1047,
+        "trefferquote_pct": 57.44,
+        "mittel_modell_pct": 56.87,
+        "differenz_pp": 0.57
+       },
+       "2022": {
+        "tipps": 2472,
+        "richtig": 1422,
+        "falsch": 1050,
+        "trefferquote_pct": 57.52,
+        "mittel_modell_pct": 56.86,
+        "differenz_pp": 0.66
+       },
+       "2023": {
+        "tipps": 2474,
+        "richtig": 1363,
+        "falsch": 1111,
+        "trefferquote_pct": 55.09,
+        "mittel_modell_pct": 56.86,
+        "differenz_pp": -1.77
+       },
+       "2024": {
+        "tipps": 2474,
+        "richtig": 1419,
+        "falsch": 1055,
+        "trefferquote_pct": 57.36,
+        "mittel_modell_pct": 56.84,
+        "differenz_pp": 0.52
+       },
+       "2025": {
+        "tipps": 2474,
+        "richtig": 1429,
+        "falsch": 1045,
+        "trefferquote_pct": 57.76,
+        "mittel_modell_pct": 56.84,
+        "differenz_pp": 0.92
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.778
+     },
+     "60": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "65": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "70": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "75": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "80": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "85": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "90": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     }
+    },
+    "unter3": {
+     "50": {
+      "gepoolt": {
+       "tipps": 21554,
+       "richtig": 13043,
+       "falsch": 8511,
+       "trefferquote_pct": 60.51,
+       "mittel_modell_pct": 60.22,
+       "differenz_pp": 0.3,
+       "ci95_pp": [
+        -0.37,
+        1.02
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 2460,
+        "richtig": 1497,
+        "falsch": 963,
+        "trefferquote_pct": 60.85,
+        "mittel_modell_pct": 60.18,
+        "differenz_pp": 0.68
+       },
+       "2018": {
+        "tipps": 2460,
+        "richtig": 1527,
+        "falsch": 933,
+        "trefferquote_pct": 62.07,
+        "mittel_modell_pct": 60.23,
+        "differenz_pp": 1.84
+       },
+       "2019": {
+        "tipps": 2118,
+        "richtig": 1275,
+        "falsch": 843,
+        "trefferquote_pct": 60.2,
+        "mittel_modell_pct": 60.24,
+        "differenz_pp": -0.04
+       },
+       "2020": {
+        "tipps": 2162,
+        "richtig": 1291,
+        "falsch": 871,
+        "trefferquote_pct": 59.71,
+        "mittel_modell_pct": 60.25,
+        "differenz_pp": -0.54
+       },
+       "2021": {
+        "tipps": 2460,
+        "richtig": 1499,
+        "falsch": 961,
+        "trefferquote_pct": 60.93,
+        "mittel_modell_pct": 60.23,
+        "differenz_pp": 0.71
+       },
+       "2022": {
+        "tipps": 2472,
+        "richtig": 1506,
+        "falsch": 966,
+        "trefferquote_pct": 60.92,
+        "mittel_modell_pct": 60.22,
+        "differenz_pp": 0.7
+       },
+       "2023": {
+        "tipps": 2474,
+        "richtig": 1444,
+        "falsch": 1030,
+        "trefferquote_pct": 58.37,
+        "mittel_modell_pct": 60.22,
+        "differenz_pp": -1.85
+       },
+       "2024": {
+        "tipps": 2474,
+        "richtig": 1499,
+        "falsch": 975,
+        "trefferquote_pct": 60.59,
+        "mittel_modell_pct": 60.2,
+        "differenz_pp": 0.39
+       },
+       "2025": {
+        "tipps": 2474,
+        "richtig": 1505,
+        "falsch": 969,
+        "trefferquote_pct": 60.83,
+        "mittel_modell_pct": 60.2,
+        "differenz_pp": 0.64
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.667
+     },
+     "55": {
+      "gepoolt": {
+       "tipps": 21554,
+       "richtig": 13043,
+       "falsch": 8511,
+       "trefferquote_pct": 60.51,
+       "mittel_modell_pct": 60.22,
+       "differenz_pp": 0.3,
+       "ci95_pp": [
+        -0.37,
+        1.02
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 2460,
+        "richtig": 1497,
+        "falsch": 963,
+        "trefferquote_pct": 60.85,
+        "mittel_modell_pct": 60.18,
+        "differenz_pp": 0.68
+       },
+       "2018": {
+        "tipps": 2460,
+        "richtig": 1527,
+        "falsch": 933,
+        "trefferquote_pct": 62.07,
+        "mittel_modell_pct": 60.23,
+        "differenz_pp": 1.84
+       },
+       "2019": {
+        "tipps": 2118,
+        "richtig": 1275,
+        "falsch": 843,
+        "trefferquote_pct": 60.2,
+        "mittel_modell_pct": 60.24,
+        "differenz_pp": -0.04
+       },
+       "2020": {
+        "tipps": 2162,
+        "richtig": 1291,
+        "falsch": 871,
+        "trefferquote_pct": 59.71,
+        "mittel_modell_pct": 60.25,
+        "differenz_pp": -0.54
+       },
+       "2021": {
+        "tipps": 2460,
+        "richtig": 1499,
+        "falsch": 961,
+        "trefferquote_pct": 60.93,
+        "mittel_modell_pct": 60.23,
+        "differenz_pp": 0.71
+       },
+       "2022": {
+        "tipps": 2472,
+        "richtig": 1506,
+        "falsch": 966,
+        "trefferquote_pct": 60.92,
+        "mittel_modell_pct": 60.22,
+        "differenz_pp": 0.7
+       },
+       "2023": {
+        "tipps": 2474,
+        "richtig": 1444,
+        "falsch": 1030,
+        "trefferquote_pct": 58.37,
+        "mittel_modell_pct": 60.22,
+        "differenz_pp": -1.85
+       },
+       "2024": {
+        "tipps": 2474,
+        "richtig": 1499,
+        "falsch": 975,
+        "trefferquote_pct": 60.59,
+        "mittel_modell_pct": 60.2,
+        "differenz_pp": 0.39
+       },
+       "2025": {
+        "tipps": 2474,
+        "richtig": 1505,
+        "falsch": 969,
+        "trefferquote_pct": 60.83,
+        "mittel_modell_pct": 60.2,
+        "differenz_pp": 0.64
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.667
+     },
+     "60": {
+      "gepoolt": {
+       "tipps": 12239,
+       "richtig": 7494,
+       "falsch": 4745,
+       "trefferquote_pct": 61.23,
+       "mittel_modell_pct": 60.94,
+       "differenz_pp": 0.29,
+       "ci95_pp": [
+        -0.55,
+        1.21
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 1341,
+        "richtig": 816,
+        "falsch": 525,
+        "trefferquote_pct": 60.85,
+        "mittel_modell_pct": 60.93,
+        "differenz_pp": -0.08
+       },
+       "2018": {
+        "tipps": 1385,
+        "richtig": 877,
+        "falsch": 508,
+        "trefferquote_pct": 63.32,
+        "mittel_modell_pct": 60.96,
+        "differenz_pp": 2.36
+       },
+       "2019": {
+        "tipps": 1236,
+        "richtig": 739,
+        "falsch": 497,
+        "trefferquote_pct": 59.79,
+        "mittel_modell_pct": 60.93,
+        "differenz_pp": -1.14
+       },
+       "2020": {
+        "tipps": 1261,
+        "richtig": 765,
+        "falsch": 496,
+        "trefferquote_pct": 60.67,
+        "mittel_modell_pct": 60.94,
+        "differenz_pp": -0.27
+       },
+       "2021": {
+        "tipps": 1407,
+        "richtig": 866,
+        "falsch": 541,
+        "trefferquote_pct": 61.55,
+        "mittel_modell_pct": 60.95,
+        "differenz_pp": 0.6
+       },
+       "2022": {
+        "tipps": 1423,
+        "richtig": 889,
+        "falsch": 534,
+        "trefferquote_pct": 62.47,
+        "mittel_modell_pct": 60.92,
+        "differenz_pp": 1.55
+       },
+       "2023": {
+        "tipps": 1419,
+        "richtig": 853,
+        "falsch": 566,
+        "trefferquote_pct": 60.11,
+        "mittel_modell_pct": 60.93,
+        "differenz_pp": -0.82
+       },
+       "2024": {
+        "tipps": 1374,
+        "richtig": 842,
+        "falsch": 532,
+        "trefferquote_pct": 61.28,
+        "mittel_modell_pct": 60.94,
+        "differenz_pp": 0.34
+       },
+       "2025": {
+        "tipps": 1393,
+        "richtig": 847,
+        "falsch": 546,
+        "trefferquote_pct": 60.8,
+        "mittel_modell_pct": 60.92,
+        "differenz_pp": -0.12
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.444
+     },
+     "65": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "70": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "75": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "80": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "85": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "90": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     }
+    },
+    "unter4": {
+     "50": {
+      "gepoolt": {
+       "tipps": 21554,
+       "richtig": 13724,
+       "falsch": 7830,
+       "trefferquote_pct": 63.67,
+       "mittel_modell_pct": 63.5,
+       "differenz_pp": 0.17,
+       "ci95_pp": [
+        -0.49,
+        0.87
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 2460,
+        "richtig": 1572,
+        "falsch": 888,
+        "trefferquote_pct": 63.9,
+        "mittel_modell_pct": 63.46,
+        "differenz_pp": 0.44
+       },
+       "2018": {
+        "tipps": 2460,
+        "richtig": 1593,
+        "falsch": 867,
+        "trefferquote_pct": 64.76,
+        "mittel_modell_pct": 63.51,
+        "differenz_pp": 1.24
+       },
+       "2019": {
+        "tipps": 2118,
+        "richtig": 1359,
+        "falsch": 759,
+        "trefferquote_pct": 64.16,
+        "mittel_modell_pct": 63.52,
+        "differenz_pp": 0.64
+       },
+       "2020": {
+        "tipps": 2162,
+        "richtig": 1352,
+        "falsch": 810,
+        "trefferquote_pct": 62.53,
+        "mittel_modell_pct": 63.53,
+        "differenz_pp": -1.0
+       },
+       "2021": {
+        "tipps": 2460,
+        "richtig": 1574,
+        "falsch": 886,
+        "trefferquote_pct": 63.98,
+        "mittel_modell_pct": 63.51,
+        "differenz_pp": 0.47
+       },
+       "2022": {
+        "tipps": 2472,
+        "richtig": 1594,
+        "falsch": 878,
+        "trefferquote_pct": 64.48,
+        "mittel_modell_pct": 63.5,
+        "differenz_pp": 0.98
+       },
+       "2023": {
+        "tipps": 2474,
+        "richtig": 1525,
+        "falsch": 949,
+        "trefferquote_pct": 61.64,
+        "mittel_modell_pct": 63.5,
+        "differenz_pp": -1.86
+       },
+       "2024": {
+        "tipps": 2474,
+        "richtig": 1585,
+        "falsch": 889,
+        "trefferquote_pct": 64.07,
+        "mittel_modell_pct": 63.48,
+        "differenz_pp": 0.58
+       },
+       "2025": {
+        "tipps": 2474,
+        "richtig": 1570,
+        "falsch": 904,
+        "trefferquote_pct": 63.46,
+        "mittel_modell_pct": 63.48,
+        "differenz_pp": -0.02
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.667
+     },
+     "55": {
+      "gepoolt": {
+       "tipps": 21554,
+       "richtig": 13724,
+       "falsch": 7830,
+       "trefferquote_pct": 63.67,
+       "mittel_modell_pct": 63.5,
+       "differenz_pp": 0.17,
+       "ci95_pp": [
+        -0.49,
+        0.87
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 2460,
+        "richtig": 1572,
+        "falsch": 888,
+        "trefferquote_pct": 63.9,
+        "mittel_modell_pct": 63.46,
+        "differenz_pp": 0.44
+       },
+       "2018": {
+        "tipps": 2460,
+        "richtig": 1593,
+        "falsch": 867,
+        "trefferquote_pct": 64.76,
+        "mittel_modell_pct": 63.51,
+        "differenz_pp": 1.24
+       },
+       "2019": {
+        "tipps": 2118,
+        "richtig": 1359,
+        "falsch": 759,
+        "trefferquote_pct": 64.16,
+        "mittel_modell_pct": 63.52,
+        "differenz_pp": 0.64
+       },
+       "2020": {
+        "tipps": 2162,
+        "richtig": 1352,
+        "falsch": 810,
+        "trefferquote_pct": 62.53,
+        "mittel_modell_pct": 63.53,
+        "differenz_pp": -1.0
+       },
+       "2021": {
+        "tipps": 2460,
+        "richtig": 1574,
+        "falsch": 886,
+        "trefferquote_pct": 63.98,
+        "mittel_modell_pct": 63.51,
+        "differenz_pp": 0.47
+       },
+       "2022": {
+        "tipps": 2472,
+        "richtig": 1594,
+        "falsch": 878,
+        "trefferquote_pct": 64.48,
+        "mittel_modell_pct": 63.5,
+        "differenz_pp": 0.98
+       },
+       "2023": {
+        "tipps": 2474,
+        "richtig": 1525,
+        "falsch": 949,
+        "trefferquote_pct": 61.64,
+        "mittel_modell_pct": 63.5,
+        "differenz_pp": -1.86
+       },
+       "2024": {
+        "tipps": 2474,
+        "richtig": 1585,
+        "falsch": 889,
+        "trefferquote_pct": 64.07,
+        "mittel_modell_pct": 63.48,
+        "differenz_pp": 0.58
+       },
+       "2025": {
+        "tipps": 2474,
+        "richtig": 1570,
+        "falsch": 904,
+        "trefferquote_pct": 63.46,
+        "mittel_modell_pct": 63.48,
+        "differenz_pp": -0.02
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.667
+     },
+     "60": {
+      "gepoolt": {
+       "tipps": 21554,
+       "richtig": 13724,
+       "falsch": 7830,
+       "trefferquote_pct": 63.67,
+       "mittel_modell_pct": 63.5,
+       "differenz_pp": 0.17,
+       "ci95_pp": [
+        -0.49,
+        0.87
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 2460,
+        "richtig": 1572,
+        "falsch": 888,
+        "trefferquote_pct": 63.9,
+        "mittel_modell_pct": 63.46,
+        "differenz_pp": 0.44
+       },
+       "2018": {
+        "tipps": 2460,
+        "richtig": 1593,
+        "falsch": 867,
+        "trefferquote_pct": 64.76,
+        "mittel_modell_pct": 63.51,
+        "differenz_pp": 1.24
+       },
+       "2019": {
+        "tipps": 2118,
+        "richtig": 1359,
+        "falsch": 759,
+        "trefferquote_pct": 64.16,
+        "mittel_modell_pct": 63.52,
+        "differenz_pp": 0.64
+       },
+       "2020": {
+        "tipps": 2162,
+        "richtig": 1352,
+        "falsch": 810,
+        "trefferquote_pct": 62.53,
+        "mittel_modell_pct": 63.53,
+        "differenz_pp": -1.0
+       },
+       "2021": {
+        "tipps": 2460,
+        "richtig": 1574,
+        "falsch": 886,
+        "trefferquote_pct": 63.98,
+        "mittel_modell_pct": 63.51,
+        "differenz_pp": 0.47
+       },
+       "2022": {
+        "tipps": 2472,
+        "richtig": 1594,
+        "falsch": 878,
+        "trefferquote_pct": 64.48,
+        "mittel_modell_pct": 63.5,
+        "differenz_pp": 0.98
+       },
+       "2023": {
+        "tipps": 2474,
+        "richtig": 1525,
+        "falsch": 949,
+        "trefferquote_pct": 61.64,
+        "mittel_modell_pct": 63.5,
+        "differenz_pp": -1.86
+       },
+       "2024": {
+        "tipps": 2474,
+        "richtig": 1585,
+        "falsch": 889,
+        "trefferquote_pct": 64.07,
+        "mittel_modell_pct": 63.48,
+        "differenz_pp": 0.58
+       },
+       "2025": {
+        "tipps": 2474,
+        "richtig": 1570,
+        "falsch": 904,
+        "trefferquote_pct": 63.46,
+        "mittel_modell_pct": 63.48,
+        "differenz_pp": -0.02
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.667
+     },
+     "65": {
+      "gepoolt": {
+       "tipps": 638,
+       "richtig": 417,
+       "falsch": 221,
+       "trefferquote_pct": 65.36,
+       "mittel_modell_pct": 65.05,
+       "differenz_pp": 0.31,
+       "ci95_pp": [
+        -3.11,
+        3.82
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 74,
+        "richtig": 49,
+        "falsch": 25,
+        "trefferquote_pct": 66.22,
+        "mittel_modell_pct": 65.04,
+        "differenz_pp": 1.18
+       },
+       "2018": {
+        "tipps": 84,
+        "richtig": 61,
+        "falsch": 23,
+        "trefferquote_pct": 72.62,
+        "mittel_modell_pct": 65.05,
+        "differenz_pp": 7.57
+       },
+       "2019": {
+        "tipps": 76,
+        "richtig": 45,
+        "falsch": 31,
+        "trefferquote_pct": 59.21,
+        "mittel_modell_pct": 65.05,
+        "differenz_pp": -5.84
+       },
+       "2020": {
+        "tipps": 57,
+        "richtig": 41,
+        "falsch": 16,
+        "trefferquote_pct": 71.93,
+        "mittel_modell_pct": 65.05,
+        "differenz_pp": 6.88
+       },
+       "2021": {
+        "tipps": 70,
+        "richtig": 46,
+        "falsch": 24,
+        "trefferquote_pct": 65.71,
+        "mittel_modell_pct": 65.05,
+        "differenz_pp": 0.66
+       },
+       "2022": {
+        "tipps": 62,
+        "richtig": 35,
+        "falsch": 27,
+        "trefferquote_pct": 56.45,
+        "mittel_modell_pct": 65.05,
+        "differenz_pp": -8.6
+       },
+       "2023": {
+        "tipps": 58,
+        "richtig": 32,
+        "falsch": 26,
+        "trefferquote_pct": 55.17,
+        "mittel_modell_pct": 65.05,
+        "differenz_pp": -9.88
+       },
+       "2024": {
+        "tipps": 79,
+        "richtig": 50,
+        "falsch": 29,
+        "trefferquote_pct": 63.29,
+        "mittel_modell_pct": 65.05,
+        "differenz_pp": -1.76
+       },
+       "2025": {
+        "tipps": 78,
+        "richtig": 58,
+        "falsch": 20,
+        "trefferquote_pct": 74.36,
+        "mittel_modell_pct": 65.04,
+        "differenz_pp": 9.31
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.556
+     },
+     "70": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "75": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "80": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "85": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "90": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     }
+    },
+    "unter5": {
+     "50": {
+      "gepoolt": {
+       "tipps": 21554,
+       "richtig": 14389,
+       "falsch": 7165,
+       "trefferquote_pct": 66.76,
+       "mittel_modell_pct": 66.69,
+       "differenz_pp": 0.07,
+       "ci95_pp": [
+        -0.61,
+        0.75
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 2460,
+        "richtig": 1645,
+        "falsch": 815,
+        "trefferquote_pct": 66.87,
+        "mittel_modell_pct": 66.65,
+        "differenz_pp": 0.22
+       },
+       "2018": {
+        "tipps": 2460,
+        "richtig": 1690,
+        "falsch": 770,
+        "trefferquote_pct": 68.7,
+        "mittel_modell_pct": 66.7,
+        "differenz_pp": 2.0
+       },
+       "2019": {
+        "tipps": 2118,
+        "richtig": 1427,
+        "falsch": 691,
+        "trefferquote_pct": 67.37,
+        "mittel_modell_pct": 66.71,
+        "differenz_pp": 0.67
+       },
+       "2020": {
+        "tipps": 2162,
+        "richtig": 1409,
+        "falsch": 753,
+        "trefferquote_pct": 65.17,
+        "mittel_modell_pct": 66.72,
+        "differenz_pp": -1.55
+       },
+       "2021": {
+        "tipps": 2460,
+        "richtig": 1644,
+        "falsch": 816,
+        "trefferquote_pct": 66.83,
+        "mittel_modell_pct": 66.7,
+        "differenz_pp": 0.13
+       },
+       "2022": {
+        "tipps": 2472,
+        "richtig": 1663,
+        "falsch": 809,
+        "trefferquote_pct": 67.27,
+        "mittel_modell_pct": 66.69,
+        "differenz_pp": 0.58
+       },
+       "2023": {
+        "tipps": 2474,
+        "richtig": 1609,
+        "falsch": 865,
+        "trefferquote_pct": 65.04,
+        "mittel_modell_pct": 66.69,
+        "differenz_pp": -1.66
+       },
+       "2024": {
+        "tipps": 2474,
+        "richtig": 1651,
+        "falsch": 823,
+        "trefferquote_pct": 66.73,
+        "mittel_modell_pct": 66.67,
+        "differenz_pp": 0.06
+       },
+       "2025": {
+        "tipps": 2474,
+        "richtig": 1651,
+        "falsch": 823,
+        "trefferquote_pct": 66.73,
+        "mittel_modell_pct": 66.67,
+        "differenz_pp": 0.06
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.778
+     },
+     "55": {
+      "gepoolt": {
+       "tipps": 21554,
+       "richtig": 14389,
+       "falsch": 7165,
+       "trefferquote_pct": 66.76,
+       "mittel_modell_pct": 66.69,
+       "differenz_pp": 0.07,
+       "ci95_pp": [
+        -0.61,
+        0.75
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 2460,
+        "richtig": 1645,
+        "falsch": 815,
+        "trefferquote_pct": 66.87,
+        "mittel_modell_pct": 66.65,
+        "differenz_pp": 0.22
+       },
+       "2018": {
+        "tipps": 2460,
+        "richtig": 1690,
+        "falsch": 770,
+        "trefferquote_pct": 68.7,
+        "mittel_modell_pct": 66.7,
+        "differenz_pp": 2.0
+       },
+       "2019": {
+        "tipps": 2118,
+        "richtig": 1427,
+        "falsch": 691,
+        "trefferquote_pct": 67.37,
+        "mittel_modell_pct": 66.71,
+        "differenz_pp": 0.67
+       },
+       "2020": {
+        "tipps": 2162,
+        "richtig": 1409,
+        "falsch": 753,
+        "trefferquote_pct": 65.17,
+        "mittel_modell_pct": 66.72,
+        "differenz_pp": -1.55
+       },
+       "2021": {
+        "tipps": 2460,
+        "richtig": 1644,
+        "falsch": 816,
+        "trefferquote_pct": 66.83,
+        "mittel_modell_pct": 66.7,
+        "differenz_pp": 0.13
+       },
+       "2022": {
+        "tipps": 2472,
+        "richtig": 1663,
+        "falsch": 809,
+        "trefferquote_pct": 67.27,
+        "mittel_modell_pct": 66.69,
+        "differenz_pp": 0.58
+       },
+       "2023": {
+        "tipps": 2474,
+        "richtig": 1609,
+        "falsch": 865,
+        "trefferquote_pct": 65.04,
+        "mittel_modell_pct": 66.69,
+        "differenz_pp": -1.66
+       },
+       "2024": {
+        "tipps": 2474,
+        "richtig": 1651,
+        "falsch": 823,
+        "trefferquote_pct": 66.73,
+        "mittel_modell_pct": 66.67,
+        "differenz_pp": 0.06
+       },
+       "2025": {
+        "tipps": 2474,
+        "richtig": 1651,
+        "falsch": 823,
+        "trefferquote_pct": 66.73,
+        "mittel_modell_pct": 66.67,
+        "differenz_pp": 0.06
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.778
+     },
+     "60": {
+      "gepoolt": {
+       "tipps": 21554,
+       "richtig": 14389,
+       "falsch": 7165,
+       "trefferquote_pct": 66.76,
+       "mittel_modell_pct": 66.69,
+       "differenz_pp": 0.07,
+       "ci95_pp": [
+        -0.61,
+        0.75
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 2460,
+        "richtig": 1645,
+        "falsch": 815,
+        "trefferquote_pct": 66.87,
+        "mittel_modell_pct": 66.65,
+        "differenz_pp": 0.22
+       },
+       "2018": {
+        "tipps": 2460,
+        "richtig": 1690,
+        "falsch": 770,
+        "trefferquote_pct": 68.7,
+        "mittel_modell_pct": 66.7,
+        "differenz_pp": 2.0
+       },
+       "2019": {
+        "tipps": 2118,
+        "richtig": 1427,
+        "falsch": 691,
+        "trefferquote_pct": 67.37,
+        "mittel_modell_pct": 66.71,
+        "differenz_pp": 0.67
+       },
+       "2020": {
+        "tipps": 2162,
+        "richtig": 1409,
+        "falsch": 753,
+        "trefferquote_pct": 65.17,
+        "mittel_modell_pct": 66.72,
+        "differenz_pp": -1.55
+       },
+       "2021": {
+        "tipps": 2460,
+        "richtig": 1644,
+        "falsch": 816,
+        "trefferquote_pct": 66.83,
+        "mittel_modell_pct": 66.7,
+        "differenz_pp": 0.13
+       },
+       "2022": {
+        "tipps": 2472,
+        "richtig": 1663,
+        "falsch": 809,
+        "trefferquote_pct": 67.27,
+        "mittel_modell_pct": 66.69,
+        "differenz_pp": 0.58
+       },
+       "2023": {
+        "tipps": 2474,
+        "richtig": 1609,
+        "falsch": 865,
+        "trefferquote_pct": 65.04,
+        "mittel_modell_pct": 66.69,
+        "differenz_pp": -1.66
+       },
+       "2024": {
+        "tipps": 2474,
+        "richtig": 1651,
+        "falsch": 823,
+        "trefferquote_pct": 66.73,
+        "mittel_modell_pct": 66.67,
+        "differenz_pp": 0.06
+       },
+       "2025": {
+        "tipps": 2474,
+        "richtig": 1651,
+        "falsch": 823,
+        "trefferquote_pct": 66.73,
+        "mittel_modell_pct": 66.67,
+        "differenz_pp": 0.06
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.778
+     },
+     "65": {
+      "gepoolt": {
+       "tipps": 21554,
+       "richtig": 14389,
+       "falsch": 7165,
+       "trefferquote_pct": 66.76,
+       "mittel_modell_pct": 66.69,
+       "differenz_pp": 0.07,
+       "ci95_pp": [
+        -0.61,
+        0.75
+       ],
+       "urteil": "im Rahmen"
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 2460,
+        "richtig": 1645,
+        "falsch": 815,
+        "trefferquote_pct": 66.87,
+        "mittel_modell_pct": 66.65,
+        "differenz_pp": 0.22
+       },
+       "2018": {
+        "tipps": 2460,
+        "richtig": 1690,
+        "falsch": 770,
+        "trefferquote_pct": 68.7,
+        "mittel_modell_pct": 66.7,
+        "differenz_pp": 2.0
+       },
+       "2019": {
+        "tipps": 2118,
+        "richtig": 1427,
+        "falsch": 691,
+        "trefferquote_pct": 67.37,
+        "mittel_modell_pct": 66.71,
+        "differenz_pp": 0.67
+       },
+       "2020": {
+        "tipps": 2162,
+        "richtig": 1409,
+        "falsch": 753,
+        "trefferquote_pct": 65.17,
+        "mittel_modell_pct": 66.72,
+        "differenz_pp": -1.55
+       },
+       "2021": {
+        "tipps": 2460,
+        "richtig": 1644,
+        "falsch": 816,
+        "trefferquote_pct": 66.83,
+        "mittel_modell_pct": 66.7,
+        "differenz_pp": 0.13
+       },
+       "2022": {
+        "tipps": 2472,
+        "richtig": 1663,
+        "falsch": 809,
+        "trefferquote_pct": 67.27,
+        "mittel_modell_pct": 66.69,
+        "differenz_pp": 0.58
+       },
+       "2023": {
+        "tipps": 2474,
+        "richtig": 1609,
+        "falsch": 865,
+        "trefferquote_pct": 65.04,
+        "mittel_modell_pct": 66.69,
+        "differenz_pp": -1.66
+       },
+       "2024": {
+        "tipps": 2474,
+        "richtig": 1651,
+        "falsch": 823,
+        "trefferquote_pct": 66.73,
+        "mittel_modell_pct": 66.67,
+        "differenz_pp": 0.06
+       },
+       "2025": {
+        "tipps": 2474,
+        "richtig": 1651,
+        "falsch": 823,
+        "trefferquote_pct": 66.73,
+        "mittel_modell_pct": 66.67,
+        "differenz_pp": 0.06
+       }
+      },
+      "saisons_bewertet": 9,
+      "anteil_saisons_treffer_ge_modell": 0.778
+     },
+     "70": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "75": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "80": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "85": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     },
+     "90": {
+      "gepoolt": {
+       "tipps": 0
+      },
+      "saisons": {
+       "2017": {
+        "tipps": 0
+       },
+       "2018": {
+        "tipps": 0
+       },
+       "2019": {
+        "tipps": 0
+       },
+       "2020": {
+        "tipps": 0
+       },
+       "2021": {
+        "tipps": 0
+       },
+       "2022": {
+        "tipps": 0
+       },
+       "2023": {
+        "tipps": 0
+       },
+       "2024": {
+        "tipps": 0
+       },
+       "2025": {
+        "tipps": 0
+       }
+      },
+      "saisons_bewertet": 0,
+      "anteil_saisons_treffer_ge_modell": null
+     }
+    }
+   }
+  },
+  "kalibrierung": {
+   "win": {
+    "alle": {
+     "50": {
+      "n": 10777,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.65,
+      "max_stufe_ab100_pp": 2.88,
+      "gut": true
+     },
+     "55": {
+      "n": 8428,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.79,
+      "max_stufe_ab100_pp": 2.88,
+      "gut": true
+     },
+     "60": {
+      "n": 6163,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.67,
+      "max_stufe_ab100_pp": 2.88,
+      "gut": true
+     },
+     "65": {
+      "n": 4237,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.88,
+      "max_stufe_ab100_pp": 2.88,
+      "gut": true
+     },
+     "70": {
+      "n": 2673,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 1.17,
+      "max_stufe_ab100_pp": 2.88,
+      "gut": true
+     },
+     "75": {
+      "n": 1501,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 1.58,
+      "max_stufe_ab100_pp": 2.88,
+      "gut": true
+     },
+     "80": {
+      "n": 626,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 2.44,
+      "max_stufe_ab100_pp": 2.88,
+      "gut": true
+     },
+     "85": {
+      "n": 177,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 1.33,
+      "max_stufe_ab100_pp": 1.44,
+      "gut": true
+     },
+     "90": {
+      "n": 28,
+      "pruefbar": false
+     }
+    }
+   },
+   "total": {
+    "alle": {
+     "50": {
+      "n": 64662,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.23,
+      "max_stufe_ab100_pp": 0.4,
+      "gut": true
+     },
+     "55": {
+      "n": 34029,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.36,
+      "max_stufe_ab100_pp": 0.4,
+      "gut": true
+     },
+     "60": {
+      "n": 8495,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.24,
+      "max_stufe_ab100_pp": 0.24,
+      "gut": true
+     },
+     "65": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "70": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "75": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "80": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "85": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "90": {
+      "n": 0,
+      "pruefbar": false
+     }
+    },
+    "haupt": {
+     "50": {
+      "n": 10777,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.16,
+      "max_stufe_ab100_pp": 0.16,
+      "gut": true
+     },
+     "55": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "60": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "65": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "70": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "75": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "80": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "85": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "90": {
+      "n": 0,
+      "pruefbar": false
+     }
+    },
+    "unter1": {
+     "50": {
+      "n": 10777,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.4,
+      "max_stufe_ab100_pp": 0.4,
+      "gut": true
+     },
+     "55": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "60": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "65": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "70": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "75": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "80": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "85": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "90": {
+      "n": 0,
+      "pruefbar": false
+     }
+    },
+    "unter2": {
+     "50": {
+      "n": 10777,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.26,
+      "max_stufe_ab100_pp": 1.59,
+      "gut": true
+     },
+     "55": {
+      "n": 1698,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 1.59,
+      "max_stufe_ab100_pp": 1.59,
+      "gut": true
+     },
+     "60": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "65": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "70": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "75": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "80": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "85": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "90": {
+      "n": 0,
+      "pruefbar": false
+     }
+    },
+    "unter3": {
+     "50": {
+      "n": 10777,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.29,
+      "max_stufe_ab100_pp": 0.29,
+      "gut": true
+     },
+     "55": {
+      "n": 10777,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.29,
+      "max_stufe_ab100_pp": 0.29,
+      "gut": true
+     },
+     "60": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "65": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "70": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "75": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "80": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "85": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "90": {
+      "n": 0,
+      "pruefbar": false
+     }
+    },
+    "unter4": {
+     "50": {
+      "n": 10777,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.2,
+      "max_stufe_ab100_pp": 0.2,
+      "gut": true
+     },
+     "55": {
+      "n": 10777,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.2,
+      "max_stufe_ab100_pp": 0.2,
+      "gut": true
+     },
+     "60": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "65": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "70": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "75": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "80": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "85": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "90": {
+      "n": 0,
+      "pruefbar": false
+     }
+    },
+    "unter5": {
+     "50": {
+      "n": 10777,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.41,
+      "max_stufe_ab100_pp": 1.06,
+      "gut": true
+     },
+     "55": {
+      "n": 10777,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.41,
+      "max_stufe_ab100_pp": 1.06,
+      "gut": true
+     },
+     "60": {
+      "n": 8495,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.24,
+      "max_stufe_ab100_pp": 0.24,
+      "gut": true
+     },
+     "65": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "70": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "75": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "80": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "85": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "90": {
+      "n": 0,
+      "pruefbar": false
+     }
+    }
+   },
+   "tt": {
+    "alle": {
+     "50": {
+      "n": 129324,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.18,
+      "max_stufe_ab100_pp": 0.34,
+      "gut": true
+     },
+     "55": {
+      "n": 87140,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.22,
+      "max_stufe_ab100_pp": 0.34,
+      "gut": true
+     },
+     "60": {
+      "n": 55347,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.16,
+      "max_stufe_ab100_pp": 0.21,
+      "gut": true
+     },
+     "65": {
+      "n": 22192,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.08,
+      "max_stufe_ab100_pp": 0.08,
+      "gut": true
+     },
+     "70": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "75": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "80": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "85": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "90": {
+      "n": 0,
+      "pruefbar": false
+     }
+    },
+    "haupt": {
+     "50": {
+      "n": 21554,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.03,
+      "max_stufe_ab100_pp": 0.03,
+      "gut": true
+     },
+     "55": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "60": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "65": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "70": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "75": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "80": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "85": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "90": {
+      "n": 0,
+      "pruefbar": false
+     }
+    },
+    "unter1": {
+     "50": {
+      "n": 21554,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.21,
+      "max_stufe_ab100_pp": 0.96,
+      "gut": true
+     },
+     "55": {
+      "n": 924,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.96,
+      "max_stufe_ab100_pp": 0.96,
+      "gut": true
+     },
+     "60": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "65": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "70": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "75": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "80": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "85": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "90": {
+      "n": 0,
+      "pruefbar": false
+     }
+    },
+    "unter2": {
+     "50": {
+      "n": 21554,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.41,
+      "max_stufe_ab100_pp": 0.41,
+      "gut": true
+     },
+     "55": {
+      "n": 21554,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.41,
+      "max_stufe_ab100_pp": 0.41,
+      "gut": true
+     },
+     "60": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "65": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "70": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "75": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "80": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "85": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "90": {
+      "n": 0,
+      "pruefbar": false
+     }
+    },
+    "unter3": {
+     "50": {
+      "n": 21554,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.29,
+      "max_stufe_ab100_pp": 0.3,
+      "gut": true
+     },
+     "55": {
+      "n": 21554,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.29,
+      "max_stufe_ab100_pp": 0.3,
+      "gut": true
+     },
+     "60": {
+      "n": 12239,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.29,
+      "max_stufe_ab100_pp": 0.29,
+      "gut": true
+     },
+     "65": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "70": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "75": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "80": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "85": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "90": {
+      "n": 0,
+      "pruefbar": false
+     }
+    },
+    "unter4": {
+     "50": {
+      "n": 21554,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.17,
+      "max_stufe_ab100_pp": 0.31,
+      "gut": true
+     },
+     "55": {
+      "n": 21554,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.17,
+      "max_stufe_ab100_pp": 0.31,
+      "gut": true
+     },
+     "60": {
+      "n": 21554,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.17,
+      "max_stufe_ab100_pp": 0.31,
+      "gut": true
+     },
+     "65": {
+      "n": 638,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.31,
+      "max_stufe_ab100_pp": 0.31,
+      "gut": true
+     },
+     "70": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "75": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "80": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "85": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "90": {
+      "n": 0,
+      "pruefbar": false
+     }
+    },
+    "unter5": {
+     "50": {
+      "n": 21554,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.07,
+      "max_stufe_ab100_pp": 0.07,
+      "gut": true
+     },
+     "55": {
+      "n": 21554,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.07,
+      "max_stufe_ab100_pp": 0.07,
+      "gut": true
+     },
+     "60": {
+      "n": 21554,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.07,
+      "max_stufe_ab100_pp": 0.07,
+      "gut": true
+     },
+     "65": {
+      "n": 21554,
+      "pruefbar": true,
+      "mittlere_abweichung_pp": 0.07,
+      "max_stufe_ab100_pp": 0.07,
+      "gut": true
+     },
+     "70": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "75": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "80": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "85": {
+      "n": 0,
+      "pruefbar": false
+     },
+     "90": {
+      "n": 0,
+      "pruefbar": false
+     }
+    }
+   }
+  },
+  "stabil": {
+   "win": {
+    "alle": {
+     "schwelle_pct": null,
+     "tipps": null,
+     "tipps_pro_spieltag": null,
+     "tipps_pro_9_spiele": null,
+     "trefferquote_pct": null,
+     "mittel_modell_pct": null
+    }
+   },
+   "total": {
+    "alle": {
+     "schwelle_pct": null,
+     "tipps": null,
+     "tipps_pro_spieltag": null,
+     "tipps_pro_9_spiele": null,
+     "trefferquote_pct": null,
+     "mittel_modell_pct": null
+    },
+    "haupt": {
+     "schwelle_pct": null,
+     "tipps": null,
+     "tipps_pro_spieltag": null,
+     "tipps_pro_9_spiele": null,
+     "trefferquote_pct": null,
+     "mittel_modell_pct": null
+    },
+    "unter1": {
+     "schwelle_pct": null,
+     "tipps": null,
+     "tipps_pro_spieltag": null,
+     "tipps_pro_9_spiele": null,
+     "trefferquote_pct": null,
+     "mittel_modell_pct": null
+    },
+    "unter2": {
+     "schwelle_pct": null,
+     "tipps": null,
+     "tipps_pro_spieltag": null,
+     "tipps_pro_9_spiele": null,
+     "trefferquote_pct": null,
+     "mittel_modell_pct": null
+    },
+    "unter3": {
+     "schwelle_pct": null,
+     "tipps": null,
+     "tipps_pro_spieltag": null,
+     "tipps_pro_9_spiele": null,
+     "trefferquote_pct": null,
+     "mittel_modell_pct": null
+    },
+    "unter4": {
+     "schwelle_pct": null,
+     "tipps": null,
+     "tipps_pro_spieltag": null,
+     "tipps_pro_9_spiele": null,
+     "trefferquote_pct": null,
+     "mittel_modell_pct": null
+    },
+    "unter5": {
+     "schwelle_pct": null,
+     "tipps": null,
+     "tipps_pro_spieltag": null,
+     "tipps_pro_9_spiele": null,
+     "trefferquote_pct": null,
+     "mittel_modell_pct": null
+    }
+   },
+   "tt": {
+    "alle": {
+     "schwelle_pct": null,
+     "tipps": null,
+     "tipps_pro_spieltag": null,
+     "tipps_pro_9_spiele": null,
+     "trefferquote_pct": null,
+     "mittel_modell_pct": null
+    },
+    "haupt": {
+     "schwelle_pct": null,
+     "tipps": null,
+     "tipps_pro_spieltag": null,
+     "tipps_pro_9_spiele": null,
+     "trefferquote_pct": null,
+     "mittel_modell_pct": null
+    },
+    "unter1": {
+     "schwelle_pct": null,
+     "tipps": null,
+     "tipps_pro_spieltag": null,
+     "tipps_pro_9_spiele": null,
+     "trefferquote_pct": null,
+     "mittel_modell_pct": null
+    },
+    "unter2": {
+     "schwelle_pct": null,
+     "tipps": null,
+     "tipps_pro_spieltag": null,
+     "tipps_pro_9_spiele": null,
+     "trefferquote_pct": null,
+     "mittel_modell_pct": null
+    },
+    "unter3": {
+     "schwelle_pct": null,
+     "tipps": null,
+     "tipps_pro_spieltag": null,
+     "tipps_pro_9_spiele": null,
+     "trefferquote_pct": null,
+     "mittel_modell_pct": null
+    },
+    "unter4": {
+     "schwelle_pct": null,
+     "tipps": null,
+     "tipps_pro_spieltag": null,
+     "tipps_pro_9_spiele": null,
+     "trefferquote_pct": null,
+     "mittel_modell_pct": null
+    },
+    "unter5": {
+     "schwelle_pct": null,
+     "tipps": null,
+     "tipps_pro_spieltag": null,
+     "tipps_pro_9_spiele": null,
+     "trefferquote_pct": null,
+     "mittel_modell_pct": null
+    }
+   }
+  },
+  "tipps_gesamt": {
+   "win": 10777,
+   "total": 64662,
+   "tt": 129324
+  },
+  "laufzeit_s": 15
+ },
+ "echte_tage": {
+  "warnung": "KLEINE STICHPROBE, NUR INFORMATION: wenige Spiele, Zeilen eines Spiels korreliert, Intervalle breit; die Chancen sind die ANGEZEIGTEN App-Chancen (mit Markt-Mischung, Sigmas der Version) - nicht das reine Modell. Linien = Raster um den App-Mittelwert (keine Betano-Linien).",
+  "spiele": 29,
+  "sigmas_der_versionen": [
+   "(13.2, 18.6, 11.6)"
+  ],
+  "tabelle": {
+   "win": {
+    "alle": {
+     "50": {
+      "gepoolt": {
+       "tipps": 29,
+       "richtig": 17,
+       "falsch": 12,
+       "trefferquote_pct": 58.62,
+       "mittel_modell_pct": 66.52,
+       "differenz_pp": -7.9,
+       "ci95_pp": [
+        -25.91,
+        9.93
+       ],
+       "urteil": "im Rahmen"
+      }
+     },
+     "55": {
+      "gepoolt": {
+       "tipps": 25,
+       "richtig": 17,
+       "falsch": 8,
+       "trefferquote_pct": 68.0,
+       "mittel_modell_pct": 68.59,
+       "differenz_pp": -0.59,
+       "ci95_pp": [
+        -19.2,
+        17.66
+       ],
+       "urteil": "im Rahmen"
+      }
+     },
+     "60": {
+      "gepoolt": {
+       "tipps": 18,
+       "richtig": 12,
+       "falsch": 6,
+       "trefferquote_pct": 66.67,
+       "mittel_modell_pct": 73.17,
+       "differenz_pp": -6.5
+      }
+     },
+     "65": {
+      "gepoolt": {
+       "tipps": 16,
+       "richtig": 12,
+       "falsch": 4,
+       "trefferquote_pct": 75.0,
+       "mittel_modell_pct": 74.36,
+       "differenz_pp": 0.64
+      }
+     },
+     "70": {
+      "gepoolt": {
+       "tipps": 9,
+       "richtig": 8,
+       "falsch": 1,
+       "trefferquote_pct": 88.89,
+       "mittel_modell_pct": 79.33,
+       "differenz_pp": 9.56
+      }
+     },
+     "75": {
+      "gepoolt": {
+       "tipps": 8,
+       "richtig": 7,
+       "falsch": 1,
+       "trefferquote_pct": 87.5,
+       "mittel_modell_pct": 80.41,
+       "differenz_pp": 7.09
+      }
+     },
+     "80": {
+      "gepoolt": {
+       "tipps": 4,
+       "richtig": 4,
+       "falsch": 0,
+       "trefferquote_pct": 100.0,
+       "mittel_modell_pct": 84.13,
+       "differenz_pp": 15.87
+      }
+     },
+     "85": {
+      "gepoolt": {
+       "tipps": 2,
+       "richtig": 2,
+       "falsch": 0,
+       "trefferquote_pct": 100.0,
+       "mittel_modell_pct": 86.05,
+       "differenz_pp": 13.95
+      }
+     },
+     "90": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     }
+    }
+   },
+   "total": {
+    "alle": {
+     "50": {
+      "gepoolt": {
+       "tipps": 145,
+       "richtig": 66,
+       "falsch": 79,
+       "trefferquote_pct": 45.52,
+       "mittel_modell_pct": 55.33,
+       "differenz_pp": -9.81,
+       "ci95_pp": [
+        -27.05,
+        8.81
+       ],
+       "urteil": "im Rahmen"
+      }
+     },
+     "55": {
+      "gepoolt": {
+       "tipps": 87,
+       "richtig": 41,
+       "falsch": 46,
+       "trefferquote_pct": 47.13,
+       "mittel_modell_pct": 57.46,
+       "differenz_pp": -10.33,
+       "ci95_pp": [
+        -27.57,
+        8.06
+       ],
+       "urteil": "im Rahmen"
+      }
+     },
+     "60": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "65": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "70": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "75": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "80": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "85": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "90": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     }
+    },
+    "haupt": {
+     "50": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "55": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "60": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "65": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "70": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "75": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "80": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "85": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "90": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     }
+    },
+    "unter1": {
+     "50": {
+      "gepoolt": {
+       "tipps": 29,
+       "richtig": 12,
+       "falsch": 17,
+       "trefferquote_pct": 41.38,
+       "mittel_modell_pct": 51.07,
+       "differenz_pp": -9.69,
+       "ci95_pp": [
+        -26.93,
+        7.55
+       ],
+       "urteil": "im Rahmen"
+      }
+     },
+     "55": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "60": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "65": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "70": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "75": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "80": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "85": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "90": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     }
+    },
+    "unter2": {
+     "50": {
+      "gepoolt": {
+       "tipps": 29,
+       "richtig": 13,
+       "falsch": 16,
+       "trefferquote_pct": 44.83,
+       "mittel_modell_pct": 53.21,
+       "differenz_pp": -8.39,
+       "ci95_pp": [
+        -25.63,
+        8.86
+       ],
+       "urteil": "im Rahmen"
+      }
+     },
+     "55": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "60": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "65": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "70": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "75": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "80": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "85": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "90": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     }
+    },
+    "unter3": {
+     "50": {
+      "gepoolt": {
+       "tipps": 29,
+       "richtig": 13,
+       "falsch": 16,
+       "trefferquote_pct": 44.83,
+       "mittel_modell_pct": 55.35,
+       "differenz_pp": -10.52,
+       "ci95_pp": [
+        -27.76,
+        6.72
+       ],
+       "urteil": "im Rahmen"
+      }
+     },
+     "55": {
+      "gepoolt": {
+       "tipps": 29,
+       "richtig": 13,
+       "falsch": 16,
+       "trefferquote_pct": 44.83,
+       "mittel_modell_pct": 55.35,
+       "differenz_pp": -10.52,
+       "ci95_pp": [
+        -27.76,
+        6.72
+       ],
+       "urteil": "im Rahmen"
+      }
+     },
+     "60": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "65": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "70": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "75": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "80": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "85": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "90": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     }
+    },
+    "unter4": {
+     "50": {
+      "gepoolt": {
+       "tipps": 29,
+       "richtig": 14,
+       "falsch": 15,
+       "trefferquote_pct": 48.28,
+       "mittel_modell_pct": 57.46,
+       "differenz_pp": -9.19,
+       "ci95_pp": [
+        -26.43,
+        8.05
+       ],
+       "urteil": "im Rahmen"
+      }
+     },
+     "55": {
+      "gepoolt": {
+       "tipps": 29,
+       "richtig": 14,
+       "falsch": 15,
+       "trefferquote_pct": 48.28,
+       "mittel_modell_pct": 57.46,
+       "differenz_pp": -9.19,
+       "ci95_pp": [
+        -26.43,
+        8.05
+       ],
+       "urteil": "im Rahmen"
+      }
+     },
+     "60": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "65": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "70": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "75": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "80": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "85": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "90": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     }
+    },
+    "unter5": {
+     "50": {
+      "gepoolt": {
+       "tipps": 29,
+       "richtig": 14,
+       "falsch": 15,
+       "trefferquote_pct": 48.28,
+       "mittel_modell_pct": 59.56,
+       "differenz_pp": -11.28,
+       "ci95_pp": [
+        -28.52,
+        5.96
+       ],
+       "urteil": "im Rahmen"
+      }
+     },
+     "55": {
+      "gepoolt": {
+       "tipps": 29,
+       "richtig": 14,
+       "falsch": 15,
+       "trefferquote_pct": 48.28,
+       "mittel_modell_pct": 59.56,
+       "differenz_pp": -11.28,
+       "ci95_pp": [
+        -28.52,
+        5.96
+       ],
+       "urteil": "im Rahmen"
+      }
+     },
+     "60": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "65": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "70": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "75": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "80": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "85": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "90": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     }
+    }
+   },
+   "tt": {
+    "alle": {
+     "50": {
+      "gepoolt": {
+       "tipps": 290,
+       "richtig": 155,
+       "falsch": 135,
+       "trefferquote_pct": 53.45,
+       "mittel_modell_pct": 58.47,
+       "differenz_pp": -5.02,
+       "ci95_pp": [
+        -18.12,
+        8.08
+       ],
+       "urteil": "im Rahmen"
+      }
+     },
+     "55": {
+      "gepoolt": {
+       "tipps": 232,
+       "richtig": 128,
+       "falsch": 104,
+       "trefferquote_pct": 55.17,
+       "mittel_modell_pct": 60.16,
+       "differenz_pp": -4.99,
+       "ci95_pp": [
+        -17.92,
+        7.51
+       ],
+       "urteil": "im Rahmen"
+      }
+     },
+     "60": {
+      "gepoolt": {
+       "tipps": 116,
+       "richtig": 69,
+       "falsch": 47,
+       "trefferquote_pct": 59.48,
+       "mittel_modell_pct": 63.48,
+       "differenz_pp": -3.99,
+       "ci95_pp": [
+        -16.93,
+        8.94
+       ],
+       "urteil": "im Rahmen"
+      }
+     },
+     "65": {
+      "gepoolt": {
+       "tipps": 58,
+       "richtig": 36,
+       "falsch": 22,
+       "trefferquote_pct": 62.07,
+       "mittel_modell_pct": 65.1,
+       "differenz_pp": -3.03,
+       "ci95_pp": [
+        -15.14,
+        9.04
+       ],
+       "urteil": "im Rahmen"
+      }
+     },
+     "70": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "75": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "80": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "85": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "90": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     }
+    },
+    "haupt": {
+     "50": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "55": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "60": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "65": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "70": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "75": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "80": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "85": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "90": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     }
+    },
+    "unter1": {
+     "50": {
+      "gepoolt": {
+       "tipps": 58,
+       "richtig": 27,
+       "falsch": 31,
+       "trefferquote_pct": 46.55,
+       "mittel_modell_pct": 51.72,
+       "differenz_pp": -5.17,
+       "ci95_pp": [
+        -18.96,
+        8.63
+       ],
+       "urteil": "im Rahmen"
+      }
+     },
+     "55": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "60": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "65": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "70": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "75": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "80": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "85": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "90": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     }
+    },
+    "unter2": {
+     "50": {
+      "gepoolt": {
+       "tipps": 58,
+       "richtig": 28,
+       "falsch": 30,
+       "trefferquote_pct": 48.28,
+       "mittel_modell_pct": 55.14,
+       "differenz_pp": -6.87,
+       "ci95_pp": [
+        -20.66,
+        6.92
+       ],
+       "urteil": "im Rahmen"
+      }
+     },
+     "55": {
+      "gepoolt": {
+       "tipps": 58,
+       "richtig": 28,
+       "falsch": 30,
+       "trefferquote_pct": 48.28,
+       "mittel_modell_pct": 55.14,
+       "differenz_pp": -6.87,
+       "ci95_pp": [
+        -20.66,
+        6.92
+       ],
+       "urteil": "im Rahmen"
+      }
+     },
+     "60": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "65": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "70": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "75": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "80": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "85": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "90": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     }
+    },
+    "unter3": {
+     "50": {
+      "gepoolt": {
+       "tipps": 58,
+       "richtig": 31,
+       "falsch": 27,
+       "trefferquote_pct": 53.45,
+       "mittel_modell_pct": 58.53,
+       "differenz_pp": -5.08,
+       "ci95_pp": [
+        -18.88,
+        8.71
+       ],
+       "urteil": "im Rahmen"
+      }
+     },
+     "55": {
+      "gepoolt": {
+       "tipps": 58,
+       "richtig": 31,
+       "falsch": 27,
+       "trefferquote_pct": 53.45,
+       "mittel_modell_pct": 58.53,
+       "differenz_pp": -5.08,
+       "ci95_pp": [
+        -18.88,
+        8.71
+       ],
+       "urteil": "im Rahmen"
+      }
+     },
+     "60": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "65": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "70": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "75": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "80": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "85": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "90": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     }
+    },
+    "unter4": {
+     "50": {
+      "gepoolt": {
+       "tipps": 58,
+       "richtig": 33,
+       "falsch": 25,
+       "trefferquote_pct": 56.9,
+       "mittel_modell_pct": 61.86,
+       "differenz_pp": -4.96,
+       "ci95_pp": [
+        -18.75,
+        8.83
+       ],
+       "urteil": "im Rahmen"
+      }
+     },
+     "55": {
+      "gepoolt": {
+       "tipps": 58,
+       "richtig": 33,
+       "falsch": 25,
+       "trefferquote_pct": 56.9,
+       "mittel_modell_pct": 61.86,
+       "differenz_pp": -4.96,
+       "ci95_pp": [
+        -18.75,
+        8.83
+       ],
+       "urteil": "im Rahmen"
+      }
+     },
+     "60": {
+      "gepoolt": {
+       "tipps": 58,
+       "richtig": 33,
+       "falsch": 25,
+       "trefferquote_pct": 56.9,
+       "mittel_modell_pct": 61.86,
+       "differenz_pp": -4.96,
+       "ci95_pp": [
+        -18.75,
+        8.83
+       ],
+       "urteil": "im Rahmen"
+      }
+     },
+     "65": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "70": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "75": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "80": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "85": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "90": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     }
+    },
+    "unter5": {
+     "50": {
+      "gepoolt": {
+       "tipps": 58,
+       "richtig": 36,
+       "falsch": 22,
+       "trefferquote_pct": 62.07,
+       "mittel_modell_pct": 65.1,
+       "differenz_pp": -3.03,
+       "ci95_pp": [
+        -15.14,
+        9.04
+       ],
+       "urteil": "im Rahmen"
+      }
+     },
+     "55": {
+      "gepoolt": {
+       "tipps": 58,
+       "richtig": 36,
+       "falsch": 22,
+       "trefferquote_pct": 62.07,
+       "mittel_modell_pct": 65.1,
+       "differenz_pp": -3.03,
+       "ci95_pp": [
+        -15.14,
+        9.04
+       ],
+       "urteil": "im Rahmen"
+      }
+     },
+     "60": {
+      "gepoolt": {
+       "tipps": 58,
+       "richtig": 36,
+       "falsch": 22,
+       "trefferquote_pct": 62.07,
+       "mittel_modell_pct": 65.1,
+       "differenz_pp": -3.03,
+       "ci95_pp": [
+        -15.14,
+        9.04
+       ],
+       "urteil": "im Rahmen"
+      }
+     },
+     "65": {
+      "gepoolt": {
+       "tipps": 58,
+       "richtig": 36,
+       "falsch": 22,
+       "trefferquote_pct": 62.07,
+       "mittel_modell_pct": 65.1,
+       "differenz_pp": -3.03,
+       "ci95_pp": [
+        -15.14,
+        9.04
+       ],
+       "urteil": "im Rahmen"
+      }
+     },
+     "70": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "75": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "80": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "85": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     },
+     "90": {
+      "gepoolt": {
+       "tipps": 0
+      }
+     }
+    }
+   }
+  }
+ },
+ "laufzeit_s": 15
+}

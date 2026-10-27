@@ -1,0 +1,2864 @@
+{
+ "version": 1,
+ "hinweis": "REINES MODELL ohne Markt-Mischung; Sigmas und Teile der ELO-Parameter wurden auf diesen Saisons abgestimmt (aeltere Saisons nicht vollstaendig unabhaengig).",
+ "saison_zuordnung": "Feld 'season' der Spieldaten (Startjahr; 2017 = 2017-18)",
+ "saisons": {
+  "2017-18": {
+   "n": 1230,
+   "sieg": {
+    "mittel_p_heim": 0.56,
+    "heimsieg_quote": 0.579,
+    "brier": 0.2195,
+    "logloss": 0.6287,
+    "steigung": 1.074,
+    "trefferquote_favorit": 0.637
+   },
+   "favorit_stufen": [
+    {
+     "stufe": "50-60 %",
+     "n": 538,
+     "mittel_modell": 0.5498,
+     "trefferquote": 0.5297,
+     "abweichung_pp": -2.01
+    },
+    {
+     "stufe": "60-70 %",
+     "n": 397,
+     "mittel_modell": 0.6475,
+     "trefferquote": 0.665,
+     "abweichung_pp": 1.75
+    },
+    {
+     "stufe": "70-80 %",
+     "n": 228,
+     "mittel_modell": 0.7424,
+     "trefferquote": 0.7807,
+     "abweichung_pp": 3.83
+    },
+    {
+     "stufe": "80+ %",
+     "n": 67,
+     "mittel_modell": 0.8369,
+     "trefferquote": 0.8358,
+     "abweichung_pp": -0.11
+    }
+   ],
+   "spread": {
+    "n": 1230,
+    "bias": 0.06,
+    "mae": 9.99,
+    "hauptlinie_mittel_modell": 0.5,
+    "hauptlinie_trefferquote": 0.502,
+    "steigung": 1.086,
+    "mittlere_abweichung_stufen_pp": 0.71,
+    "abweichung_hauptlinie_pp": 0.2
+   },
+   "total": {
+    "n": 1230,
+    "bias": -0.24,
+    "mae": 14.93,
+    "hauptlinie_mittel_modell": 0.5,
+    "hauptlinie_trefferquote": 0.479,
+    "steigung": 0.939,
+    "mittlere_abweichung_stufen_pp": 0.41,
+    "abweichung_hauptlinie_pp": -2.1
+   },
+   "tt_home": {
+    "n": 1230,
+    "bias": -0.09,
+    "mae": 8.94,
+    "hauptlinie_mittel_modell": 0.5,
+    "hauptlinie_trefferquote": 0.503,
+    "steigung": 1.033,
+    "mittlere_abweichung_stufen_pp": 0.53,
+    "abweichung_hauptlinie_pp": 0.3
+   },
+   "tt_away": {
+    "n": 1230,
+    "bias": -0.15,
+    "mae": 9.07,
+    "hauptlinie_mittel_modell": 0.5,
+    "hauptlinie_trefferquote": 0.503,
+    "steigung": 0.997,
+    "mittlere_abweichung_stufen_pp": 0.51,
+    "abweichung_hauptlinie_pp": 0.3
+   },
+   "overtime": {
+    "anteil": 0.0496,
+    "n_ot": 61,
+    "total_mit_ot": 233.67,
+    "total_ohne_ot": 211.57,
+    "total_bias_gesamt": -0.24,
+    "total_bias_ohne_ot": 0.82,
+    "total_bias_nur_ot": -20.5
+   },
+   "saisonstart": {
+    "n_erste15": 219,
+    "total_bias_erste15": 0.91,
+    "total_bias_rest": -0.48,
+    "sieg_steigung_erste15": 0.667,
+    "sieg_steigung_rest": 1.159
+   },
+   "haelften": {
+    "sieg_steigung_1": 0.813,
+    "sieg_steigung_2": 1.324,
+    "favorit_trefferquote_1": 0.61,
+    "favorit_trefferquote_2": 0.663
+   },
+   "playoffs": {
+    "n": 82,
+    "total_bias": 4.56,
+    "spread_bias": -4.19
+   },
+   "heimvorteil": {
+    "modell": 2.17,
+    "tatsaechlich": 2.11,
+    "differenz": 0.06
+   }
+  },
+  "2018-19": {
+   "n": 1230,
+   "sieg": {
+    "mittel_p_heim": 0.554,
+    "heimsieg_quote": 0.593,
+    "brier": 0.2204,
+    "logloss": 0.6307,
+    "steigung": 1.034,
+    "trefferquote_favorit": 0.65
+   },
+   "favorit_stufen": [
+    {
+     "stufe": "50-60 %",
+     "n": 531,
+     "mittel_modell": 0.5496,
+     "trefferquote": 0.5763,
+     "abweichung_pp": 2.67
+    },
+    {
+     "stufe": "60-70 %",
+     "n": 418,
+     "mittel_modell": 0.6437,
+     "trefferquote": 0.6651,
+     "abweichung_pp": 2.14
+    },
+    {
+     "stufe": "70-80 %",
+     "n": 226,
+     "mittel_modell": 0.7475,
+     "trefferquote": 0.7345,
+     "abweichung_pp": -1.3
+    },
+    {
+     "stufe": "80+ %",
+     "n": 55,
+     "mittel_modell": 0.8338,
+     "trefferquote": 0.9091,
+     "abweichung_pp": 7.53
+    }
+   ],
+   "spread": {
+    "n": 1230,
+    "bias": -0.81,
+    "mae": 10.46,
+    "hauptlinie_mittel_modell": 0.5,
+    "hauptlinie_trefferquote": 0.543,
+    "steigung": 1.062,
+    "mittlere_abweichung_stufen_pp": 0.35,
+    "abweichung_hauptlinie_pp": 4.3
+   },
+   "total": {
+    "n": 1230,
+    "bias": -1.42,
+    "mae": 15.1,
+    "hauptlinie_mittel_modell": 0.5,
+    "hauptlinie_trefferquote": 0.498,
+    "steigung": 1.103,
+    "mittlere_abweichung_stufen_pp": 0.79,
+    "abweichung_hauptlinie_pp": -0.2
+   },
+   "tt_home": {
+    "n": 1230,
+    "bias": -1.11,
+    "mae": 9.42,
+    "hauptlinie_mittel_modell": 0.5,
+    "hauptlinie_trefferquote": 0.523,
+    "steigung": 1.061,
+    "mittlere_abweichung_stufen_pp": 0.61,
+    "abweichung_hauptlinie_pp": 2.3
+   },
+   "tt_away": {
+    "n": 1230,
+    "bias": -0.3,
+    "mae": 9.23,
+    "hauptlinie_mittel_modell": 0.5,
+    "hauptlinie_trefferquote": 0.501,
+    "steigung": 1.026,
+    "mittlere_abweichung_stufen_pp": 0.66,
+    "abweichung_hauptlinie_pp": 0.1
+   },
+   "overtime": {
+    "anteil": 0.0545,
+    "n_ot": 67,
+    "total_mit_ot": 251.66,
+    "total_ohne_ot": 220.72,
+    "total_bias_gesamt": -1.42,
+    "total_bias_ohne_ot": 0.24,
+    "total_bias_nur_ot": -30.15
+   },
+   "saisonstart": {
+    "n_erste15": 217,
+    "total_bias_erste15": -3.03,
+    "total_bias_rest": -1.07,
+    "sieg_steigung_erste15": 0.899,
+    "sieg_steigung_rest": 1.064
+   },
+   "haelften": {
+    "sieg_steigung_1": 0.911,
+    "sieg_steigung_2": 1.152,
+    "favorit_trefferquote_1": 0.636,
+    "favorit_trefferquote_2": 0.665
+   },
+   "playoffs": {
+    "n": 82,
+    "total_bias": 9.84,
+    "spread_bias": -1.94
+   },
+   "heimvorteil": {
+    "modell": 1.92,
+    "tatsaechlich": 2.73,
+    "differenz": -0.81
+   }
+  },
+  "2019-20": {
+   "n": 1059,
+   "sieg": {
+    "mittel_p_heim": 0.55,
+    "heimsieg_quote": 0.551,
+    "brier": 0.22,
+    "logloss": 0.629,
+    "steigung": 1.061,
+    "trefferquote_favorit": 0.651
+   },
+   "favorit_stufen": [
+    {
+     "stufe": "50-60 %",
+     "n": 460,
+     "mittel_modell": 0.5493,
+     "trefferquote": 0.563,
+     "abweichung_pp": 1.38
+    },
+    {
+     "stufe": "60-70 %",
+     "n": 310,
+     "mittel_modell": 0.6462,
+     "trefferquote": 0.6839,
+     "abweichung_pp": 3.76
+    },
+    {
+     "stufe": "70-80 %",
+     "n": 228,
+     "mittel_modell": 0.7462,
+     "trefferquote": 0.6974,
+     "abweichung_pp": -4.88
+    },
+    {
+     "stufe": "80+ %",
+     "n": 61,
+     "mittel_modell": 0.8385,
+     "trefferquote": 0.9672,
+     "abweichung_pp": 12.88
+    }
+   ],
+   "spread": {
+    "n": 1059,
+    "bias": -0.3,
+    "mae": 10.28,
+    "hauptlinie_mittel_modell": 0.5,
+    "hauptlinie_trefferquote": 0.5,
+    "steigung": 1.083,
+    "mittlere_abweichung_stufen_pp": 0.66,
+    "abweichung_hauptlinie_pp": 0.0
+   },
+   "total": {
+    "n": 1059,
+    "bias": -0.4,
+    "mae": 15.25,
+    "hauptlinie_mittel_modell": 0.5,
+    "hauptlinie_trefferquote": 0.504,
+    "steigung": 0.942,
+    "mittlere_abweichung_stufen_pp": 0.35,
+    "abweichung_hauptlinie_pp": 0.4
+   },
+   "tt_home": {
+    "n": 1059,
+    "bias": -0.35,
+    "mae": 9.13,
+    "hauptlinie_mittel_modell": 0.501,
+    "hauptlinie_trefferquote": 0.498,
+    "steigung": 1.05,
+    "mittlere_abweichung_stufen_pp": 0.49,
+    "abweichung_hauptlinie_pp": -0.3
+   },
+   "tt_away": {
+    "n": 1059,
+    "bias": -0.05,
+    "mae": 9.32,
+    "hauptlinie_mittel_modell": 0.5,
+    "hauptlinie_trefferquote": 0.499,
+    "steigung": 0.931,
+    "mittlere_abweichung_stufen_pp": 0.85,
+    "abweichung_hauptlinie_pp": -0.1
+   },
+   "overtime": {
+    "anteil": 0.0652,
+    "n_ot": 69,
+    "total_mit_ot": 241.3,
+    "total_ohne_ot": 222.36,
+    "total_bias_gesamt": -0.4,
+    "total_bias_ohne_ot": 0.88,
+    "total_bias_nur_ot": -18.63
+   },
+   "saisonstart": {
+    "n_erste15": 219,
+    "total_bias_erste15": 2.4,
+    "total_bias_rest": -1.12,
+    "sieg_steigung_erste15": 1.073,
+    "sieg_steigung_rest": 1.061
+   },
+   "haelften": {
+    "sieg_steigung_1": 1.132,
+    "sieg_steigung_2": 0.972,
+    "favorit_trefferquote_1": 0.675,
+    "favorit_trefferquote_2": 0.626
+   },
+   "playoffs": {
+    "n": 84,
+    "total_bias": 7.6,
+    "spread_bias": 1.3
+   },
+   "heimvorteil": {
+    "modell": 1.83,
+    "tatsaechlich": 2.13,
+    "differenz": -0.3
+   }
+  },
+  "2020-21": {
+   "n": 1081,
+   "sieg": {
+    "mittel_p_heim": 0.556,
+    "heimsieg_quote": 0.544,
+    "brier": 0.2303,
+    "logloss": 0.652,
+    "steigung": 0.904,
+    "trefferquote_favorit": 0.609
+   },
+   "favorit_stufen": [
+    {
+     "stufe": "50-60 %",
+     "n": 485,
+     "mittel_modell": 0.5499,
+     "trefferquote": 0.5402,
+     "abweichung_pp": -0.97
+    },
+    {
+     "stufe": "60-70 %",
+     "n": 372,
+     "mittel_modell": 0.6477,
+     "trefferquote": 0.6102,
+     "abweichung_pp": -3.75
+    },
+    {
+     "stufe": "70-80 %",
+     "n": 163,
+     "mittel_modell": 0.7441,
+     "trefferquote": 0.7301,
+     "abweichung_pp": -1.4
+    },
+    {
+     "stufe": "80+ %",
+     "n": 61,
+     "mittel_modell": 0.8307,
+     "trefferquote": 0.8197,
+     "abweichung_pp": -1.1
+    }
+   ],
+   "spread": {
+    "n": 1081,
+    "bias": 1.05,
+    "mae": 11.41,
+    "hauptlinie_mittel_modell": 0.5,
+    "hauptlinie_trefferquote": 0.488,
+    "steigung": 0.875,
+    "mittlere_abweichung_stufen_pp": 0.93,
+    "abweichung_hauptlinie_pp": -1.2
+   },
+   "total": {
+    "n": 1081,
+    "bias": 0.31,
+    "mae": 14.89,
+    "hauptlinie_mittel_modell": 0.5,
+    "hauptlinie_trefferquote": 0.488,
+    "steigung": 0.984,
+    "mittlere_abweichung_stufen_pp": 0.46,
+    "abweichung_hauptlinie_pp": -1.2
+   },
+   "tt_home": {
+    "n": 1081,
+    "bias": 0.68,
+    "mae": 9.57,
+    "hauptlinie_mittel_modell": 0.501,
+    "hauptlinie_trefferquote": 0.476,
+    "steigung": 0.923,
+    "mittlere_abweichung_stufen_pp": 0.88,
+    "abweichung_hauptlinie_pp": -2.5
+   },
+   "tt_away": {
+    "n": 1081,
+    "bias": -0.37,
+    "mae": 9.37,
+    "hauptlinie_mittel_modell": 0.5,
+    "hauptlinie_trefferquote": 0.512,
+    "steigung": 1.027,
+    "mittlere_abweichung_stufen_pp": 0.4,
+    "abweichung_hauptlinie_pp": 1.2
+   },
+   "overtime": {
+    "anteil": 0.0518,
+    "n_ot": 56,
+    "total_mit_ot": 245.55,
+    "total_ohne_ot": 223.01,
+    "total_bias_gesamt": 0.31,
+    "total_bias_ohne_ot": 1.51,
+    "total_bias_nur_ot": -21.63
+   },
+   "saisonstart": {
+    "n_erste15": 218,
+    "total_bias_erste15": 3.11,
+    "total_bias_rest": -0.4,
+    "sieg_steigung_erste15": 0.404,
+    "sieg_steigung_rest": 1.039
+   },
+   "haelften": {
+    "sieg_steigung_1": 0.627,
+    "sieg_steigung_2": 1.136,
+    "favorit_trefferquote_1": 0.567,
+    "favorit_trefferquote_2": 0.651
+   },
+   "playoffs": {
+    "n": 90,
+    "total_bias": 6.3,
+    "spread_bias": -1.93
+   },
+   "heimvorteil": {
+    "modell": 2.01,
+    "tatsaechlich": 0.96,
+    "differenz": 1.05
+   }
+  },
+  "2021-22": {
+   "n": 1230,
+   "sieg": {
+    "mittel_p_heim": 0.559,
+    "heimsieg_quote": 0.544,
+    "brier": 0.2267,
+    "logloss": 0.6453,
+    "steigung": 0.957,
+    "trefferquote_favorit": 0.613
+   },
+   "favorit_stufen": [
+    {
+     "stufe": "50-60 %",
+     "n": 502,
+     "mittel_modell": 0.5489,
+     "trefferquote": 0.49,
+     "abweichung_pp": -5.89
+    },
+    {
+     "stufe": "60-70 %",
+     "n": 428,
+     "mittel_modell": 0.647,
+     "trefferquote": 0.6659,
+     "abweichung_pp": 1.89
+    },
+    {
+     "stufe": "70-80 %",
+     "n": 244,
+     "mittel_modell": 0.7462,
+     "trefferquote": 0.7295,
+     "abweichung_pp": -1.67
+    },
+    {
+     "stufe": "80+ %",
+     "n": 56,
+     "mittel_modell": 0.8303,
+     "trefferquote": 0.8036,
+     "abweichung_pp": -2.67
+    }
+   ],
+   "spread": {
+    "n": 1230,
+    "bias": 0.4,
+    "mae": 11.3,
+    "hauptlinie_mittel_modell": 0.499,
+    "hauptlinie_trefferquote": 0.48,
+    "steigung": 0.998,
+    "mittlere_abweichung_stufen_pp": 0.37,
+    "abweichung_hauptlinie_pp": -1.9
+   },
+   "total": {
+    "n": 1230,
+    "bias": -0.37,
+    "mae": 14.83,
+    "hauptlinie_mittel_modell": 0.5,
+    "hauptlinie_trefferquote": 0.501,
+    "steigung": 1.032,
+    "mittlere_abweichung_stufen_pp": 0.61,
+    "abweichung_hauptlinie_pp": 0.1
+   },
+   "tt_home": {
+    "n": 1230,
+    "bias": 0.02,
+    "mae": 9.31,
+    "hauptlinie_mittel_modell": 0.5,
+    "hauptlinie_trefferquote": 0.507,
+    "steigung": 1.003,
+    "mittlere_abweichung_stufen_pp": 0.32,
+    "abweichung_hauptlinie_pp": 0.7
+   },
+   "tt_away": {
+    "n": 1230,
+    "bias": -0.39,
+    "mae": 9.45,
+    "hauptlinie_mittel_modell": 0.5,
+    "hauptlinie_trefferquote": 0.521,
+    "steigung": 1.002,
+    "mittlere_abweichung_stufen_pp": 0.21,
+    "abweichung_hauptlinie_pp": 2.1
+   },
+   "overtime": {
+    "anteil": 0.0472,
+    "n_ot": 58,
+    "total_mit_ot": 243.0,
+    "total_ohne_ot": 220.15,
+    "total_bias_gesamt": -0.37,
+    "total_bias_ohne_ot": 0.69,
+    "total_bias_nur_ot": -21.8
+   },
+   "saisonstart": {
+    "n_erste15": 219,
+    "total_bias_erste15": 6.7,
+    "total_bias_rest": -1.9,
+    "sieg_steigung_erste15": 0.78,
+    "sieg_steigung_rest": 0.999
+   },
+   "haelften": {
+    "sieg_steigung_1": 0.821,
+    "sieg_steigung_2": 1.093,
+    "favorit_trefferquote_1": 0.602,
+    "favorit_trefferquote_2": 0.624
+   },
+   "playoffs": {
+    "n": 93,
+    "total_bias": 15.32,
+    "spread_bias": -2.24
+   },
+   "heimvorteil": {
+    "modell": 2.13,
+    "tatsaechlich": 1.72,
+    "differenz": 0.4
+   }
+  },
+  "2022-23": {
+   "n": 1236,
+   "sieg": {
+    "mittel_p_heim": 0.556,
+    "heimsieg_quote": 0.58,
+    "brier": 0.2346,
+    "logloss": 0.662,
+    "steigung": 0.768,
+    "trefferquote_favorit": 0.6
+   },
+   "favorit_stufen": [
+    {
+     "stufe": "50-60 %",
+     "n": 617,
+     "mittel_modell": 0.55,
+     "trefferquote": 0.53,
+     "abweichung_pp": -2.0
+    },
+    {
+     "stufe": "60-70 %",
+     "n": 409,
+     "mittel_modell": 0.6448,
+     "trefferquote": 0.6479,
+     "abweichung_pp": 0.32
+    },
+    {
+     "stufe": "70-80 %",
+     "n": 182,
+     "mittel_modell": 0.7422,
+     "trefferquote": 0.7143,
+     "abweichung_pp": -2.79
+    },
+    {
+     "stufe": "80+ %",
+     "n": 28,
+     "mittel_modell": 0.8256,
+     "trefferquote": 0.6786,
+     "abweichung_pp": -14.71
+    }
+   ],
+   "spread": {
+    "n": 1236,
+    "bias": -0.54,
+    "mae": 10.47,
+    "hauptlinie_mittel_modell": 0.5,
+    "hauptlinie_trefferquote": 0.526,
+    "steigung": 0.979,
+    "mittlere_abweichung_stufen_pp": 0.4,
+    "abweichung_hauptlinie_pp": 2.6
+   },
+   "total": {
+    "n": 1236,
+    "bias": -0.25,
+    "mae": 14.59,
+    "hauptlinie_mittel_modell": 0.5,
+    "hauptlinie_trefferquote": 0.493,
+    "steigung": 1.206,
+    "mittlere_abweichung_stufen_pp": 1.34,
+    "abweichung_hauptlinie_pp": -0.7
+   },
+   "tt_home": {
+    "n": 1236,
+    "bias": -0.4,
+    "mae": 9.24,
+    "hauptlinie_mittel_modell": 0.5,
+    "hauptlinie_trefferquote": 0.507,
+    "steigung": 0.994,
+    "mittlere_abweichung_stufen_pp": 0.32,
+    "abweichung_hauptlinie_pp": 0.7
+   },
+   "tt_away": {
+    "n": 1236,
+    "bias": 0.14,
+    "mae": 8.87,
+    "hauptlinie_mittel_modell": 0.5,
+    "hauptlinie_trefferquote": 0.489,
+    "steigung": 1.13,
+    "mittlere_abweichung_stufen_pp": 1.18,
+    "abweichung_hauptlinie_pp": -1.1
+   },
+   "overtime": {
+    "anteil": 0.0647,
+    "n_ot": 80,
+    "total_mit_ot": 247.72,
+    "total_ohne_ot": 228.03,
+    "total_bias_gesamt": -0.25,
+    "total_bias_ohne_ot": 1.06,
+    "total_bias_nur_ot": -19.27
+   },
+   "saisonstart": {
+    "n_erste15": 219,
+    "total_bias_erste15": 1.87,
+    "total_bias_rest": -0.71,
+    "sieg_steigung_erste15": 0.41,
+    "sieg_steigung_rest": 0.872
+   },
+   "haelften": {
+    "sieg_steigung_1": 0.591,
+    "sieg_steigung_2": 0.938,
+    "favorit_trefferquote_1": 0.602,
+    "favorit_trefferquote_2": 0.597
+   },
+   "playoffs": {
+    "n": 84,
+    "total_bias": 10.19,
+    "spread_bias": -2.34
+   },
+   "heimvorteil": {
+    "modell": 1.97,
+    "tatsaechlich": 2.51,
+    "differenz": -0.54
+   }
+  },
+  "2023-24": {
+   "n": 1237,
+   "sieg": {
+    "mittel_p_heim": 0.552,
+    "heimsieg_quote": 0.545,
+    "brier": 0.2169,
+    "logloss": 0.6218,
+    "steigung": 1.108,
+    "trefferquote_favorit": 0.641
+   },
+   "favorit_stufen": [
+    {
+     "stufe": "50-60 %",
+     "n": 510,
+     "mittel_modell": 0.5481,
+     "trefferquote": 0.5373,
+     "abweichung_pp": -1.08
+    },
+    {
+     "stufe": "60-70 %",
+     "n": 376,
+     "mittel_modell": 0.6455,
+     "trefferquote": 0.617,
+     "abweichung_pp": -2.85
+    },
+    {
+     "stufe": "70-80 %",
+     "n": 255,
+     "mittel_modell": 0.7458,
+     "trefferquote": 0.7882,
+     "abweichung_pp": 4.25
+    },
+    {
+     "stufe": "80+ %",
+     "n": 96,
+     "mittel_modell": 0.8397,
+     "trefferquote": 0.8958,
+     "abweichung_pp": 5.61
+    }
+   ],
+   "spread": {
+    "n": 1237,
+    "bias": -0.29,
+    "mae": 11.21,
+    "hauptlinie_mittel_modell": 0.5,
+    "hauptlinie_trefferquote": 0.505,
+    "steigung": 0.933,
+    "mittlere_abweichung_stufen_pp": 0.49,
+    "abweichung_hauptlinie_pp": 0.5
+   },
+   "total": {
+    "n": 1237,
+    "bias": 0.82,
+    "mae": 14.75,
+    "hauptlinie_mittel_modell": 0.5,
+    "hauptlinie_trefferquote": 0.46,
+    "steigung": 0.944,
+    "mittlere_abweichung_stufen_pp": 0.34,
+    "abweichung_hauptlinie_pp": -4.0
+   },
+   "tt_home": {
+    "n": 1237,
+    "bias": 0.26,
+    "mae": 9.3,
+    "hauptlinie_mittel_modell": 0.5,
+    "hauptlinie_trefferquote": 0.475,
+    "steigung": 0.988,
+    "mittlere_abweichung_stufen_pp": 0.43,
+    "abweichung_hauptlinie_pp": -2.5
+   },
+   "tt_away": {
+    "n": 1237,
+    "bias": 0.55,
+    "mae": 9.34,
+    "hauptlinie_mittel_modell": 0.5,
+    "hauptlinie_trefferquote": 0.492,
+    "steigung": 0.991,
+    "mittlere_abweichung_stufen_pp": 0.39,
+    "abweichung_hauptlinie_pp": -0.8
+   },
+   "overtime": {
+    "anteil": 0.0477,
+    "n_ot": 59,
+    "total_mit_ot": 248.92,
+    "total_ohne_ot": 227.33,
+    "total_bias_gesamt": 0.82,
+    "total_bias_ohne_ot": 1.88,
+    "total_bias_nur_ot": -20.44
+   },
+   "saisonstart": {
+    "n_erste15": 218,
+    "total_bias_erste15": 0.56,
+    "total_bias_rest": 0.87,
+    "sieg_steigung_erste15": 1.133,
+    "sieg_steigung_rest": 1.103
+   },
+   "haelften": {
+    "sieg_steigung_1": 1.19,
+    "sieg_steigung_2": 1.036,
+    "favorit_trefferquote_1": 0.644,
+    "favorit_trefferquote_2": 0.638
+   },
+   "playoffs": {
+    "n": 82,
+    "total_bias": 13.84,
+    "spread_bias": -2.07
+   },
+   "heimvorteil": {
+    "modell": 1.91,
+    "tatsaechlich": 2.2,
+    "differenz": -0.29
+   }
+  },
+  "2024-25": {
+   "n": 1237,
+   "sieg": {
+    "mittel_p_heim": 0.559,
+    "heimsieg_quote": 0.543,
+    "brier": 0.2155,
+    "logloss": 0.6191,
+    "steigung": 1.126,
+    "trefferquote_favorit": 0.654
+   },
+   "favorit_stufen": [
+    {
+     "stufe": "50-60 %",
+     "n": 478,
+     "mittel_modell": 0.5496,
+     "trefferquote": 0.5649,
+     "abweichung_pp": 1.52
+    },
+    {
+     "stufe": "60-70 %",
+     "n": 397,
+     "mittel_modell": 0.6487,
+     "trefferquote": 0.6297,
+     "abweichung_pp": -1.9
+    },
+    {
+     "stufe": "70-80 %",
+     "n": 271,
+     "mittel_modell": 0.747,
+     "trefferquote": 0.7638,
+     "abweichung_pp": 1.68
+    },
+    {
+     "stufe": "80+ %",
+     "n": 91,
+     "mittel_modell": 0.843,
+     "trefferquote": 0.9011,
+     "abweichung_pp": 5.81
+    }
+   ],
+   "spread": {
+    "n": 1237,
+    "bias": 0.52,
+    "mae": 11.23,
+    "hauptlinie_mittel_modell": 0.5,
+    "hauptlinie_trefferquote": 0.487,
+    "steigung": 1.013,
+    "mittlere_abweichung_stufen_pp": 0.32,
+    "abweichung_hauptlinie_pp": -1.3
+   },
+   "total": {
+    "n": 1237,
+    "bias": -0.54,
+    "mae": 14.82,
+    "hauptlinie_mittel_modell": 0.5,
+    "hauptlinie_trefferquote": 0.526,
+    "steigung": 0.968,
+    "mittlere_abweichung_stufen_pp": 0.29,
+    "abweichung_hauptlinie_pp": 2.6
+   },
+   "tt_home": {
+    "n": 1237,
+    "bias": -0.01,
+    "mae": 9.31,
+    "hauptlinie_mittel_modell": 0.5,
+    "hauptlinie_trefferquote": 0.505,
+    "steigung": 1.0,
+    "mittlere_abweichung_stufen_pp": 0.22,
+    "abweichung_hauptlinie_pp": 0.5
+   },
+   "tt_away": {
+    "n": 1237,
+    "bias": -0.53,
+    "mae": 9.38,
+    "hauptlinie_mittel_modell": 0.5,
+    "hauptlinie_trefferquote": 0.504,
+    "steigung": 0.965,
+    "mittlere_abweichung_stufen_pp": 0.32,
+    "abweichung_hauptlinie_pp": 0.4
+   },
+   "overtime": {
+    "anteil": 0.0493,
+    "n_ot": 61,
+    "total_mit_ot": 247.34,
+    "total_ohne_ot": 226.56,
+    "total_bias_gesamt": -0.54,
+    "total_bias_ohne_ot": 0.48,
+    "total_bias_nur_ot": -20.28
+   },
+   "saisonstart": {
+    "n_erste15": 215,
+    "total_bias_erste15": -0.9,
+    "total_bias_rest": -0.47,
+    "sieg_steigung_erste15": 0.983,
+    "sieg_steigung_rest": 1.162
+   },
+   "haelften": {
+    "sieg_steigung_1": 1.064,
+    "sieg_steigung_2": 1.189,
+    "favorit_trefferquote_1": 0.636,
+    "favorit_trefferquote_2": 0.672
+   },
+   "playoffs": {
+    "n": 84,
+    "total_bias": 12.09,
+    "spread_bias": -3.8
+   },
+   "heimvorteil": {
+    "modell": 2.13,
+    "tatsaechlich": 1.61,
+    "differenz": 0.52
+   }
+  },
+  "2025-26": {
+   "n": 1237,
+   "sieg": {
+    "mittel_p_heim": 0.557,
+    "heimsieg_quote": 0.555,
+    "brier": 0.2102,
+    "logloss": 0.6075,
+    "steigung": 1.186,
+    "trefferquote_favorit": 0.67
+   },
+   "favorit_stufen": [
+    {
+     "stufe": "50-60 %",
+     "n": 493,
+     "mittel_modell": 0.5488,
+     "trefferquote": 0.5639,
+     "abweichung_pp": 1.51
+    },
+    {
+     "stufe": "60-70 %",
+     "n": 383,
+     "mittel_modell": 0.6475,
+     "trefferquote": 0.6606,
+     "abweichung_pp": 1.31
+    },
+    {
+     "stufe": "70-80 %",
+     "n": 250,
+     "mittel_modell": 0.75,
+     "trefferquote": 0.82,
+     "abweichung_pp": 7.0
+    },
+    {
+     "stufe": "80+ %",
+     "n": 111,
+     "mittel_modell": 0.8469,
+     "trefferquote": 0.8378,
+     "abweichung_pp": -0.9
+    }
+   ],
+   "spread": {
+    "n": 1237,
+    "bias": 0.33,
+    "mae": 11.58,
+    "hauptlinie_mittel_modell": 0.5,
+    "hauptlinie_trefferquote": 0.502,
+    "steigung": 0.919,
+    "mittlere_abweichung_stufen_pp": 0.66,
+    "abweichung_hauptlinie_pp": 0.2
+   },
+   "total": {
+    "n": 1237,
+    "bias": -0.54,
+    "mae": 15.17,
+    "hauptlinie_mittel_modell": 0.5,
+    "hauptlinie_trefferquote": 0.5,
+    "steigung": 1.03,
+    "mittlere_abweichung_stufen_pp": 0.2,
+    "abweichung_hauptlinie_pp": 0.0
+   },
+   "tt_home": {
+    "n": 1237,
+    "bias": -0.11,
+    "mae": 9.78,
+    "hauptlinie_mittel_modell": 0.5,
+    "hauptlinie_trefferquote": 0.502,
+    "steigung": 0.982,
+    "mittlere_abweichung_stufen_pp": 0.27,
+    "abweichung_hauptlinie_pp": 0.2
+   },
+   "tt_away": {
+    "n": 1237,
+    "bias": -0.43,
+    "mae": 9.39,
+    "hauptlinie_mittel_modell": 0.5,
+    "hauptlinie_trefferquote": 0.509,
+    "steigung": 1.022,
+    "mittlere_abweichung_stufen_pp": 0.5,
+    "abweichung_hauptlinie_pp": 0.9
+   },
+   "overtime": {
+    "anteil": 0.0453,
+    "n_ot": 56,
+    "total_mit_ot": 255.84,
+    "total_ohne_ot": 230.02,
+    "total_bias_gesamt": -0.54,
+    "total_bias_ohne_ot": 0.61,
+    "total_bias_nur_ot": -24.69
+   },
+   "saisonstart": {
+    "n_erste15": 218,
+    "total_bias_erste15": -3.02,
+    "total_bias_rest": -0.0,
+    "sieg_steigung_erste15": 1.279,
+    "sieg_steigung_rest": 1.167
+   },
+   "haelften": {
+    "sieg_steigung_1": 0.906,
+    "sieg_steigung_2": 1.537,
+    "favorit_trefferquote_1": 0.625,
+    "favorit_trefferquote_2": 0.716
+   },
+   "playoffs": {
+    "n": 85,
+    "total_bias": 14.39,
+    "spread_bias": 0.16
+   },
+   "heimvorteil": {
+    "modell": 2.1,
+    "tatsaechlich": 1.78,
+    "differenz": 0.33
+   }
+  }
+ },
+ "kontrollen_je_saison": {
+  "2017-18": {
+   "spiele": 1230,
+   "teams": 30,
+   "spiele_je_team_min": 82,
+   "spiele_je_team_max": 82,
+   "erster_tag": "2017-10-17",
+   "letzter_tag": "2018-04-11",
+   "laengste_pause_tage": 7,
+   "differenz_zu_1230": 0
+  },
+  "2018-19": {
+   "spiele": 1230,
+   "teams": 30,
+   "spiele_je_team_min": 82,
+   "spiele_je_team_max": 82,
+   "erster_tag": "2018-10-16",
+   "letzter_tag": "2019-04-10",
+   "laengste_pause_tage": 7,
+   "differenz_zu_1230": 0
+  },
+  "2019-20": {
+   "spiele": 1059,
+   "teams": 30,
+   "spiele_je_team_min": 64,
+   "spiele_je_team_max": 75,
+   "erster_tag": "2019-10-22",
+   "letzter_tag": "2020-08-14",
+   "laengste_pause_tage": 141,
+   "differenz_zu_1230": -171
+  },
+  "2020-21": {
+   "spiele": 1081,
+   "teams": 30,
+   "spiele_je_team_min": 72,
+   "spiele_je_team_max": 73,
+   "erster_tag": "2020-12-22",
+   "letzter_tag": "2021-05-18",
+   "laengste_pause_tage": 6,
+   "differenz_zu_1230": -149
+  },
+  "2021-22": {
+   "spiele": 1230,
+   "teams": 30,
+   "spiele_je_team_min": 82,
+   "spiele_je_team_max": 82,
+   "erster_tag": "2021-10-19",
+   "letzter_tag": "2022-04-10",
+   "laengste_pause_tage": 7,
+   "differenz_zu_1230": 0
+  },
+  "2022-23": {
+   "spiele": 1236,
+   "teams": 30,
+   "spiele_je_team_min": 82,
+   "spiele_je_team_max": 84,
+   "erster_tag": "2022-10-18",
+   "letzter_tag": "2023-04-14",
+   "laengste_pause_tage": 7,
+   "differenz_zu_1230": 6
+  },
+  "2023-24": {
+   "spiele": 1237,
+   "teams": 30,
+   "spiele_je_team_min": 82,
+   "spiele_je_team_max": 84,
+   "erster_tag": "2023-10-24",
+   "letzter_tag": "2024-04-19",
+   "laengste_pause_tage": 7,
+   "differenz_zu_1230": 7
+  },
+  "2024-25": {
+   "spiele": 1237,
+   "teams": 30,
+   "spiele_je_team_min": 82,
+   "spiele_je_team_max": 84,
+   "erster_tag": "2024-10-22",
+   "letzter_tag": "2025-04-18",
+   "laengste_pause_tage": 6,
+   "differenz_zu_1230": 7
+  },
+  "2025-26": {
+   "spiele": 1237,
+   "teams": 30,
+   "spiele_je_team_min": 82,
+   "spiele_je_team_max": 84,
+   "erster_tag": "2025-10-21",
+   "letzter_tag": "2026-04-17",
+   "laengste_pause_tage": 7,
+   "differenz_zu_1230": 7
+  }
+ },
+ "stabilitaet": {
+  "saisons": 9,
+  "sieg_brier": {
+   "min": [
+    0.2102,
+    2025
+   ],
+   "max": [
+    0.2346,
+    2022
+   ],
+   "mittel": 0.222
+  },
+  "sieg_steigung": {
+   "min": [
+    0.768,
+    2022
+   ],
+   "max": [
+    1.186,
+    2025
+   ],
+   "mittel": 1.024
+  },
+  "favorit_trefferquote": {
+   "min": [
+    0.6,
+    2022
+   ],
+   "max": [
+    0.67,
+    2025
+   ],
+   "mittel": 0.636
+  },
+  "spread_mae": {
+   "min": [
+    9.99,
+    2017
+   ],
+   "max": [
+    11.58,
+    2025
+   ],
+   "mittel": 10.881
+  },
+  "total_mae": {
+   "min": [
+    14.59,
+    2022
+   ],
+   "max": [
+    15.25,
+    2019
+   ],
+   "mittel": 14.926
+  },
+  "tt_home_mae": {
+   "min": [
+    8.94,
+    2017
+   ],
+   "max": [
+    9.78,
+    2025
+   ],
+   "mittel": 9.333
+  },
+  "tt_away_mae": {
+   "min": [
+    8.87,
+    2022
+   ],
+   "max": [
+    9.45,
+    2021
+   ],
+   "mittel": 9.269
+  },
+  "spread_bias": {
+   "min": [
+    -0.81,
+    2018
+   ],
+   "max": [
+    1.05,
+    2020
+   ],
+   "mittel": 0.047
+  },
+  "total_bias": {
+   "min": [
+    -1.42,
+    2018
+   ],
+   "max": [
+    0.82,
+    2023
+   ],
+   "mittel": -0.292
+  },
+  "total_bias_ohne_ot": {
+   "min": [
+    0.24,
+    2018
+   ],
+   "max": [
+    1.88,
+    2023
+   ],
+   "mittel": 0.908
+  },
+  "ot_anteil": {
+   "min": [
+    0.0453,
+    2025
+   ],
+   "max": [
+    0.0652,
+    2019
+   ],
+   "mittel": 0.053
+  },
+  "total_erste15": {
+   "min": [
+    -3.03,
+    2018
+   ],
+   "max": [
+    6.7,
+    2021
+   ],
+   "mittel": 0.956
+  },
+  "total_rest": {
+   "min": [
+    -1.9,
+    2021
+   ],
+   "max": [
+    0.87,
+    2023
+   ],
+   "mittel": -0.587
+  },
+  "sieg_steigung_erste15": {
+   "min": [
+    0.404,
+    2020
+   ],
+   "max": [
+    1.279,
+    2025
+   ],
+   "mittel": 0.848
+  },
+  "sieg_steigung_rest": {
+   "min": [
+    0.872,
+    2022
+   ],
+   "max": [
+    1.167,
+    2025
+   ],
+   "mittel": 1.07
+  },
+  "playoff_total_bias": {
+   "min": [
+    4.56,
+    2017
+   ],
+   "max": [
+    15.32,
+    2021
+   ],
+   "mittel": 10.459
+  },
+  "playoff_spread_bias": {
+   "min": [
+    -4.19,
+    2017
+   ],
+   "max": [
+    1.3,
+    2019
+   ],
+   "mittel": -1.894
+  },
+  "heimvorteil_differenz": {
+   "min": [
+    -0.81,
+    2018
+   ],
+   "max": [
+    1.05,
+    2020
+   ],
+   "mittel": 0.047
+  },
+  "heim_p_gegen_quote": {
+   "min": [
+    -0.039,
+    2018
+   ],
+   "max": [
+    0.016,
+    2024
+   ],
+   "mittel": -0.003
+  },
+  "zaehlung": {
+   "sieg_steigung_ueber_1": 6,
+   "favorit_70_80_treffer_ueber_modell": 4,
+   "favorit_70_80_vorhanden": 9,
+   "total_bias_negativ": 7,
+   "ot_zieht_total_bias_nach_unten": 9,
+   "total_bias_ohne_ot_nahe_0": 2,
+   "erste15_total_negativ": 3,
+   "erste15_total_unter_minus2": 2,
+   "erste15_steigung_ueber_rest": 3,
+   "steigung_2_haelfte_groesser": 7,
+   "playoff_total_positiv": 9,
+   "playoff_spread_positiv": 2,
+   "heimvorteil_modell_hoeher": 5
+  }
+ },
+ "alle_saisons": {
+  "n": 10777,
+  "sieg": {
+   "n": 10777,
+   "mittel_p_heim": 0.556,
+   "heimsieg_quote": 0.56,
+   "brier": 0.2215,
+   "brier_referenz_immer_50": 0.25,
+   "logloss": 0.6327,
+   "trefferquote_favorit": 0.636,
+   "steigung": 1.035,
+   "heim_p_stufen": [
+    {
+     "stufe": "0-10 %",
+     "n": 1,
+     "mittel_modell": 0.095,
+     "trefferquote": 0.0,
+     "abweichung_pp": -9.5
+    },
+    {
+     "stufe": "10-20 %",
+     "n": 75,
+     "mittel_modell": 0.1698,
+     "trefferquote": 0.12,
+     "abweichung_pp": -4.98
+    },
+    {
+     "stufe": "20-30 %",
+     "n": 506,
+     "mittel_modell": 0.2562,
+     "trefferquote": 0.2312,
+     "abweichung_pp": -2.5
+    },
+    {
+     "stufe": "30-40 %",
+     "n": 1257,
+     "mittel_modell": 0.3552,
+     "trefferquote": 0.358,
+     "abweichung_pp": 0.28
+    },
+    {
+     "stufe": "40-50 %",
+     "n": 1973,
+     "mittel_modell": 0.4522,
+     "trefferquote": 0.4653,
+     "abweichung_pp": 1.3
+    },
+    {
+     "stufe": "50-60 %",
+     "n": 2641,
+     "mittel_modell": 0.5505,
+     "trefferquote": 0.5498,
+     "abweichung_pp": -0.07
+    },
+    {
+     "stufe": "60-70 %",
+     "n": 2233,
+     "mittel_modell": 0.6474,
+     "trefferquote": 0.6534,
+     "abweichung_pp": 0.6
+    },
+    {
+     "stufe": "70-80 %",
+     "n": 1541,
+     "mittel_modell": 0.7466,
+     "trefferquote": 0.7489,
+     "abweichung_pp": 0.22
+    },
+    {
+     "stufe": "80-90 %",
+     "n": 523,
+     "mittel_modell": 0.8349,
+     "trefferquote": 0.8566,
+     "abweichung_pp": 2.17
+    },
+    {
+     "stufe": "90-100 %",
+     "n": 27,
+     "mittel_modell": 0.9215,
+     "trefferquote": 0.9259,
+     "abweichung_pp": 0.45
+    }
+   ],
+   "favorit_stufen": [
+    {
+     "stufe": "50-60 %",
+     "n": 4614,
+     "mittel_modell": 0.5493,
+     "trefferquote": 0.5433,
+     "abweichung_pp": -0.6
+    },
+    {
+     "stufe": "60-70 %",
+     "n": 3490,
+     "mittel_modell": 0.6465,
+     "trefferquote": 0.6493,
+     "abweichung_pp": 0.28
+    },
+    {
+     "stufe": "70-80 %",
+     "n": 2047,
+     "mittel_modell": 0.7459,
+     "trefferquote": 0.7538,
+     "abweichung_pp": 0.79
+    },
+    {
+     "stufe": "80+ %",
+     "n": 626,
+     "mittel_modell": 0.8382,
+     "trefferquote": 0.8626,
+     "abweichung_pp": 2.45
+    }
+   ],
+   "wahrscheinlichkeitsstufen_vorhergesagte_seite": [
+    {
+     "stufe": "50-55 %",
+     "n": 2349,
+     "mittel_modell": 0.5249,
+     "trefferquote": 0.5241,
+     "abweichung_pp": -0.09
+    },
+    {
+     "stufe": "55-60 %",
+     "n": 2265,
+     "mittel_modell": 0.5747,
+     "trefferquote": 0.5634,
+     "abweichung_pp": -1.13
+    },
+    {
+     "stufe": "60-65 %",
+     "n": 1926,
+     "mittel_modell": 0.6242,
+     "trefferquote": 0.6262,
+     "abweichung_pp": 0.2
+    },
+    {
+     "stufe": "65-70 %",
+     "n": 1564,
+     "mittel_modell": 0.674,
+     "trefferquote": 0.6777,
+     "abweichung_pp": 0.38
+    },
+    {
+     "stufe": "70-75 %",
+     "n": 1172,
+     "mittel_modell": 0.7247,
+     "trefferquote": 0.7312,
+     "abweichung_pp": 0.65
+    },
+    {
+     "stufe": "75-80 %",
+     "n": 875,
+     "mittel_modell": 0.7743,
+     "trefferquote": 0.784,
+     "abweichung_pp": 0.97
+    },
+    {
+     "stufe": "80-85 %",
+     "n": 449,
+     "mittel_modell": 0.822,
+     "trefferquote": 0.8508,
+     "abweichung_pp": 2.88
+    },
+    {
+     "stufe": "85-90 %",
+     "n": 149,
+     "mittel_modell": 0.8715,
+     "trefferquote": 0.8859,
+     "abweichung_pp": 1.44
+    },
+    {
+     "stufe": "90+ %",
+     "n": 28,
+     "mittel_modell": 0.9209,
+     "trefferquote": 0.9286,
+     "abweichung_pp": 0.77
+    }
+   ],
+   "abdeckung_schwellen": {
+    "0.55": {
+     "n": 8428,
+     "pruefbar": true,
+     "mittlere_abweichung_pp": 0.79,
+     "max_abweichung_pp_ab100": 2.88,
+     "gedeckt": true
+    },
+    "0.6": {
+     "n": 6163,
+     "pruefbar": true,
+     "mittlere_abweichung_pp": 0.67,
+     "max_abweichung_pp_ab100": 2.88,
+     "gedeckt": true
+    },
+    "0.65": {
+     "n": 4237,
+     "pruefbar": true,
+     "mittlere_abweichung_pp": 0.88,
+     "max_abweichung_pp_ab100": 2.88,
+     "gedeckt": true
+    },
+    "0.7": {
+     "n": 2673,
+     "pruefbar": true,
+     "mittlere_abweichung_pp": 1.17,
+     "max_abweichung_pp_ab100": 2.88,
+     "gedeckt": true
+    },
+    "0.75": {
+     "n": 1501,
+     "pruefbar": true,
+     "mittlere_abweichung_pp": 1.58,
+     "max_abweichung_pp_ab100": 2.88,
+     "gedeckt": true
+    },
+    "0.8": {
+     "n": 626,
+     "pruefbar": true,
+     "mittlere_abweichung_pp": 2.44,
+     "max_abweichung_pp_ab100": 2.88,
+     "gedeckt": true
+    },
+    "0.85": {
+     "n": 177,
+     "pruefbar": true,
+     "mittlere_abweichung_pp": 1.33,
+     "max_abweichung_pp_ab100": 1.44,
+     "gedeckt": true
+    },
+    "0.9": {
+     "n": 28,
+     "pruefbar": false,
+     "gedeckt": null
+    }
+   },
+   "brier_ci95": [
+    0.2187,
+    0.2241
+   ],
+   "logloss_ci95": [
+    0.6267,
+    0.6386
+   ],
+   "favorit_trefferquote_ci95": [
+    0.6273,
+    0.6453
+   ]
+  },
+  "spread": {
+   "name": "Spread (Heim deckt)",
+   "sigma": 13.2,
+   "fehler": {
+    "n": 10777,
+    "bias": 0.0387,
+    "bias_ci95": [
+     -0.2174,
+     0.2979
+    ],
+    "mae": 10.8846,
+    "mae_ci95": [
+     10.7214,
+     11.0496
+    ],
+    "mittel_modell": 2.0214,
+    "mittel_ergebnis": 1.9827
+   },
+   "gesamt_ueber_linien": {
+    "brier": 0.2412,
+    "logloss": 0.6754,
+    "steigung": 0.993,
+    "steigung_ci95": [
+     0.967,
+     1.027
+    ],
+    "mittlere_abweichung_stufen_pp": 0.14
+   },
+   "stufen_je_linie": [
+    {
+     "k": -5,
+     "linie_beispiel": 8.5,
+     "n": 10777,
+     "mittel_modell": 0.6475,
+     "trefferquote": 0.6454,
+     "abweichung_pp": -0.2,
+     "brier": 0.2287,
+     "logloss": 0.6499,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -1.15,
+      0.66
+     ]
+    },
+    {
+     "k": -4,
+     "linie_beispiel": 9.5,
+     "n": 10777,
+     "mittel_modell": 0.619,
+     "trefferquote": 0.6194,
+     "abweichung_pp": 0.04,
+     "brier": 0.2356,
+     "logloss": 0.6641,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -0.87,
+      0.91
+     ]
+    },
+    {
+     "k": -3,
+     "linie_beispiel": 10.5,
+     "n": 10777,
+     "mittel_modell": 0.5898,
+     "trefferquote": 0.5892,
+     "abweichung_pp": -0.06,
+     "brier": 0.2419,
+     "logloss": 0.6768,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -1.01,
+      0.85
+     ]
+    },
+    {
+     "k": -2,
+     "linie_beispiel": 11.5,
+     "n": 10777,
+     "mittel_modell": 0.5601,
+     "trefferquote": 0.562,
+     "abweichung_pp": 0.19,
+     "brier": 0.246,
+     "logloss": 0.6851,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -0.77,
+      1.1
+     ]
+    },
+    {
+     "k": -1,
+     "linie_beispiel": 12.5,
+     "n": 10777,
+     "mittel_modell": 0.5301,
+     "trefferquote": 0.5342,
+     "abweichung_pp": 0.41,
+     "brier": 0.2487,
+     "logloss": 0.6905,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -0.53,
+      1.33
+     ]
+    },
+    {
+     "k": 0,
+     "linie_beispiel": 13.5,
+     "n": 10777,
+     "mittel_modell": 0.4999,
+     "trefferquote": 0.5038,
+     "abweichung_pp": 0.38,
+     "brier": 0.2499,
+     "logloss": 0.6929,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -0.58,
+      1.31
+     ]
+    },
+    {
+     "k": 1,
+     "linie_beispiel": 14.5,
+     "n": 10777,
+     "mittel_modell": 0.4698,
+     "trefferquote": 0.4736,
+     "abweichung_pp": 0.38,
+     "brier": 0.2492,
+     "logloss": 0.6916,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -0.6,
+      1.33
+     ]
+    },
+    {
+     "k": 2,
+     "linie_beispiel": 15.5,
+     "n": 10777,
+     "mittel_modell": 0.4397,
+     "trefferquote": 0.4438,
+     "abweichung_pp": 0.41,
+     "brier": 0.2467,
+     "logloss": 0.6866,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -0.57,
+      1.31
+     ]
+    },
+    {
+     "k": 3,
+     "linie_beispiel": 16.5,
+     "n": 10777,
+     "mittel_modell": 0.4101,
+     "trefferquote": 0.4134,
+     "abweichung_pp": 0.33,
+     "brier": 0.2424,
+     "logloss": 0.6778,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -0.63,
+      1.23
+     ]
+    },
+    {
+     "k": 4,
+     "linie_beispiel": 17.5,
+     "n": 10777,
+     "mittel_modell": 0.3809,
+     "trefferquote": 0.3832,
+     "abweichung_pp": 0.23,
+     "brier": 0.2362,
+     "logloss": 0.6654,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -0.73,
+      1.1
+     ]
+    },
+    {
+     "k": 5,
+     "linie_beispiel": 18.5,
+     "n": 10777,
+     "mittel_modell": 0.3524,
+     "trefferquote": 0.3526,
+     "abweichung_pp": 0.02,
+     "brier": 0.2282,
+     "logloss": 0.6488,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -0.87,
+      0.89
+     ]
+    }
+   ],
+   "wahrscheinlichkeitsstufen_vorhergesagte_seite": [
+    {
+     "stufe": "50-55 %",
+     "n": 35706,
+     "mittel_modell": 0.525,
+     "trefferquote": 0.5248,
+     "abweichung_pp": -0.02
+    },
+    {
+     "stufe": "55-60 %",
+     "n": 36417,
+     "mittel_modell": 0.5751,
+     "trefferquote": 0.574,
+     "abweichung_pp": -0.11
+    },
+    {
+     "stufe": "60-65 %",
+     "n": 37527,
+     "mittel_modell": 0.6252,
+     "trefferquote": 0.6231,
+     "abweichung_pp": -0.22
+    },
+    {
+     "stufe": "65-70 %",
+     "n": 8897,
+     "mittel_modell": 0.6557,
+     "trefferquote": 0.6592,
+     "abweichung_pp": 0.35
+    }
+   ],
+   "wahrscheinlichkeitsstufen_over_seite": [
+    {
+     "stufe": "30-40 %",
+     "n": 23227,
+     "mittel_modell": 0.3689,
+     "trefferquote": 0.3703,
+     "abweichung_pp": 0.14
+    },
+    {
+     "stufe": "40-50 %",
+     "n": 36063,
+     "mittel_modell": 0.4497,
+     "trefferquote": 0.4533,
+     "abweichung_pp": 0.37
+    },
+    {
+     "stufe": "50-60 %",
+     "n": 36060,
+     "mittel_modell": 0.5503,
+     "trefferquote": 0.5526,
+     "abweichung_pp": 0.23
+    },
+    {
+     "stufe": "60-70 %",
+     "n": 23197,
+     "mittel_modell": 0.631,
+     "trefferquote": 0.6303,
+     "abweichung_pp": -0.08
+    }
+   ],
+   "abdeckung_schwellen": {
+    "0.55": {
+     "n": 82841,
+     "pruefbar": true,
+     "mittlere_abweichung_pp": 0.19,
+     "max_abweichung_pp_ab100": 0.35,
+     "gedeckt": true
+    },
+    "0.6": {
+     "n": 46424,
+     "pruefbar": true,
+     "mittlere_abweichung_pp": 0.24,
+     "max_abweichung_pp_ab100": 0.35,
+     "gedeckt": true
+    },
+    "0.65": {
+     "n": 8897,
+     "pruefbar": true,
+     "mittlere_abweichung_pp": 0.35,
+     "max_abweichung_pp_ab100": 0.35,
+     "gedeckt": true
+    },
+    "0.7": {
+     "n": 0,
+     "pruefbar": false,
+     "gedeckt": null
+    },
+    "0.75": {
+     "n": 0,
+     "pruefbar": false,
+     "gedeckt": null
+    },
+    "0.8": {
+     "n": 0,
+     "pruefbar": false,
+     "gedeckt": null
+    },
+    "0.85": {
+     "n": 0,
+     "pruefbar": false,
+     "gedeckt": null
+    },
+    "0.9": {
+     "n": 0,
+     "pruefbar": false,
+     "gedeckt": null
+    }
+   }
+  },
+  "total": {
+   "name": "Gesamt-Total (Over)",
+   "sigma": 18.6,
+   "fehler": {
+    "n": 10777,
+    "bias": -0.2979,
+    "bias_ci95": [
+     -0.6507,
+     0.0643
+    ],
+    "mae": 14.9187,
+    "mae_ci95": [
+     14.7211,
+     15.1289
+    ],
+    "mittel_modell": 224.2341,
+    "mittel_ergebnis": 224.5321
+   },
+   "gesamt_ueber_linien": {
+    "brier": 0.2453,
+    "logloss": 0.6837,
+    "steigung": 1.017,
+    "steigung_ci95": [
+     0.976,
+     1.056
+    ],
+    "mittlere_abweichung_stufen_pp": 0.14
+   },
+   "stufen_je_linie": [
+    {
+     "k": -5,
+     "linie_beispiel": 217.5,
+     "n": 10777,
+     "mittel_modell": 0.6059,
+     "trefferquote": 0.6017,
+     "abweichung_pp": -0.41,
+     "brier": 0.2396,
+     "logloss": 0.6723,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -1.3,
+      0.51
+     ]
+    },
+    {
+     "k": -4,
+     "linie_beispiel": 218.5,
+     "n": 10777,
+     "mittel_modell": 0.5851,
+     "trefferquote": 0.5831,
+     "abweichung_pp": -0.2,
+     "brier": 0.2431,
+     "logloss": 0.6792,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -1.09,
+      0.77
+     ]
+    },
+    {
+     "k": -3,
+     "linie_beispiel": 219.5,
+     "n": 10777,
+     "mittel_modell": 0.564,
+     "trefferquote": 0.5611,
+     "abweichung_pp": -0.29,
+     "brier": 0.2462,
+     "logloss": 0.6856,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -1.19,
+      0.63
+     ]
+    },
+    {
+     "k": -2,
+     "linie_beispiel": 220.5,
+     "n": 10777,
+     "mittel_modell": 0.5427,
+     "trefferquote": 0.5401,
+     "abweichung_pp": -0.26,
+     "brier": 0.2484,
+     "logloss": 0.6899,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -1.21,
+      0.67
+     ]
+    },
+    {
+     "k": -1,
+     "linie_beispiel": 221.5,
+     "n": 10777,
+     "mittel_modell": 0.5214,
+     "trefferquote": 0.5174,
+     "abweichung_pp": -0.4,
+     "brier": 0.2496,
+     "logloss": 0.6924,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -1.33,
+      0.59
+     ]
+    },
+    {
+     "k": 0,
+     "linie_beispiel": 222.5,
+     "n": 10777,
+     "mittel_modell": 0.4999,
+     "trefferquote": 0.4944,
+     "abweichung_pp": -0.55,
+     "brier": 0.25,
+     "logloss": 0.693,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -1.51,
+      0.41
+     ]
+    },
+    {
+     "k": 1,
+     "linie_beispiel": 223.5,
+     "n": 10777,
+     "mittel_modell": 0.4785,
+     "trefferquote": 0.4725,
+     "abweichung_pp": -0.6,
+     "brier": 0.2492,
+     "logloss": 0.6916,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -1.54,
+      0.36
+     ]
+    },
+    {
+     "k": 2,
+     "linie_beispiel": 224.5,
+     "n": 10777,
+     "mittel_modell": 0.4571,
+     "trefferquote": 0.4522,
+     "abweichung_pp": -0.5,
+     "brier": 0.2477,
+     "logloss": 0.6886,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -1.42,
+      0.42
+     ]
+    },
+    {
+     "k": 3,
+     "linie_beispiel": 225.5,
+     "n": 10777,
+     "mittel_modell": 0.4359,
+     "trefferquote": 0.4287,
+     "abweichung_pp": -0.72,
+     "brier": 0.2449,
+     "logloss": 0.683,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -1.62,
+      0.22
+     ]
+    },
+    {
+     "k": 4,
+     "linie_beispiel": 226.5,
+     "n": 10777,
+     "mittel_modell": 0.4148,
+     "trefferquote": 0.4082,
+     "abweichung_pp": -0.66,
+     "brier": 0.2416,
+     "logloss": 0.6762,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -1.61,
+      0.36
+     ]
+    },
+    {
+     "k": 5,
+     "linie_beispiel": 227.5,
+     "n": 10777,
+     "mittel_modell": 0.394,
+     "trefferquote": 0.3896,
+     "abweichung_pp": -0.44,
+     "brier": 0.2378,
+     "logloss": 0.6686,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -1.4,
+      0.58
+     ]
+    }
+   ],
+   "wahrscheinlichkeitsstufen_vorhergesagte_seite": [
+    {
+     "stufe": "50-55 %",
+     "n": 50460,
+     "mittel_modell": 0.5251,
+     "trefferquote": 0.5266,
+     "abweichung_pp": 0.16
+    },
+    {
+     "stufe": "55-60 %",
+     "n": 51029,
+     "mittel_modell": 0.5751,
+     "trefferquote": 0.5765,
+     "abweichung_pp": 0.14
+    },
+    {
+     "stufe": "60-65 %",
+     "n": 17058,
+     "mittel_modell": 0.6081,
+     "trefferquote": 0.6088,
+     "abweichung_pp": 0.07
+    }
+   ],
+   "wahrscheinlichkeitsstufen_over_seite": [
+    {
+     "stufe": "30-40 %",
+     "n": 8563,
+     "mittel_modell": 0.3918,
+     "trefferquote": 0.3881,
+     "abweichung_pp": -0.38
+    },
+    {
+     "stufe": "40-50 %",
+     "n": 50775,
+     "mittel_modell": 0.4498,
+     "trefferquote": 0.4435,
+     "abweichung_pp": -0.63
+    },
+    {
+     "stufe": "50-60 %",
+     "n": 50714,
+     "mittel_modell": 0.5503,
+     "trefferquote": 0.5469,
+     "abweichung_pp": -0.33
+    },
+    {
+     "stufe": "60-70 %",
+     "n": 8495,
+     "mittel_modell": 0.6081,
+     "trefferquote": 0.6057,
+     "abweichung_pp": -0.24
+    }
+   ],
+   "abdeckung_schwellen": {
+    "0.55": {
+     "n": 68087,
+     "pruefbar": true,
+     "mittlere_abweichung_pp": 0.12,
+     "max_abweichung_pp_ab100": 0.14,
+     "gedeckt": true
+    },
+    "0.6": {
+     "n": 17058,
+     "pruefbar": true,
+     "mittlere_abweichung_pp": 0.07,
+     "max_abweichung_pp_ab100": 0.07,
+     "gedeckt": true
+    },
+    "0.65": {
+     "n": 0,
+     "pruefbar": false,
+     "gedeckt": null
+    },
+    "0.7": {
+     "n": 0,
+     "pruefbar": false,
+     "gedeckt": null
+    },
+    "0.75": {
+     "n": 0,
+     "pruefbar": false,
+     "gedeckt": null
+    },
+    "0.8": {
+     "n": 0,
+     "pruefbar": false,
+     "gedeckt": null
+    },
+    "0.85": {
+     "n": 0,
+     "pruefbar": false,
+     "gedeckt": null
+    },
+    "0.9": {
+     "n": 0,
+     "pruefbar": false,
+     "gedeckt": null
+    }
+   }
+  },
+  "tt_home": {
+   "name": "Team-Total Heim (Over)",
+   "sigma": 11.6,
+   "fehler": {
+    "n": 10777,
+    "bias": -0.1296,
+    "bias_ci95": [
+     -0.3534,
+     0.0813
+    ],
+    "mae": 9.3335,
+    "mae_ci95": [
+     9.2042,
+     9.4608
+    ],
+    "mittel_modell": 113.1278,
+    "mittel_ergebnis": 113.2574
+   },
+   "gesamt_ueber_linien": {
+    "brier": 0.2385,
+    "logloss": 0.6699,
+    "steigung": 1.003,
+    "steigung_ci95": [
+     0.97,
+     1.036
+    ],
+    "mittlere_abweichung_stufen_pp": 0.06
+   },
+   "stufen_je_linie": [
+    {
+     "k": -5,
+     "linie_beispiel": 113.5,
+     "n": 10777,
+     "mittel_modell": 0.6669,
+     "trefferquote": 0.665,
+     "abweichung_pp": -0.19,
+     "brier": 0.2227,
+     "logloss": 0.6375,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -1.11,
+      0.72
+     ]
+    },
+    {
+     "k": -4,
+     "linie_beispiel": 114.5,
+     "n": 10777,
+     "mittel_modell": 0.6351,
+     "trefferquote": 0.6339,
+     "abweichung_pp": -0.11,
+     "brier": 0.232,
+     "logloss": 0.6566,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -1.05,
+      0.79
+     ]
+    },
+    {
+     "k": -3,
+     "linie_beispiel": 115.5,
+     "n": 10777,
+     "mittel_modell": 0.6022,
+     "trefferquote": 0.6042,
+     "abweichung_pp": 0.19,
+     "brier": 0.2391,
+     "logloss": 0.6712,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -0.74,
+      1.12
+     ]
+    },
+    {
+     "k": -2,
+     "linie_beispiel": 116.5,
+     "n": 10777,
+     "mittel_modell": 0.5687,
+     "trefferquote": 0.572,
+     "abweichung_pp": 0.33,
+     "brier": 0.2448,
+     "logloss": 0.6827,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -0.58,
+      1.27
+     ]
+    },
+    {
+     "k": -1,
+     "linie_beispiel": 117.5,
+     "n": 10777,
+     "mittel_modell": 0.5346,
+     "trefferquote": 0.5339,
+     "abweichung_pp": -0.07,
+     "brier": 0.2488,
+     "logloss": 0.6907,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -1.02,
+      0.91
+     ]
+    },
+    {
+     "k": 0,
+     "linie_beispiel": 118.5,
+     "n": 10777,
+     "mittel_modell": 0.5002,
+     "trefferquote": 0.5,
+     "abweichung_pp": -0.03,
+     "brier": 0.2499,
+     "logloss": 0.6929,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -0.95,
+      0.98
+     ]
+    },
+    {
+     "k": 1,
+     "linie_beispiel": 119.5,
+     "n": 10777,
+     "mittel_modell": 0.4659,
+     "trefferquote": 0.4652,
+     "abweichung_pp": -0.07,
+     "brier": 0.2487,
+     "logloss": 0.6905,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -0.99,
+      0.89
+     ]
+    },
+    {
+     "k": 2,
+     "linie_beispiel": 120.5,
+     "n": 10777,
+     "mittel_modell": 0.4318,
+     "trefferquote": 0.4305,
+     "abweichung_pp": -0.13,
+     "brier": 0.245,
+     "logloss": 0.6832,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -1.05,
+      0.84
+     ]
+    },
+    {
+     "k": 3,
+     "linie_beispiel": 121.5,
+     "n": 10777,
+     "mittel_modell": 0.3982,
+     "trefferquote": 0.3978,
+     "abweichung_pp": -0.04,
+     "brier": 0.2394,
+     "logloss": 0.6718,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -0.97,
+      0.89
+     ]
+    },
+    {
+     "k": 4,
+     "linie_beispiel": 122.5,
+     "n": 10777,
+     "mittel_modell": 0.3654,
+     "trefferquote": 0.3652,
+     "abweichung_pp": -0.02,
+     "brier": 0.2317,
+     "logloss": 0.656,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -0.87,
+      0.92
+     ]
+    },
+    {
+     "k": 5,
+     "linie_beispiel": 123.5,
+     "n": 10777,
+     "mittel_modell": 0.3335,
+     "trefferquote": 0.3324,
+     "abweichung_pp": -0.11,
+     "brier": 0.2218,
+     "logloss": 0.6356,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -0.99,
+      0.82
+     ]
+    }
+   ],
+   "wahrscheinlichkeitsstufen_vorhergesagte_seite": [
+    {
+     "stufe": "50-55 %",
+     "n": 31436,
+     "mittel_modell": 0.525,
+     "trefferquote": 0.525,
+     "abweichung_pp": -0.01
+    },
+    {
+     "stufe": "55-60 %",
+     "n": 31891,
+     "mittel_modell": 0.5751,
+     "trefferquote": 0.5767,
+     "abweichung_pp": 0.16
+    },
+    {
+     "stufe": "60-65 %",
+     "n": 33032,
+     "mittel_modell": 0.6252,
+     "trefferquote": 0.6254,
+     "abweichung_pp": 0.02
+    },
+    {
+     "stufe": "65-70 %",
+     "n": 22188,
+     "mittel_modell": 0.6663,
+     "trefferquote": 0.6659,
+     "abweichung_pp": -0.03
+    }
+   ],
+   "wahrscheinlichkeitsstufen_over_seite": [
+    {
+     "stufe": "30-40 %",
+     "n": 27488,
+     "mittel_modell": 0.3584,
+     "trefferquote": 0.3574,
+     "abweichung_pp": -0.1
+    },
+    {
+     "stufe": "40-50 %",
+     "n": 31668,
+     "mittel_modell": 0.4496,
+     "trefferquote": 0.4493,
+     "abweichung_pp": -0.03
+    },
+    {
+     "stufe": "50-60 %",
+     "n": 31659,
+     "mittel_modell": 0.5501,
+     "trefferquote": 0.5513,
+     "abweichung_pp": 0.12
+    },
+    {
+     "stufe": "60-70 %",
+     "n": 27732,
+     "mittel_modell": 0.6417,
+     "trefferquote": 0.6407,
+     "abweichung_pp": -0.1
+    }
+   ],
+   "abdeckung_schwellen": {
+    "0.55": {
+     "n": 87111,
+     "pruefbar": true,
+     "mittlere_abweichung_pp": 0.07,
+     "max_abweichung_pp_ab100": 0.16,
+     "gedeckt": true
+    },
+    "0.6": {
+     "n": 55220,
+     "pruefbar": true,
+     "mittlere_abweichung_pp": 0.02,
+     "max_abweichung_pp_ab100": 0.03,
+     "gedeckt": true
+    },
+    "0.65": {
+     "n": 22188,
+     "pruefbar": true,
+     "mittlere_abweichung_pp": 0.03,
+     "max_abweichung_pp_ab100": 0.03,
+     "gedeckt": true
+    },
+    "0.7": {
+     "n": 0,
+     "pruefbar": false,
+     "gedeckt": null
+    },
+    "0.75": {
+     "n": 0,
+     "pruefbar": false,
+     "gedeckt": null
+    },
+    "0.8": {
+     "n": 0,
+     "pruefbar": false,
+     "gedeckt": null
+    },
+    "0.85": {
+     "n": 0,
+     "pruefbar": false,
+     "gedeckt": null
+    },
+    "0.9": {
+     "n": 0,
+     "pruefbar": false,
+     "gedeckt": null
+    }
+   }
+  },
+  "tt_away": {
+   "name": "Team-Total Gast (Over)",
+   "sigma": 11.6,
+   "fehler": {
+    "n": 10777,
+    "bias": -0.1683,
+    "bias_ci95": [
+     -0.3958,
+     0.0545
+    ],
+    "mae": 9.2668,
+    "mae_ci95": [
+     9.1361,
+     9.3985
+    ],
+    "mittel_modell": 111.1064,
+    "mittel_ergebnis": 111.2747
+   },
+   "gesamt_ueber_linien": {
+    "brier": 0.2384,
+    "logloss": 0.6695,
+    "steigung": 1.011,
+    "steigung_ci95": [
+     0.978,
+     1.04
+    ],
+    "mittlere_abweichung_stufen_pp": 0.13
+   },
+   "stufen_je_linie": [
+    {
+     "k": -5,
+     "linie_beispiel": 99.5,
+     "n": 10777,
+     "mittel_modell": 0.6668,
+     "trefferquote": 0.6701,
+     "abweichung_pp": 0.33,
+     "brier": 0.221,
+     "logloss": 0.634,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -0.55,
+      1.24
+     ]
+    },
+    {
+     "k": -4,
+     "linie_beispiel": 100.5,
+     "n": 10777,
+     "mittel_modell": 0.6349,
+     "trefferquote": 0.6395,
+     "abweichung_pp": 0.46,
+     "brier": 0.2305,
+     "logloss": 0.6536,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -0.4,
+      1.4
+     ]
+    },
+    {
+     "k": -3,
+     "linie_beispiel": 101.5,
+     "n": 10777,
+     "mittel_modell": 0.6021,
+     "trefferquote": 0.6061,
+     "abweichung_pp": 0.4,
+     "brier": 0.2386,
+     "logloss": 0.6703,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -0.51,
+      1.37
+     ]
+    },
+    {
+     "k": -2,
+     "linie_beispiel": 102.5,
+     "n": 10777,
+     "mittel_modell": 0.5685,
+     "trefferquote": 0.5734,
+     "abweichung_pp": 0.48,
+     "brier": 0.2445,
+     "logloss": 0.6821,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -0.4,
+      1.45
+     ]
+    },
+    {
+     "k": -1,
+     "linie_beispiel": 103.5,
+     "n": 10777,
+     "mittel_modell": 0.5344,
+     "trefferquote": 0.5378,
+     "abweichung_pp": 0.34,
+     "brier": 0.2485,
+     "logloss": 0.6901,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -0.53,
+      1.31
+     ]
+    },
+    {
+     "k": 0,
+     "linie_beispiel": 104.5,
+     "n": 10777,
+     "mittel_modell": 0.5001,
+     "trefferquote": 0.5032,
+     "abweichung_pp": 0.31,
+     "brier": 0.2499,
+     "logloss": 0.693,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -0.55,
+      1.27
+     ]
+    },
+    {
+     "k": 1,
+     "linie_beispiel": 105.5,
+     "n": 10777,
+     "mittel_modell": 0.4658,
+     "trefferquote": 0.4662,
+     "abweichung_pp": 0.04,
+     "brier": 0.2488,
+     "logloss": 0.6908,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -0.89,
+      1.0
+     ]
+    },
+    {
+     "k": 2,
+     "linie_beispiel": 106.5,
+     "n": 10777,
+     "mittel_modell": 0.4317,
+     "trefferquote": 0.4332,
+     "abweichung_pp": 0.16,
+     "brier": 0.2456,
+     "logloss": 0.6843,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -0.75,
+      1.13
+     ]
+    },
+    {
+     "k": 3,
+     "linie_beispiel": 107.5,
+     "n": 10777,
+     "mittel_modell": 0.3981,
+     "trefferquote": 0.4009,
+     "abweichung_pp": 0.28,
+     "brier": 0.2402,
+     "logloss": 0.6734,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -0.64,
+      1.22
+     ]
+    },
+    {
+     "k": 4,
+     "linie_beispiel": 108.5,
+     "n": 10777,
+     "mittel_modell": 0.3652,
+     "trefferquote": 0.3673,
+     "abweichung_pp": 0.2,
+     "brier": 0.2324,
+     "logloss": 0.6575,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -0.71,
+      1.15
+     ]
+    },
+    {
+     "k": 5,
+     "linie_beispiel": 109.5,
+     "n": 10777,
+     "mittel_modell": 0.3334,
+     "trefferquote": 0.3325,
+     "abweichung_pp": -0.09,
+     "brier": 0.2219,
+     "logloss": 0.6359,
+     "steigung": null,
+     "abweichung_ci95_pp": [
+      -0.95,
+      0.84
+     ]
+    }
+   ],
+   "wahrscheinlichkeitsstufen_vorhergesagte_seite": [
+    {
+     "stufe": "50-55 %",
+     "n": 31436,
+     "mittel_modell": 0.5251,
+     "trefferquote": 0.5265,
+     "abweichung_pp": 0.14
+    },
+    {
+     "stufe": "55-60 %",
+     "n": 31934,
+     "mittel_modell": 0.5751,
+     "trefferquote": 0.5764,
+     "abweichung_pp": 0.13
+    },
+    {
+     "stufe": "60-65 %",
+     "n": 32993,
+     "mittel_modell": 0.6252,
+     "trefferquote": 0.6263,
+     "abweichung_pp": 0.11
+    },
+    {
+     "stufe": "65-70 %",
+     "n": 22184,
+     "mittel_modell": 0.6663,
+     "trefferquote": 0.6678,
+     "abweichung_pp": 0.16
+    }
+   ],
+   "wahrscheinlichkeitsstufen_over_seite": [
+    {
+     "stufe": "30-40 %",
+     "n": 27562,
+     "mittel_modell": 0.3583,
+     "trefferquote": 0.36,
+     "abweichung_pp": 0.17
+    },
+    {
+     "stufe": "40-50 %",
+     "n": 31711,
+     "mittel_modell": 0.4498,
+     "trefferquote": 0.4508,
+     "abweichung_pp": 0.1
+    },
+    {
+     "stufe": "50-60 %",
+     "n": 31659,
+     "mittel_modell": 0.5503,
+     "trefferquote": 0.5541,
+     "abweichung_pp": 0.37
+    },
+    {
+     "stufe": "60-70 %",
+     "n": 27615,
+     "mittel_modell": 0.6418,
+     "trefferquote": 0.646,
+     "abweichung_pp": 0.42
+    }
+   ],
+   "abdeckung_schwellen": {
+    "0.55": {
+     "n": 87111,
+     "pruefbar": true,
+     "mittlere_abweichung_pp": 0.13,
+     "max_abweichung_pp_ab100": 0.16,
+     "gedeckt": true
+    },
+    "0.6": {
+     "n": 55177,
+     "pruefbar": true,
+     "mittlere_abweichung_pp": 0.13,
+     "max_abweichung_pp_ab100": 0.16,
+     "gedeckt": true
+    },
+    "0.65": {
+     "n": 22184,
+     "pruefbar": true,
+     "mittlere_abweichung_pp": 0.16,
+     "max_abweichung_pp_ab100": 0.16,
+     "gedeckt": true
+    },
+    "0.7": {
+     "n": 0,
+     "pruefbar": false,
+     "gedeckt": null
+    },
+    "0.75": {
+     "n": 0,
+     "pruefbar": false,
+     "gedeckt": null
+    },
+    "0.8": {
+     "n": 0,
+     "pruefbar": false,
+     "gedeckt": null
+    },
+    "0.85": {
+     "n": 0,
+     "pruefbar": false,
+     "gedeckt": null
+    },
+    "0.9": {
+     "n": 0,
+     "pruefbar": false,
+     "gedeckt": null
+    }
+   }
+  },
+  "playoffs": {
+   "n": 766,
+   "fehler": {
+    "spread": {
+     "n": 766,
+     "bias": -1.8898,
+     "bias_ci95": [
+      -2.9749,
+      -0.7707
+     ],
+     "mae": 12.1837,
+     "mae_ci95": [
+      11.54,
+      12.8051
+     ],
+     "mittel_modell": 1.9314,
+     "mittel_ergebnis": 3.8211
+    },
+    "total": {
+     "n": 766,
+     "bias": 10.4976,
+     "bias_ci95": [
+      9.2427,
+      11.895
+     ],
+     "mae": 17.4035,
+     "mae_ci95": [
+      16.5314,
+      18.2844
+     ],
+     "mittel_modell": 226.2404,
+     "mittel_ergebnis": 215.7428
+    },
+    "tt_home": {
+     "n": 766,
+     "bias": 4.3039,
+     "bias_ci95": [
+      3.4727,
+      5.2
+     ],
+     "mae": 10.17,
+     "mae_ci95": [
+      9.6292,
+      10.6752
+     ],
+     "mittel_modell": 114.0859,
+     "mittel_ergebnis": 109.782
+    },
+    "tt_away": {
+     "n": 766,
+     "bias": 6.1937,
+     "bias_ci95": [
+      5.3663,
+      7.054
+     ],
+     "mae": 10.9387,
+     "mae_ci95": [
+      10.396,
+      11.4902
+     ],
+     "mittel_modell": 112.1545,
+     "mittel_ergebnis": 105.9608
+    }
+   }
+  }
+ },
+ "laufzeit_sekunden": 64.2
+}

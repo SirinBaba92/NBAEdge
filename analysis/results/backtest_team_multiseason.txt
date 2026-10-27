@@ -1,0 +1,261 @@
+ZUSAMMENFASSUNG: 9 Saisons (2017-18 bis 2025-26, Zuordnung nach dem Feld 'season' der Daten), Regular Season 10777 Spiele; REINES MODELL ohne Markt-Mischung (die App mischt den Markt dazu). Bias = Modell minus Ergebnis.
+ACHTUNG: Sigmas (sigma_check 2017-2025) und Teile der ELO-Parameter (Faktor 50, Heimvorteil, MOV-Wahl) wurden auf diesen Saisons abgestimmt: die älteren Saisons sind kein vollständig unabhängiger Test.
+Kontrollen: Spiele je Saison 1059 bis 1237 (Standard 1230; abweichend: 2019-20 n = 1059, 2020-21 n = 1081); Heim-p gegen Heimsiegquote höchstens 0.039 Unterschied (2018-19).
+Favoriten zu vorsichtig (Sieg-Steigung über 1): in 6 von 9 Saisons; Steigung 0.77 (2022-23) bis 1.19 (2025-26), Ø 1.02; gesamt 1.03; Favorit gewinnt gesamt 63.6 % [62.7; 64.5].
+  Stufe 70-80 %: Treffer über Modell in 4 von 9 Saisons (2025-26: 82 % gegen 75 %).
+Overtime und Total-Unterschätzung: Total-Bias negativ (Modell zu niedrig) in 7 von 9 Saisons (-1.42 (2018-19) bis +0.82 (2023-24), Ø -0.29); die OT-Spiele ziehen den Bias nach unten (Bias ohne OT höher als gesamt) in 9 von 9 Saisons; ohne OT-Spiele +0.24 (2018-19) bis +1.88 (2023-24), Ø +0.91; OT-Anteil 0.045 (2025-26) bis 0.065 (2019-20), Ø 0.053.
+Saisonstart Total (erste 15 Spiele je Team): Bias negativ in 3 von 9 Saisons, mindestens -2 in 2 (-3.03 (2018-19) bis +6.70 (2021-22), Ø +0.96; Rest Ø -0.59); Sieg-Steigung Start gegen Rest Ø 0.85 / 1.07 (Start höher in 3 Saisons).
+Erste gegen zweite Hälfte: Sieg-Steigung in der zweiten Hälfte größer in 7 von 9 Saisons (2025-26: 1,54 gegen 0,91).
+Playoffs: Total-Bias positiv (Modell zu hoch) in 9 von 9 Saisons (+4.6 (2017-18) bis +15.3 (2021-22), Ø +10.5); Spread-Bias positiv in 2 (-4.2 (2017-18) bis +1.3 (2019-20), Ø -1.9).
+Heimvorteil: Modell höher als tatsächlich in 5 von 9 Saisons, Differenz -0.81 (2018-19) bis +1.05 (2020-21), Ø +0.05.
+Schwankung zwischen Saisons: Brier 0.210 (2025-26) bis 0.235 (2022-23), Ø 0.222; Spread-MAE 9.99 (2017-18) bis 11.58 (2025-26), Ø 10.88; Total-MAE 14.59 (2022-23) bis 15.25 (2019-20), Ø 14.93; Team-Total-MAE Heim 8.94 (2017-18) bis 9.78 (2025-26), Ø 9.33, Gast 8.87 (2022-23) bis 9.45 (2021-22), Ø 9.27.
+Alle Saisons Spread (Heim deckt): Bias +0.04 [-0.22; +0.30], MAE 10.88; gut kalibriert (Steigung 0.99 [0.97; 1.03], 1 liegt im Intervall); Schwellen gedeckt ab 55 % bis 65 % (darüber zu wenige Zeilen).
+Alle Saisons Gesamt-Total (Over): Bias -0.30 [-0.65; +0.06], MAE 14.92; gut kalibriert (Steigung 1.02 [0.98; 1.06], 1 liegt im Intervall); Schwellen gedeckt ab 55 % bis 60 % (darüber zu wenige Zeilen).
+Alle Saisons Team-Total Heim (Over): Bias -0.13 [-0.35; +0.08], MAE 9.33; gut kalibriert (Steigung 1.00 [0.97; 1.04], 1 liegt im Intervall); Schwellen gedeckt ab 55 % bis 65 % (darüber zu wenige Zeilen).
+Alle Saisons Team-Total Gast (Over): Bias -0.17 [-0.40; +0.05], MAE 9.27; gut kalibriert (Steigung 1.01 [0.98; 1.04], 1 liegt im Intervall); Schwellen gedeckt ab 55 % bis 65 % (darüber zu wenige Zeilen).
+Alle Saisons Sieg: Brier 0.2215 [0.2187; 0.2241], Steigung 1.03; Schwellen gedeckt ab 55 % bis 85 % (darüber zu wenige Zeilen). Nur Beschreibung, keine Empfehlungen.
+
+========================================================================================================================
+Backtest Team-Märkte über Saisons (Walk-forward, kausaler Replay ab 2015, Produktivparameter). Laufzeit 64.2 s.
+========================================================================================================================
+
+KONTROLLEN: Spiele je Saison (Regular Season)
+  Saison  Spiele  Teams  je Team min-max  Zeitraum                  längste Pause  Diff. zu 1230  Hinweis
+  2017-18    1230     30      82-82      2017-10-17 bis 2018-04-11          7 T             +0  
+  2018-19    1230     30      82-82      2018-10-16 bis 2019-04-10          7 T             +0  
+  2019-20    1059     30      64-75      2019-10-22 bis 2020-08-14        141 T           -171  verkürzt (Corona-Unterbrechung, Ende in der Bubble)
+  2020-21    1081     30      72-73      2020-12-22 bis 2021-05-18          6 T           -149  verkürzt (72 Spiele je Team)
+  2021-22    1230     30      82-82      2021-10-19 bis 2022-04-10          7 T             +0  
+  2022-23    1236     30      82-84      2022-10-18 bis 2023-04-14          7 T             +6  
+  2023-24    1237     30      82-84      2023-10-24 bis 2024-04-19          7 T             +7  
+  2024-25    1237     30      82-84      2024-10-22 bis 2025-04-18          6 T             +7  
+  2025-26    1237     30      82-84      2025-10-21 bis 2026-04-17          7 T             +7  
+  Overtime-Erkennung: OT-Punkte (home_ot1) oder period > 4 (period allein ist vor 2019 unzuverlässig: 2015-2017 keine, 2018 nur 22 von 67 OT-Spielen).
+  Abweichungen von 1230 ohne Hinweis (z. B. +6/+7 ab 2022-23) kommen vermutlich von Play-In- bzw. NBA-Cup-Spielen, die in den Daten als Regular Season (postseason = false) stehen; nicht einzeln geprüft.
+
+1. SIEG je Saison
+ Saison     n  Heim-p Ø  Heimsiege   Brier  LogLoss  Steigung  Favorit %
+-------  ----  --------  ---------  ------  -------  --------  ---------
+2017-18  1230     0.560      0.579  0.2195    0.629      1.07       63.7
+2018-19  1230     0.554      0.593  0.2204    0.631      1.03       65.0
+2019-20  1059     0.550      0.551  0.2200    0.629      1.06       65.1
+2020-21  1081     0.556      0.544  0.2303    0.652      0.90       60.9
+2021-22  1230     0.559      0.544  0.2267    0.645      0.96       61.3
+2022-23  1236     0.556      0.580  0.2346    0.662      0.77       60.0
+2023-24  1237     0.552      0.545  0.2169    0.622      1.11       64.1
+2024-25  1237     0.559      0.543  0.2155    0.619      1.13       65.4
+2025-26  1237     0.557      0.555  0.2102    0.608      1.19       67.0
+
+   Favorit-Stufen je Saison (Modell % / Treffer % / n)
+  Saison                  50-60 %               60-70 %               70-80 %                 80+ %
+  2017-18               55/53/538             65/66/397             74/78/228              84/84/67
+  2018-19               55/58/531             64/67/418             75/73/226              83/91/55
+  2019-20               55/56/460             65/68/310             75/70/228              84/97/61
+  2020-21               55/54/485             65/61/372             74/73/163              83/82/61
+  2021-22               55/49/502             65/67/428             75/73/244              83/80/56
+  2022-23               55/53/617             64/65/409             74/71/182              83/68/28
+  2023-24               55/54/510             65/62/376             75/79/255              84/90/96
+  2024-25               55/56/478             65/63/397             75/76/271              84/90/91
+  2025-26               55/56/493             65/66/383             75/82/250             85/84/111
+
+2. SPREAD (HEIM DECKT) je Saison (Sigma 13.2; Abw. Hauptlinie = Trefferquote minus Modell in PP)
+ Saison     n   Bias    MAE  Steigung  Abw. PP
+-------  ----  -----  -----  --------  -------
+2017-18  1230  +0.06   9.99      1.09     +0.2
+2018-19  1230  -0.81  10.46      1.06     +4.3
+2019-20  1059  -0.30  10.28      1.08     +0.0
+2020-21  1081  +1.05  11.41      0.88     -1.2
+2021-22  1230  +0.40  11.30      1.00     -1.9
+2022-23  1236  -0.54  10.47      0.98     +2.6
+2023-24  1237  -0.29  11.21      0.93     +0.5
+2024-25  1237  +0.52  11.23      1.01     -1.3
+2025-26  1237  +0.33  11.58      0.92     +0.2
+
+2. GESAMT-TOTAL (OVER) je Saison (Sigma 18.6; Abw. Hauptlinie = Trefferquote minus Modell in PP)
+ Saison     n   Bias    MAE  Steigung  Abw. PP
+-------  ----  -----  -----  --------  -------
+2017-18  1230  -0.24  14.93      0.94     -2.1
+2018-19  1230  -1.42  15.10      1.10     -0.2
+2019-20  1059  -0.40  15.25      0.94     +0.4
+2020-21  1081  +0.31  14.89      0.98     -1.2
+2021-22  1230  -0.37  14.83      1.03     +0.1
+2022-23  1236  -0.25  14.59      1.21     -0.7
+2023-24  1237  +0.82  14.75      0.94     -4.0
+2024-25  1237  -0.54  14.82      0.97     +2.6
+2025-26  1237  -0.54  15.17      1.03     +0.0
+
+2. TEAM-TOTAL HEIM (OVER) je Saison (Sigma 11.6; Abw. Hauptlinie = Trefferquote minus Modell in PP)
+ Saison     n   Bias   MAE  Steigung  Abw. PP
+-------  ----  -----  ----  --------  -------
+2017-18  1230  -0.09  8.94      1.03     +0.3
+2018-19  1230  -1.11  9.42      1.06     +2.3
+2019-20  1059  -0.35  9.13      1.05     -0.3
+2020-21  1081  +0.68  9.57      0.92     -2.5
+2021-22  1230  +0.02  9.31      1.00     +0.7
+2022-23  1236  -0.40  9.24      0.99     +0.7
+2023-24  1237  +0.26  9.30      0.99     -2.5
+2024-25  1237  -0.01  9.31      1.00     +0.5
+2025-26  1237  -0.11  9.78      0.98     +0.2
+
+2. TEAM-TOTAL GAST (OVER) je Saison (Sigma 11.6; Abw. Hauptlinie = Trefferquote minus Modell in PP)
+ Saison     n   Bias   MAE  Steigung  Abw. PP
+-------  ----  -----  ----  --------  -------
+2017-18  1230  -0.15  9.07      1.00     +0.3
+2018-19  1230  -0.30  9.23      1.03     +0.1
+2019-20  1059  -0.05  9.32      0.93     -0.1
+2020-21  1081  -0.37  9.37      1.03     +1.2
+2021-22  1230  -0.39  9.45      1.00     +2.1
+2022-23  1236  +0.14  8.87      1.13     -1.1
+2023-24  1237  +0.55  9.34      0.99     -0.8
+2024-25  1237  -0.53  9.38      0.96     +0.4
+2025-26  1237  -0.43  9.39      1.02     +0.9
+
+3. OVERTIME je Saison
+ Saison     n  OT-Anteil  Total mit OT  ohne OT  Bias gesamt  Bias ohne OT  Bias nur OT
+-------  ----  ---------  ------------  -------  -----------  ------------  -----------
+2017-18  1230      5.0 %         233.7    211.6        -0.24         +0.82        -20.5
+2018-19  1230      5.5 %         251.7    220.7        -1.42         +0.24        -30.1
+2019-20  1059      6.5 %         241.3    222.4        -0.40         +0.88        -18.6
+2020-21  1081      5.2 %         245.6    223.0        +0.31         +1.51        -21.6
+2021-22  1230      4.7 %         243.0    220.2        -0.37         +0.69        -21.8
+2022-23  1236      6.5 %         247.7    228.0        -0.25         +1.06        -19.3
+2023-24  1237      4.8 %         248.9    227.3        +0.82         +1.88        -20.4
+2024-25  1237      4.9 %         247.3    226.6        -0.54         +0.48        -20.3
+2025-26  1237      4.5 %         255.8    230.0        -0.54         +0.61        -24.7
+
+4. SAISONSTART (erste 15 Spiele je Team beide Teams) gegen Rest
+ Saison     n  n Start  Total-Bias Start  Total-Bias Rest  Sieg-Steigung Start  Sieg-Steigung Rest
+-------  ----  -------  ----------------  ---------------  -------------------  ------------------
+2017-18  1230      219             +0.91            -0.48                 0.67                1.16
+2018-19  1230      217             -3.03            -1.07                 0.90                1.06
+2019-20  1059      219             +2.40            -1.12                 1.07                1.06
+2020-21  1081      218             +3.11            -0.40                 0.40                1.04
+2021-22  1230      219             +6.70            -1.90                 0.78                1.00
+2022-23  1236      219             +1.87            -0.71                 0.41                0.87
+2023-24  1237      218             +0.56            +0.87                 1.13                1.10
+2024-25  1237      215             -0.90            -0.47                 0.98                1.16
+2025-26  1237      218             -3.02            -0.00                 1.28                1.17
+
+5. ERSTE gegen ZWEITE SAISONHÄLFTE
+ Saison     n  Steigung 1. H.  Steigung 2. H.  Favorit % 1. H.  Favorit % 2. H.
+-------  ----  --------------  --------------  ---------------  ---------------
+2017-18  1230            0.81            1.32             61.0             66.3
+2018-19  1230            0.91            1.15             63.6             66.5
+2019-20  1059            1.13            0.97             67.5             62.6
+2020-21  1081            0.63            1.14             56.7             65.1
+2021-22  1230            0.82            1.09             60.2             62.4
+2022-23  1236            0.59            0.94             60.2             59.7
+2023-24  1237            1.19            1.04             64.4             63.8
+2024-25  1237            1.06            1.19             63.6             67.2
+2025-26  1237            0.91            1.54             62.5             71.6
+
+6. PLAYOFFS (Zusatz, Bias = Modell minus Ergebnis)
+ Saison   n  Total-Bias  Spread-Bias
+-------  --  ----------  -----------
+2017-18  82        +4.6         -4.2
+2018-19  82        +9.8         -1.9
+2019-20  84        +7.6         +1.3
+2020-21  90        +6.3         -1.9
+2021-22  93       +15.3         -2.2
+2022-23  84       +10.2         -2.3
+2023-24  82       +13.8         -2.1
+2024-25  84       +12.1         -3.8
+2025-26  85       +14.4         +0.2
+
+7. HEIMVORTEIL (Ø Spread des Modells gegen Ø tatsächliche Marge, Heim minus Gast)
+ Saison     n  Modell  tatsächlich  Differenz
+-------  ----  ------  -----------  ---------
+2017-18  1230   +2.17        +2.11      +0.06
+2018-19  1230   +1.92        +2.73      -0.81
+2019-20  1059   +1.83        +2.13      -0.30
+2020-21  1081   +2.01        +0.96      +1.05
+2021-22  1230   +2.13        +1.72      +0.40
+2022-23  1236   +1.97        +2.51      -0.54
+2023-24  1237   +1.91        +2.20      -0.29
+2024-25  1237   +2.13        +1.61      +0.52
+2025-26  1237   +2.10        +1.78      +0.33
+
+SCHWANKUNG ÜBER DIE SAISONS (min / max / Mittel)
+  sieg_brier                 min   0.2102 (2025-26)   max   0.2346 (2022-23)   Ø 0.222
+  sieg_steigung              min    0.768 (2022-23)   max    1.186 (2025-26)   Ø 1.024
+  favorit_trefferquote       min      0.6 (2022-23)   max     0.67 (2025-26)   Ø 0.636
+  spread_mae                 min     9.99 (2017-18)   max    11.58 (2025-26)   Ø 10.881
+  total_mae                  min    14.59 (2022-23)   max    15.25 (2019-20)   Ø 14.926
+  tt_home_mae                min     8.94 (2017-18)   max     9.78 (2025-26)   Ø 9.333
+  tt_away_mae                min     8.87 (2022-23)   max     9.45 (2021-22)   Ø 9.269
+  spread_bias                min    -0.81 (2018-19)   max     1.05 (2020-21)   Ø 0.047
+  total_bias                 min    -1.42 (2018-19)   max     0.82 (2023-24)   Ø -0.292
+  total_bias_ohne_ot         min     0.24 (2018-19)   max     1.88 (2023-24)   Ø 0.908
+  ot_anteil                  min   0.0453 (2025-26)   max   0.0652 (2019-20)   Ø 0.053
+  total_erste15              min    -3.03 (2018-19)   max      6.7 (2021-22)   Ø 0.956
+  total_rest                 min     -1.9 (2021-22)   max     0.87 (2023-24)   Ø -0.587
+  sieg_steigung_erste15      min    0.404 (2020-21)   max    1.279 (2025-26)   Ø 0.848
+  sieg_steigung_rest         min    0.872 (2022-23)   max    1.167 (2025-26)   Ø 1.07
+  playoff_total_bias         min     4.56 (2017-18)   max    15.32 (2021-22)   Ø 10.459
+  playoff_spread_bias        min    -4.19 (2017-18)   max      1.3 (2019-20)   Ø -1.894
+  heimvorteil_differenz      min    -0.81 (2018-19)   max     1.05 (2020-21)   Ø 0.047
+  heim_p_gegen_quote         min   -0.039 (2018-19)   max    0.016 (2024-25)   Ø -0.003
+
+8. ALLE SAISONS ZUSAMMEN (Regular Season, Bootstrap nach Spielen; Zeilen verschiedener Linien eines Spiels sind nicht unabhängig)
+  Sieg n 10777: Brier 0.2215 [0.2187; 0.2241], Log-Loss 0.633 [0.627; 0.639], Steigung 1.03, Favorit gewinnt 63.6 % [62.7; 64.5]
+  Sieg: vorhergesagte Seite nach 5er-Stufen:
+      Stufe     n  Modell  Treffer  Abw. PP
+    -------  ----  ------  -------  -------
+    50-55 %  2349  0.5249   0.5241    -0.09
+    55-60 %  2265  0.5747   0.5634    -1.13
+    60-65 %  1926  0.6242   0.6262      0.2
+    65-70 %  1564   0.674   0.6777     0.38
+    70-75 %  1172  0.7247   0.7312     0.65
+    75-80 %   875  0.7743    0.784     0.97
+    80-85 %   449   0.822   0.8508     2.88
+    85-90 %   149  0.8715   0.8859     1.44
+      90+ %    28  0.9209   0.9286     0.77
+  Sieg: Favorit-Stufen:
+      Stufe     n  Modell  Treffer  Abw. PP
+    -------  ----  ------  -------  -------
+    50-60 %  4614  0.5493   0.5433     -0.6
+    60-70 %  3490  0.6465   0.6493     0.28
+    70-80 %  2047  0.7459   0.7538     0.79
+      80+ %   626  0.8382   0.8626     2.45
+  Schwellen: gedeckt ab 55 % bis 85 % (darüber zu wenige Zeilen)
+
+  Spread (Heim deckt): n 10777; Bias +0.04 [-0.22; +0.30]; MAE 10.88 [10.72; 11.05]; Brier 0.2412; Steigung 0.99 [0.97; 1.03]
+    vorhergesagte Seite nach 5er-Stufen (alle Linien):
+        Stufe      n  Modell  Treffer  Abw. PP
+      -------  -----  ------  -------  -------
+      50-55 %  35706   0.525   0.5248    -0.02
+      55-60 %  36417  0.5751    0.574    -0.11
+      60-65 %  37527  0.6252   0.6231    -0.22
+      65-70 %   8897  0.6557   0.6592     0.35
+    Schwellen (mittlere Abweichung < 3 PP, keine Stufe mit >= 100 Zeilen über 6 PP daneben): gedeckt ab 55 % bis 65 % (darüber zu wenige Zeilen)
+
+  Gesamt-Total (Over): n 10777; Bias -0.30 [-0.65; +0.06]; MAE 14.92 [14.72; 15.13]; Brier 0.2453; Steigung 1.02 [0.98; 1.06]
+    vorhergesagte Seite nach 5er-Stufen (alle Linien):
+        Stufe      n  Modell  Treffer  Abw. PP
+      -------  -----  ------  -------  -------
+      50-55 %  50460  0.5251   0.5266     0.16
+      55-60 %  51029  0.5751   0.5765     0.14
+      60-65 %  17058  0.6081   0.6088     0.07
+    Schwellen (mittlere Abweichung < 3 PP, keine Stufe mit >= 100 Zeilen über 6 PP daneben): gedeckt ab 55 % bis 60 % (darüber zu wenige Zeilen)
+
+  Team-Total Heim (Over): n 10777; Bias -0.13 [-0.35; +0.08]; MAE 9.33 [9.20; 9.46]; Brier 0.2385; Steigung 1.00 [0.97; 1.04]
+    vorhergesagte Seite nach 5er-Stufen (alle Linien):
+        Stufe      n  Modell  Treffer  Abw. PP
+      -------  -----  ------  -------  -------
+      50-55 %  31436   0.525    0.525    -0.01
+      55-60 %  31891  0.5751   0.5767     0.16
+      60-65 %  33032  0.6252   0.6254     0.02
+      65-70 %  22188  0.6663   0.6659    -0.03
+    Schwellen (mittlere Abweichung < 3 PP, keine Stufe mit >= 100 Zeilen über 6 PP daneben): gedeckt ab 55 % bis 65 % (darüber zu wenige Zeilen)
+
+  Team-Total Gast (Over): n 10777; Bias -0.17 [-0.40; +0.05]; MAE 9.27 [9.14; 9.40]; Brier 0.2384; Steigung 1.01 [0.98; 1.04]
+    vorhergesagte Seite nach 5er-Stufen (alle Linien):
+        Stufe      n  Modell  Treffer  Abw. PP
+      -------  -----  ------  -------  -------
+      50-55 %  31436  0.5251   0.5265     0.14
+      55-60 %  31934  0.5751   0.5764     0.13
+      60-65 %  32993  0.6252   0.6263     0.11
+      65-70 %  22184  0.6663   0.6678     0.16
+    Schwellen (mittlere Abweichung < 3 PP, keine Stufe mit >= 100 Zeilen über 6 PP daneben): gedeckt ab 55 % bis 65 % (darüber zu wenige Zeilen)
+
+  Playoffs alle Saisons (n 766): spread Bias -1.89 [-2.97; -0.77]; total Bias +10.50 [+9.24; +11.89]; tt_home Bias +4.30 [+3.47; +5.20]; tt_away Bias +6.19 [+5.37; +7.05]

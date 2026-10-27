@@ -119,4 +119,31 @@ check("nur von Hand: Herkunft 'von Hand' ohne ESPN", "von Hand" in pv.absence_bo
 from ui import player_absence as pa
 src = Path(ROOT / "ui" / "player_tab.py").read_text(encoding="utf-8")
 check("Vergleichstabelle nur in der Tabellenansicht (show_compare, Standard True; Tab reicht table_view durch)", inspect.signature(pa.render_absences).parameters["show_compare"].default is True and "show_compare=table_view" in src)
+
+# ----------------------------------------------------------------------------- dritter Balken: der jeweils andere Modellwert
+OT = {"game_key": "k", "players": [
+    {**player(21, "Zwei Werte", "HEI", pts=20.0, quotes=[(20, 1.8, 0.55), (25, 3.0, 0.30)], model={}), "p_ge_raw": {"20": 0.56, "25": 0.31}, "p_ge_adjusted": {"20": 0.44, "25": 0.22}},
+    {**player(22, "Fehlender Wert", "HEI", pts=18.0, quotes=[(20, 1.8, 0.55), (25, 3.0, 0.30)], model={}), "p_ge_raw": {"20": 0.50}, "p_ge_adjusted": {"20": 0.40, "25": 0.20}},
+    {**player(23, "Keine Prognose", "HEI", ok=False, quotes=[(20, 2.0, 0.5)], model={})}]}
+ht = pv.render_cards_html(pv.build_table_model(OT, "team", "team"))
+hr = pv.render_cards_html(pv.build_table_model(OT, "raw", "team"))
+cards_t = {c.split("pl-c-name'>")[1].split("<")[0].strip(): c for c in cards_of(ht)}
+cards_r = {c.split("pl-c-name'>")[1].split("<")[0].strip(): c for c in cards_of(hr)}
+row_of = lambda cards, name, n: next(x for x in cards[name].split("<div class='pl-c-row") if f"<b>{n}+</b>" in x)
+rt, rr = row_of(cards_t, "Zwei Werte", 20), row_of(cards_r, "Zwei Werte", 20)
+check("Modus Teamabgleich: Hauptwert 44 %, dritter Balken und Text = Roh 56 % (in der dritten Farbe)", "<b>44 %</b>" in rt and "pl-c-bar pl-c-bar-o'><i style='width:56%'>" in rt and "<span class='pl-c-wo'>Roh <b>56 %</b></span>" in rt, rt[:420])
+check("Modus roh: Hauptwert 56 %, dritter Balken und Text = Teamabgleich 44 %", "<b>56 %</b>" in rr and "pl-c-bar pl-c-bar-o'><i style='width:44%'>" in rr and "<span class='pl-c-wo'>Teamabgleich <b>44 %</b></span>" in rr)
+check("dritter Balken steht unter Betano und Modell, gleich dick wie die anderen beiden (10 px), Farbe gedaempft", rt.index("pl-c-bar-b") < rt.index("pl-c-bar-m") < rt.index("pl-c-bar-o") and ".pl-c-bar-o i {" in pv.CARDS_CSS.replace("{{", "{") and "height:6px" not in pv.CARDS_CSS and pv.OTHER == "#9fb8ad" and "#9fb8ad" in pv.CARDS_CSS)
+check("Differenz, Pfeil und Hervorhebung bleiben beim gewaehlten Modus (Team: 44 % - 55 % = -11 PP mit Pfeil; roh: 56 % >= 60 nicht, 1,0 PP)", "▼" in rt and "pl-cd-rot'>−11,0" in rt and "pl-c-hi" not in rt and "pl-cd-grau'>+1,0" in rr and "▼" not in rr)
+rm = row_of(cards_t, "Fehlender Wert", 25)
+check("fehlender anderer Wert (roh fehlt bei 25+): kein dritter Balken, kein Text, kein 'None', Zeile vollstaendig", "pl-c-bar-o" not in rm and "pl-c-wo" not in rm and "None" not in ht and "None" not in hr and "<b>25+</b>" in rm and "Modell</span> <b>20 %</b>" in rm, rm[:300])
+rn = cards_t["Keine Prognose"]
+check("Spieler ohne Prognose: kein dritter Balken, kein Fehler", "pl-c-bar-o" not in rn and "keine Prognose" in rn)
+check("Rotation/gleiche Werte: dritter Balken zeigt denselben Wert (nichts Falsches)", "<span class='pl-c-wo'>Roh <b>70 %</b></span>" in pv.render_cards_html(pv.build_table_model(_pe(0.7, 0.5), "team", "team")))
+check("Datenattribute der klickbaren Zeilen unveraendert (Modell = angezeigter Wert, Quote, Betano)", "data-model='44'" in rt and "data-model='56'" in rr and "data-buch='55'" in rt and "data-odds='1.8'" in rt)
+check("60-%-Linie: Balken in einem Rahmen mit Linie bei CARD_HIGHLIGHT_MIN_PCT, Legendenhinweis, Zeilen unveraendert klickbar", "<div class='pl-c-bars'>" in rt and ".pl-c-bars::after" in pv.CARDS_CSS.replace("{{", "{") and f"left:{pv.CARD_HIGHLIGHT_MIN_PCT}%" in pv.CARDS_CSS and "weiße Linie im Balken = 60 %" in ht and "pointer-events:none" in pv.CARDS_CSS and "data-pid='21'" in rt)
+mv = pv.attach_variant(pv.build_table_model(OT, "team", "team"), OT, "team")
+check("Variante mit Ausfaellen: dritter Balken und 'vorher' nebeneinander ohne Fehler", "pl-c-bar-o" in pv.render_cards_html(mv))
+tab = pv.render_table_html(pv.build_table_model(OT, "team", "team"))
+check("Tabellenansicht unveraendert (kein dritter Balken, keine neue Spalte)", "pl-c-bar-o" not in tab and "pl-c-wo" not in tab and "<th>Differenz" in tab)
 print("\nALLES OK" if ok else "\nFEHLER"); sys.exit(0 if ok else 1)

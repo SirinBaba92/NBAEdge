@@ -54,8 +54,8 @@ r = ds.set_bet(*G, "winner", side="home", odds="1,85", stake="20", now=NOW)
 d = raw(); key = ps.game_key(D, START, HOME, AWAY)
 check("Format nbaedge-day-bets Version 1, Schluessel wie pre_match_store.game_key", d["format"] == "nbaedge-day-bets" and d["version"] == 1 and list(d["games"]) == [key] and r["key"] == key and key.count("|") == 3, key)
 b = d["games"][key]["bets"]["winner"]
-check("Wette: alle Felder (active, side, line, odds, stake, odds_source, line_ref, placed_at, updated_at, removed_at, revisions)",
-      set(b) == {"market", "active", "side", "line", "odds", "stake", "odds_source", "line_ref", "placed_at", "updated_at", "removed_at", "revisions"} and b["active"] is True and b["side"] == "home"
+check("Wette: alle Felder (active, side, line, odds, stake, odds_source, line_ref, categories, placed_at, updated_at, removed_at, revisions)",
+      set(b) == {"market", "active", "side", "line", "odds", "stake", "odds_source", "line_ref", "categories", "placed_at", "updated_at", "removed_at", "revisions"} and b["categories"] == [] and b["active"] is True and b["side"] == "home"
       and b["line"] is None and b["odds"] == 1.85 and b["stake"] == 20.0 and b["odds_source"] == "manuell" and b["removed_at"] is None and b["revisions"] == [] and b["placed_at"] == b["updated_at"])
 check("Spielkopf gespeichert (Datum, Anpfiff UTC, Heim, Gast)", {k: d["games"][key][k] for k in ("game_date", "start_utc", "home", "away")} == {"game_date": D, "start_utc": START, "home": HOME, "away": AWAY})
 check("Zeitstempel mit UTC-Versatz (wie pre_match_store)", b["placed_at"].endswith(("+00:00", "Z")) or b["placed_at"][-6] in "+-", b["placed_at"])

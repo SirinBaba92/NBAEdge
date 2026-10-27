@@ -171,4 +171,6 @@ def render_spieltag_tab() -> None:
     _live_head(auto)
     from ui.bet_entry import render_bet_entry
     render_bet_entry()
+    from ui.bet_list import render_bet_list
+    render_bet_list()
     _live_cards(auto)

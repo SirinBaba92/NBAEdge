@@ -18,6 +18,7 @@ from zoneinfo import ZoneInfo
 
 import streamlit as st
 
+from data import bet_categories as bc
 from data import day_bets_store as ds
 from data import live_feed as lf
 from data import market_lines
@@ -127,9 +128,10 @@ def bet_text(game, market: str, bet: dict) -> str:
     return f"{lc.market_title(market, game)}: {lc.bet_label(market, bet, game)} · {odds} · Einsatz {lc.fmt_money(bet.get('stake'))}"
 
 
-def save_market_bet(game, market: str, side: str, line, odds_text, stake, info: dict | None = None, prefill: dict | None = None, now: float | None = None) -> tuple[bool, str]:
+def save_market_bet(game, market: str, side: str, line, odds_text, stake, info: dict | None = None, prefill: dict | None = None, now: float | None = None, categories=None) -> tuple[bool, str]:
     """Wette eines Marktes speichern. Rueckgabe (ok, Meldung); jeder Fehler wird zu einer verstaendlichen deutschen Meldung, nichts wird geworfen.
-    odds_source: 'gespeichert' (Quote unveraendert aus der Betano-Eingabe), sonst 'manuell'. line_ref: Hauptlinie (aus Sicht der gewaehlten Seite), gewaehlte Linie, Quelle, Zeit, Buchmacher."""
+    odds_source: 'gespeichert' (Quote unveraendert aus der Betano-Eingabe), sonst 'manuell'. line_ref: Hauptlinie (aus Sicht der gewaehlten Seite), gewaehlte Linie, Quelle, Zeit, Buchmacher.
+    categories: Liste aus team_1 | team_2 (data/bet_categories.py), mindestens eine; nach dem Speichern werden sie als zuletzt benutzte Team-Kategorien gemerkt (Voreinstellung der naechsten Team-Wette)."""
     try:
         odds = ds.parse_odds_optional(odds_text)
         source = None
@@ -140,7 +142,7 @@ def save_market_bet(game, market: str, side: str, line, odds_text, stake, info: 
             main_home = info.get("main_home_view")
             main_side = None if main_home is None else default_line_for(market, {LINE_KEYS[market]: main_home}, side)
             ref = ds.make_line_ref(main_side, line, source=info.get("label"), at=info.get("at"), bookmaker=info.get("bookmaker"))
-        res = ds.set_bet(game.day, game.start_utc, game.home, game.away, market, side=side, line=line, odds=odds, stake=stake, odds_source=source, line_ref=ref, now=now)
+        res = ds.set_bet(game.day, game.start_utc, game.home, game.away, market, side=side, line=line, odds=odds, stake=stake, odds_source=source, line_ref=ref, now=now, categories=categories)
     except ds.GameStartedError as e:
         return False, f"{LOCK_TEXT}: {e}"
     except ds.BetInputError as e:
@@ -149,6 +151,8 @@ def save_market_bet(game, market: str, side: str, line, odds_text, stake, info: 
         return False, str(e)
     except Exception as e:                                           # nie ein Absturz
         return False, f"Unerwarteter Fehler beim Speichern ({type(e).__name__}); es wurde nichts geändert."
+    if categories:
+        bc.set_last_team(categories)
     head = "Gespeichert" if res["status"] == "saved" else "Unverändert (so bereits gespeichert)"
     return True, f"{head}: {bet_text(game, market, res['bet'])}"
 
@@ -180,11 +184,11 @@ def _set_msg(game, result: tuple[bool, str]) -> None:
         st.session_state["be_dirty"] = True          # Daten haben sich geaendert (oder wurden bestaetigt): Karten/Uebersicht muessen neu gebaut werden
 
 
-def _on_save(game, market: str, side: str, line_key, odds_key: str, stake_key: str, info, prefill) -> None:
+def _on_save(game, market: str, side: str, line_key, odds_key: str, stake_key: str, info, prefill, cat_key: str | None = None) -> None:
     """Callback von 'Speichern': liest die Feldwerte aus dem Session State und speichert; danach baut sich die Seite mit dem neuen Stand und der Bestaetigung auf (kein st.rerun noetig)."""
     ss = st.session_state
     stake = ss.get(stake_key)
-    _set_msg(game, save_market_bet(game, market, side, ss.get(line_key) if line_key else None, ss.get(odds_key), stake if stake else None, info, prefill))
+    _set_msg(game, save_market_bet(game, market, side, ss.get(line_key) if line_key else None, ss.get(odds_key), stake if stake else None, info, prefill, categories=ss.get(cat_key) if cat_key else None))
 
 
 def _on_game_change() -> None:
@@ -199,7 +203,7 @@ def _on_remove(game, market: str) -> None:
 def _token(bet: dict | None) -> str:
     """Stand der gespeicherten Wette als Schluesselteil: aendert sich beim Speichern/Entfernen, damit die Felder neu aus dem Speicher belegt werden."""
     import hashlib
-    return "neu" if not bet or not bet.get("active") else hashlib.md5(str(bet.get("updated_at")).encode()).hexdigest()[:8]
+    return "neu" if not bet or not bet.get("active") else hashlib.md5(f"{bet.get('updated_at')}|{bet.get('categories', bet.get('category'))}".encode()).hexdigest()[:8]
 
 
 def _market_form(st, game, market: str, bet: dict | None, ctx: dict) -> None:
@@ -211,7 +215,7 @@ def _market_form(st, game, market: str, bet: dict | None, ctx: dict) -> None:
         st.markdown(f"**{title}**" + (f" · gespeichert: {bet_text(game, market, active)[len(title) + 2:]}" if active else ""))
         codes = (NONE_CODE,) + SIDE_CODES[market]
         idx = codes.index(active["side"]) if active and active["side"] in codes else 0
-        cols = st.columns([1.5, 1.6, 1.0, 1.0])
+        cols = st.columns([1.5, 1.6, 1.0, 1.0, 1.2])
         side = cols[0].selectbox("Seite", codes, index=idx, format_func=lambda c: side_label(market, c, game), key=f"{p}_side")
         if side == NONE_CODE:
             if active:
@@ -230,6 +234,10 @@ def _market_form(st, game, market: str, bet: dict | None, ctx: dict) -> None:
             start = saved_line if saved_line is not None else default
             line = cols[1].selectbox("Linie", opts, index=opts.index(start) if start in opts else 0, format_func=lambda x: line_label(market, x, side, default, game), key=f"{p}_line_{side}")
             info = {**ctx["sources"][main_key], "main_home_view": main_home}
+        names = bc.names()
+        start_cat = [c for c in bc.normalize((active or {}).get("categories", (active or {}).get("category"))) if c in bc.TEAM_IDS] or bc.last_team()
+        cols[4].multiselect("Kategorien", list(bc.TEAM_IDS), default=start_cat, format_func=lambda c: names[c], key=f"{p}_cat",
+                            help="Mehrfachauswahl, mindestens eine. Voreinstellung: zuletzt benutzte Team-Kategorien (zuerst Bankroll 1); hier änderbar.")
         pre = prefill_odds(ctx["entry"], market, side, line)
         same_as_saved = bool(active and active["side"] == side and active.get("line") == line)
         if same_as_saved:
@@ -245,7 +253,7 @@ def _market_form(st, game, market: str, bet: dict | None, ctx: dict) -> None:
             st.caption("Keine gespeicherte Quote für diese Seite und Linie.")
         b1, b2, _ = st.columns([1, 1.3, 4])
         b1.button("Speichern", key=f"{p}_save", type="primary", on_click=_on_save,
-                  args=(game, market, side, None if line is None else f"{p}_line_{side}", f"{p}_odds_{side}_{lk}", f"{p}_stake", info, pre))
+                  args=(game, market, side, None if line is None else f"{p}_line_{side}", f"{p}_odds_{side}_{lk}", f"{p}_stake", info, pre, f"{p}_cat"))
         if active:
             b2.button("Wette entfernen", key=f"{p}_remove", on_click=_on_remove, args=(game, market))
 

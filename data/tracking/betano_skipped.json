@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "format": "nbaedge-betano-skipped",
+  "days": {
+    "2026-10-26": {
+      "2026-10-26|2026-10-26T23:00:00Z|Charlotte Hornets|Washington Wizards": {
+        "home": "Charlotte Hornets",
+        "away": "Washington Wizards",
+        "names": [],
+        "at": "2026-10-26T23:01:57+01:00"
+      },
+      "2026-10-26|2026-10-26T23:00:00Z|Cleveland Cavaliers|Minnesota Timberwolves": {
+        "home": "Cleveland Cavaliers",
+        "away": "Minnesota Timberwolves",
+        "names": [],
+        "at": "2026-10-26T23:02:10+01:00"
+      },
+      "2026-10-26|2026-10-26T23:30:00Z|Boston Celtics|Chicago Bulls": {
+        "home": "Boston Celtics",
+        "away": "Chicago Bulls",
+        "names": [],
+        "at": "2026-10-26T23:02:14+01:00"
+      },
+      "2026-10-26|2026-10-26T23:30:00Z|Miami Heat|Dallas Mavericks": {
+        "home": "Miami Heat",
+        "away": "Dallas Mavericks",
+        "names": [],
+        "at": "2026-10-26T23:02:25+01:00"
+      },
+      "2026-10-26|2026-10-27T00:00:00Z|Milwaukee Bucks|Indiana Pacers": {
+        "home": "Milwaukee Bucks",
+        "away": "Indiana Pacers",
+        "names": [],
+        "at": "2026-10-26T23:03:01+01:00"
+      },
+      "2026-10-26|2026-10-27T00:00:00Z|Oklahoma City Thunder|Phoenix Suns": {
+        "home": "Oklahoma City Thunder",
+        "away": "Phoenix Suns",
+        "names": [],
+        "at": "2026-10-26T23:03:07+01:00"
+      },
+      "2026-10-26|2026-10-27T00:30:00Z|Houston Rockets|Atlanta Hawks": {
+        "home": "Houston Rockets",
+        "away": "Atlanta Hawks",
+        "names": [],
+        "at": "2026-10-26T23:03:14+01:00"
+      },
+      "2026-10-26|2026-10-27T01:00:00Z|Utah Jazz|Memphis Grizzlies": {
+        "home": "Utah Jazz",
+        "away": "Memphis Grizzlies",
+        "names": [],
+        "at": "2026-10-26T23:03:19+01:00"
+      },
+      "2026-10-26|2026-10-27T02:00:00Z|Denver Nuggets|Golden State Warriors": {
+        "home": "Denver Nuggets",
+        "away": "Golden State Warriors",
+        "names": [],
+        "at": "2026-10-26T23:03:54+01:00"
+      }
+    }
+  }
+}
