@@ -1,7 +1,7 @@
 {
   "version": 2,
   "format": "nbaedge-day-bets",
-  "updated_at": "2026-10-27T04:13:10+01:00",
+  "updated_at": "2026-10-27T23:17:53+01:00",
   "games": {
     "2026-10-22|2026-10-22T23:00:00Z|Philadelphia 76ers|Cleveland Cavaliers": {
       "game_date": "2026-10-22",
@@ -7454,6 +7454,110 @@
             "player_ta",
             "player_raw"
           ]
+        }
+      }
+    },
+    "2026-10-27|2026-10-27T23:30:00Z|Boston Celtics|Brooklyn Nets": {
+      "game_date": "2026-10-27",
+      "start_utc": "2026-10-27T23:30:00Z",
+      "home": "Boston Celtics",
+      "away": "Brooklyn Nets",
+      "bets": {
+        "spread": {
+          "market": "spread",
+          "active": true,
+          "side": "home",
+          "line": -10.5,
+          "odds": 1.72,
+          "stake": 20.0,
+          "odds_source": "gespeichert",
+          "line_ref": {
+            "main_line": -12.5,
+            "chosen_line": -10.5,
+            "is_main": false,
+            "source": "eigene Eingabe",
+            "bookmaker": "Betano",
+            "at": "2026-10-27T22:20:45+01:00"
+          },
+          "categories": [
+            "team_1"
+          ],
+          "placed_at": "2026-10-27T23:16:26+01:00",
+          "updated_at": "2026-10-27T23:16:26+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "total": {
+          "market": "total",
+          "active": true,
+          "side": "over",
+          "line": 219.5,
+          "odds": 1.7,
+          "stake": 20.0,
+          "odds_source": "gespeichert",
+          "line_ref": {
+            "main_line": 222.5,
+            "chosen_line": 219.5,
+            "is_main": false,
+            "source": "eigene Eingabe",
+            "bookmaker": "Betano",
+            "at": "2026-10-27T22:20:45+01:00"
+          },
+          "categories": [
+            "team_1"
+          ],
+          "placed_at": "2026-10-27T23:16:56+01:00",
+          "updated_at": "2026-10-27T23:16:56+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "team_total_home": {
+          "market": "team_total_home",
+          "active": true,
+          "side": "over",
+          "line": 116.5,
+          "odds": 1.75,
+          "stake": 20.0,
+          "odds_source": "gespeichert",
+          "line_ref": {
+            "main_line": 117.5,
+            "chosen_line": 116.5,
+            "is_main": false,
+            "source": "eigene Eingabe",
+            "bookmaker": "Betano",
+            "at": "2026-10-27T22:20:45+01:00"
+          },
+          "categories": [
+            "team_1"
+          ],
+          "placed_at": "2026-10-27T23:17:40+01:00",
+          "updated_at": "2026-10-27T23:17:40+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "team_total_away": {
+          "market": "team_total_away",
+          "active": true,
+          "side": "over",
+          "line": 101.5,
+          "odds": 1.5,
+          "stake": 20.0,
+          "odds_source": "gespeichert",
+          "line_ref": {
+            "main_line": 104.5,
+            "chosen_line": 101.5,
+            "is_main": false,
+            "source": "eigene Eingabe",
+            "bookmaker": "Betano",
+            "at": "2026-10-27T22:20:45+01:00"
+          },
+          "categories": [
+            "team_1"
+          ],
+          "placed_at": "2026-10-27T23:17:53+01:00",
+          "updated_at": "2026-10-27T23:17:53+01:00",
+          "removed_at": null,
+          "revisions": []
         }
       }
     }

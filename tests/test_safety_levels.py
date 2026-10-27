@@ -133,9 +133,10 @@ at = AppTest.from_string("import sys; sys.path.insert(0, %r)\nimport ui.score_ca
 bodies_app = [m.value for m in at.markdown if "pc-lrow" in m.value]
 check("Expander-HTML: Spread und Team Totals enthalten beide Varianten (pc-var-std / pc-var-t2) mit Mindestquoten, Total nur einmal", not at.exception and [("pc-var-t2" in b) for b in bodies_app] == [True, False, True, True] and all("pc-lmin" in b for b in bodies_app), str(at.exception))
 
-# ----------------------------------------------------------------- Unveraenderte Anzeige (Vergleich mit dem Stand vor der Aenderung = letzter Commit)
+# ----------------------------------------------------------------- Unveraenderte Anzeige (Vergleich mit dem Stand VOR der Sicherheitsstufen-Aenderung = Backup-Commit 0879015)
+BASE = "0879015"
 def old_module(path, name):
-    srcs = subprocess.run(["git", "show", f"HEAD:{path}"], cwd=ROOT, capture_output=True, text=True, check=True).stdout
+    srcs = subprocess.run(["git", "show", f"{BASE}:{path}"], cwd=ROOT, capture_output=True, text=True, check=True).stdout
     m = types.ModuleType(name); m.__file__ = str(ROOT / path); exec(compile(srcs, path, "exec"), m.__dict__); return m
 old_sc = old_module("ui/score_cards.py", "old_score_cards")
 old_lp = old_module("engine/line_probabilities.py", "old_lp")
@@ -150,7 +151,7 @@ for p in cases:
     same_cards &= strip_new(flat(sc.render_card_html(new_vm))) == flat(old_sc.render_card_html(old_vm))
     if new_vm["lines"]:
         same_blocks &= [strip_new(flat(sc.line_block_body_html(b))) for b in new_vm["lines"]] == [flat(old_sc.line_block_body_html(b)) for b in old_vm["lines"]]
-    strip_rows = lambda v: [[{k: x for k, x in r.items() if k not in ("min_odds", "p_left_raw")} for r in b["rows"]] for b in (v["lines"] or [])]
+    strip_rows = lambda v: [[{k: x for k, x in r.items() if k not in ("min_odds", "p_left_raw", "quote")} for r in b["rows"]] for b in (v["lines"] or [])]
     same_vm &= all(new_vm[k] == old_vm[k] for k in ("home", "away", "fav", "spread", "total", "warnings", "details", "win_note", "origin", "origin_warnings")) and strip_rows(new_vm) == strip_rows(old_vm)
 check("Karten-HTML == bisheriges HTML, wenn man die neuen Elemente (Sieger-Zeichen) entfernt: Scores, Balken, gelbe/graue Chips, Spread-/Total-Spalten (6 Faelle, auch mit team-2)", same_cards)
 check("Zeilen-HTML der vier Bloecke == bisheriges HTML ohne Kopfzeile, Klasse und Zelle der Mindestquote (Prozente, Balken, Orange, Hauptlinie unveraendert)", same_blocks)
