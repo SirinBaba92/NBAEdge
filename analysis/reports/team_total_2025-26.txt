@@ -1,0 +1,231 @@
+TEAM-TOTAL-MODELL: IST-STAND (Punkte eines Teams, Regular Season 2025-26, reines Modell, walk-forward)
+Messskript analysis/backtest_team_total.py (liest nur). Replay analysis/replica_tunable.run; 1237 Spiele = 2474 Mannschaftszeilen (Heim 1237, Gast 1237); Verlaengerung 56 Spiele; erste 15 Teamspiele 218 Spiele.
+Sigma im Code: TEAM_TOTAL_SIGMA = 11.6 (engine/line_probabilities.py Z. 28; Optimum aus analysis/sigma_check.py 2017-25: 11,6 [11,4; 11,8], Fenster 11,6/11,8/11,6/11,4). TOTAL_SIGMA = 18,6.
+Hinweis zur Messung: Gegen total_2025-26.txt (Team-Streuung Heim 12,25, Gast 11,89) siehe 2a; die Zeilen eines Spiels sind korreliert, daher alle Intervalle nach Spielen.
+
+1 GENAUIGKEIT (Fehler = Ist-Punkte minus Modell-Punkte)
+  Gruppe                             Zeilen    Mittelwert (Bias) [95 %]     mittlerer Betrag [95 %]
+  alle Zeilen                          2474        +0.27 [-0.22; +0.79]           9.59 [9.29; 9.90]
+  Heim                                 1237        +0.11 [-0.55; +0.77]          9.78 [9.38; 10.18]
+  Gast                                 1237        +0.43 [-0.19; +1.10]           9.39 [8.98; 9.82]
+  Modell-Punkte unter 105                 5          +1.81 [+nan; +nan]             8.29 [nan; nan]   (< 100 Zeilen: nicht aussagekraeftig)
+  Modell-Punkte 105 bis 115            1172        -0.35 [-1.05; +0.36]           9.38 [8.98; 9.81]
+  Modell-Punkte ab 115                 1297        +0.82 [+0.17; +1.54]          9.78 [9.38; 10.18]
+  mit Verlaengerung                     112      +12.35 [+9.92; +14.68]        13.55 [11.59; 15.50]
+  ohne Verlaengerung                   2362        -0.30 [-0.79; +0.22]           9.40 [9.11; 9.70]
+  erste 15 Teamspiele                   436        +1.51 [+0.31; +2.74]           9.11 [8.40; 9.82]
+  Rest der Saison                      2038        +0.00 [-0.55; +0.57]          9.69 [9.36; 10.04]
+  Haelfte 1                            1236        +0.14 [-0.58; +0.90]           9.49 [9.08; 9.89]
+  Haelfte 2                            1238        +0.39 [-0.37; +1.14]          9.68 [9.23; 10.11]
+  Heim ohne Verlaengerung              1181        -0.47 [-1.13; +0.21]          9.61 [9.20; 10.04]
+  Gast ohne Verlaengerung              1181        -0.14 [-0.77; +0.53]           9.19 [8.79; 9.63]
+  Ø Modell-Punkte Heim 116.38, Gast 114.27; Ø Ist-Punkte Heim 116.48, Gast 114.71.
+
+2 SIGMA
+2a Streuung des Fehlers gegen das Sigma im Code (11,6)
+  Gruppe                                        Std. [95 %]  Std. aus MAD
+  alle Zeilen                          12.07 [11.72; 12.43]         12.01
+  Heim                                 12.25 [11.80; 12.73]         12.38
+  Gast                                 11.89 [11.39; 12.41]         11.49
+  Modell-Punkte unter 105                  10.18 [nan; nan]         11.12
+  Modell-Punkte 105 bis 115            11.86 [11.38; 12.36]         11.71
+  Modell-Punkte ab 115                 12.25 [11.78; 12.73]         12.23
+  mit Verlaengerung                      9.99 [8.55; 11.16]         10.30
+  ohne Verlaengerung                   11.86 [11.52; 12.22]         11.68
+  erste 15 Teamspiele                  11.43 [10.61; 12.21]         11.53
+  Rest der Saison                      12.19 [11.81; 12.59]         12.16
+  Haelfte 1                            11.91 [11.42; 12.36]         12.01
+  Haelfte 2                            12.24 [11.71; 12.76]         12.08
+  Heim ohne Verlaengerung              12.05 [11.58; 12.54]         12.31
+  Gast ohne Verlaengerung              11.68 [11.18; 12.20]         11.12
+  Korrelation der beiden Fehler eines Spiels rho = 0.25 (Ohne Verlaengerung 0.20).
+
+2b SIGMA-TEST: beide Seiten (Brier der Over-Chance ueber die Linien A, k = -5..+5; Mittel je Zeile)
+   Sigma  ganze Saison  Haelfte 1  Haelfte 2
+    10.0       0.23870    0.23815    0.23926
+    10.5       0.23857    0.23804    0.23910
+    11.0       0.23850    0.23799    0.23900
+    11.5       0.23847    0.23799    0.23896
+    12.0       0.23849    0.23803    0.23896
+    12.5       0.23854    0.23810    0.23899
+    13.0       0.23862    0.23819    0.23905
+    13.5       0.23871    0.23830    0.23913
+    14.0       0.23882    0.23842    0.23922
+    14.5       0.23894    0.23855    0.23933
+    11.6       0.23848    0.23799    0.23896   <- Code
+  Bestes Sigma (Gitter, ganze Saison): 11.5
+  einstellen auf Haelfte 1, pruefen auf Haelfte 2: bestes Sigma 11.0; Pruefhaelfte Brier-Differenz (neu minus 11,6) +0.045 x10^-3 [-0.062; +0.141] -> nicht besser
+  einstellen auf Haelfte 2, pruefen auf Haelfte 1: bestes Sigma 12.0; Pruefhaelfte Brier-Differenz (neu minus 11,6) +0.034 x10^-3 [-0.031; +0.100] -> nicht besser
+  => neues Sigma nur, wenn auf BEIDEN Pruefhaelften besser: NEIN, 11,6 bleibt
+
+2b SIGMA-TEST: nur Heim (Brier der Over-Chance ueber die Linien A, k = -5..+5; Mittel je Zeile)
+   Sigma  ganze Saison  Haelfte 1  Haelfte 2
+    10.0       0.23931    0.23880    0.23981
+    10.5       0.23914    0.23866    0.23963
+    11.0       0.23905    0.23859    0.23951
+    11.5       0.23900    0.23856    0.23945
+    12.0       0.23900    0.23858    0.23943
+    12.5       0.23903    0.23862    0.23944
+    13.0       0.23909    0.23870    0.23948
+    13.5       0.23917    0.23879    0.23955
+    14.0       0.23926    0.23889    0.23963
+    14.5       0.23936    0.23901    0.23972
+    11.6       0.23900    0.23856    0.23944   <- Code
+  Bestes Sigma (Gitter, ganze Saison): 12.0
+  einstellen auf Haelfte 1, pruefen auf Haelfte 2: bestes Sigma 11.5; Pruefhaelfte Brier-Differenz (neu minus 11,6) +0.007 x10^-3 [-0.017; +0.029] -> nicht besser
+  einstellen auf Haelfte 2, pruefen auf Haelfte 1: bestes Sigma 12.0; Pruefhaelfte Brier-Differenz (neu minus 11,6) +0.016 x10^-3 [-0.073; +0.105] -> nicht besser
+  => neues Sigma nur, wenn auf BEIDEN Pruefhaelften besser: NEIN, 11,6 bleibt
+
+2b SIGMA-TEST: nur Gast (Brier der Over-Chance ueber die Linien A, k = -5..+5; Mittel je Zeile)
+   Sigma  ganze Saison  Haelfte 1  Haelfte 2
+    10.0       0.23810    0.23750    0.23870
+    10.5       0.23799    0.23741    0.23856
+    11.0       0.23794    0.23739    0.23849
+    11.5       0.23795    0.23742    0.23847
+    12.0       0.23799    0.23748    0.23849
+    12.5       0.23806    0.23757    0.23854
+    13.0       0.23815    0.23768    0.23862
+    13.5       0.23826    0.23781    0.23871
+    14.0       0.23838    0.23795    0.23882
+    14.5       0.23852    0.23810    0.23894
+    11.6       0.23795    0.23743    0.23847   <- Code
+  Bestes Sigma (Gitter, ganze Saison): 11.0
+  einstellen auf Haelfte 1, pruefen auf Haelfte 2: bestes Sigma 11.0; Pruefhaelfte Brier-Differenz (neu minus 11,6) +0.020 x10^-3 [-0.117; +0.158] -> nicht besser
+  einstellen auf Haelfte 2, pruefen auf Haelfte 1: bestes Sigma 11.5; Pruefhaelfte Brier-Differenz (neu minus 11,6) -0.010 x10^-3 [-0.033; +0.014] -> besser
+  => neues Sigma nur, wenn auf BEIDEN Pruefhaelften besser: NEIN, 11,6 bleibt
+
+2b SIGMA-TEST: ohne Verlaengerungsspiele (Kontrolle) (Brier der Over-Chance ueber die Linien A, k = -5..+5; Mittel je Zeile)
+   Sigma  ganze Saison  Haelfte 1  Haelfte 2
+    10.0       0.23814    0.23742    0.23884
+    10.5       0.23803    0.23734    0.23869
+    11.0       0.23798    0.23732    0.23862
+    11.5       0.23798    0.23735    0.23859
+    12.0       0.23802    0.23741    0.23860
+    12.5       0.23809    0.23751    0.23865
+    13.0       0.23818    0.23762    0.23872
+    13.5       0.23829    0.23775    0.23881
+    14.0       0.23841    0.23789    0.23892
+    14.5       0.23854    0.23804    0.23903
+    11.6       0.23798    0.23736    0.23859   <- Code
+  Bestes Sigma (Gitter, ganze Saison): 11.0
+  einstellen auf Haelfte 1, pruefen auf Haelfte 2: bestes Sigma 11.0; Pruefhaelfte Brier-Differenz (neu minus 11,6) +0.026 x10^-3 [-0.081; +0.126] -> nicht besser
+  einstellen auf Haelfte 2, pruefen auf Haelfte 1: bestes Sigma 11.5; Pruefhaelfte Brier-Differenz (neu minus 11,6) -0.010 x10^-3 [-0.028; +0.007] -> besser
+  => neues Sigma nur, wenn auf BEIDEN Pruefhaelften besser: NEIN, 11,6 bleibt
+
+3 KALIBRIERUNG DER OVER-CHANCE (Sigma 11,6)
+3a Je Linie
+  alle Zeilen: je Linie (k < 0 unter der Hauptlinie; Treffer = Over, ohne Pushes)
+      k      n  Pushes  Modell  Treffer  Abw. PP    95 %-Intervall
+     -5   2468       6   0.667    0.668    +0.10 [ -1.81;  +2.11]
+     -4   2470       4   0.635    0.634    -0.05 [ -1.95;  +1.98]
+     -3   2473       1   0.602    0.609    +0.65 [ -1.30;  +2.68]
+     -2   2467       7   0.568    0.578    +1.00 [ -1.00;  +3.08]
+     -1   2471       3   0.534    0.541    +0.63 [ -1.37;  +2.75]
+     +0   2468       6   0.500    0.505    +0.49 [ -1.58;  +2.66]
+     +1   2471       3   0.466    0.467    +0.14 [ -1.85;  +2.30]
+     +2   2470       4   0.432    0.429    -0.24 [ -2.15;  +1.97]
+     +3   2465       9   0.398    0.396    -0.20 [ -2.20;  +1.85]
+     +4   2472       2   0.365    0.368    +0.30 [ -1.63;  +2.45]
+     +5   2473       1   0.333    0.339    +0.56 [ -1.32;  +2.59]
+
+3b 5-%-Stufen: Hauptlinie und 1 bis 5 Punkte DARUNTER (k = -5..0)
+  GANZE SAISON   (Zeilen 2474, Linien-Zeilen ohne Push 14817, Pushes 27)
+        Stufe      n  Modell  Treffer  Abw. PP    95 %-Intervall  Hinweis
+     50-55 %   4939   0.517    0.523    +0.56 [ -1.46;  +2.69]  
+     55-60 %   2467   0.568    0.578    +1.00 [ -1.00;  +3.08]  
+     60-65 %   4943   0.618    0.621    +0.30 [ -1.61;  +2.33]  
+     65-70 %   2468   0.667    0.668    +0.10 [ -1.81;  +2.11]  
+    Ø-Abweichung (gewichtet, Stufen >= 20): 0.47 PP; Stufen >= 100 Zeilen mit > 6 PP: keine -> Massstab ERFUELLT; b = 0.97 [0.88; 1.06] (1 im Intervall), a = +0.031 [-0.051; +0.119] (0 im Intervall)
+
+  HAELFTE 1   (Zeilen 1236, Linien-Zeilen ohne Push 7403, Pushes 13)
+    Ø-Abweichung (gewichtet, Stufen >= 20): 0.33 PP; Stufen >= 100 Zeilen mit > 6 PP: keine -> Massstab ERFUELLT; b = 0.93 [0.82; 1.08] (1 im Intervall), a = +0.021 [-0.098; +0.141] (0 im Intervall)
+
+  HAELFTE 2   (Zeilen 1238, Linien-Zeilen ohne Push 7414, Pushes 14)
+    Ø-Abweichung (gewichtet, Stufen >= 20): 0.97 PP; Stufen >= 100 Zeilen mit > 6 PP: keine -> Massstab ERFUELLT; b = 1.00 [0.87; 1.14] (1 im Intervall), a = +0.042 [-0.086; +0.161] (0 im Intervall)
+
+  NUR HEIM   (Zeilen 1237, Linien-Zeilen ohne Push 7407, Pushes 15)
+    Ø-Abweichung (gewichtet, Stufen >= 20): 0.51 PP; Stufen >= 100 Zeilen mit > 6 PP: keine -> Massstab ERFUELLT; b = 0.91 [0.77; 1.03] (1 im Intervall), a = +0.027 [-0.079; +0.132] (0 im Intervall)
+
+  NUR GAST   (Zeilen 1237, Linien-Zeilen ohne Push 7410, Pushes 12)
+    Ø-Abweichung (gewichtet, Stufen >= 20): 1.02 PP; Stufen >= 100 Zeilen mit > 6 PP: keine -> Massstab ERFUELLT; b = 1.02 [0.89; 1.16] (1 im Intervall), a = +0.035 [-0.086; +0.154] (0 im Intervall)
+
+  OHNE VERLAENGERUNG   (Zeilen 2362, Linien-Zeilen ohne Push 14145, Pushes 27)
+    Ø-Abweichung (gewichtet, Stufen >= 20): 1.06 PP; Stufen >= 100 Zeilen mit > 6 PP: keine -> Massstab ERFUELLT; b = 0.98 [0.90; 1.08] (1 im Intervall), a = -0.038 [-0.120; +0.046] (0 im Intervall)
+
+3c 5-%-Stufen: KONTROLLE 1 bis 5 Punkte DARUEBER (k = +1..+5)
+  GANZE SAISON (Kontrolle)   (Zeilen 2474, Linien-Zeilen ohne Push 12351, Pushes 19)
+        Stufe      n  Modell  Treffer  Abw. PP    95 %-Intervall  Hinweis
+     30-35 %   2473   0.333    0.339    +0.56 [ -1.32;  +2.59]  
+     35-40 %   4937   0.382    0.382    +0.05 [ -1.88;  +2.16]  
+     40-45 %   2470   0.432    0.429    -0.24 [ -2.15;  +1.97]  
+     45-50 %   2471   0.466    0.467    +0.14 [ -1.85;  +2.30]  
+    Ø-Abweichung (gewichtet, Stufen >= 20): 0.21 PP; Stufen >= 100 Zeilen mit > 6 PP: keine -> Massstab ERFUELLT; b = 0.96 [0.86; 1.06] (1 im Intervall), a = -0.013 [-0.094; +0.070] (0 im Intervall)
+
+  HAELFTE 1 (Kontrolle)   (Zeilen 1236, Linien-Zeilen ohne Push 6169, Pushes 11)
+    Ø-Abweichung (gewichtet, Stufen >= 20): 0.90 PP; Stufen >= 100 Zeilen mit > 6 PP: keine -> Massstab ERFUELLT; b = 1.01 [0.87; 1.18] (1 im Intervall), a = -0.032 [-0.158; +0.084] (0 im Intervall)
+
+  HAELFTE 2 (Kontrolle)   (Zeilen 1238, Linien-Zeilen ohne Push 6182, Pushes 8)
+    Ø-Abweichung (gewichtet, Stufen >= 20): 1.12 PP; Stufen >= 100 Zeilen mit > 6 PP: keine -> Massstab ERFUELLT; b = 0.90 [0.78; 1.03] (1 im Intervall), a = +0.006 [-0.117; +0.119] (0 im Intervall)
+
+3d BEREICH 60-70 % (frueher zu sicher: Treffer nur ca. 55 %), Linien A k = -5..0
+    ganze Saison                 Zeilen  7411  Ø Modell-Chance  63.5 %  Trefferquote  63.7 % [61.8; 65.7]  Differenz +0.2 PP [-1.6; +2.2]
+    Haelfte 1                    Zeilen  3704  Ø Modell-Chance  63.5 %  Trefferquote  63.1 % [60.4; 65.9]  Differenz -0.4 PP [-3.0; +2.4]
+    Haelfte 2                    Zeilen  3707  Ø Modell-Chance  63.5 %  Trefferquote  64.3 % [61.4; 67.1]  Differenz +0.8 PP [-2.0; +3.7]
+    nur Heim                     Zeilen  3705  Ø Modell-Chance  63.5 %  Trefferquote  62.9 % [60.4; 65.5]  Differenz -0.6 PP [-3.1; +2.1]
+    nur Gast                     Zeilen  3706  Ø Modell-Chance  63.5 %  Trefferquote  64.5 % [62.1; 67.0]  Differenz +1.1 PP [-1.4; +3.6]
+    ohne Verlaengerung           Zeilen  7075  Ø Modell-Chance  63.5 %  Trefferquote  62.3 % [60.4; 64.3]  Differenz -1.2 PP [-3.1; +0.9]
+
+4 PUSH (ganzzahlige Linien B: Runde(mu) + k)
+  Zeilen 27214, davon Pushes 875 (3.2 %). Je Linie:
+      k  Pushes  Anteil  Modell-Push  n ohne Push  Modell  Treffer  Abw. PP
+     -5      70    2.8%         3.1%         2404   0.667    0.671    +0.47
+     -4      81    3.3%         3.2%         2393   0.635    0.641    +0.59
+     -3      63    2.5%         3.3%         2411   0.602    0.610    +0.78
+     -2      89    3.6%         3.4%         2385   0.568    0.579    +1.07
+     -1      84    3.4%         3.4%         2390   0.534    0.543    +0.85
+     +0      94    3.8%         3.4%         2380   0.500    0.505    +0.56
+     +1      97    3.9%         3.4%         2377   0.466    0.465    -0.02
+     +2      78    3.2%         3.4%         2396   0.431    0.429    -0.24
+     +3      84    3.4%         3.3%         2390   0.398    0.395    -0.29
+     +4      78    3.2%         3.2%         2396   0.365    0.361    -0.37
+     +5      57    2.3%         3.1%         2417   0.333    0.335    +0.15
+  (Die App rechnet ganzzahlige Linien ohne Push mit P(X > Linie).) Hauptlinien A mit Dezimalwert: Pushes siehe 3a.
+
+  Linien B, k = -5..0, ganze Saison (ohne Pushes)   (Zeilen 2474, Linien-Zeilen ohne Push 14363, Pushes 481)
+        Stufe      n  Modell  Treffer  Abw. PP    95 %-Intervall  Hinweis
+     45-50 %   1137   0.491    0.489    -0.18 [ -3.33;  +2.99]  
+     50-55 %   3569   0.525    0.535    +1.01 [ -1.13;  +3.28]  
+     55-60 %   3471   0.575    0.583    +0.75 [ -1.40;  +3.04]  
+     60-65 %   3718   0.625    0.634    +0.94 [ -1.04;  +3.00]  
+     65-70 %   2468   0.666    0.670    +0.35 [ -1.57;  +2.46]  
+    Ø-Abweichung (gewichtet, Stufen >= 20): 0.75 PP; Stufen >= 100 Zeilen mit > 6 PP: keine -> Massstab ERFUELLT; b = 1.01 [0.92; 1.12] (1 im Intervall), a = +0.027 [-0.061; +0.114] (0 im Intervall)
+
+5 AUSFAELLE (Obergrenze, Wissen aus der Zukunft)
+  Bewertete Spiele 1075 von 1237 (ab dem 11. Teamspiel beider Teams, mit Spielerdaten) = 2150 Zeilen. Ø eigenes Ausfall-Mass 0.202 (Std. 0.182).
+5a Erklaert das Ausfall-Mass des EIGENEN Teams den Fehler der Team-Punkte? (Steigung = Punkte je 1,0 Ausfall-Anteil; Erwartung negativ)
+  Mass                               Zeitraum       Zeilen            Steigung [95 %]
+  eigenes Team                       ganze Saison     2150          -6.9 [-9.7; -4.1]
+  eigenes Team                       Haelfte 1         924        -11.3 [-17.4; -5.3]
+  eigenes Team                       Haelfte 2        1226          -6.2 [-9.7; -2.9]
+  Gegner (zur Kontrolle)             ganze Saison     2150          +5.4 [+2.7; +8.4]
+  Gegner (zur Kontrolle)             Haelfte 1         924          +1.0 [-4.6; +6.6]
+  Gegner (zur Kontrolle)             Haelfte 2        1226         +6.7 [+3.3; +10.1]
+  eigenes minus Gegner (wie team-2)  ganze Saison     2150          -7.2 [-9.0; -5.5]
+  eigenes minus Gegner (wie team-2)  Haelfte 1         924          -5.9 [-9.3; -2.6]
+  eigenes minus Gegner (wie team-2)  Haelfte 2        1226          -7.8 [-9.9; -5.7]
+  nur Heim-Zeilen / nur Gast-Zeilen, eigenes Team, ganze Saison: Heim -7.4 [-11.8; -2.9]; Gast -6.4 [-10.3; -2.6]
+
+5b team-2: Verschiebung der Team-Punkte (Heim +delta/2, Gast -delta/2, delta = 0,5 x (-14,4) x (Mass Heim - Mass Gast)) gegen heute: Brier der Over-Chance (Linien A, k = -5..+5)
+  Produktivregel (feste Steigung -14,4, Faktor 0,5; Verschiebung je Team = -3.60 x (eigenes Mass - Mass Gegner)), x10^-3 (negativ = besser):
+    ganze Saison   dBrier -2.17 [-3.10; -1.21]   dLog-Loss -4.56 [-6.52; -2.57]
+    Haelfte 1      dBrier -0.97 [-2.04; +0.15]   dLog-Loss -2.03 [-4.26; +0.32]
+    Haelfte 2      dBrier -3.07 [-4.48; -1.61]   dLog-Loss -6.46 [-9.41; -3.39]
+  Neu bestimmte Steigung (eigenes minus Gegner-Mass), auf einer Haelfte bestimmt, auf der anderen geprueft:
+    Haelfte 1 -> Haelfte 2: Steigung -5.88 je Anteil; dBrier -3.97 [-6.21; -1.62]   dLog-Loss -8.43 [-13.15; -3.52]
+    Haelfte 2 -> Haelfte 1: Steigung -7.76 je Anteil; dBrier -0.75 [-3.03; +1.67]   dLog-Loss -1.50 [-6.31; +3.63]
+  Zum Vergleich die Produktivregel (-7,2 je Spread-Anteil) entspricht -3,6 Punkten je Team und Anteil; gemessen siehe 5a.
+
+ZUSAMMENFASSUNG
+  Bias +0.27 [-0.22; +0.79] Punkte (Heim +0.11 [-0.55; +0.77], Gast +0.43 [-0.19; +1.10]); mittlerer Betrag 9.59 [9.29; 9.90]; Std. 12.07 (Code 11.6), ohne Verlaengerung 11.86.
+  Sigma-Test neues Sigma auf beiden Haelften besser: beide Seiten nein, Heim nein, Gast nein, ohne Verlaengerung nein.
+  Massstab: GANZE SAISON: erfuellt (0.5 PP); HAELFTE 1: erfuellt (0.3 PP); HAELFTE 2: erfuellt (1.0 PP); NUR HEIM: erfuellt (0.5 PP); NUR GAST: erfuellt (1.0 PP); OHNE VERLAENGERUNG: erfuellt (1.1 PP); GANZE SAISON (Kontrolle): erfuellt (0.2 PP); HAELFTE 1 (Kontrolle): erfuellt (0.9 PP); HAELFTE 2 (Kontrolle): erfuellt (1.1 PP)

@@ -182,7 +182,7 @@ check("Under 62 % hoeher: rechts orange + Plakette; Over 70 % hoeher: links oran
       row_parts(hU)[0][:4] == (False, True, False, True) and row_parts(hO)[0][:4] == (True, False, True, False))
 check("Plakette: weisse Schrift auf pill_bg >= 3 : 1 (grosser Text); Palette ohne Blau-/Grau-Over/Under-Farben und ohne Gruen/Rot; im HTML/CSS keine alten Over/Under-Klassen",
       ratio(sc.PALETTE["pill_text"], sc.PALETTE["pill_bg"]) >= 3.0 and "bar_over" not in sc.PALETTE and "bar_under" not in sc.PALETTE and "seg-over" not in allh and "seg-under" not in allh + sc.CARD_CSS and "seg-over" not in sc.CARD_CSS
-      and not any(int(v[3:5], 16) > int(v[1:3], 16) + 25 and int(v[3:5], 16) > int(v[5:7], 16) + 25 for v in sc.PALETTE.values() if v.startswith("#")))
+      and not any(int(v[3:5], 16) > int(v[1:3], 16) + 25 and int(v[3:5], 16) > int(v[5:7], 16) + 25 for k, v in sc.PALETTE.items() if v.startswith("#") and not k.startswith("win_ok_")))      # Gruen nur im Sieger-Zeichen (win_ok_*)
 check("Balkenbreiten entsprechen den Prozentzahlen (links + rechts = 100), Zeilen 5 + 7 + 7 + 7", all(int(a) + int(b) == 100 for a, b in re.findall(r'style="width:(\d+)%"></span><span class="pc-lseg [^"]*" style="width:(\d+)%"', allh)) and allh.count('class="pc-lseg') == 2 * 26)
 vn = vm_of({"market_lines": {"spread": {"line": None}, "total": {"line": None}, "team_total_away": {"line": None}, "team_total_home": {"line": None}}, "exp_spread": 1.0, "exp_total": 220.0})
 check("ohne Linien: vier Bloecke mit 'keine Linie'", len(vn["lines"]) == 4 and all("keine Linie" in sc.line_block_body_html(b) for b in vn["lines"]))

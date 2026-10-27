@@ -1,0 +1,250 @@
+MINUTENPROGNOSE DES SPIELER-MODELLS: IST-STAND UND VARIANTEN (walk-forward, nur echte Boxscores, ohne Quoten)
+Skripte analysis/backtest_player_minutes.py (Replays) und analysis/backtest_player_minutes_report.py (Auswertung); beide lesen nur. Fehler = Ist-Minuten minus Prognose-Minuten (positiv: der Spieler spielt mehr als prognostiziert).
+A = rohe Prognose (minutes.mean mit Blowout-Abschlag), B = Teamabgleich (Starter-Obergrenze 36, Bank auf 240 skaliert; Ausfaelle unbekannt). Gepoolt 2024-25 + 2025-26 (Vorsaison im Verlauf); 2023-24 hat keine Vorsaison im Cache.
+
+0 DATENLAGE
+  Spielerdateien: 2023-24, 2024-25, 2025-26 (vollstaendig); 2026-27 nur 1181 Zeilen / wenige Tage und im Cache ohne Teamspiele fuer den Replay -> nicht ausgewertet.
+  2023-24:  25026 Spielerzeilen, 1215 Spiele, 158 Spieltage, 533 Spieler  (OHNE Vorsaison im Verlauf)
+  2024-25:  25783 Spielerzeilen, 1230 Spiele, 163 Spieltage, 543 Spieler
+  2025-26:  26232 Spielerzeilen, 1230 Spiele, 164 Spieltage, 566 Spieler
+  Gepoolt 2024-25 + 2025-26: 52015 Spielerzeilen, 2460 Spiele, 327 Spieltage.
+  Spieler ohne Verlauf (Rookies ohne eine Zeile vor dem Spiel) bekommen keine Prognose und fehlen hier (frueher gemessen: ca. 1,4 % der Einsaetze) -> 'neue Spieler' sind unterrepraesentiert.
+  Konstanten (Blowout-Kurve, Sigma) stammen aus 2025-26: fuer 2025-26 teils in-sample.
+
+1 MINUTENFEHLER
+1.0 Gesamt je Saison
+  Saison     Variante   Zeilen            Bias [95 %]    mittlerer Betrag [95 %]
+  2023-24    A           25026   +0.24 [+0.12; +0.36]          5.05 [4.97; 5.13]   (ohne Vorsaison)
+  2023-24    B           25026   +1.56 [+1.42; +1.70]          5.45 [5.36; 5.53]   (ohne Vorsaison)
+  2024-25    A           25783   +0.03 [-0.10; +0.18]          5.22 [5.14; 5.30]
+  2024-25    B           25783   +1.66 [+1.53; +1.81]          5.64 [5.55; 5.73]
+  2025-26    A           26232   -0.11 [-0.24; +0.01]          5.20 [5.13; 5.29]
+  2025-26    B           26232   +1.32 [+1.18; +1.45]          5.57 [5.49; 5.65]
+  gepoolt    A           52015   -0.04 [-0.13; +0.07]          5.21 [5.15; 5.27]
+  gepoolt    B           52015   +1.49 [+1.40; +1.60]          5.60 [5.55; 5.67]
+
+1.1 Aufteilungen, Variante A (roh), gepoolt 2024-25 + 2025-26
+  (a) Rolle (Top 5 / Platz 6-9 nach Minuten des Teams bis dahin; 'neu' = keine Vorjahresminuten im selben Team, ueberschneidungsfrei zuerst vergeben)
+    Gruppe                                        Zeilen            Bias [95 %]    mittlerer Betrag [95 %]  Ø Prognose / Ø Ist
+    Starter (Top 5), nicht neu                     15334   -0.42 [-0.52; -0.29]          4.20 [4.12; 4.27]   30.8 /  30.3
+    Rotation (Platz 6-9), nicht neu                 9645   -0.17 [-0.30; -0.02]          5.30 [5.22; 5.40]   22.2 /  22.0
+    uebrige (Platz 10+), nicht neu                  8660   -0.29 [-0.50; -0.08]          6.00 [5.89; 6.12]   15.3 /  15.0
+    neue Spieler (Rookies/Wechsler, jeder Rang)    18376   +0.46 [+0.32; +0.62]          5.63 [5.55; 5.72]   19.9 /  20.4
+       davon Starter-Rang (Top 5)                   4682   -0.18 [-0.35; +0.01]          4.59 [4.48; 4.71]   28.4 /  28.2
+       davon Rotation (6-9)                         3939   +0.40 [+0.18; +0.63]          5.33 [5.19; 5.47]   20.3 /  20.7
+       davon uebrige                                9755   +0.79 [+0.58; +1.04]          6.26 [6.13; 6.38]   15.7 /  16.5
+  (b) Minutenklasse der Prognose
+    Gruppe                                        Zeilen            Bias [95 %]    mittlerer Betrag [95 %]  Ø Prognose / Ø Ist
+    Prognose unter 15 Min.                         11097   +1.02 [+0.81; +1.26]          6.21 [6.08; 6.34]   10.5 /  11.5
+    Prognose 15 bis 25                             18278   +0.05 [-0.07; +0.19]          5.70 [5.63; 5.77]   20.2 /  20.2
+    Prognose 25 bis 32                             13663   -0.47 [-0.58; -0.34]          4.65 [4.58; 4.73]   28.5 /  28.0
+    Prognose ab 32                                  8977   -0.89 [-1.05; -0.73]          3.83 [3.73; 3.93]   34.5 /  33.7
+  (c) Saisonphase (eigenes Team)
+    Gruppe                                        Zeilen            Bias [95 %]    mittlerer Betrag [95 %]  Ø Prognose / Ø Ist
+    erste 15 Teamspiele                             9520   -0.57 [-0.79; -0.38]          5.23 [5.11; 5.35]   23.2 /  22.6
+    Rest der Saison                                42495   +0.08 [-0.02; +0.19]          5.20 [5.15; 5.27]   22.7 /  22.8
+  (d) Verlaengerung
+    Gruppe                                        Zeilen            Bias [95 %]    mittlerer Betrag [95 %]  Ø Prognose / Ø Ist
+    Spiel mit Verlaengerung                         2229   +3.64 [+3.16; +4.07]          7.44 [7.06; 7.87]   23.8 /  27.5
+    Spiel ohne Verlaengerung                       49786   -0.21 [-0.29; -0.10]          5.11 [5.06; 5.16]   22.7 /  22.5
+  (e) Spielverlauf (Endstand-Differenz) und Zusammenhang mit dem Modell-Spread
+    Gruppe                                        Zeilen            Bias [95 %]    mittlerer Betrag [95 %]  Ø Prognose / Ø Ist
+    Endstand-Differenz ab 20 Punkten               12678   -1.19 [-1.37; -1.00]          5.33 [5.22; 5.44]   21.5 /  20.3
+    Endstand-Differenz unter 20                    39337   +0.33 [+0.23; +0.44]          5.17 [5.11; 5.24]   23.2 /  23.5
+       Starter, Differenz ab 20                     4351   -2.98 [-3.20; -2.77]          4.66 [4.51; 4.81]   30.1 /  27.1
+       Starter, Differenz unter 20                 15665   +0.36 [+0.25; +0.48]          4.19 [4.11; 4.27]   30.2 /  30.6
+    Starter, Team ist Favorit (Spread > 0)         10242   -0.44 [-0.56; -0.31]          4.14 [4.06; 4.23]   30.5 /  30.0
+    Starter, Team ist Aussenseiter (Spread < 0)     9650   -0.30 [-0.43; -0.14]          4.45 [4.36; 4.55]   29.9 /  29.6
+    Steigung des Minutenfehlers gegen den Betrag des Modell-Spreads (Minuten je Spread-Punkt; negativ = bei grossem erwarteten Vorsprung/Rueckstand weniger Minuten als prognostiziert):
+      Starter (Top 5), Favorit           Zeilen  10242  -0.020 [-0.055; +0.015]
+      Starter (Top 5), Aussenseiter      Zeilen   9650  +0.032 [-0.005; +0.068]
+      Starter, alle                      Zeilen  20016  +0.003 [-0.025; +0.030]
+      Rotation (6-9), alle               Zeilen  13584  +0.018 [-0.014; +0.052]
+      alle Zeilen                        Zeilen  52015  +0.019 [-0.005; +0.044]
+
+1.1 Aufteilungen, Variante B (Teamabgleich), gepoolt 2024-25 + 2025-26
+  (a) Rolle (Top 5 / Platz 6-9 nach Minuten des Teams bis dahin; 'neu' = keine Vorjahresminuten im selben Team, ueberschneidungsfrei zuerst vergeben)
+    Gruppe                                        Zeilen            Bias [95 %]    mittlerer Betrag [95 %]  Ø Prognose / Ø Ist
+    Starter (Top 5), nicht neu                     15334   +0.48 [+0.37; +0.61]          4.49 [4.41; 4.57]   29.9 /  30.3
+    Rotation (Platz 6-9), nicht neu                 9645   +2.57 [+2.43; +2.72]          5.99 [5.88; 6.10]   19.4 /  22.0
+    uebrige (Platz 10+), nicht neu                  8660   +0.74 [+0.54; +0.94]          6.09 [5.97; 6.21]   14.3 /  15.0
+    neue Spieler (Rookies/Wechsler, jeder Rang)    18376   +2.11 [+1.97; +2.27]          6.10 [6.01; 6.20]   18.3 /  20.4
+       davon Starter-Rang (Top 5)                   4682   +1.62 [+1.43; +1.83]          5.33 [5.19; 5.46]   26.6 /  28.2
+       davon Rotation (6-9)                         3939   +3.19 [+2.96; +3.42]          6.14 [5.99; 6.31]   17.5 /  20.7
+       davon uebrige                                9755   +1.91 [+1.70; +2.14]          6.46 [6.33; 6.59]   14.6 /  16.5
+  (b) Minutenklasse der Prognose
+    Gruppe                                        Zeilen            Bias [95 %]    mittlerer Betrag [95 %]  Ø Prognose / Ø Ist
+    Prognose unter 15 Min.                         14778   +2.08 [+1.89; +2.27]          6.45 [6.33; 6.58]   11.0 /  13.1
+    Prognose 15 bis 25                             17758   +3.27 [+3.16; +3.41]          6.41 [6.34; 6.51]   18.5 /  21.8
+    Prognose 25 bis 32                             10443   -0.52 [-0.64; -0.37]          4.56 [4.48; 4.64]   29.0 /  28.5
+    Prognose ab 32                                  9036   -0.68 [-0.83; -0.52]          3.84 [3.74; 3.94]   34.3 /  33.6
+  (c) Saisonphase (eigenes Team)
+    Gruppe                                        Zeilen            Bias [95 %]    mittlerer Betrag [95 %]  Ø Prognose / Ø Ist
+    erste 15 Teamspiele                             9520   +1.08 [+0.87; +1.29]          5.63 [5.52; 5.76]   21.5 /  22.6
+    Rest der Saison                                42495   +1.58 [+1.48; +1.70]          5.60 [5.54; 5.67]   21.2 /  22.8
+  (d) Verlaengerung
+    Gruppe                                        Zeilen            Bias [95 %]    mittlerer Betrag [95 %]  Ø Prognose / Ø Ist
+    Spiel mit Verlaengerung                         2229   +5.34 [+4.84; +5.77]          8.10 [7.71; 8.54]   22.1 /  27.5
+    Spiel ohne Verlaengerung                       49786   +1.31 [+1.23; +1.42]          5.49 [5.44; 5.55]   21.2 /  22.5
+  (e) Spielverlauf (Endstand-Differenz) und Zusammenhang mit dem Modell-Spread
+    Gruppe                                        Zeilen            Bias [95 %]    mittlerer Betrag [95 %]  Ø Prognose / Ø Ist
+    Endstand-Differenz ab 20 Punkten               12678   +0.22 [+0.04; +0.40]          5.60 [5.47; 5.72]   20.1 /  20.3
+    Endstand-Differenz unter 20                    39337   +1.90 [+1.79; +2.01]          5.61 [5.53; 5.69]   21.6 /  23.5
+       Starter, Differenz ab 20                     4351   -1.85 [-2.07; -1.62]          4.95 [4.81; 5.11]   28.9 /  27.1
+       Starter, Differenz unter 20                 15665   +1.47 [+1.35; +1.59]          4.61 [4.54; 4.70]   29.1 /  30.6
+    Starter, Team ist Favorit (Spread > 0)         10242   +0.56 [+0.43; +0.70]          4.50 [4.41; 4.59]   29.5 /  30.0
+    Starter, Team ist Aussenseiter (Spread < 0)     9650   +0.93 [+0.78; +1.09]          4.89 [4.79; 5.00]   28.7 /  29.6
+    Steigung des Minutenfehlers gegen den Betrag des Modell-Spreads (Minuten je Spread-Punkt; negativ = bei grossem erwarteten Vorsprung/Rueckstand weniger Minuten als prognostiziert):
+      Starter (Top 5), Favorit           Zeilen  10242  -0.047 [-0.085; -0.010]
+      Starter (Top 5), Aussenseiter      Zeilen   9650  +0.029 [-0.010; +0.067]
+      Starter, alle                      Zeilen  20016  -0.014 [-0.044; +0.013]
+      Rotation (6-9), alle               Zeilen  13584  -0.042 [-0.074; -0.007]
+      alle Zeilen                        Zeilen  52015  -0.017 [-0.043; +0.009]
+
+2 ZERLEGUNG DES PUNKTEFEHLERS (Ist-Punkte minus Prognose-Punkte = Minutenteil + Punkte-pro-Minute-Teil)
+  Minutenteil = Ist-Punkte pro Minute x (Ist-Minuten - Prognose-Minuten); ppm-Teil = Rest = Prognose-Minuten x (Ist-ppm - Prognose-ppm), Prognose-ppm = Prognose-Punkte / Prognose-Minuten. Beide Teile summieren sich exakt zum Punktefehler.
+  Anteil am quadratischen Fehler: Summe(Fehler x Teil) / Summe(Fehler^2); beide Anteile zusammen = 100 %. Mittlere Teile in Punkten zeigen die Richtung (Bias).
+  Gruppe                     Var.   Zeilen       Punktefehler Ø        Minutenteil Ø           ppm-Teil Ø    Anteil Minuten (quadr.)        Anteil ppm (quadr.)
+  2024-25                    A       25783 +0.04 [-0.05; +0.13] +0.18 [+0.12; +0.25] -0.15 [-0.20; -0.09]   27.6 % [26.6; 28.7]   72.4 % [71.3; 73.4]
+  2024-25                    B       25783 +1.05 [+0.97; +1.14] +0.82 [+0.76; +0.89] +0.23 [+0.18; +0.28]   35.2 % [34.2; 36.3]   64.8 % [63.7; 65.8]
+  2025-26                    A       26232 -0.05 [-0.13; +0.05] +0.11 [+0.05; +0.18] -0.16 [-0.22; -0.10]   27.4 % [26.3; 28.6]   72.6 % [71.4; 73.7]
+  2025-26                    B       26232 +0.97 [+0.88; +1.05] +0.69 [+0.62; +0.75] +0.28 [+0.22; +0.33]   34.2 % [33.1; 35.3]   65.8 % [64.7; 66.9]
+  gepoolt                    A       52015 -0.01 [-0.06; +0.06] +0.15 [+0.10; +0.20] -0.15 [-0.20; -0.11]   27.5 % [26.7; 28.3]   72.5 % [71.7; 73.3]
+  gepoolt                    B       52015 +1.01 [+0.96; +1.07] +0.75 [+0.71; +0.81] +0.25 [+0.22; +0.29]   34.7 % [33.9; 35.5]   65.3 % [64.5; 66.1]
+  2023-24 (ohne Vorsaison)   A       25026 +0.07 [-0.01; +0.16] +0.27 [+0.21; +0.33] -0.20 [-0.26; -0.14]   26.4 % [25.3; 27.4]   73.6 % [72.6; 74.7]
+  2023-24 (ohne Vorsaison)   B       25026 +0.84 [+0.76; +0.93] +0.78 [+0.71; +0.84] +0.06 [+0.00; +0.12]   32.8 % [31.8; 33.8]   67.2 % [66.2; 68.2]
+  Bemerkung: Die Anteile sind additive Beitraege zum mittleren quadratischen Fehler; ein Teil kann ueber 100 % liegen, wenn der andere negativ beitraegt (Gegenlauf).
+
+3 STARTER-OBERGRENZE IM TEAMABGLEICH (Variante B; heute 36 Minuten)
+  Starter = die 5 Spieler mit den meisten erwarteten Minuten im Teamabgleich (rank_B <= 5); nur dort wirkt die Grenze.
+
+  Brier = Meilenstein-Chancen P(Punkte >= k), nur (Spieler, k) mit 5 % <= p <= 95 % der heutigen Variante; Minutenfehler der Starter = Betrag bei Top-5-Spielern. d = Variante minus heute (negativ = besser), Intervall 95 %, Bootstrap nach Spielen, Einheit Brier x10^-3, Minuten.
+  Pruefsaison 2025-26 (Hauptpruefung)
+    Variante                                       Zeitraum       Zeilen Brier heute       dBrier x10^-3 [95 %] Starter-MAE heute      dStarter-MAE [95 %]       dMAE alle [95 %]
+    Starter-Obergrenze 38                          Haelfte 1       13119    0.1762       +0.01 [-0.06; +0.08]      4.086  -0.004 [-0.013; +0.004] +0.008 [+0.004; +0.011]
+    Starter-Obergrenze 38                          Haelfte 2       13113    0.1807       +0.07 [+0.01; +0.14]      4.294  -0.000 [-0.008; +0.009] +0.009 [+0.005; +0.013]
+    Starter-Obergrenze 38                          ganze Saison    26232    0.1784       +0.04 [-0.00; +0.09]      4.188  -0.002 [-0.008; +0.004] +0.008 [+0.006; +0.011]
+      => Starter-Obergrenze 38 auf BEIDEN Haelften besser (Brier UND Starter-Minutenfehler): nein
+    Starter-Obergrenze 40                          Haelfte 1       13119    0.1762       +0.00 [-0.10; +0.10]      4.086  -0.005 [-0.017; +0.006] +0.009 [+0.004; +0.014]
+    Starter-Obergrenze 40                          Haelfte 2       13113    0.1807       +0.09 [+0.01; +0.16]      4.294  +0.001 [-0.008; +0.010] +0.010 [+0.006; +0.014]
+    Starter-Obergrenze 40                          ganze Saison    26232    0.1784       +0.04 [-0.02; +0.11]      4.188  -0.002 [-0.009; +0.005] +0.009 [+0.007; +0.013]
+      => Starter-Obergrenze 40 auf BEIDEN Haelften besser (Brier UND Starter-Minutenfehler): nein
+    keine Starter-Obergrenze                       Haelfte 1       13119    0.1762       +0.01 [-0.09; +0.12]      4.086  -0.003 [-0.014; +0.007] +0.010 [+0.005; +0.014]
+    keine Starter-Obergrenze                       Haelfte 2       13113    0.1807       +0.09 [+0.01; +0.16]      4.294  +0.001 [-0.008; +0.010] +0.010 [+0.006; +0.014]
+    keine Starter-Obergrenze                       ganze Saison    26232    0.1784       +0.05 [-0.01; +0.11]      4.188  -0.001 [-0.008; +0.006] +0.010 [+0.007; +0.013]
+      => keine Starter-Obergrenze auf BEIDEN Haelften besser (Brier UND Starter-Minutenfehler): nein
+  Pruefsaison 2024-25 (zweite Pruefung)
+    Variante                                       Zeitraum       Zeilen Brier heute       dBrier x10^-3 [95 %] Starter-MAE heute      dStarter-MAE [95 %]       dMAE alle [95 %]
+    Starter-Obergrenze 38                          Haelfte 1       12921    0.1784       +0.14 [+0.05; +0.23]      4.193  -0.014 [-0.027; -0.001] +0.018 [+0.011; +0.023]
+    Starter-Obergrenze 38                          Haelfte 2       12862    0.1834       +0.22 [+0.12; +0.33]      4.223  -0.009 [-0.023; +0.005] +0.023 [+0.017; +0.030]
+    Starter-Obergrenze 38                          ganze Saison    25783    0.1809       +0.18 [+0.11; +0.25]      4.208  -0.012 [-0.021; -0.002] +0.020 [+0.017; +0.025]
+      => Starter-Obergrenze 38 auf BEIDEN Haelften besser (Brier UND Starter-Minutenfehler): nein
+    Starter-Obergrenze 40                          Haelfte 1       12921    0.1784       +0.17 [+0.07; +0.29]      4.193  -0.011 [-0.027; +0.003] +0.022 [+0.014; +0.028]
+    Starter-Obergrenze 40                          Haelfte 2       12862    0.1834       +0.26 [+0.14; +0.40]      4.223  -0.005 [-0.020; +0.012] +0.028 [+0.021; +0.036]
+    Starter-Obergrenze 40                          ganze Saison    25783    0.1809       +0.22 [+0.13; +0.30]      4.208  -0.008 [-0.018; +0.003] +0.025 [+0.020; +0.030]
+      => Starter-Obergrenze 40 auf BEIDEN Haelften besser (Brier UND Starter-Minutenfehler): nein
+    keine Starter-Obergrenze                       Haelfte 1       12921    0.1784       +0.17 [+0.07; +0.29]      4.193  -0.011 [-0.027; +0.003] +0.022 [+0.014; +0.028]
+    keine Starter-Obergrenze                       Haelfte 2       12862    0.1834       +0.26 [+0.14; +0.40]      4.223  -0.005 [-0.020; +0.012] +0.028 [+0.021; +0.036]
+    keine Starter-Obergrenze                       ganze Saison    25783    0.1809       +0.22 [+0.13; +0.30]      4.208  -0.008 [-0.018; +0.003] +0.025 [+0.020; +0.030]
+      => keine Starter-Obergrenze auf BEIDEN Haelften besser (Brier UND Starter-Minutenfehler): nein
+
+4 AKTUALITAET DER MINUTEN (Gewichtung der vergangenen Spiele)
+  Starter = Top 5 nach Minuten des Teams bis dahin (Variante unabhaengig). Heute: exponentiell fallend, Halbwertszeit 8 Spiele, Schrumpfung zur Vorsaison n / (n + 8).
+4a Variante A (roh)
+
+  Brier = Meilenstein-Chancen P(Punkte >= k), nur (Spieler, k) mit 5 % <= p <= 95 % der heutigen Variante; Minutenfehler der Starter = Betrag bei Top-5-Spielern. d = Variante minus heute (negativ = besser), Intervall 95 %, Bootstrap nach Spielen, Einheit Brier x10^-3, Minuten.
+  Pruefsaison 2025-26 (Hauptpruefung)
+    Variante                                       Zeitraum       Zeilen Brier heute       dBrier x10^-3 [95 %] Starter-MAE heute      dStarter-MAE [95 %]       dMAE alle [95 %]
+    Saisonschnitt (gleich gewichtet)               Haelfte 1       13119    0.1642       +0.12 [-0.42; +0.66]      4.168  +0.107 [+0.075; +0.137] +0.099 [+0.073; +0.124]
+    Saisonschnitt (gleich gewichtet)               Haelfte 2       13113    0.1684       +6.00 [+5.10; +6.87]      4.311  +0.256 [+0.211; +0.308] +0.428 [+0.389; +0.467]
+    Saisonschnitt (gleich gewichtet)               ganze Saison    26232    0.1663       +3.04 [+2.46; +3.56]      4.236  +0.178 [+0.148; +0.211] +0.263 [+0.238; +0.290]
+      => Saisonschnitt (gleich gewichtet) auf BEIDEN Haelften besser (Brier UND Starter-Minutenfehler): nein
+    letzte 5 Spiele                                Haelfte 1       13119    0.1642    +12.54 [+11.02; +14.00]      4.168  +0.159 [+0.090; +0.223] -0.062 [-0.124; -0.009]
+    letzte 5 Spiele                                Haelfte 2       13113    0.1684    +12.47 [+11.05; +14.08]      4.311  +0.129 [+0.067; +0.195] -0.128 [-0.181; -0.076]
+    letzte 5 Spiele                                ganze Saison    26232    0.1663    +12.51 [+11.49; +13.56]      4.236  +0.145 [+0.097; +0.191] -0.095 [-0.134; -0.059]
+      => letzte 5 Spiele auf BEIDEN Haelften besser (Brier UND Starter-Minutenfehler): nein
+    letzte 10 Spiele                               Haelfte 1       13119    0.1642       +4.49 [+3.61; +5.39]      4.168  +0.093 [+0.050; +0.137] +0.022 [-0.013; +0.055]
+    letzte 10 Spiele                               Haelfte 2       13113    0.1684       +4.01 [+3.10; +4.94]      4.311  +0.065 [+0.022; +0.107] -0.079 [-0.119; -0.042]
+    letzte 10 Spiele                               ganze Saison    26232    0.1663       +4.25 [+3.63; +4.85]      4.236  +0.079 [+0.051; +0.113] -0.029 [-0.055; -0.004]
+      => letzte 10 Spiele auf BEIDEN Haelften besser (Brier UND Starter-Minutenfehler): nein
+    Mischung 50 % Saisonschnitt + 50 % letzte 5    Haelfte 1       13119    0.1642       +0.26 [-0.44; +0.95]      4.168  -0.053 [-0.086; -0.020] -0.199 [-0.228; -0.172]
+    Mischung 50 % Saisonschnitt + 50 % letzte 5    Haelfte 2       13113    0.1684       +1.07 [+0.56; +1.64]      4.311  -0.032 [-0.060; +0.001] -0.131 [-0.154; -0.109]
+    Mischung 50 % Saisonschnitt + 50 % letzte 5    ganze Saison    26232    0.1663       +0.66 [+0.23; +1.09]      4.236  -0.043 [-0.064; -0.021] -0.165 [-0.184; -0.147]
+      => Mischung 50 % Saisonschnitt + 50 % letzte 5 auf BEIDEN Haelften besser (Brier UND Starter-Minutenfehler): nein
+  Pruefsaison 2024-25 (zweite Pruefung)
+    Variante                                       Zeitraum       Zeilen Brier heute       dBrier x10^-3 [95 %] Starter-MAE heute      dStarter-MAE [95 %]       dMAE alle [95 %]
+    Saisonschnitt (gleich gewichtet)               Haelfte 1       12921    0.1660       -0.66 [-1.26; -0.11]      4.288  +0.066 [+0.031; +0.101] +0.016 [-0.016; +0.044]
+    Saisonschnitt (gleich gewichtet)               Haelfte 2       12862    0.1703       +4.78 [+3.90; +5.63]      4.400  +0.225 [+0.183; +0.268] +0.373 [+0.337; +0.413]
+    Saisonschnitt (gleich gewichtet)               ganze Saison    25783    0.1682       +2.05 [+1.52; +2.60]      4.342  +0.141 [+0.113; +0.169] +0.194 [+0.167; +0.222]
+      => Saisonschnitt (gleich gewichtet) auf BEIDEN Haelften besser (Brier UND Starter-Minutenfehler): nein
+    letzte 5 Spiele                                Haelfte 1       12921    0.1660    +15.01 [+13.48; +16.63]      4.288  +0.091 [+0.022; +0.151] -0.024 [-0.082; +0.031]
+    letzte 5 Spiele                                Haelfte 2       12862    0.1703    +13.81 [+12.23; +15.35]      4.400  +0.162 [+0.100; +0.219] -0.125 [-0.188; -0.068]
+    letzte 5 Spiele                                ganze Saison    25783    0.1682    +14.41 [+13.24; +15.48]      4.342  +0.125 [+0.077; +0.172] -0.074 [-0.114; -0.035]
+      => letzte 5 Spiele auf BEIDEN Haelften besser (Brier UND Starter-Minutenfehler): nein
+    letzte 10 Spiele                               Haelfte 1       12921    0.1660       +5.50 [+4.73; +6.40]      4.288  +0.046 [+0.000; +0.090] +0.016 [-0.022; +0.052]
+    letzte 10 Spiele                               Haelfte 2       12862    0.1703       +5.15 [+4.34; +5.98]      4.400  +0.068 [+0.029; +0.109] -0.053 [-0.089; -0.018]
+    letzte 10 Spiele                               ganze Saison    25783    0.1682       +5.33 [+4.67; +5.96]      4.342  +0.057 [+0.026; +0.082] -0.018 [-0.044; +0.007]
+      => letzte 10 Spiele auf BEIDEN Haelften besser (Brier UND Starter-Minutenfehler): nein
+    Mischung 50 % Saisonschnitt + 50 % letzte 5    Haelfte 1       12921    0.1660       +1.24 [+0.51; +1.94]      4.288  -0.072 [-0.107; -0.042] -0.187 [-0.217; -0.158]
+    Mischung 50 % Saisonschnitt + 50 % letzte 5    Haelfte 2       12862    0.1703       +1.12 [+0.49; +1.69]      4.400  -0.002 [-0.030; +0.026] -0.147 [-0.173; -0.119]
+    Mischung 50 % Saisonschnitt + 50 % letzte 5    ganze Saison    25783    0.1682       +1.18 [+0.72; +1.63]      4.342  -0.039 [-0.060; -0.017] -0.167 [-0.186; -0.148]
+      => Mischung 50 % Saisonschnitt + 50 % letzte 5 auf BEIDEN Haelften besser (Brier UND Starter-Minutenfehler): nein
+4b Variante B (Teamabgleich)
+
+  Brier = Meilenstein-Chancen P(Punkte >= k), nur (Spieler, k) mit 5 % <= p <= 95 % der heutigen Variante; Minutenfehler der Starter = Betrag bei Top-5-Spielern. d = Variante minus heute (negativ = besser), Intervall 95 %, Bootstrap nach Spielen, Einheit Brier x10^-3, Minuten.
+  Pruefsaison 2025-26 (Hauptpruefung)
+    Variante                                       Zeitraum       Zeilen Brier heute       dBrier x10^-3 [95 %] Starter-MAE heute      dStarter-MAE [95 %]       dMAE alle [95 %]
+    Saisonschnitt (gleich gewichtet)               Haelfte 1       13119    0.1762       -0.50 [-1.18; +0.15]      4.609  +0.077 [+0.038; +0.117] +0.049 [+0.020; +0.077]
+    Saisonschnitt (gleich gewichtet)               Haelfte 2       13113    0.1807       +5.18 [+4.29; +6.01]      4.663  +0.284 [+0.215; +0.352] +0.363 [+0.324; +0.399]
+    Saisonschnitt (gleich gewichtet)               ganze Saison    26232    0.1784       +2.33 [+1.74; +2.87]      4.635  +0.176 [+0.139; +0.216] +0.206 [+0.180; +0.231]
+      => Saisonschnitt (gleich gewichtet) auf BEIDEN Haelften besser (Brier UND Starter-Minutenfehler): nein
+    letzte 5 Spiele                                Haelfte 1       13119    0.1762    +12.55 [+10.91; +14.13]      4.609  +0.174 [+0.084; +0.266] +0.043 [-0.017; +0.105]
+    letzte 5 Spiele                                Haelfte 2       13113    0.1807    +12.34 [+10.97; +13.99]      4.663  +0.228 [+0.137; +0.322] -0.048 [-0.102; +0.004]
+    letzte 5 Spiele                                ganze Saison    26232    0.1784    +12.45 [+11.19; +13.60]      4.635  +0.200 [+0.136; +0.260] -0.003 [-0.042; +0.035]
+      => letzte 5 Spiele auf BEIDEN Haelften besser (Brier UND Starter-Minutenfehler): nein
+    letzte 10 Spiele                               Haelfte 1       13119    0.1762       +5.05 [+4.14; +6.12]      4.609  +0.092 [+0.034; +0.160] +0.093 [+0.052; +0.135]
+    letzte 10 Spiele                               Haelfte 2       13113    0.1807       +4.18 [+3.13; +5.23]      4.663  +0.153 [+0.094; +0.214] -0.017 [-0.062; +0.024]
+    letzte 10 Spiele                               ganze Saison    26232    0.1784       +4.62 [+3.87; +5.31]      4.635  +0.121 [+0.080; +0.165] +0.038 [+0.010; +0.069]
+      => letzte 10 Spiele auf BEIDEN Haelften besser (Brier UND Starter-Minutenfehler): nein
+    Mischung 50 % Saisonschnitt + 50 % letzte 5    Haelfte 1       13119    0.1762       -0.03 [-0.77; +0.74]      4.609  -0.100 [-0.151; -0.052] -0.175 [-0.205; -0.143]
+    Mischung 50 % Saisonschnitt + 50 % letzte 5    Haelfte 2       13113    0.1807       +0.88 [+0.23; +1.62]      4.663  -0.053 [-0.098; -0.003] -0.132 [-0.160; -0.106]
+    Mischung 50 % Saisonschnitt + 50 % letzte 5    ganze Saison    26232    0.1784       +0.42 [-0.05; +0.93]      4.635  -0.078 [-0.110; -0.044] -0.153 [-0.174; -0.133]
+      => Mischung 50 % Saisonschnitt + 50 % letzte 5 auf BEIDEN Haelften besser (Brier UND Starter-Minutenfehler): nein
+  Pruefsaison 2024-25 (zweite Pruefung)
+    Variante                                       Zeitraum       Zeilen Brier heute       dBrier x10^-3 [95 %] Starter-MAE heute      dStarter-MAE [95 %]       dMAE alle [95 %]
+    Saisonschnitt (gleich gewichtet)               Haelfte 1       12921    0.1784       -0.67 [-1.38; -0.02]      4.759  -0.053 [-0.107; +0.002] -0.063 [-0.096; -0.027]
+    Saisonschnitt (gleich gewichtet)               Haelfte 2       12862    0.1834       +2.85 [+2.04; +3.73]      4.720  +0.201 [+0.137; +0.269] +0.246 [+0.211; +0.289]
+    Saisonschnitt (gleich gewichtet)               ganze Saison    25783    0.1809       +1.10 [+0.52; +1.65]      4.741  +0.067 [+0.022; +0.110] +0.091 [+0.065; +0.117]
+      => Saisonschnitt (gleich gewichtet) auf BEIDEN Haelften besser (Brier UND Starter-Minutenfehler): nein
+    letzte 5 Spiele                                Haelfte 1       12921    0.1784    +15.76 [+14.20; +17.58]      4.759  +0.057 [-0.030; +0.138] +0.038 [-0.025; +0.097]
+    letzte 5 Spiele                                Haelfte 2       12862    0.1834    +13.65 [+11.97; +15.27]      4.720  +0.343 [+0.263; +0.425] -0.018 [-0.077; +0.038]
+    letzte 5 Spiele                                ganze Saison    25783    0.1809    +14.71 [+13.52; +15.90]      4.741  +0.193 [+0.135; +0.251] +0.010 [-0.032; +0.049]
+      => letzte 5 Spiele auf BEIDEN Haelften besser (Brier UND Starter-Minutenfehler): nein
+    letzte 10 Spiele                               Haelfte 1       12921    0.1784       +5.68 [+4.69; +6.78]      4.759  +0.021 [-0.047; +0.080] +0.033 [-0.008; +0.077]
+    letzte 10 Spiele                               Haelfte 2       12862    0.1834       +5.08 [+4.13; +6.13]      4.720  +0.147 [+0.092; +0.207] +0.014 [-0.026; +0.054]
+    letzte 10 Spiele                               ganze Saison    25783    0.1809       +5.38 [+4.65; +6.08]      4.741  +0.081 [+0.038; +0.124] +0.024 [-0.007; +0.053]
+      => letzte 10 Spiele auf BEIDEN Haelften besser (Brier UND Starter-Minutenfehler): nein
+    Mischung 50 % Saisonschnitt + 50 % letzte 5    Haelfte 1       12921    0.1784       +1.76 [+0.95; +2.58]      4.759  -0.170 [-0.226; -0.126] -0.181 [-0.216; -0.150]
+    Mischung 50 % Saisonschnitt + 50 % letzte 5    Haelfte 2       12862    0.1834       +0.64 [-0.12; +1.36]      4.720  -0.019 [-0.066; +0.026] -0.136 [-0.166; -0.108]
+    Mischung 50 % Saisonschnitt + 50 % letzte 5    ganze Saison    25783    0.1809       +1.20 [+0.63; +1.75]      4.741  -0.098 [-0.135; -0.067] -0.159 [-0.181; -0.137]
+      => Mischung 50 % Saisonschnitt + 50 % letzte 5 auf BEIDEN Haelften besser (Brier UND Starter-Minutenfehler): nein
+
+5 ERWARTETE VERLAENGERUNG (nur ausgerechnet, nicht eingebaut)
+  Anteil Spiele mit Verlaengerung (Spiele mit Spielerzeilen): 2024-25 4.9 %, 2025-26 4.5 %.
+  Beitrag = Anteil der Verlaengerungsspiele x (mittlerer Minutenfehler in Verlaengerungsspielen - ohne Verlaengerung); Ist-Bias ist der mittlere Fehler ueber alle Spiele.
+  Gruppe                       Var.  Bias gesamt  Bias ohne OT  Bias in OT-Spielen  Extra-Minuten in OT  Beitrag (Haeufigkeit x Extra)  Bias nach Abzug
+  alle Spieler                 A           -0.04         -0.21               +3.64                +3.84          +0.16 (Zeilenanteil 4.3 %)            -0.21
+  Starter (Top 5)              A           -0.36         -0.60               +4.48                +5.08          +0.23 (Zeilenanteil 4.6 %)            -0.60
+  Rotation (6-9)               A           -0.00         -0.15               +3.10                +3.25          +0.15 (Zeilenanteil 4.7 %)            -0.15
+  uebrige (10+)                A           +0.28         +0.18               +2.98                +2.81          +0.10 (Zeilenanteil 3.7 %)            +0.18
+  alle Spieler                 B           +1.49         +1.31               +5.34                +4.03          +0.17 (Zeilenanteil 4.3 %)            +1.31
+  Starter (Top 5)              B           +0.75         +0.51               +5.66                +5.15          +0.24 (Zeilenanteil 4.6 %)            +0.51
+  Rotation (6-9)               B           +2.75         +2.59               +6.02                +3.43          +0.16 (Zeilenanteil 4.7 %)            +2.59
+  uebrige (10+)                B           +1.36         +1.25               +4.27                +3.02          +0.11 (Zeilenanteil 3.7 %)            +1.25
+  Lesart: 'Beitrag' ist der Teil des mittleren Minutenfehlers, der allein aus Verlaengerungen stammt; ein fester Aufschlag in dieser Hoehe wuerde nur den Bias verschieben. Der Fehler je Spiel (Betrag) bleibt, weil eine Verlaengerung vorab nicht bekannt ist.
+
+ZUSAMMENFASSUNG
+  Starter-Obergrenze (B): besser auf beiden Haelften 2025-26: keine Variante; 2024-25: keine Variante.
+  Gewichtung roh (A): besser auf beiden Haelften 2025-26: keine Variante; 2024-25: keine Variante.
+  Gewichtung Teamabgleich (B): besser auf beiden Haelften 2025-26: keine Variante; 2024-25: keine Variante.
+  Regel: Aenderung nur bei besserem Brier UND besserem Minutenfehler auf beiden Pruefhaelften; Stufen mit unter 100 Zeilen sind nicht aussagekraeftig.

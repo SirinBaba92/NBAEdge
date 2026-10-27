@@ -228,7 +228,7 @@ n_chips = len(re.findall(r'class="pc-lchip pc-lchip-(hit|miss|push)"', allh))
 check("beendetes Spiel mit Ergebnis: Chip in jeder Zeile mit vorhergesagter Seite (Anzahl Chips == Zeilen mit outcome), Texte 'eingetreten' / 'nicht eingetreten'",
       n_chips == sum(1 for r in rows_all if r.get("outcome")) and n_chips >= 19 and "eingetreten<" in allh and "nicht eingetreten<" in allh, f"{n_chips} Chips")
 check("Chip 'eingetreten' blau, 'nicht eingetreten' und 'Push' grau (CSS), nie gruen/rot", "pc-lchip-hit" in sc.CARD_CSS and "chip_blue" not in sc.CARD_CSS and sc.PALETTE["chip_blue_bg"] in sc.CARD_CSS and sc.PALETTE["chip_gray_bg"] in sc.CARD_CSS
-      and not any(int(v[3:5], 16) > int(v[1:3], 16) + 25 and int(v[3:5], 16) > int(v[5:7], 16) + 25 for v in sc.PALETTE.values() if v.startswith("#")))
+      and not any(int(v[3:5], 16) > int(v[1:3], 16) + 25 and int(v[3:5], 16) > int(v[5:7], 16) + 25 for k, v in sc.PALETTE.items() if v.startswith("#") and not k.startswith("win_ok_")))      # Gruen nur im Sieger-Zeichen (win_ok_*)
 check("laufendes/kommendes Spiel ohne Ergebnis: kein Chip", "pc-lchip" not in "".join(sc.line_block_body_html(b) for b in vm_live["lines"]) and not any(r.get("outcome") for b in vm_live["lines"] for r in b["rows"]))
 hit = next(r for b in vm_fin["lines"] if b["key"] == "total" for r in b["rows"] if r["line"] == 230.5)
 exp = "hit" if (118 + 100 > 230.5) == (hit["predicted"] == "left") else "miss"

@@ -1,0 +1,298 @@
+VERBREITERUNG NUR FUER NICHT-STARTER, GESTAFFELT NACH ROLLE UND SPIELZAHL (Varianten W1-W4 gegen A roh), walk-forward, echte Boxscores, ohne Quoten
+Skripte analysis/backtest_player_calibration.py (Replay, Gitter) und analysis/backtest_player_calibration3_report.py (Auswertung, mit analysis/bt_calib_stats.py); beide lesen nur. Produktivmodell unveraendert.
+ZAHLEN: 2 Saisons (2024-25, 2025-26), 327 Spieltage, 2460 Spiele, 52015 Spielerzeilen, 1872540 Paare Spieler x Meilenstein (k = 5..40). 'Zeilen' = Paare; Paare einer Spielerzeile/eines Spiels sind abhaengig (Bootstrap nach Spielen).
+ROLLE: vor dem Spiel bekannt = Rolle der Prognose (Basis-Minuten aus dem Verlauf: Starter > 28, Rotation > 20, sonst uebrige); nie die Ist-Minuten. Zeilen je Rolle: Starter 16081, Rotation 15994, uebrige 19940.
+
+VARIANTEN (Starter immer unveraendert roh A; Kern h = Breite der Normalglaettung je Punktewert x, A: h = 1 + 0,05 x):
+  W1  Rotation/uebrige: h = c_Rolle x (1 + 0,05 x), je Rolle ein c (2 freie Parameter).
+  W2  Rotation/uebrige: V2 Mittelwert-Unsicherheit h^2 = (1 + 0,05 x)^2 + (c_Rolle / sqrt(n) x)^2, n = Spiele des Spielers mit mind. 8 Minuten, je Rolle eine Staerke c (2 freie Parameter).
+  W3  Nicht-Starter: h = c_Spielzahl x (1 + 0,05 x), je Spielzahl-Klasse (1-9, 10-29, 30-79, ab 80 bisherige Spiele) ein c (4 freie Parameter, fuer Rotation und uebrige gemeinsam).
+  W4  W1 und W3 kombiniert: c(Rolle, Spielzahl) = c_Rolle + d_Spielzahl, d fuer 'ab 80' = 0 (5 freie Parameter: 2 Grundwerte + 3 Verschiebungen in 0,25er-Schritten).
+
+1 PARAMETERWAHL
+  Gitter: Faktor-Kern c = 1 bis 4 in 0,25er-Schritten (13 Werte, c = 1 ist roh); V2-Staerke c = 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 5 (9 Werte).
+  Wahl: je Parameter der Wert mit dem kleinsten Log-Loss (Summe ueber die Paare) der Zeilen der LERNHAELFTE in der jeweiligen Gruppe (Nicht-Starter der Rolle bzw. der Spielzahl-Klasse); Haelften = erste/zweite Saisonhälfte (nach Datum) beider Saisons.
+  W4: Koordinaten-Abstieg ueber Grundwerte und Verschiebungen (5 Durchgaenge). Angewandt wird auf die jeweils ANDERE Haelfte (Kreuz-Anpassung); alle Zahlen unten sind daher ausserhalb der Stichprobe.
+  Lernhaelfte 1:
+    Rotation (7720 Zeilen): Log-Loss je Paar relativ zu roh (negativ = besser), Faktor-Kern c: 1:+0.0000, 1.5:-0.0019, 2:-0.0028, 2.5:-0.0025, 3:-0.0011, 3.5:+0.0014, 4:+0.0047; gewaehlt W1 c = 2.25
+      V2-Staerke c: 0.5:-0.0015, 1:-0.0025, 1.5:-0.0024, 2:-0.0014, 2.5:+0.0004, 3:+0.0029, 3.5:+0.0060, 4:+0.0096, 5:+0.0176; gewaehlt W2 c = 1
+    uebrige (9794 Zeilen): Log-Loss je Paar relativ zu roh (negativ = besser), Faktor-Kern c: 1:-0.0000, 1.5:-0.0051, 2:-0.0086, 2.5:-0.0106, 3:-0.0113, 3.5:-0.0107, 4:-0.0091; gewaehlt W1 c = 3
+      V2-Staerke c: 0.5:-0.0051, 1:-0.0095, 1.5:-0.0113, 2:-0.0113, 2.5:-0.0104, 3:-0.0088, 3.5:-0.0067, 4:-0.0042, 5:+0.0015; gewaehlt W2 c = 2
+    W3 (c je Spielzahl-Klasse): 1-9 Spiele c = 4 (1071 Zeilen), 10-29 Spiele c = 3 (2538 Zeilen), 30-79 Spiele c = 2 (8512 Zeilen), ab 80 Spiele c = 2 (5393 Zeilen)
+    W4: Grundwerte Rotation c = 2.25, uebrige c = 2.75; Verschiebung (Klasse 1-9 / 10-29 / 30-79 / ab 80) = +1.25 / +0.50 / -0.50 / +0.00
+    [ACHTUNG: Optimum am Gitterrand: W3 1-9 Spiele]
+  Lernhaelfte 2:
+    Rotation (8274 Zeilen): Log-Loss je Paar relativ zu roh (negativ = besser), Faktor-Kern c: 1:+0.0000, 1.5:-0.0018, 2:-0.0028, 2.5:-0.0027, 3:-0.0016, 3.5:+0.0005, 4:+0.0034; gewaehlt W1 c = 2.25
+      V2-Staerke c: 0.5:-0.0011, 1:-0.0018, 1.5:-0.0021, 2:-0.0018, 2.5:-0.0010, 3:+0.0005, 3.5:+0.0025, 4:+0.0049, 5:+0.0108; gewaehlt W2 c = 1.5
+    uebrige (10146 Zeilen): Log-Loss je Paar relativ zu roh (negativ = besser), Faktor-Kern c: 1:-0.0000, 1.5:-0.0057, 2:-0.0101, 2.5:-0.0130, 3:-0.0147, 3.5:-0.0152, 4:-0.0147; gewaehlt W1 c = 3.5
+      V2-Staerke c: 0.5:-0.0047, 1:-0.0090, 1.5:-0.0115, 2:-0.0128, 2.5:-0.0133, 3:-0.0132, 3.5:-0.0127, 4:-0.0117, 5:-0.0090; gewaehlt W2 c = 2.5
+    W3 (c je Spielzahl-Klasse): 1-9 Spiele c = 4 (387 Zeilen), 10-29 Spiele c = 4 (1495 Zeilen), 30-79 Spiele c = 3 (6132 Zeilen), ab 80 Spiele c = 2.25 (10406 Zeilen)
+    W4: Grundwerte Rotation c = 2, uebrige c = 3; Verschiebung (Klasse 1-9 / 10-29 / 30-79 / ab 80) = +2.00 / +1.00 / +0.50 / +0.00
+    [ACHTUNG: Optimum am Gitterrand: W3 1-9 Spiele, W3 10-29 Spiele]
+
+  Kontrolle: Chancen der Starter in W1-W4 sind bitgleich zu A (geprueft).
+
+2 KALIBRIERUNG NACH GRUPPEN (Kreuz-Anpassung, ganze Daten). Je Variante: Zeilen, Ø-Abweichung in PP (zeilengewichtet ueber die 5-%-Stufen), Steigung b der Rekalibrierung [95 %] (ideal 1; < 1 = zu selbstsicher),
+  groesste Stufe mit >= 100 Zeilen (Abweichung = Trefferquote minus Ø-Modell, negativ = Modell zu hoch). Gruppen unter 100 Zeilen sind nicht aussagekraeftig.
+  Gesamt (alle Meilensteine)   (1872540 Zeilen)
+    A roh                            Zeilen  1872540  Ø-Abw.  0.78 PP  Steigung 0.835 [0.822; 0.848]       groesste Stufe: 90-95% (34562 Z.): -2.9 PP
+    W1 Faktor je Rolle               Zeilen  1872540  Ø-Abw.  0.62 PP  Steigung 0.978 [0.966; 0.990]       groesste Stufe: 90-95% (31730 Z.): -2.3 PP
+    W2 Mittelwert-Unsich. je Rolle   Zeilen  1872540  Ø-Abw.  0.42 PP  Steigung 0.948 [0.937; 0.959]       groesste Stufe: 90-95% (33588 Z.): -2.6 PP
+    W3 Faktor je Spielzahl           Zeilen  1872540  Ø-Abw.  0.46 PP  Steigung 0.963 [0.950; 0.975]       groesste Stufe: 90-95% (31563 Z.): -2.3 PP
+    W4 Rolle + Spielzahl             Zeilen  1872540  Ø-Abw.  0.57 PP  Steigung 0.974 [0.962; 0.986]       groesste Stufe: 90-95% (31793 Z.): -2.3 PP
+  2a Meilenstein-Hoehe: unter dem Spielerschnitt   (214285 Zeilen)
+    A roh                            Zeilen   214285  Ø-Abw.  2.18 PP  Steigung 0.636 [0.603; 0.666]       groesste Stufe: 45-50% (359 Z.): +8.1 PP
+    W1 Faktor je Rolle               Zeilen   214285  Ø-Abw.  1.80 PP  Steigung 0.644 [0.608; 0.675]       groesste Stufe: 55-60% (2842 Z.): +6.8 PP
+    W2 Mittelwert-Unsich. je Rolle   Zeilen   214285  Ø-Abw.  2.04 PP  Steigung 0.642 [0.606; 0.671]       groesste Stufe: 45-50% (460 Z.): +8.9 PP
+    W3 Faktor je Spielzahl           Zeilen   214285  Ø-Abw.  1.74 PP  Steigung 0.646 [0.608; 0.677]       groesste Stufe: 45-50% (373 Z.): +7.3 PP
+    W4 Rolle + Spielzahl             Zeilen   214285  Ø-Abw.  1.77 PP  Steigung 0.646 [0.608; 0.677]       groesste Stufe: 45-50% (370 Z.): +7.0 PP
+  2a Meilenstein-Hoehe: um den Schnitt (+-3)   (252815 Zeilen)
+    A roh                            Zeilen   252815  Ø-Abw.  1.94 PP  Steigung 0.798 [0.777; 0.820]       groesste Stufe: 5-10% (214 Z.): +16.1 PP
+    W1 Faktor je Rolle               Zeilen   252815  Ø-Abw.  0.52 PP  Steigung 0.925 [0.902; 0.950]       groesste Stufe: 90-95% (124 Z.): -7.8 PP
+    W2 Mittelwert-Unsich. je Rolle   Zeilen   252815  Ø-Abw.  1.89 PP  Steigung 0.827 [0.806; 0.853]       groesste Stufe: 10-15% (761 Z.): +10.1 PP
+    W3 Faktor je Spielzahl           Zeilen   252815  Ø-Abw.  0.68 PP  Steigung 0.910 [0.887; 0.935]       groesste Stufe: 10-15% (195 Z.): +11.6 PP
+    W4 Rolle + Spielzahl             Zeilen   252815  Ø-Abw.  0.60 PP  Steigung 0.919 [0.895; 0.943]       groesste Stufe: 10-15% (105 Z.): +13.1 PP
+  2a Meilenstein-Hoehe: ueber dem Schnitt   (1405440 Zeilen)
+    A roh                            Zeilen  1405440  Ø-Abw.  0.57 PP  Steigung 0.636 [0.610; 0.664]       groesste Stufe: 55-60% (306 Z.): -9.0 PP
+    W1 Faktor je Rolle               Zeilen  1405440  Ø-Abw.  0.61 PP  Steigung 0.937 [0.912; 0.963]       groesste Stufe: 55-60% (260 Z.): -8.6 PP
+    W2 Mittelwert-Unsich. je Rolle   Zeilen  1405440  Ø-Abw.  0.16 PP  Steigung 0.932 [0.908; 0.955]       groesste Stufe: 55-60% (244 Z.): -6.2 PP
+    W3 Faktor je Spielzahl           Zeilen  1405440  Ø-Abw.  0.45 PP  Steigung 0.902 [0.876; 0.929]       groesste Stufe: 55-60% (265 Z.): -7.7 PP
+    W4 Rolle + Spielzahl             Zeilen  1405440  Ø-Abw.  0.56 PP  Steigung 0.930 [0.904; 0.956]       groesste Stufe: 55-60% (262 Z.): -8.6 PP
+  2b Rolle: Starter   (578916 Zeilen)
+    A roh                            Zeilen   578916  Ø-Abw.  0.89 PP  Steigung 0.923 [0.908; 0.937]       groesste Stufe: 90-95% (27616 Z.): -2.5 PP
+    W1 Faktor je Rolle               Zeilen   578916  Ø-Abw.  0.89 PP  Steigung 0.923 [0.908; 0.937]       groesste Stufe: 90-95% (27616 Z.): -2.5 PP
+    W2 Mittelwert-Unsich. je Rolle   Zeilen   578916  Ø-Abw.  0.89 PP  Steigung 0.923 [0.908; 0.937]       groesste Stufe: 90-95% (27616 Z.): -2.5 PP
+    W3 Faktor je Spielzahl           Zeilen   578916  Ø-Abw.  0.89 PP  Steigung 0.923 [0.908; 0.937]       groesste Stufe: 90-95% (27616 Z.): -2.5 PP
+    W4 Rolle + Spielzahl             Zeilen   578916  Ø-Abw.  0.89 PP  Steigung 0.923 [0.908; 0.937]       groesste Stufe: 90-95% (27616 Z.): -2.5 PP
+  2b Rolle: Rotation   (575784 Zeilen)
+    A roh                            Zeilen   575784  Ø-Abw.  0.78 PP  Steigung 0.884 [0.869; 0.902]       groesste Stufe: 95-100% (3860 Z.): -4.7 PP
+    W1 Faktor je Rolle               Zeilen   575784  Ø-Abw.  0.56 PP  Steigung 1.051 [1.036; 1.069]       groesste Stufe: 60-65% (11428 Z.): +1.7 PP
+    W2 Mittelwert-Unsich. je Rolle   Zeilen   575784  Ø-Abw.  0.53 PP  Steigung 0.979 [0.965; 0.996]       groesste Stufe: 95-100% (2787 Z.): -2.9 PP
+    W3 Faktor je Spielzahl           Zeilen   575784  Ø-Abw.  0.76 PP  Steigung 1.075 [1.058; 1.093]       groesste Stufe: 60-65% (11638 Z.): +1.9 PP
+    W4 Rolle + Spielzahl             Zeilen   575784  Ø-Abw.  0.56 PP  Steigung 1.053 [1.037; 1.072]       groesste Stufe: 65-70% (11253 Z.): +1.7 PP
+  2b Rolle: uebrige   (717840 Zeilen)
+    A roh                            Zeilen   717840  Ø-Abw.  1.09 PP  Steigung 0.617 [0.588; 0.645]       groesste Stufe: 90-95% (174 Z.): -10.1 PP
+    W1 Faktor je Rolle               Zeilen   717840  Ø-Abw.  0.68 PP  Steigung 0.984 [0.947; 1.015]       groesste Stufe: 30-35% (15490 Z.): -2.8 PP
+    W2 Mittelwert-Unsich. je Rolle   Zeilen   717840  Ø-Abw.  0.35 PP  Steigung 0.992 [0.961; 1.017]       groesste Stufe: 55-60% (4125 Z.): +2.7 PP
+    W3 Faktor je Spielzahl           Zeilen   717840  Ø-Abw.  0.33 PP  Steigung 0.899 [0.865; 0.930]       groesste Stufe: 75-80% (936 Z.): -2.1 PP
+    W4 Rolle + Spielzahl             Zeilen   717840  Ø-Abw.  0.54 PP  Steigung 0.964 [0.928; 0.996]       groesste Stufe: 30-35% (15140 Z.): -2.6 PP
+  2c Bisherige Spiele: 1-9 Spiele   (55764 Zeilen)
+    A roh                            Zeilen    55764  Ø-Abw.  3.01 PP  Steigung n/a (instabil)             groesste Stufe: 90-95% (135 Z.): -29.2 PP
+    W1 Faktor je Rolle               Zeilen    55764  Ø-Abw.  1.61 PP  Steigung 0.499 [0.451; 0.598]       groesste Stufe: 95-100% (266 Z.): -17.8 PP
+    W2 Mittelwert-Unsich. je Rolle   Zeilen    55764  Ø-Abw.  1.79 PP  Steigung 0.762 [0.664; 0.874]       groesste Stufe: 95-100% (180 Z.): -22.5 PP
+    W3 Faktor je Spielzahl           Zeilen    55764  Ø-Abw.  1.25 PP  Steigung 0.633 [0.553; 0.749]       groesste Stufe: 95-100% (183 Z.): -22.6 PP
+    W4 Rolle + Spielzahl             Zeilen    55764  Ø-Abw.  1.27 PP  Steigung 0.628 [0.549; 0.742]       groesste Stufe: 95-100% (185 Z.): -22.9 PP
+  2c Bisherige Spiele: 10-29 Spiele   (152892 Zeilen)
+    A roh                            Zeilen   152892  Ø-Abw.  1.46 PP  Steigung 0.561 [0.515; 0.610]       groesste Stufe: 85-90% (609 Z.): -6.0 PP
+    W1 Faktor je Rolle               Zeilen   152892  Ø-Abw.  0.44 PP  Steigung 0.886 [0.826; 0.944]       groesste Stufe: 95-100% (744 Z.): -3.6 PP
+    W2 Mittelwert-Unsich. je Rolle   Zeilen   152892  Ø-Abw.  0.63 PP  Steigung 1.036 [0.980; 1.090]       groesste Stufe: 40-45% (1853 Z.): +4.6 PP
+    W3 Faktor je Spielzahl           Zeilen   152892  Ø-Abw.  0.80 PP  Steigung 0.972 [0.906; 1.038]       groesste Stufe: 95-100% (704 Z.): -3.9 PP
+    W4 Rolle + Spielzahl             Zeilen   152892  Ø-Abw.  0.64 PP  Steigung 0.959 [0.898; 1.024]       groesste Stufe: 95-100% (716 Z.): -3.7 PP
+  2c Bisherige Spiele: 30-79 Spiele   (664668 Zeilen)
+    A roh                            Zeilen   664668  Ø-Abw.  0.79 PP  Steigung 0.832 [0.810; 0.855]       groesste Stufe: 85-90% (7877 Z.): -3.4 PP
+    W1 Faktor je Rolle               Zeilen   664668  Ø-Abw.  0.83 PP  Steigung 0.996 [0.975; 1.017]       groesste Stufe: 90-95% (8007 Z.): -2.4 PP
+    W2 Mittelwert-Unsich. je Rolle   Zeilen   664668  Ø-Abw.  0.43 PP  Steigung 0.953 [0.935; 0.973]       groesste Stufe: 85-90% (7513 Z.): -2.7 PP
+    W3 Faktor je Spielzahl           Zeilen   664668  Ø-Abw.  0.60 PP  Steigung 0.969 [0.948; 0.991]       groesste Stufe: 95-100% (16559 Z.): -2.2 PP
+    W4 Rolle + Spielzahl             Zeilen   664668  Ø-Abw.  0.69 PP  Steigung 0.972 [0.951; 0.993]       groesste Stufe: 90-95% (8062 Z.): -2.3 PP
+  2c Bisherige Spiele: ab 80 Spiele   (999216 Zeilen)
+    A roh                            Zeilen   999216  Ø-Abw.  0.58 PP  Steigung 0.906 [0.891; 0.918]       groesste Stufe: 90-95% (24906 Z.): -2.6 PP
+    W1 Faktor je Rolle               Zeilen   999216  Ø-Abw.  0.67 PP  Steigung 0.995 [0.980; 1.007]       groesste Stufe: 90-95% (23111 Z.): -2.2 PP
+    W2 Mittelwert-Unsich. je Rolle   Zeilen   999216  Ø-Abw.  0.50 PP  Steigung 0.939 [0.925; 0.951]       groesste Stufe: 90-95% (24551 Z.): -2.5 PP
+    W3 Faktor je Spielzahl           Zeilen   999216  Ø-Abw.  0.42 PP  Steigung 0.965 [0.951; 0.978]       groesste Stufe: 90-95% (23408 Z.): -2.3 PP
+    W4 Rolle + Spielzahl             Zeilen   999216  Ø-Abw.  0.57 PP  Steigung 0.984 [0.970; 0.997]       groesste Stufe: 90-95% (23259 Z.): -2.3 PP
+
+  2d Modell-Chance-Stufen (5-%-Stufen, ganze Daten, Kreuz-Anpassung): Diff PP [95 %] (Zeilen). Ab 90 % mit < 100 Zeilen: x = nicht aussagekraeftig, * = < 100 Zeilen.
+    Stufe                           A roh           W1 Faktor je Rolle       W2 Mittelwert-Unsich.        W3 Faktor je Spielzahl         W4 Rolle + Spielzahl
+    0-5%     +0.47 [ +0.4; +0.5] ( 999465)  -0.10 [ -0.2; -0.0] ( 926705)  -0.02 [ -0.1; +0.0] ( 947364)  -0.02 [ -0.1; +0.0] ( 937749)  -0.07 [ -0.1; -0.0] ( 930015) 
+    5-10%    +0.74 [ +0.5; +1.0] ( 136342)  -1.23 [ -1.4; -1.0] ( 154896)  -0.45 [ -0.7; -0.2] ( 160162)  -0.89 [ -1.1; -0.7] ( 152328)  -1.11 [ -1.3; -0.9] ( 154110) 
+    10-15%   +0.90 [ +0.6; +1.2] (  88379)  -1.48 [ -1.7; -1.2] (  99946)  -0.09 [ -0.4; +0.2] ( 100737)  -1.12 [ -1.4; -0.8] (  98202)  -1.39 [ -1.6; -1.1] (  99525) 
+    15-20%   +1.04 [ +0.7; +1.4] (  67166)  -1.47 [ -1.8; -1.1] (  76310)  +0.25 [ -0.1; +0.6] (  75224)  -1.06 [ -1.4; -0.7] (  75122)  -1.26 [ -1.6; -0.9] (  75908) 
+    20-25%   +1.24 [ +0.8; +1.7] (  55140)  -1.24 [ -1.6; -0.8] (  62772)  +0.86 [ +0.5; +1.3] (  60499)  -0.84 [ -1.3; -0.4] (  61659)  -1.13 [ -1.5; -0.7] (  62440) 
+    25-30%   +0.80 [ +0.4; +1.2] (  47289)  -1.17 [ -1.6; -0.7] (  53787)  +0.75 [ +0.3; +1.2] (  51089)  -0.88 [ -1.3; -0.5] (  52830)  -1.09 [ -1.5; -0.7] (  53564) 
+    30-35%   +0.77 [ +0.3; +1.3] (  41771)  -1.20 [ -1.7; -0.7] (  47628)  +0.86 [ +0.4; +1.3] (  44382)  -0.69 [ -1.2; -0.3] (  46628)  -1.09 [ -1.6; -0.7] (  47348) 
+    35-40%   +0.34 [ -0.1; +0.8] (  37688)  -0.78 [ -1.3; -0.3] (  43076)  +0.88 [ +0.4; +1.4] (  39406)  -0.85 [ -1.3; -0.4] (  42227)  -0.83 [ -1.3; -0.3] (  42758) 
+    40-45%   +0.29 [ -0.2; +0.8] (  34815)  -0.42 [ -0.9; +0.0] (  39483)  +1.08 [ +0.6; +1.6] (  35649)  -0.32 [ -0.8; +0.2] (  38663)  -0.35 [ -0.9; +0.1] (  39201) 
+    45-50%   -0.05 [ -0.5; +0.5] (  32343)  -0.41 [ -0.9; +0.1] (  36322)  +0.91 [ +0.4; +1.5] (  32742)  -0.37 [ -0.9; +0.2] (  35664)  -0.46 [ -1.0; +0.1] (  36072) 
+    50-55%   -0.27 [ -0.8; +0.3] (  30466)  -0.21 [ -0.7; +0.3] (  33751)  +0.28 [ -0.2; +0.9] (  30542)  -0.13 [ -0.6; +0.4] (  33319)  -0.19 [ -0.7; +0.3] (  33575) 
+    55-60%   -0.69 [ -1.2; -0.1] (  29077)  +0.46 [ -0.1; +1.0] (  31396)  +0.96 [ +0.4; +1.5] (  28690)  +0.35 [ -0.2; +0.8] (  31283)  +0.32 [ -0.2; +0.9] (  31286) 
+    60-65%   -0.86 [ -1.5; -0.3] (  27944)  +0.50 [ -0.1; +1.0] (  29430)  -0.05 [ -0.7; +0.5] (  27426)  +0.31 [ -0.3; +0.9] (  29623)  +0.37 [ -0.2; +0.9] (  29407) 
+    65-70%   -0.82 [ -1.4; -0.3] (  27338)  +0.49 [ -0.1; +1.1] (  28289)  -0.08 [ -0.7; +0.5] (  26674)  +0.40 [ -0.2; +1.0] (  28579)  +0.50 [ -0.1; +1.1] (  28350) 
+    70-75%   -1.58 [ -2.2; -1.0] (  27173)  -0.03 [ -0.6; +0.7] (  27393)  -0.67 [ -1.2; -0.0] (  26398)  +0.02 [ -0.5; +0.7] (  27677)  -0.11 [ -0.7; +0.5] (  27459) 
+    75-80%   -1.91 [ -2.5; -1.3] (  27375)  -0.71 [ -1.4; -0.1] (  27005)  -1.21 [ -1.8; -0.6] (  26708)  -0.56 [ -1.2; +0.0] (  27200)  -0.60 [ -1.2; +0.0] (  27033) 
+    80-85%   -2.66 [ -3.1; -2.1] (  28145)  -1.40 [ -1.9; -0.8] (  27101)  -2.05 [ -2.5; -1.5] (  27227)  -1.14 [ -1.7; -0.6] (  27038)  -1.34 [ -1.9; -0.8] (  27170) 
+    85-90%   -2.70 [ -3.1; -2.2] (  30119)  -1.55 [ -2.0; -1.1] (  28299)  -2.30 [ -2.8; -1.8] (  29218)  -1.57 [ -2.0; -1.1] (  28081)  -1.62 [ -2.1; -1.1] (  28301) 
+    90-95%   -2.90 [ -3.3; -2.5] (  34562)  -2.33 [ -2.8; -1.9] (  31730)  -2.56 [ -3.0; -2.2] (  33588)  -2.27 [ -2.7; -1.9] (  31563)  -2.30 [ -2.7; -1.9] (  31793) 
+    95-100%  -2.16 [ -2.5; -1.9] (  69943)  -1.98 [ -2.3; -1.7] (  67221)  -2.03 [ -2.4; -1.8] (  68815)  -1.98 [ -2.3; -1.7] (  67105)  -1.99 [ -2.3; -1.7] (  67225) 
+
+3 REGEL (Kreuz-Anpassung): Eine Variante zaehlt nur, wenn sie auf BEIDEN Pruefhaelften
+  (i) in jeder Gruppe aus 2a, 2b und 2c die Ø-Abweichung gegenueber A nicht verschlechtert (Variante <= A; '!' = verschlechtert) UND insgesamt verbessert (Variante < A), und
+  (ii) keine 5-%-Stufe mit >= 100 Zeilen ueber 6 PP daneben hat. (ii) in zwei Lesarten: R1 = nur Gesamt; R2 = Gesamt UND in jeder Gruppe 2a/2b/2c (streng). Starter sind in W1-W4 identisch zu A (Differenz 0).
+  Pruefhaelfte 2 (Parameter gelernt auf Haelfte 1); 935100 Paare
+    A roh: Ø-Abw. Gesamt 1.14; unter dem Spie 1.92; um den Schnitt 1.88; ueber dem Schn 0.93; Starter 0.90; Rotation 1.29; uebrige 1.59; 1-9 Spiele 4.05; 10-29 Spiele 2.40; 30-79 Spiele 1.46; ab 80 Spiele 0.84   | Stufen > 6 PP: Gesamt 0, Gruppen 17
+    W1 Faktor je Rolle               Ø-Abw. Gesamt 0.43; unter dem Spie 1.50; um den Schnitt 1.18; ueber dem Schn 0.16; Starter 0.90; Rotation 0.99; uebrige 0.24; 1-9 Spiele 2.69; 10-29 Spiele 1.20; 30-79 Spiele 0.39; ab 80 Spiele 0.57   | Stufen > 6 PP: Gesamt 0, Gruppen 5  => R1 erfuellt, R2 verfehlt
+    W2 Mittelwert-Unsich. je Rolle   Ø-Abw. Gesamt 0.92; unter dem Spie 1.81; um den Schnitt 2.25!; ueber dem Schn 0.56; Starter 0.90; Rotation 1.19; uebrige 1.14; 1-9 Spiele 1.20; 10-29 Spiele 1.49; 30-79 Spiele 1.19; ab 80 Spiele 0.76   | Stufen > 6 PP: Gesamt 0, Gruppen 13  => R1 verfehlt, R2 verfehlt
+    W3 Faktor je Spielzahl           Ø-Abw. Gesamt 0.61; unter dem Spie 1.55; um den Schnitt 1.38; ueber dem Schn 0.36; Starter 0.90; Rotation 0.89; uebrige 0.87; 1-9 Spiele 1.56; 10-29 Spiele 1.12; 30-79 Spiele 0.93; ab 80 Spiele 0.49   | Stufen > 6 PP: Gesamt 0, Gruppen 3  => R1 erfuellt, R2 verfehlt
+    W4 Rolle + Spielzahl             Ø-Abw. Gesamt 0.47; unter dem Spie 1.52; um den Schnitt 1.25; ueber dem Schn 0.19; Starter 0.90; Rotation 0.94; uebrige 0.51; 1-9 Spiele 1.65; 10-29 Spiele 0.95; 30-79 Spiele 0.88; ab 80 Spiele 0.54   | Stufen > 6 PP: Gesamt 0, Gruppen 2  => R1 erfuellt, R2 verfehlt
+  Pruefhaelfte 1 (Parameter gelernt auf Haelfte 2); 937440 Paare
+    A roh: Ø-Abw. Gesamt 0.72; unter dem Spie 2.47; um den Schnitt 2.61; ueber dem Schn 0.52; Starter 0.92; Rotation 0.86; uebrige 0.75; 1-9 Spiele 2.67; 10-29 Spiele 1.08; 30-79 Spiele 0.76; ab 80 Spiele 0.60   | Stufen > 6 PP: Gesamt 0, Gruppen 28
+    W1 Faktor je Rolle               Ø-Abw. Gesamt 1.20; unter dem Spie 2.07; um den Schnitt 1.68; ueber dem Schn 1.21!; Starter 0.92; Rotation 1.09!; uebrige 1.55!; 1-9 Spiele 1.48; 10-29 Spiele 0.88; 30-79 Spiele 1.49!; ab 80 Spiele 1.11!   | Stufen > 6 PP: Gesamt 0, Gruppen 16  => R1 verfehlt, R2 verfehlt
+    W2 Mittelwert-Unsich. je Rolle   Ø-Abw. Gesamt 0.78; unter dem Spie 2.26; um den Schnitt 2.00; ueber dem Schn 0.89!; Starter 0.92; Rotation 0.76; uebrige 0.72; 1-9 Spiele 2.28; 10-29 Spiele 1.04; 30-79 Spiele 0.80!; ab 80 Spiele 0.67!   | Stufen > 6 PP: Gesamt 0, Gruppen 16  => R1 verfehlt, R2 verfehlt
+    W3 Faktor je Spielzahl           Ø-Abw. Gesamt 1.18; unter dem Spie 1.93; um den Schnitt 1.60; ueber dem Schn 1.25!; Starter 0.92; Rotation 1.57!; uebrige 1.22!; 1-9 Spiele 1.50; 10-29 Spiele 1.65!; 30-79 Spiele 1.42!; ab 80 Spiele 0.89!   | Stufen > 6 PP: Gesamt 0, Gruppen 14  => R1 verfehlt, R2 verfehlt
+    W4 Rolle + Spielzahl             Ø-Abw. Gesamt 1.24; unter dem Spie 1.98; um den Schnitt 1.67; ueber dem Schn 1.28!; Starter 0.92; Rotation 1.17!; uebrige 1.59!; 1-9 Spiele 1.50; 10-29 Spiele 1.34!; 30-79 Spiele 1.53!; ab 80 Spiele 0.96!   | Stufen > 6 PP: Gesamt 0, Gruppen 15  => R1 verfehlt, R2 verfehlt
+  Wo faellt welche Variante durch (Gruppe, Haelfte):
+    W1 Faktor je Rolle:
+      - Haelfte 2: 2a Meilenstein-Hoehe: um den Schnitt (+-3): Stufe(n) > 6 PP: 15-20% (366 Z., +8.2)
+      - Haelfte 2: 2c Bisherige Spiele: 1-9 Spiele: Stufe(n) > 6 PP: 15-20% (420 Z., +6.0), 20-25% (349 Z., +6.3)
+      - Haelfte 2: 2c Bisherige Spiele: 10-29 Spiele: Stufe(n) > 6 PP: 60-65% (229 Z., +9.3), 70-75% (113 Z., +6.3)
+      - Haelfte 1: 2a Meilenstein-Hoehe: ueber dem Schnitt verschlechtert (0.52 -> 1.21)
+      - Haelfte 1: 2b Rolle: Rotation verschlechtert (0.86 -> 1.09)
+      - Haelfte 1: 2b Rolle: uebrige verschlechtert (0.75 -> 1.55)
+      - Haelfte 1: 2c Bisherige Spiele: 30-79 Spiele verschlechtert (0.76 -> 1.49)
+      - Haelfte 1: 2c Bisherige Spiele: ab 80 Spiele verschlechtert (0.60 -> 1.11)
+      - Haelfte 1: Gesamt nicht verbessert (0.72 -> 1.20)
+      - Haelfte 1: 2a Meilenstein-Hoehe: unter dem Spielerschnitt: Stufe(n) > 6 PP: 45-50% (305 Z., +7.9), 55-60% (1688 Z., +8.0)
+      - Haelfte 1: 2a Meilenstein-Hoehe: um den Schnitt (+-3): Stufe(n) > 6 PP: 80-85% (881 Z., -8.0), 85-90% (275 Z., -9.1)
+      - Haelfte 1: 2a Meilenstein-Hoehe: ueber dem Schnitt: Stufe(n) > 6 PP: 35-40% (6465 Z., -6.6), 40-45% (2849 Z., -8.6), 45-50% (1116 Z., -10.4), 50-55% (416 Z., -9.7), 55-60% (140 Z., -11.3)
+      - Haelfte 1: 2c Bisherige Spiele: 1-9 Spiele: Stufe(n) > 6 PP: 45-50% (397 Z., -10.0), 60-65% (219 Z., -8.8), 70-75% (164 Z., -6.6), 75-80% (155 Z., -6.4), 80-85% (135 Z., -15.2), 85-90% (107 Z., -12.7), 95-100% (194 Z., -15.1)
+    W2 Mittelwert-Unsich. je Rolle:
+      - Haelfte 2: 2a Meilenstein-Hoehe: um den Schnitt (+-3) verschlechtert (1.88 -> 2.25)
+      - Haelfte 2: 2a Meilenstein-Hoehe: um den Schnitt (+-3): Stufe(n) > 6 PP: 10-15% (432 Z., +12.1), 15-20% (1481 Z., +7.6), 20-25% (4184 Z., +6.7)
+      - Haelfte 2: 2c Bisherige Spiele: 10-29 Spiele: Stufe(n) > 6 PP: 20-25% (1356 Z., +6.1), 25-30% (999 Z., +6.3), 30-35% (791 Z., +7.6), 35-40% (580 Z., +7.3), 40-45% (447 Z., +8.6), 45-50% (349 Z., +9.1), 50-55% (301 Z., +10.2), 55-60% (236 Z., +9.5), 60-65% (153 Z., +6.2), 65-70% (118 Z., +6.5)
+      - Haelfte 1: 2a Meilenstein-Hoehe: ueber dem Schnitt verschlechtert (0.52 -> 0.89)
+      - Haelfte 1: 2c Bisherige Spiele: 30-79 Spiele verschlechtert (0.76 -> 0.80)
+      - Haelfte 1: 2c Bisherige Spiele: ab 80 Spiele verschlechtert (0.60 -> 0.67)
+      - Haelfte 1: Gesamt nicht verbessert (0.72 -> 0.78)
+      - Haelfte 1: 2a Meilenstein-Hoehe: unter dem Spielerschnitt: Stufe(n) > 6 PP: 40-45% (161 Z., +6.3), 45-50% (373 Z., +9.9), 50-55% (824 Z., +7.7), 55-60% (1784 Z., +8.2)
+      - Haelfte 1: 2a Meilenstein-Hoehe: um den Schnitt (+-3): Stufe(n) > 6 PP: 10-15% (329 Z., +7.4), 80-85% (1059 Z., -7.8), 85-90% (342 Z., -10.1)
+      - Haelfte 1: 2a Meilenstein-Hoehe: ueber dem Schnitt: Stufe(n) > 6 PP: 40-45% (2371 Z., -8.2), 45-50% (917 Z., -8.5), 50-55% (346 Z., -7.8), 55-60% (125 Z., -9.8)
+      - Haelfte 1: 2c Bisherige Spiele: 1-9 Spiele: Stufe(n) > 6 PP: 15-20% (2062 Z., -6.5), 20-25% (1547 Z., -7.5), 25-30% (1212 Z., -6.8), 30-35% (963 Z., -6.9), 95-100% (126 Z., -22.2)
+    W3 Faktor je Spielzahl:
+      - Haelfte 2: 2a Meilenstein-Hoehe: um den Schnitt (+-3): Stufe(n) > 6 PP: 10-15% (133 Z., +12.1)
+      - Haelfte 2: 2c Bisherige Spiele: 10-29 Spiele: Stufe(n) > 6 PP: 60-65% (240 Z., +8.9), 70-75% (105 Z., +6.6)
+      - Haelfte 1: 2a Meilenstein-Hoehe: ueber dem Schnitt verschlechtert (0.52 -> 1.25)
+      - Haelfte 1: 2b Rolle: Rotation verschlechtert (0.86 -> 1.57)
+      - Haelfte 1: 2b Rolle: uebrige verschlechtert (0.75 -> 1.22)
+      - Haelfte 1: 2c Bisherige Spiele: 10-29 Spiele verschlechtert (1.08 -> 1.65)
+      - Haelfte 1: 2c Bisherige Spiele: 30-79 Spiele verschlechtert (0.76 -> 1.42)
+      - Haelfte 1: 2c Bisherige Spiele: ab 80 Spiele verschlechtert (0.60 -> 0.89)
+      - Haelfte 1: Gesamt nicht verbessert (0.72 -> 1.18)
+      - Haelfte 1: 2a Meilenstein-Hoehe: unter dem Spielerschnitt: Stufe(n) > 6 PP: 45-50% (301 Z., +8.6), 55-60% (1728 Z., +7.8)
+      - Haelfte 1: 2a Meilenstein-Hoehe: um den Schnitt (+-3): Stufe(n) > 6 PP: 80-85% (778 Z., -8.5), 85-90% (242 Z., -9.3)
+      - Haelfte 1: 2a Meilenstein-Hoehe: ueber dem Schnitt: Stufe(n) > 6 PP: 35-40% (6609 Z., -6.9), 40-45% (2870 Z., -8.7), 45-50% (1115 Z., -10.5), 50-55% (411 Z., -9.4), 55-60% (143 Z., -10.2)
+      - Haelfte 1: 2c Bisherige Spiele: 1-9 Spiele: Stufe(n) > 6 PP: 25-30% (915 Z., -6.6), 30-35% (774 Z., -7.3), 35-40% (672 Z., -6.3), 45-50% (476 Z., -8.8), 95-100% (127 Z., -22.0)
+    W4 Rolle + Spielzahl:
+      - Haelfte 2: 2c Bisherige Spiele: 10-29 Spiele: Stufe(n) > 6 PP: 60-65% (239 Z., +8.9), 70-75% (109 Z., +6.5)
+      - Haelfte 1: 2a Meilenstein-Hoehe: ueber dem Schnitt verschlechtert (0.52 -> 1.28)
+      - Haelfte 1: 2b Rolle: Rotation verschlechtert (0.86 -> 1.17)
+      - Haelfte 1: 2b Rolle: uebrige verschlechtert (0.75 -> 1.59)
+      - Haelfte 1: 2c Bisherige Spiele: 10-29 Spiele verschlechtert (1.08 -> 1.34)
+      - Haelfte 1: 2c Bisherige Spiele: 30-79 Spiele verschlechtert (0.76 -> 1.53)
+      - Haelfte 1: 2c Bisherige Spiele: ab 80 Spiele verschlechtert (0.60 -> 0.96)
+      - Haelfte 1: Gesamt nicht verbessert (0.72 -> 1.24)
+      - Haelfte 1: 2a Meilenstein-Hoehe: unter dem Spielerschnitt: Stufe(n) > 6 PP: 45-50% (298 Z., +8.2), 50-55% (777 Z., +6.0), 55-60% (1695 Z., +7.5)
+      - Haelfte 1: 2a Meilenstein-Hoehe: um den Schnitt (+-3): Stufe(n) > 6 PP: 80-85% (867 Z., -8.7), 85-90% (268 Z., -8.6)
+      - Haelfte 1: 2a Meilenstein-Hoehe: ueber dem Schnitt: Stufe(n) > 6 PP: 35-40% (6530 Z., -6.6), 40-45% (2854 Z., -8.5), 45-50% (1121 Z., -10.6), 50-55% (415 Z., -9.4), 55-60% (141 Z., -11.6)
+      - Haelfte 1: 2c Bisherige Spiele: 1-9 Spiele: Stufe(n) > 6 PP: 25-30% (915 Z., -6.6), 30-35% (774 Z., -7.3), 35-40% (672 Z., -6.3), 45-50% (476 Z., -8.8), 95-100% (127 Z., -22.0)
+  Ergebnis:
+    W1 Faktor je Rolle               R1 (nur Gesamt-Stufen): zaehlt nicht (ja/nein); R2 (auch Gruppen-Stufen): zaehlt nicht (nein/nein)   [Haelfte 2 / Haelfte 1]
+    W2 Mittelwert-Unsich. je Rolle   R1 (nur Gesamt-Stufen): zaehlt nicht (nein/nein); R2 (auch Gruppen-Stufen): zaehlt nicht (nein/nein)   [Haelfte 2 / Haelfte 1]
+    W3 Faktor je Spielzahl           R1 (nur Gesamt-Stufen): zaehlt nicht (ja/nein); R2 (auch Gruppen-Stufen): zaehlt nicht (nein/nein)   [Haelfte 2 / Haelfte 1]
+    W4 Rolle + Spielzahl             R1 (nur Gesamt-Stufen): zaehlt nicht (ja/nein); R2 (auch Gruppen-Stufen): zaehlt nicht (nein/nein)   [Haelfte 2 / Haelfte 1]
+
+4 NEBENWIRKUNGEN
+  4a Raender (Diff PP = Trefferquote minus Ø-Modell [95 %]; positiv = Modell zu niedrig, negativ = zu hoch). Kreuz-Anpassung, ganze Daten. * = unter 100 Zeilen (nicht aussagekraeftig).
+    Rand / Gruppe                                             A roh             W1 Faktor je Rolle         W2 Mittelwert-Unsich.          W3 Faktor je Spielzahl           W4 Rolle + Spielzahl
+    Chance < 20 %, alle               +0.55 [ +0.5; +0.7] (1291352)   -0.43 [ -0.5; -0.3] (1257857)   -0.07 [ -0.2; +0.0] (1283487)   -0.27 [ -0.4; -0.2] (1263401)   -0.38 [ -0.5; -0.3] (1259558) 
+    Chance < 20 %, Rolle Starter      -0.30 [ -0.5; -0.1] ( 255572)   -0.30 [ -0.5; -0.1] ( 255572)   -0.30 [ -0.5; -0.1] ( 255572)   -0.30 [ -0.5; -0.1] ( 255572)   -0.30 [ -0.5; -0.1] ( 255572) 
+    Chance < 20 %, Rolle Rotation     +0.45 [ +0.3; +0.6] ( 405648)   -0.52 [ -0.7; -0.4] ( 395862)   -0.03 [ -0.2; +0.1] ( 403166)   -0.67 [ -0.8; -0.5] ( 393896)   -0.53 [ -0.7; -0.4] ( 395685) 
+    Chance < 20 %, Rolle uebrige      +0.97 [ +0.8; +1.1] ( 630132)   -0.43 [ -0.6; -0.3] ( 606423)   +0.00 [ -0.1; +0.1] ( 624749)   -0.00 [ -0.1; +0.1] ( 613933)   -0.31 [ -0.4; -0.2] ( 608301) 
+    Chance < 20 %, 1-9 Spiele         +2.61 [ +2.1; +3.1] (  49551)   +1.14 [ +0.7; +1.6] (  47913)   -0.72 [ -1.2; -0.2] (  46330)   +0.40 [ -0.1; +0.8] (  46934)   +0.43 [ -0.0; +0.9] (  46973) 
+    Chance < 20 %, 10-29 Spiele       +1.31 [ +1.0; +1.6] ( 131167)   +0.05 [ -0.2; +0.3] ( 126902)   -0.28 [ -0.6; -0.0] ( 129086)   -0.38 [ -0.6; -0.1] ( 125145)   -0.30 [ -0.5; -0.1] ( 125504) 
+    Chance < 20 %, 30-79 Spiele       +0.52 [ +0.4; +0.7] ( 489151)   -0.57 [ -0.7; -0.4] ( 474655)   -0.07 [ -0.2; +0.1] ( 487402)   -0.35 [ -0.5; -0.2] ( 477588)   -0.40 [ -0.5; -0.2] ( 476624) 
+    Chance < 20 %, ab 80 Spiele       +0.26 [ +0.1; +0.4] ( 621483)   -0.54 [ -0.7; -0.4] ( 608387)   +0.03 [ -0.1; +0.2] ( 620669)   -0.24 [ -0.4; -0.1] ( 613734)   -0.43 [ -0.6; -0.3] ( 610457) 
+    Chance < 5 %, alle                +0.47 [ +0.4; +0.5] ( 999465)   -0.10 [ -0.2; -0.0] ( 926705)   -0.02 [ -0.1; +0.0] ( 947364)   -0.02 [ -0.1; +0.0] ( 937749)   -0.07 [ -0.1; -0.0] ( 930015) 
+    Chance < 5 %, Rolle Starter       +0.10 [ -0.0; +0.3] ( 150033)   +0.10 [ -0.0; +0.3] ( 150033)   +0.10 [ -0.0; +0.3] ( 150033)   +0.10 [ -0.0; +0.3] ( 150033)   +0.10 [ -0.0; +0.3] ( 150033) 
+    Chance < 5 %, Rolle Rotation      +0.26 [ +0.2; +0.4] ( 311113)   -0.26 [ -0.3; -0.2] ( 289014)   -0.07 [ -0.2; +0.0] ( 298770)   -0.33 [ -0.4; -0.2] ( 284849)   -0.27 [ -0.4; -0.2] ( 288632) 
+    Chance < 5 %, Rolle uebrige       +0.68 [ +0.6; +0.8] ( 538319)   -0.06 [ -0.1; +0.0] ( 487658)   -0.04 [ -0.1; +0.0] ( 498561)   +0.12 [ +0.0; +0.2] ( 502867)   -0.02 [ -0.1; +0.1] ( 491350) 
+    Chance < 5 %, 1-9 Spiele          +2.29 [ +1.9; +2.7] (  45139)   +1.10 [ +0.7; +1.4] (  40930)   +0.33 [ -0.0; +0.7] (  33721)   +0.62 [ +0.3; +0.9] (  38800)   +0.64 [ +0.3; +0.9] (  38878) 
+    Chance < 5 %, 10-29 Spiele        +0.98 [ +0.8; +1.2] ( 112762)   +0.20 [ +0.0; +0.3] ( 103126)   -0.19 [ -0.3; -0.0] (  99294)   +0.02 [ -0.1; +0.2] (  99515)   +0.02 [ -0.1; +0.2] ( 100267) 
+    Chance < 5 %, 30-79 Spiele        +0.42 [ +0.3; +0.5] ( 386735)   -0.15 [ -0.2; -0.1] ( 356141)   -0.06 [ -0.1; +0.0] ( 368175)   -0.03 [ -0.1; +0.1] ( 361801)   -0.06 [ -0.1; +0.0] ( 360183) 
+    Chance < 5 %, ab 80 Spiele        +0.20 [ +0.1; +0.3] ( 454829)   -0.23 [ -0.3; -0.2] ( 426508)   +0.01 [ -0.1; +0.1] ( 446174)   -0.08 [ -0.1; -0.0] ( 437633)   -0.18 [ -0.2; -0.1] ( 430687) 
+    Chance >= 80 %, alle              -2.50 [ -2.8; -2.2] ( 162769)   -1.87 [ -2.2; -1.6] ( 154351)   -2.20 [ -2.5; -1.9] ( 158848)   -1.82 [ -2.1; -1.5] ( 153787)   -1.87 [ -2.2; -1.6] ( 154489) 
+    Chance >= 80 %, Rolle Starter     -2.14 [ -2.5; -1.8] ( 133404)   -2.14 [ -2.5; -1.8] ( 133404)   -2.14 [ -2.5; -1.8] ( 133404)   -2.14 [ -2.5; -1.8] ( 133404)   -2.14 [ -2.5; -1.8] ( 133404) 
+    Chance >= 80 %, Rolle Rotation    -3.97 [ -4.7; -3.3] (  27893)   -0.18 [ -0.9; +0.5] (  20666)   -2.50 [ -3.2; -1.9] (  24706)   +0.33 [ -0.4; +1.1] (  19709)   -0.18 [ -0.9; +0.5] (  20664) 
+    Chance >= 80 %, Rolle uebrige     -7.67 [-10.3; -4.8] (   1472)   +0.86 [ -4.4; +5.6] (    281)   -2.52 [ -5.4; +0.9] (    738)   -0.98 [ -4.5; +2.4] (    674)   +1.06 [ -3.0; +4.7] (    421) 
+    Chance >= 80 %, 1-9 Spiele       -20.03 [-27.1;-14.5] (    911)  -16.78 [-25.0;-10.4] (    708)  -15.58 [-27.8; -6.0] (    369)  -12.72 [-22.5; -4.4] (    511)  -12.93 [-22.8; -4.6] (    520) 
+    Chance >= 80 %, 10-29 Spiele      -4.49 [ -7.2; -2.3] (   2749)   -2.34 [ -5.5; -0.1] (   2368)   -1.83 [ -5.1; +0.5] (   2162)   -0.83 [ -4.4; +1.8] (   1848)   -1.44 [ -4.6; +0.8] (   2123) 
+    Chance >= 80 %, 30-79 Spiele      -2.84 [ -3.5; -2.1] (  41931)   -2.02 [ -2.6; -1.3] (  39264)   -2.43 [ -3.1; -1.7] (  40452)   -1.87 [ -2.5; -1.1] (  38474)   -2.05 [ -2.7; -1.3] (  39366) 
+    Chance >= 80 %, ab 80 Spiele      -2.20 [ -2.6; -1.9] ( 117178)   -1.72 [ -2.1; -1.4] ( 112011)   -2.08 [ -2.4; -1.7] ( 115865)   -1.77 [ -2.1; -1.4] ( 112954)   -1.76 [ -2.1; -1.4] ( 112480) 
+    Chance >= 90 %, alle              -2.40 [ -2.7; -2.2] ( 104505)   -2.09 [ -2.4; -1.8] (  98951)   -2.21 [ -2.6; -2.0] ( 102403)   -2.07 [ -2.4; -1.8] (  98668)   -2.09 [ -2.4; -1.8] (  99018) 
+    Chance >= 90 %, Rolle Starter     -2.16 [ -2.5; -1.9] (  93643)   -2.16 [ -2.5; -1.9] (  93643)   -2.16 [ -2.5; -1.9] (  93643)   -2.16 [ -2.5; -1.9] (  93643)   -2.16 [ -2.5; -1.9] (  93643) 
+    Chance >= 90 %, Rolle Rotation    -4.38 [ -5.2; -3.5] (  10632)   -0.97 [ -1.9; +0.1] (   5303)   -2.72 [ -3.5; -1.8] (   8684)   -0.48 [ -1.5; +0.5] (   4991)   -0.84 [ -1.8; +0.2] (   5369) 
+    Chance >= 90 %, Rolle uebrige    -11.69 [-18.0; -5.7] (    230)   +7.34 [ +0.0; +9.7] (      5)*  -5.03 [-13.4; +2.9] (     76)*  -6.13 [-20.0; +3.7] (     34)*  +8.58 [ +7.5; +9.6] (      6)*
+    Chance >= 90 %, 1-9 Spiele       -21.72 [-29.7;-15.2] (    546)  -16.55 [-26.3; -7.7] (    383)  -22.96 [-37.7; -9.9] (    216)  -20.11 [-33.6; -8.3] (    249)  -20.39 [-33.7; -8.7] (    254) 
+    Chance >= 90 %, 10-29 Spiele      -4.03 [ -7.2; -1.6] (   1492)   -3.37 [ -6.9; -0.6] (   1239)   -3.07 [ -6.9; -0.2] (   1149)   -3.16 [ -7.3; -0.0] (   1054)   -2.92 [ -6.6; -0.0] (   1119) 
+    Chance >= 90 %, 30-79 Spiele      -2.66 [ -3.2; -2.0] (  26503)   -2.24 [ -2.8; -1.6] (  24715)   -2.38 [ -3.0; -1.7] (  25757)   -2.19 [ -2.8; -1.6] (  24298)   -2.23 [ -2.8; -1.6] (  24798) 
+    Chance >= 90 %, ab 80 Spiele      -2.15 [ -2.5; -1.8] (  75964)   -1.94 [ -2.3; -1.6] (  72614)   -2.07 [ -2.4; -1.8] (  75281)   -1.96 [ -2.3; -1.6] (  73067)   -1.96 [ -2.3; -1.6] (  72847) 
+
+  4b Streuung: Verhaeltnis echte SD (Ist - Prognose-Mittel) / Modell-SD der jeweiligen Variante [95 %]; 1 = passend (< 1: Modell zu breit, > 1: zu schmal). Modell-Streuung = Wurzel aus Ø(Varianz der Punktewerte + Kernbreite h^2).
+    Gruppe                              Zeilen                      A roh         W1 Faktor je Rolle     W2 Mittelwert-Unsich.      W3 Faktor je Spielzahl       W4 Rolle + Spielzahl
+    alle                                 52015        1.057 [1.049;1.066]        0.937 [0.930;0.945]        0.977 [0.969;0.986]        0.952 [0.945;0.961]        0.942 [0.935;0.950]
+    Rolle Starter                        16081        1.011 [1.000;1.024]        1.011 [1.000;1.024]        1.011 [1.000;1.024]        1.011 [1.000;1.024]        1.011 [1.000;1.024]
+    Rolle Rotation                       15994        1.054 [1.040;1.066]        0.925 [0.913;0.936]        0.985 [0.972;0.996]        0.902 [0.890;0.912]        0.923 [0.911;0.933]
+    Rolle uebrige                        19940        1.154 [1.135;1.173]        0.847 [0.832;0.861]        0.915 [0.899;0.932]        0.921 [0.905;0.936]        0.864 [0.849;0.878]
+    1-9 Spiele                            1549        1.527 [1.435;1.611]        1.058 [0.997;1.116]        0.641 [0.601;0.682]        0.906 [0.855;0.954]        0.912 [0.861;0.960]
+    10-29 Spiele                          4247        1.190 [1.154;1.225]        0.913 [0.885;0.940]        0.863 [0.835;0.889]        0.828 [0.803;0.854]        0.850 [0.824;0.876]
+    30-79 Spiele                         18463        1.063 [1.049;1.078]        0.912 [0.900;0.924]        0.986 [0.973;0.999]        0.933 [0.921;0.946]        0.928 [0.916;0.941]
+    ab 80 Spiele                         27756        1.032 [1.022;1.044]        0.950 [0.941;0.961]        1.012 [1.002;1.024]        0.981 [0.972;0.992]        0.962 [0.953;0.973]
+    Rotation / 1-9 Spiele                  265        1.356 [1.231;1.498]        1.130 [1.022;1.239]        0.659 [0.588;0.729]        0.836 [0.755;0.910]        0.856 [0.773;0.930]
+    Rotation / 10-29 Spiele                835        1.085 [1.027;1.143]        0.949 [0.900;0.999]        0.890 [0.841;0.936]        0.763 [0.723;0.802]        0.863 [0.819;0.907]
+    Rotation / 30-79 Spiele               5429        1.056 [1.029;1.077]        0.928 [0.905;0.947]        0.988 [0.962;1.007]        0.879 [0.856;0.896]        0.928 [0.904;0.946]
+    Rotation / ab 80 Spiele               9465        1.044 [1.028;1.061]        0.917 [0.903;0.932]        1.011 [0.996;1.028]        0.935 [0.921;0.950]        0.927 [0.913;0.943]
+    uebrige / 1-9 Spiele                  1193        1.627 [1.500;1.750]        1.002 [0.924;1.074]        0.597 [0.544;0.642]        0.888 [0.820;0.952]        0.888 [0.820;0.952]
+    uebrige / 10-29 Spiele                3198        1.253 [1.206;1.296]        0.871 [0.839;0.900]        0.821 [0.790;0.850]        0.824 [0.793;0.852]        0.812 [0.782;0.839]
+    uebrige / 30-79 Spiele                9215        1.122 [1.098;1.149]        0.826 [0.808;0.845]        0.958 [0.937;0.981]        0.917 [0.896;0.938]        0.862 [0.842;0.882]
+    uebrige / ab 80 Spiele                6334        1.111 [1.082;1.139]        0.842 [0.820;0.863]        1.030 [1.003;1.057]        0.984 [0.959;1.009]        0.885 [0.862;0.908]
+
+  4c Brier und Log-Loss (Kreuz-Anpassung, ganze Daten)
+    A roh                            Brier 0.07940  Log-Loss 0.26046
+    W1 Faktor je Rolle               Brier 0.07924  Log-Loss 0.25472
+    W2 Mittelwert-Unsich. je Rolle   Brier 0.07934  Log-Loss 0.25536
+    W3 Faktor je Spielzahl           Brier 0.07924  Log-Loss 0.25476
+    W4 Rolle + Spielzahl             Brier 0.07925  Log-Loss 0.25462
+
+5 EMPFEHLUNG (aus den Zahlen oben; Produktivmodell bleibt unveraendert; 'player-2' waere eine eigene Version neben roh)
+  Rangfolge nach Log-Loss (kleiner = besser): W4 Rolle + Spielzahl 0.25462, W1 Faktor je Rolle 0.25472, W3 Faktor je Spielzahl 0.25476, W2 Mittelwert-Unsich. je Rolle 0.25536, A roh 0.26046
+  Keine Variante erfuellt die Regel (weder R1 noch R2). => Empfehlung: keine, roh (A) bleibt.
+  Bestes Ergebnis: W4 Rolle + Spielzahl (Auswahl: zuerst Zahl der Pruefhaelften, auf denen die lockere Regel R1 erfuellt ist, dann Log-Loss; R1 erfuellt auf W1 Faktor je Rolle 1 von 2, W2 Mittelwert-Unsich. je Rolle 0 von 2, W3 Faktor je Spielzahl 1 von 2, W4 Rolle + Spielzahl 1 von 2; Log-Loss 0.25462 gegen A 0.26046). Verstoesse von W4 Rolle + Spielzahl:
+    - Haelfte 2: 2c Bisherige Spiele: 10-29 Spiele: Stufe(n) > 6 PP: 60-65% (239 Z., +8.9), 70-75% (109 Z., +6.5)
+    - Haelfte 1: 2a Meilenstein-Hoehe: ueber dem Schnitt verschlechtert (0.52 -> 1.28)
+    - Haelfte 1: 2b Rolle: Rotation verschlechtert (0.86 -> 1.17)
+    - Haelfte 1: 2b Rolle: uebrige verschlechtert (0.75 -> 1.59)
+    - Haelfte 1: 2c Bisherige Spiele: 10-29 Spiele verschlechtert (1.08 -> 1.34)
+    - Haelfte 1: 2c Bisherige Spiele: 30-79 Spiele verschlechtert (0.76 -> 1.53)
+    - Haelfte 1: 2c Bisherige Spiele: ab 80 Spiele verschlechtert (0.60 -> 0.96)
+    - Haelfte 1: Gesamt nicht verbessert (0.72 -> 1.24)
+    - Haelfte 1: 2a Meilenstein-Hoehe: unter dem Spielerschnitt: Stufe(n) > 6 PP: 45-50% (298 Z., +8.2), 50-55% (777 Z., +6.0), 55-60% (1695 Z., +7.5)
+    - Haelfte 1: 2a Meilenstein-Hoehe: um den Schnitt (+-3): Stufe(n) > 6 PP: 80-85% (867 Z., -8.7), 85-90% (268 Z., -8.6)
+    - Haelfte 1: 2a Meilenstein-Hoehe: ueber dem Schnitt: Stufe(n) > 6 PP: 35-40% (6530 Z., -6.6), 40-45% (2854 Z., -8.5), 45-50% (1121 Z., -10.6), 50-55% (415 Z., -9.4), 55-60% (141 Z., -11.6)
+    - Haelfte 1: 2c Bisherige Spiele: 1-9 Spiele: Stufe(n) > 6 PP: 25-30% (915 Z., -6.6), 30-35% (774 Z., -7.3), 35-40% (672 Z., -6.3), 45-50% (476 Z., -8.8), 95-100% (127 Z., -22.0)
+
+5b ZUSATZPRUEFUNG: SAISONWEISE GETEILT (Parameter auf einer ganzen Saison gewaehlt, auf der anderen Saison geprueft; reine Zeit-Trennung statt Saisonhaelften)
+  Parameter (gelernt auf 2024-25 / gelernt auf 2025-26): W1 Faktor je Rolle: Rotation 2.25, uebrige 3.25 / Rotation 2, uebrige 3; W2 Mittelwert-Unsich. je Rolle: Rotation 1.5, uebrige 2.5 / Rotation 1, uebrige 2; W3 Faktor je Spielzahl: 1-9 Spiele 4, 10-29 Spiele 3.75, 30-79 Spiele 2.75, ab 80 Spiele 2.25 / 1-9 Spiele 4, 10-29 Spiele 3.25, 30-79 Spiele 2.5, ab 80 Spiele 2; W4 Rolle + Spielzahl: Rotation 2.25, uebrige 3.25, Versch. +1.75/+0.50/-0.25/+0.00 / Rotation 2, uebrige 2.75, Versch. +1.25/+0.75/+0.00/+0.00
+  Pruefsaison 2025-26 (gelernt 2024-25); 944352 Paare. A roh: Ø-Abw. Gesamt 0.66; unter dem Sp 2.15; um den Schni 1.66; ueber dem Sc 0.51; Starter 0.99; Rotation 0.71; uebrige 0.95; 1-9 Spiele 3.16; 10-29 Spiele 1.57; 30-79 Spiele 0.67; ab 80 Spiele 0.46 | Stufen > 6 PP in Gruppen: 14
+    W1 Faktor je Rolle               Ø-Abw. Gesamt 0.72; unter dem Sp 1.69; um den Schni 0.53; ueber dem Sc 0.73!; Starter 0.99; Rotation 0.65; uebrige 0.80; 1-9 Spiele 1.81; 10-29 Spiele 0.30; 30-79 Spiele 0.81!; ab 80 Spiele 0.89! | Stufen > 6 PP: Gesamt 0, Gruppen 9 => R1 verfehlt
+    W2 Mittelwert-Unsich. je Rolle   Ø-Abw. Gesamt 0.53; unter dem Sp 1.98; um den Schni 1.75!; ueber dem Sc 0.39; Starter 0.99; Rotation 0.64; uebrige 0.57; 1-9 Spiele 2.08; 10-29 Spiele 0.91; 30-79 Spiele 0.47; ab 80 Spiele 0.56! | Stufen > 6 PP: Gesamt 0, Gruppen 7 => R1 verfehlt
+    W3 Faktor je Spielzahl           Ø-Abw. Gesamt 0.65; unter dem Sp 1.61; um den Schni 0.49; ueber dem Sc 0.67!; Starter 0.99; Rotation 1.02!; uebrige 0.39; 1-9 Spiele 1.42; 10-29 Spiele 0.79; 30-79 Spiele 0.74!; ab 80 Spiele 0.67! | Stufen > 6 PP: Gesamt 0, Gruppen 5 => R1 verfehlt
+    W4 Rolle + Spielzahl             Ø-Abw. Gesamt 0.72; unter dem Sp 1.69; um den Schni 0.52; ueber dem Sc 0.73!; Starter 0.99; Rotation 0.64; uebrige 0.81; 1-9 Spiele 1.42; 10-29 Spiele 0.51; 30-79 Spiele 0.65; ab 80 Spiele 0.89! | Stufen > 6 PP: Gesamt 0, Gruppen 4 => R1 verfehlt
+  Pruefsaison 2024-25 (gelernt 2025-26); 928188 Paare. A roh: Ø-Abw. Gesamt 0.89; unter dem Sp 2.22; um den Schni 2.22; ueber dem Sc 0.63; Starter 0.82; Rotation 0.89; uebrige 1.22; 1-9 Spiele 2.90; 10-29 Spiele 1.38; 30-79 Spiele 0.92; ab 80 Spiele 0.73 | Stufen > 6 PP in Gruppen: 22
+    W1 Faktor je Rolle               Ø-Abw. Gesamt 0.38; unter dem Sp 1.94; um den Schni 0.94; ueber dem Sc 0.32; Starter 0.82; Rotation 0.37; uebrige 0.43; 1-9 Spiele 1.63; 10-29 Spiele 0.49; 30-79 Spiele 0.67; ab 80 Spiele 0.44 | Stufen > 6 PP: Gesamt 0, Gruppen 5 => R1 erfuellt
+    W2 Mittelwert-Unsich. je Rolle   Ø-Abw. Gesamt 0.54; unter dem Sp 2.11; um den Schni 2.12; ueber dem Sc 0.21; Starter 0.82; Rotation 0.66; uebrige 0.52; 1-9 Spiele 1.20; 10-29 Spiele 0.42; 30-79 Spiele 0.57; ab 80 Spiele 0.65 | Stufen > 6 PP: Gesamt 0, Gruppen 6 => R1 erfuellt
+    W3 Faktor je Spielzahl           Ø-Abw. Gesamt 0.34; unter dem Sp 1.86; um den Schni 1.02; ueber dem Sc 0.29; Starter 0.82; Rotation 0.52; uebrige 0.28; 1-9 Spiele 1.15; 10-29 Spiele 0.67; 30-79 Spiele 0.54; ab 80 Spiele 0.39 | Stufen > 6 PP: Gesamt 0, Gruppen 9 => R1 erfuellt
+    W4 Rolle + Spielzahl             Ø-Abw. Gesamt 0.37; unter dem Sp 1.92; um den Schni 0.95; ueber dem Sc 0.30; Starter 0.82; Rotation 0.38; uebrige 0.40; 1-9 Spiele 1.12; 10-29 Spiele 0.66; 30-79 Spiele 0.56; ab 80 Spiele 0.42 | Stufen > 6 PP: Gesamt 0, Gruppen 5 => R1 erfuellt
+  Ergebnis saisonweise (R1): W1 Faktor je Rolle zaehlt nicht (nein/ja); W2 Mittelwert-Unsich. je Rolle zaehlt nicht (nein/ja); W3 Faktor je Spielzahl zaehlt nicht (nein/ja); W4 Rolle + Spielzahl zaehlt nicht (nein/ja)
+
+6 EHRLICHE ZAHLEN
+  2 Saisons, 327 Spieltage, 2460 Spiele, 52015 Spielerzeilen, 1872540 Paare. Zeilen je Gruppe und Stufe stehen in den Tabellen 2 und 4; Gruppen/Stufen unter 100 Zeilen sind markiert, Stufen ab 90 % mit < 100 Zeilen als 'x'.
+  Paare einer Spielerzeile sind stark abhaengig; Intervalle nach Spielen. Konstanten des Produktivmodells (Blowout-Kurve, league_ppm aus 2025-26) sind fuer 2025-26 teils in-sample. Overtime wird nicht modelliert; Ausfaelle unbekannt (A = 'wenn er spielt').
+  Die Gruppen der Regel (Meilenstein-Hoehe, Rolle, Spielzahl) und die Parameter wurden an denselben zwei Saisons gesucht (nur mit Kreuz-Anpassung zwischen den Hälften, nicht ueber Saisons hinweg); eine echte Neu-Saison steht aus.

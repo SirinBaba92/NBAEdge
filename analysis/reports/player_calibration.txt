@@ -1,0 +1,268 @@
+KALIBRIERUNG UND STREUUNG DER SPIELER-PUNKTE-CHANCEN (Meilensteine P(Punkte >= k)), roh (A), walk-forward, echte Boxscores, ohne Quoten
+Skripte analysis/backtest_player_calibration.py (Replay + Varianten) und analysis/backtest_player_calibration_report.py (Auswertung); beide lesen nur. Produktivmodell unveraendert.
+
+WIEDERVERWENDET: Adapter und Replay aus analysis/backtest_player_markets.py (setup, prepare_games; Spread/Total vor dem Spiel aus dem kausalen Team-Replay) mit analysis/bt_player_adapter.py (Verlauf je Spieler nur vor Spieltag D,
+  laufende Saison + Vorsaison, Assertion auf Datum < D), player_games_2023-24/2024-25/2025-26 und die Produktivfunktion engine/player_forecast.forecast_player als Basis A. Die Chancen: gewichtete empirische Verteilung der Punkte pro
+  Minute x 9 Minutenquantile, je Punktewert x ein Normalkern der Breite h = 1 + 0,05 x, P(Punkte >= N) = Summe w (1 - Phi((N - 0,5 - x) / h)). Die Bausteine werden nachgerechnet und je Zeile gegen forecast_player geprueft
+  (groesste Abweichung der Chancen und der erwarteten Punkte: 3.3e-16).
+
+ZAHLEN: 2 Saisons (2024-25, 2025-26), 327 Spieltage, 2460 Spiele, 52015 Spielerzeilen (Prognose vorhanden UND Minuten > 0, alle Teamspiele inkl. Saisonanfang), 1872540 Paare Spieler x Meilenstein (k = 5..40).
+  'Zeilen' in den Tabellen = Paare. Stufen ab 90 % mit unter 100 Zeilen sind als nicht aussagekraeftig gekennzeichnet. Hälften = erste/zweite Saisonhälfte (nach Datum) beider Saisons, jeweils gepoolt.
+  'Spielerschnitt' = Saisonschnitt der Punkte vor dem Spiel (mind. 5 Spiele, sonst Verlauf beider Saisons, sonst erwartete Punkte der Prognose).
+
+1 KALIBRIERUNG (Variante A roh)
+  gesamt (alle Meilensteine 5..40)
+    Stufe         Zeilen  Ø Modell Trefferq.           Diff PP [95 %]
+      0-  5 %     999465      0.8%      1.2%    +0.47 [+0.40; +0.53]
+      5- 10 %     136342      7.3%      8.0%    +0.74 [+0.51; +0.99]
+     10- 15 %      88379     12.4%     13.3%    +0.90 [+0.60; +1.22]
+     15- 20 %      67166     17.4%     18.4%    +1.04 [+0.67; +1.42]
+     20- 25 %      55140     22.4%     23.7%    +1.24 [+0.82; +1.68]
+     25- 30 %      47289     27.4%     28.2%    +0.80 [+0.35; +1.24]
+     30- 35 %      41771     32.5%     33.2%    +0.77 [+0.31; +1.27]
+     35- 40 %      37688     37.5%     37.8%    +0.34 [-0.15; +0.78]
+     40- 45 %      34815     42.4%     42.7%    +0.29 [-0.22; +0.80]
+     45- 50 %      32343     47.5%     47.4%    -0.05 [-0.55; +0.51]
+     50- 55 %      30466     52.5%     52.2%    -0.27 [-0.82; +0.34]
+     55- 60 %      29077     57.5%     56.8%    -0.69 [-1.22; -0.07]
+     60- 65 %      27944     62.5%     61.6%    -0.86 [-1.48; -0.33]
+     65- 70 %      27338     67.5%     66.7%    -0.82 [-1.39; -0.25]
+     70- 75 %      27173     72.5%     70.9%    -1.58 [-2.17; -0.98]
+     75- 80 %      27375     77.5%     75.6%    -1.91 [-2.49; -1.29]
+     80- 85 %      28145     82.5%     79.9%    -2.66 [-3.14; -2.11]
+     85- 90 %      30119     87.5%     84.8%    -2.70 [-3.15; -2.24]
+     90- 95 %      34562     92.6%     89.7%    -2.90 [-3.33; -2.49]
+     95-100 %      69943     98.4%     96.2%    -2.16 [-2.48; -1.91]
+    Ø-Abweichung (zeilengewichtet) 0.78 PP; Stufen mit >= 100 Zeilen ueber 6 PP daneben: keine
+
+  unter dem Spielerschnitt (k < Schnitt - 3)
+    Stufe         Zeilen  Ø Modell Trefferq.           Diff PP [95 %]
+     25- 30 %          4     28.3%    100.0%   +71.71 [+nan; +nan]   (< 100 Zeilen)
+     30- 35 %         21     33.1%     42.9%    +9.78 [-9.93; +28.93]   (< 100 Zeilen)
+     35- 40 %         58     37.7%     44.8%    +7.09 [-6.46; +21.10]   (< 100 Zeilen)
+     40- 45 %        142     43.0%     44.4%    +1.36 [-6.17; +9.65]
+     45- 50 %        359     47.9%     56.0%    +8.08 [+3.69; +12.86]
+     50- 55 %       1013     52.9%     57.7%    +4.78 [+1.94; +7.86]
+     55- 60 %       2504     57.9%     64.4%    +6.50 [+4.57; +8.36]
+     60- 65 %       5432     62.8%     66.0%    +3.14 [+1.80; +4.51]
+     65- 70 %       9790     67.7%     69.5%    +1.73 [+0.79; +2.66]
+     70- 75 %      15489     72.7%     72.8%    +0.15 [-0.58; +0.91]
+     75- 80 %      20908     77.6%     76.5%    -1.15 [-1.79; -0.52]
+     80- 85 %      25191     82.6%     80.2%    -2.32 [-2.81; -1.71]
+     85- 90 %      29113     87.6%     85.0%    -2.53 [-3.00; -2.07]
+     90- 95 %      34329     92.6%     89.7%    -2.86 [-3.28; -2.46]
+     95-100 %      69932     98.4%     96.2%    -2.16 [-2.49; -1.90]
+    Ø-Abweichung (zeilengewichtet) 2.18 PP; Stufen mit >= 100 Zeilen ueber 6 PP daneben:  45- 50 % (359 Z., +8.1),  55- 60 % (2504 Z., +6.5)
+
+  um den Schnitt (|k - Schnitt| <= 3)
+    Stufe         Zeilen  Ø Modell Trefferq.           Diff PP [95 %]
+      0-  5 %         61      2.9%     23.0%   +20.04 [+9.22; +33.06]   (< 100 Zeilen)
+      5- 10 %        214      8.2%     24.3%   +16.09 [+10.66; +22.17]
+     10- 15 %       1059     13.0%     22.6%    +9.58 [+6.90; +12.06]
+     15- 20 %       3111     17.9%     25.5%    +7.61 [+5.83; +9.07]
+     20- 25 %       7817     22.8%     28.9%    +6.03 [+5.06; +7.03]
+     25- 30 %      14806     27.7%     31.3%    +3.60 [+2.90; +4.37]
+     30- 35 %      21821     32.6%     35.3%    +2.70 [+2.00; +3.45]
+     35- 40 %      27083     37.6%     38.9%    +1.32 [+0.77; +1.84]
+     40- 45 %      29672     42.5%     43.4%    +0.95 [+0.43; +1.51]
+     45- 50 %      29940     47.5%     47.7%    +0.24 [-0.27; +0.80]
+     50- 55 %      28691     52.5%     52.1%    -0.35 [-0.89; +0.25]
+     55- 60 %      26267     57.5%     56.2%    -1.27 [-1.86; -0.62]
+     60- 65 %      22411     62.4%     60.6%    -1.80 [-2.45; -1.15]
+     65- 70 %      17509     67.4%     65.2%    -2.18 [-2.91; -1.49]
+     70- 75 %      11682     72.3%     68.4%    -3.87 [-4.85; -3.02]
+     75- 80 %       6467     77.2%     72.8%    -4.36 [-5.46; -3.23]
+     80- 85 %       2954     82.1%     76.6%    -5.48 [-7.07; -3.93]
+     85- 90 %       1006     87.1%     79.2%    -7.84 [-10.72; -5.32]
+     90- 95 %        233     91.8%     82.8%    -8.94 [-14.47; -3.86]
+     95-100 %         11     96.0%     81.8%   -14.14 [-41.70; +4.33]   (ab 90 % mit < 100 Zeilen: nicht aussagekraeftig)
+    Ø-Abweichung (zeilengewichtet) 1.94 PP; Stufen mit >= 100 Zeilen ueber 6 PP daneben:   5- 10 % (214 Z., +16.1),  10- 15 % (1059 Z., +9.6),  15- 20 % (3111 Z., +7.6),  20- 25 % (7817 Z., +6.0),  85- 90 % (1006 Z., -7.8),  90- 95 % (233 Z., -8.9)
+
+  ueber dem Schnitt (k > Schnitt + 3)
+    Stufe         Zeilen  Ø Modell Trefferq.           Diff PP [95 %]
+      0-  5 %     999404      0.8%      1.2%    +0.46 [+0.40; +0.53]
+      5- 10 %     136128      7.3%      8.0%    +0.72 [+0.49; +0.96]
+     10- 15 %      87320     12.4%     13.2%    +0.80 [+0.49; +1.12]
+     15- 20 %      64055     17.4%     18.1%    +0.72 [+0.37; +1.10]
+     20- 25 %      47323     22.4%     22.8%    +0.45 [-0.01; +0.92]
+     25- 30 %      32479     27.3%     26.8%    -0.48 [-1.06; +0.07]
+     30- 35 %      19929     32.3%     30.9%    -1.35 [-2.00; -0.69]
+     35- 40 %      10547     37.2%     35.0%    -2.22 [-3.17; -1.30]
+     40- 45 %       5001     42.1%     38.5%    -3.63 [-4.90; -2.35]
+     45- 50 %       2044     47.1%     41.4%    -5.64 [-7.74; -3.22]
+     50- 55 %        762     52.1%     47.8%    -4.28 [-7.76; -0.68]
+     55- 60 %        306     57.1%     48.0%    -9.04 [-14.48; -3.17]
+     60- 65 %        101     62.1%     54.5%    -7.63 [-17.71; +3.46]
+     65- 70 %         39     67.0%     41.0%   -25.97 [-42.50; -7.12]   (< 100 Zeilen)
+     70- 75 %          2     72.1%     50.0%   -22.11 [+nan; +nan]   (< 100 Zeilen)
+    Ø-Abweichung (zeilengewichtet) 0.57 PP; Stufen mit >= 100 Zeilen ueber 6 PP daneben:  55- 60 % (306 Z., -9.0),  60- 65 % (101 Z., -7.6)
+
+  Rekalibrierung: logit(Trefferchance) = a + b * logit(Modell-Chance). Ideal a = 0, b = 1 (b < 1: Modell zu selbstsicher; b > 1: zu vorsichtig). Intervall 95 %, Bootstrap nach Spielen.
+    Menge                                               Zeilen        a (Achsenabschnitt)             b (Steigung)
+    ganze Daten                                        1872540   -0.073 [-0.092; -0.055]    0.835 [0.822; 0.848]
+    Saison 2024-25                                      928188   -0.069 [-0.094; -0.043]    0.825 [0.805; 0.844]
+    Saison 2025-26                                      944352   -0.078 [-0.103; -0.052]    0.845 [0.825; 0.865]
+    unter dem Spielerschnitt (k < Schnitt - 3)          214285   +0.425 [+0.374; +0.479]    0.636 [0.603; 0.666]
+    um den Schnitt (|k - Schnitt| <= 3)                 252815   -0.001 [-0.017; +0.017]    0.798 [0.777; 0.820]
+    ueber dem Schnitt (k > Schnitt + 3)                1405440   -0.607 [-0.658; -0.552]    0.636 [0.610; 0.664]
+
+2 ZERLEGUNG DER RAENDER (A): Modell-Chance >= 80 % bzw. < 20 %. Diff = Trefferquote minus Ø-Modell-Chance in PP (negativ = Modell zu hoch). Intervall 95 %, Bootstrap nach Spielen.
+  Modell-Chance >= 80 %
+    Gruppe                                  Zeilen  Ø Modell Trefferq.           Diff PP [95 %]
+    alle                                    162769     92.4%     89.9%    -2.50 [-2.82; -2.20]
+    -- Rolle
+    Starter                                 133404     93.3%     91.2%    -2.14 [-2.52; -1.81]
+    Rotation                                 27893     88.4%     84.4%    -3.97 [-4.68; -3.28]
+    uebrige                                   1472     85.5%     77.9%    -7.67 [-10.26; -4.79]
+    -- Minutenklasse (erwartete Minuten)
+    unter 15 Min.                               58     84.0%     75.9%    -8.13 [-22.65; +3.53]   (< 100 Zeilen)
+    15-25 Min.                               11051     86.8%     81.6%    -5.21 [-6.28; -4.17]
+    25-32 Min.                               58068     91.0%     88.0%    -3.02 [-3.48; -2.56]
+    ab 32 Min.                               93592     93.9%     92.0%    -1.86 [-2.30; -1.43]
+    -- Meilenstein-Hoehe
+    k 5-10                                  110439     93.4%     90.9%    -2.48 [-2.82; -2.21]
+    k 11-15                                  37387     91.2%     88.9%    -2.31 [-2.82; -1.76]
+    k 16-20                                  12558     88.3%     85.3%    -3.02 [-4.02; -1.82]
+    k 21-25                                   2259     86.4%     83.1%    -3.28 [-5.92; -0.50]
+    k 26-30                                    125     82.7%     68.8%   -13.94 [-25.80; -3.42]
+    k 31-40                                      1     82.6%      0.0%   -82.59 [-82.59; +0.00]   (< 100 Zeilen)
+    -- Saisonphase
+    erste 15 Teamspiele                      31725     92.5%     89.0%    -3.59 [-4.32; -2.91]
+    ab dem 16. Teamspiel                    131044     92.4%     90.1%    -2.24 [-2.61; -1.91]
+    -- Verlaengerung
+    mit Verlaengerung                         7627     92.4%     93.3%    +0.86 [-0.28; +1.87]
+    ohne Verlaengerung                      155142     92.4%     89.7%    -2.67 [-3.00; -2.34]
+    -- Endstand
+    Blowout (Differenz >= 20)                34986     92.3%     87.0%    -5.32 [-5.99; -4.56]
+    knapp (Differenz < 20)                  127783     92.4%     90.7%    -1.73 [-2.11; -1.39]
+
+  Modell-Chance < 20 %
+    Gruppe                                  Zeilen  Ø Modell Trefferq.           Diff PP [95 %]
+    alle                                   1291352      3.1%      3.7%    +0.55 [+0.46; +0.66]
+    -- Rolle
+    Starter                                 255572      5.5%      5.2%    -0.30 [-0.50; -0.06]
+    Rotation                                405648      3.2%      3.7%    +0.45 [+0.28; +0.60]
+    uebrige                                 630132      2.0%      3.0%    +0.97 [+0.82; +1.11]
+    -- Minutenklasse (erwartete Minuten)
+    unter 15 Min.                           368414      1.7%      3.0%    +1.25 [+1.07; +1.43]
+    15-25 Min.                              512670      2.8%      3.3%    +0.55 [+0.41; +0.68]
+    25-32 Min.                              293531      4.0%      4.1%    +0.10 [-0.10; +0.31]
+    ab 32 Min.                              116737      6.7%      6.2%    -0.47 [-0.77; -0.15]
+    -- Meilenstein-Hoehe
+    k 5-10                                   46096      9.6%     15.4%    +5.74 [+5.03; +6.40]
+    k 11-15                                 113067      7.5%     10.3%    +2.74 [+2.39; +3.14]
+    k 16-20                                 175080      5.2%      6.4%    +1.16 [+0.93; +1.41]
+    k 21-25                                 212262      3.3%      3.6%    +0.26 [+0.12; +0.40]
+    k 26-30                                 236230      2.2%      2.1%    -0.09 [-0.18; +0.01]
+    k 31-40                                 508617      1.1%      1.0%    -0.19 [-0.25; -0.13]
+    -- Saisonphase
+    erste 15 Teamspiele                     233254      3.1%      3.4%    +0.29 [+0.10; +0.47]
+    ab dem 16. Teamspiel                   1058098      3.1%      3.7%    +0.61 [+0.51; +0.74]
+    -- Verlaengerung
+    mit Verlaengerung                        53675      3.3%      5.9%    +2.67 [+2.08; +3.38]
+    ohne Verlaengerung                     1237677      3.1%      3.6%    +0.46 [+0.37; +0.56]
+    -- Endstand
+    Blowout (Differenz >= 20)               326299      2.9%      3.1%    +0.20 [-0.02; +0.39]
+    knapp (Differenz < 20)                  965053      3.2%      3.8%    +0.68 [+0.57; +0.79]
+
+3 STREUUNG: echte Streuung der Punkte (Ist minus Prognose-Mittel) gegen die Streuung der Modell-Verteilung (A)
+  Echte Streuung = Standardabweichung von (Ist - Prognose-Mittel) je Gruppe; Modell-Streuung = Wurzel aus der mittleren Varianz der Modell-Verteilung (Streuung der Punktewerte x plus Kernbreite h^2). Verhaeltnis > 1: Modell zu schmal.
+  Gruppe                              Zeilen Ø Prognose    Bias  echte SD  Modell-SD     Verhaeltnis echt/Modell [95 %]
+  alle                                 52015       10.8   -0.01      6.09       5.76      1.057 [1.049; 1.066]
+  Rolle Starter                        16081       18.4   -0.36      7.32       7.24      1.011 [1.000; 1.024]
+  Rolle Rotation                       15994       10.2   +0.02      6.01       5.70      1.054 [1.040; 1.066]
+  Rolle uebrige                        19940        5.2   +0.26      4.94       4.28      1.154 [1.135; 1.173]
+  Minuten unter 15 Min.                11097        3.9   +0.39      4.67       3.78      1.235 [1.204; 1.267]
+  Minuten 15-25 Min.                   18278        8.0   +0.07      5.57       5.18      1.073 [1.060; 1.086]
+  Minuten 25-32 Min.                   13663       13.6   -0.15      6.55       6.34      1.033 [1.019; 1.049]
+  Minuten ab 32 Min.                    8977       20.9   -0.44      7.70       7.68      1.002 [0.987; 1.019]
+  Rolle x Minutenklasse:
+    Starter / 25-32 Min.                7104       15.2   -0.26      6.82       6.65      1.026 [1.006; 1.050]
+    Starter / ab 32 Min.                8977       20.9   -0.44      7.70       7.68      1.002 [0.987; 1.019]
+    Rotation / 15-25 Min.               9435        9.2   +0.05      5.84       5.49      1.064 [1.046; 1.080]
+    Rotation / 25-32 Min.               6559       11.7   -0.02      6.24       5.98      1.043 [1.021; 1.063]
+    uebrige / unter 15 Min.            11097        3.9   +0.39      4.67       3.78      1.235 [1.204; 1.267]
+    uebrige / 15-25 Min.                8843        6.7   +0.10      5.26       4.84      1.087 [1.067; 1.107]
+
+  Mittelwert-Unsicherheit: Streuung der Prognosefehler nach der Zahl der bisherigen Spiele des Spielers (Spiele mit mind. 8 Minuten im Verlauf, beide Saisons).
+  Ueberschuss = echte Varianz minus Modell-Varianz; implizites c = sqrt(Ueberschuss) / Ø-Prognose * sqrt(Ø n) (V2 nimmt tau_n = c / sqrt(n) als relative Unsicherheit des Mittelwerts an).
+  Gruppe                              Zeilen Ø Prognose  echte SD  Modell-SD       Verhaeltnis [95 %]  SD/Prognose  impl. c
+  alle Spieler, n=1-9                   3314        3.9      4.82       3.29    1.464 [1.405; 1.526]        1.225     1.92
+  alle Spieler, n=10-19                 2836        5.2      5.16       4.22    1.222 [1.172; 1.274]        0.987     2.15
+  alle Spieler, n=20-39                 5648        6.8      5.36       4.83    1.109 [1.086; 1.135]        0.787     1.85
+  alle Spieler, n=40-79                15991       10.2      5.95       5.69    1.046 [1.033; 1.059]        0.586     1.34
+  alle Spieler, n=80+                  24226       13.8      6.57       6.40    1.026 [1.016; 1.038]        0.476     1.10
+
+  Starter, n=1-9                          91       11.6      7.13       5.19    1.374 [1.139; 1.625]        0.615     0.95   (< 100 Zeilen)
+  Starter, n=10-19                        83       15.0      7.90       6.43    1.229 [1.019; 1.417]        0.526     1.15   (< 100 Zeilen)
+  Starter, n=20-39                       342       17.8      7.43       6.88    1.079 [0.999; 1.161]        0.417     0.87
+  Starter, n=40-79                      3698       18.6      7.40       7.33    1.009 [0.985; 1.034]        0.397     0.44
+  Starter, n=80+                       11867       18.4      7.29       7.24    1.007 [0.993; 1.024]        0.396     0.48
+
+  Rotation, n=1-9                        290        8.9      6.18       4.55    1.358 [1.237; 1.489]        0.694     1.08
+  Rotation, n=10-19                      371        9.6      6.01       5.45    1.102 [1.007; 1.203]        0.627     1.02
+  Rotation, n=20-39                     1247        9.7      5.93       5.58    1.061 [1.013; 1.107]        0.610     1.12
+  Rotation, n=40-79                     5457       10.0      6.01       5.71    1.053 [1.033; 1.074]        0.599     1.49
+  Rotation, n=80+                       8629       10.5      6.01       5.75    1.045 [1.027; 1.062]        0.571     1.70
+
+  uebrige, n=1-9                        2933        3.2      4.56       3.06    1.490 [1.422; 1.563]        1.422     2.24
+  uebrige, n=10-19                      2382        4.2      4.88       3.89    1.254 [1.198; 1.315]        1.160     2.65
+  uebrige, n=20-39                      4059        5.0      4.94       4.35    1.138 [1.101; 1.170]        0.992     2.56
+  uebrige, n=40-79                      6836        5.7      4.92       4.54    1.084 [1.061; 1.111]        0.868     2.56
+  uebrige, n=80+                        3730        6.6      5.23       4.76    1.099 [1.058; 1.137]        0.791     3.27
+
+4 VARIANTEN (nur im Replay; Produktivmodell unveraendert). V1: Kern h = 2,0 x (1 + 0,05 x) [c = 2,0 als Faktor auf den Produktivkern: ein fester Wert h = 2 waere bei hohen x schmaler als heute].
+  V2: Mittelwert-Unsicherheit, h^2 = (1+0,05x)^2 + (c/sqrt(n) * x)^2 mit n = Spiele des Spielers; V3: V1 + V2; V4: negative Binomialverteilung (Mittel = erwartete Punkte, Varianz = mu + mu^2 / r).
+  Die Parameter c (V2, V3) und r (V4) werden auf einer Haelfte durch kleinsten Log-Loss ueber alle Paare der Haelfte eingestellt und auf der anderen angewandt, und umgekehrt (Kreuz-Anpassung). Alle Zahlen unten fuer V2-V4 sind
+  daher 'ausserhalb der Stichprobe' (jede Zeile mit den Parametern der jeweils anderen Haelfte). A und V1 haben keinen freien Parameter.
+  Gewaehlte Parameter (kleinster Log-Loss auf der Lernhaelfte):
+    V2: gelernt auf Haelfte 1 -> V2 c=1.0; gelernt auf Haelfte 2 -> V2 c=1.0   (Log-Loss je Parameter, Haelfte 1 / 2: c=0.1: 0.2553/0.2651, c=0.2: 0.2548/0.2646, c=0.3: 0.2542/0.2640, c=0.4: 0.2535/0.2634, c=0.5: 0.2529/0.2628, c=0.6: 0.2523/0.2623, c=0.8: 0.2514/0.2614, c=1.0: 0.2507/0.2606)
+    V3: gelernt auf Haelfte 1 -> V3 c=1.0; gelernt auf Haelfte 2 -> V3 c=1.0   (Log-Loss je Parameter, Haelfte 1 / 2: c=0.1: 0.2507/0.2596, c=0.2: 0.2506/0.2595, c=0.3: 0.2504/0.2594, c=0.4: 0.2503/0.2592, c=0.5: 0.2501/0.2591, c=0.6: 0.2500/0.2589, c=0.8: 0.2498/0.2586, c=1.0: 0.2497/0.2585)
+    V4: gelernt auf Haelfte 1 -> V4 r=6; gelernt auf Haelfte 2 -> V4 r=4   (Log-Loss je Parameter, Haelfte 1 / 2: r=4: 0.2582/0.2711, r=6: 0.2578/0.2731, r=8: 0.2598/0.2769, r=10: 0.2624/0.2807, r=14: 0.2675/0.2877, r=20: 0.2739/0.2957, r=30: 0.2814/0.3047, r=60: 0.2925/0.3175)
+    A: Log-Loss Haelfte 1 / 2: 0.2556 / 0.2653; V1: 0.2508 / 0.2597
+
+  4a Kalibrierung gesamt je Variante
+    Variante                      Ø-Abw. PP    Stufen >= 100 Z. ueber 6 PP     Brier  Log-Loss  Rekal. a  Rekal. b
+    A roh                              0.78                              0   0.07940   0.26046    -0.073     0.835
+    V1 Kern c = 2,0                    0.35                              0   0.07918   0.25521    -0.030     0.972
+    V2 Mittelwert-Unsicherheit         0.45                              0   0.07928   0.25567    -0.036     0.913
+    V3 = V1 + V2                       0.55                              0   0.07920   0.25410    -0.002     1.028
+    V4 negative Binomial               1.04                              0   0.08037   0.26565    +0.046     0.894
+  4b Randstufen einzeln (Diff PP = Trefferquote minus Ø-Modell; Zeilen in Klammern; ab 90 % mit < 100 Zeilen: nicht aussagekraeftig = 'x')
+    Variante                               0-  5 %           5- 10 %          10- 15 %          15- 20 %          80- 85 %          85- 90 %          90- 95 %          95-100 %
+    A roh                          +0.5 ( 999465)    +0.7 ( 136342)    +0.9 (  88379)    +1.0 (  67166)    -2.7 (  28145)    -2.7 (  30119)    -2.9 (  34562)    -2.2 (  69943) 
+    V1 Kern c = 2,0                +0.1 ( 947096)    -0.7 ( 148672)    -1.0 (  97012)    -0.8 (  74172)    +0.3 (  29067)    -0.2 (  30120)    -0.3 (  33584)    -0.7 (  53714) 
+    V2 Mittelwert-Unsicherheit     +0.2 ( 972928)    +0.1 ( 147269)    +0.3 (  94873)    +0.6 (  71321)    -1.6 (  27790)    -1.8 (  29657)    -2.0 (  33683)    -1.7 (  65225) 
+    V3 = V1 + V2                   -0.1 ( 924244)    -1.2 ( 157516)    -1.5 ( 102274)    -1.3 (  77787)    +1.1 (  28752)    +0.8 (  29773)    +0.2 (  32725)    -0.3 (  49515) 
+    V4 negative Binomial           +0.7 ( 987507)    +0.4 ( 132920)    -0.4 (  90552)    -0.8 (  71249)    +2.4 (  30929)    +2.2 (  31766)    +1.6 (  33727)    +0.7 (  32668) 
+    (* = unter 100 Zeilen)
+  4c Stufen mit >= 100 Zeilen ueber 6 PP daneben
+    A roh                        keine
+    V1 Kern c = 2,0              keine
+    V2 Mittelwert-Unsicherheit   keine
+    V3 = V1 + V2                 keine
+    V4 negative Binomial         keine
+
+5 AUSWAHL NACH REGEL: Eine Variante zaehlt nur, wenn sie auf BEIDEN Pruefhaelften (a) die Ø-Abweichung gegenueber A verbessert und (b) keine Stufe mit >= 100 Zeilen ueber 6 PP daneben liegt.
+  Pruefhaelfte 2 (Parameter gelernt auf Haelfte 1); 935100 Paare
+    A roh                        Ø-Abw.  1.14 PP (A:  1.14) -> nicht besser; Stufen ueber 6 PP: keine
+    V1 Kern c = 2,0              Ø-Abw.  0.47 PP (A:  1.14) -> besser; Stufen ueber 6 PP: keine  => erfuellt
+    V2 Mittelwert-Unsicherheit   Ø-Abw.  0.95 PP (A:  1.14) -> besser; Stufen ueber 6 PP: keine  => erfuellt
+    V3 = V1 + V2                 Ø-Abw.  0.51 PP (A:  1.14) -> besser; Stufen ueber 6 PP: keine  => erfuellt
+    V4 negative Binomial         Ø-Abw.  1.39 PP (A:  1.14) -> nicht besser; Stufen ueber 6 PP: keine  => verfehlt
+  Pruefhaelfte 1 (Parameter gelernt auf Haelfte 2); 937440 Paare
+    A roh                        Ø-Abw.  0.72 PP (A:  0.72) -> nicht besser; Stufen ueber 6 PP: keine
+    V1 Kern c = 2,0              Ø-Abw.  0.69 PP (A:  0.72) -> besser; Stufen ueber 6 PP: keine  => erfuellt
+    V2 Mittelwert-Unsicherheit   Ø-Abw.  0.47 PP (A:  0.72) -> besser; Stufen ueber 6 PP: keine  => erfuellt
+    V3 = V1 + V2                 Ø-Abw.  0.94 PP (A:  0.72) -> nicht besser; Stufen ueber 6 PP: keine  => verfehlt
+    V4 negative Binomial         Ø-Abw.  1.45 PP (A:  0.72) -> nicht besser; Stufen ueber 6 PP: keine  => verfehlt
+  Ergebnis:
+    V1 Kern c = 2,0              ZAEHLT (beide Pruefhaelften erfuellt)   (Haelfte 2: ja, Haelfte 1: ja)
+    V2 Mittelwert-Unsicherheit   ZAEHLT (beide Pruefhaelften erfuellt)   (Haelfte 2: ja, Haelfte 1: ja)
+    V3 = V1 + V2                 zaehlt NICHT   (Haelfte 2: ja, Haelfte 1: nein)
+    V4 negative Binomial         zaehlt NICHT   (Haelfte 2: nein, Haelfte 1: nein)
+
+6 EHRLICHE ZAHLEN
+  2 Saisons, 327 Spieltage, 2460 Spiele, 52015 Spielerzeilen, 1872540 Paare. Zeilen je Stufe stehen in den Tabellen 1, 4a-4c; Stufen ab 90 % mit unter 100 Zeilen sind markiert.
+  Die Paare einer Spielerzeile (36 Meilensteine) sind stark abhaengig; die Intervalle (Bootstrap nach Spielen) beruecksichtigen das. Konstanten des Produktivmodells (Blowout-Kurve, league_ppm aus 2025-26) sind fuer 2025-26 teils in-sample.
+  Overtime wird vom Modell nicht modelliert; Ausfaelle von Mitspielern sind unbekannt (A ist die rohe Prognose 'wenn er spielt', bewertet nur Spieler mit Minuten > 0).

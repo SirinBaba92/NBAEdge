@@ -1,0 +1,690 @@
+SCHWELLWERT-TEST: WIE VIELE TIPPS HAETTE ES JE MODELL-CHANCE-SCHWELLE GEGEBEN UND WIE VIELE WAREN RICHTIG?
+Skript analysis/backtest_thresholds.py (liest nur; Produktivmodell unveraendert). Reines Modell ohne Markt-Mischung, walk-forward, nur echte Ergebnisse, keine Quoten.
+Team-Maerkte: Regular Season 2025-26, 1237 Spiele (Replay der Produktiv-ELO-Engine ab 2015). Spielerpunkte: 2024-25 und 2025-26, 2460 Spiele, 52015 Spielerzeilen, 1872540 Tipps (Over je Meilenstein k = 5..40, Variante A roh).
+TIPPS JE MARKT (Definition):
+  Sieger: der Favorit des Modells (Chance = max(p, 1-p) der Siegchance Heim, wie in der App begrenzt auf 3-97 %). Spread: je Linie L = mu + k (k = -5..+5; k = 0 ist die Hauptlinie = Modell-Spread selbst, dort 50:50, Favoriten-Seite) die Seite mit der
+  hoeheren Deckungs-Chance; 'Favorit-Seite' und 'Aussenseiter-Seite' getrennt. Total / Team Total: nur Over, an der Hauptlinie (Modell-Wert selbst) und 1 bis 5 Punkte darunter; Team Total Heim und Gast getrennt. Spielerpunkte: Over je Meilenstein k = 5..40.
+  Ein Spiel liefert bei Spread/Total/Team Total mehrere Tipps (eine je Linie). Diese Tipps sind stark korreliert (gleiches Spielergebnis): die Intervalle laufen nach Spielen, und die Serien stehen als Tipp-Serie (alle Tipps nacheinander) und als Spiel-Serie.
+SPALTEN: Schwelle = Modell-Chance mindestens so hoch. Trefferquote = richtig / (richtig + falsch) ohne Push. Ø Modell = mittlere Modell-Chance der Tipps ohne Push; Diff = Trefferquote minus Ø Modell (positiv = Modell zu vorsichtig).
+  Break-even-Quote = 1 / Trefferquote (ab dieser Quote lohnt sich das Tippen); 'vorsichtig' = 1 / untere Intervallgrenze. Ziel der Zusammenfassung: Trefferquote in BEIDEN Haelften mindestens 69.7 % (= Break-even einer Quote von 1,50 (66.7 %) plus 3 PP).
+  Serie max / Ø Serie = laengste bzw. mittlere Serie falscher Tipps in Folge (nach Datum, Pushes uebersprungen); Spiel-Serie = laengste Folge von Spielen, in denen KEIN Tipp richtig war. Teilmengen: Haelfte 1/2 = chronologisch (bei Spielerpunkten je Saison),
+  erste 15 = beide Teams unter 15 Spielen (Spielerpunkte: Spieler mit 1-9 bisherigen Spielen), Rest = uebrige. Schwellen mit unter 100 Tipps sind als nicht aussagekraeftig gekennzeichnet (* in den Teilmengen-Tabellen).
+
+1-3 TIPPS, TREFFERQUOTE, BREAK-EVEN, VERLUSTSERIEN JE SCHWELLE
+MARKT: Sieger (Favorit des Modells)  (1237 Spiele)
+  alle Spiele
+    Schwelle   Tipps  richtig  falsch  Push    Trefferquote % [95 %]  Ø Modell  Ø Modell richtige  Diff PP  BE-Quote BE vorsicht. Serie max  Ø Serie Spiel-Serie
+         50%    1237      829     408     0  67.0 [ 64.3; 69.5]      64.7               66.3     +2.3      1.49         1.55         7      1.5           7
+         55%     988      691     297     0  69.9 [ 67.0; 72.8]      67.8               69.1     +2.2      1.43         1.49         6      1.5           6
+         60%     744      551     193     0  74.1 [ 70.9; 77.2]      71.2               72.1     +2.9      1.35         1.41         4      1.4           4
+         65%     540      424     116     0  78.5 [ 75.1; 81.8]      74.5               75.0     +4.1      1.27         1.33         4      1.3           4
+         70%     361      298      63     0  82.5 [ 78.4; 86.3]      78.0               78.2     +4.6      1.21         1.28         2      1.1           2
+         75%     235      198      37     0  84.3 [ 79.0; 88.8]      80.9               81.0     +3.4      1.19         1.27         2      1.1           2
+         80%     111       93      18     0  83.8 [ 76.5; 90.2]      84.7               85.0     -0.9      1.19         1.31         2      1.1           2
+         85%      46       42       4     0  91.3 [ 82.2; 98.0]      88.3               88.5     +3.0      1.10         1.22         1      1.0           1   (< 100 Tipps: nicht aussagekraeftig)
+         90%       9        9       0     0 100.0 [100.0;100.0]      92.5               92.5     +7.5      1.00         1.00         0      0.0           0   (< 100 Tipps: nicht aussagekraeftig)
+         95%       1        1       0     0 100.0 [100.0;100.0]      95.2               95.2     +4.8      1.00         1.00         0      0.0           0   (< 100 Tipps: nicht aussagekraeftig)
+
+  Favorit Heim
+    Schwelle   Tipps  richtig  falsch  Push    Trefferquote % [95 %]  Ø Modell  Ø Modell richtige  Diff PP  BE-Quote BE vorsicht. Serie max  Ø Serie Spiel-Serie
+         50%     777      528     249     0  68.0 [ 64.6; 71.2]      66.2               67.8     +1.7      1.47         1.55         7      1.5           7
+         55%     653      453     200     0  69.4 [ 65.7; 72.6]      68.9               70.3     +0.5      1.44         1.52         6      1.5           6
+         60%     512      378     134     0  73.8 [ 69.9; 77.4]      72.0               73.0     +1.8      1.35         1.43         4      1.4           4
+         65%     379      296      83     0  78.1 [ 73.5; 82.2]      75.4               75.9     +2.7      1.28         1.36         3      1.3           3
+         70%     268      218      50     0  81.3 [ 76.4; 85.8]      78.6               79.0     +2.7      1.23         1.31         2      1.1           2
+         75%     189      158      31     0  83.6 [ 77.6; 88.4]      81.1               81.3     +2.5      1.20         1.29         2      1.1           2
+         80%      93       76      17     0  81.7 [ 73.3; 89.0]      84.9               85.3     -3.2      1.22         1.36         2      1.1           2   (< 100 Tipps: nicht aussagekraeftig)
+         85%      42       38       4     0  90.5 [ 80.5; 97.9]      88.5               88.6     +2.0      1.11         1.24         1      1.0           1   (< 100 Tipps: nicht aussagekraeftig)
+         90%       9        9       0     0 100.0 [100.0;100.0]      92.5               92.5     +7.5      1.00         1.00         0      0.0           0   (< 100 Tipps: nicht aussagekraeftig)
+         95%       1        1       0     0 100.0 [100.0;100.0]      95.2               95.2     +4.8      1.00         1.00         0      0.0           0   (< 100 Tipps: nicht aussagekraeftig)
+
+  Favorit Gast
+    Schwelle   Tipps  richtig  falsch  Push    Trefferquote % [95 %]  Ø Modell  Ø Modell richtige  Diff PP  BE-Quote BE vorsicht. Serie max  Ø Serie Spiel-Serie
+         50%     460      301     159     0  65.4 [ 60.9; 69.8]      62.1               63.7     +3.4      1.53         1.64         8      1.6           8
+         55%     335      238      97     0  71.0 [ 66.3; 76.2]      65.6               66.6     +5.4      1.41         1.51         4      1.4           4
+         60%     232      173      59     0  74.6 [ 69.1; 80.3]      69.3               70.2     +5.3      1.34         1.45         4      1.4           4
+         65%     161      128      33     0  79.5 [ 73.2; 85.4]      72.3               72.9     +7.2      1.26         1.37         5      1.3           5
+         70%      93       80      13     0  86.0 [ 78.5; 92.6]      76.1               76.3     +9.9      1.16         1.27         1      1.0           1   (< 100 Tipps: nicht aussagekraeftig)
+         75%      46       40       6     0  87.0 [ 76.2; 96.0]      79.8               80.0     +7.2      1.15         1.31         2      1.2           2   (< 100 Tipps: nicht aussagekraeftig)
+         80%      18       17       1     0  94.4 [ 80.0;100.0]      83.4               83.4    +11.1      1.06         1.25         1      1.0           1   (< 100 Tipps: nicht aussagekraeftig)
+         85%       4        4       0     0 100.0 [100.0;100.0]      86.8               86.8    +13.2      1.00         1.00         0      0.0           0   (< 100 Tipps: nicht aussagekraeftig)
+         90%       0   (keine Tipps)
+         95%       0   (keine Tipps)
+
+MARKT: Spread (Seite mit der hoeheren Deckungs-Chance, Linien mu-5 .. mu+5)  (1237 Spiele)
+  alle Tipps
+    Schwelle   Tipps  richtig  falsch  Push    Trefferquote % [95 %]  Ø Modell  Ø Modell richtige  Diff PP  BE-Quote BE vorsicht. Serie max  Ø Serie Spiel-Serie
+         50%   13607     7856    5711    40  57.9 [ 57.0; 58.7]      58.1               58.4     -0.2      1.73         1.75        12      5.5           0
+         55%    9896     5886    3982    28  59.6 [ 58.6; 60.7]      60.4               60.6     -0.8      1.68         1.71         8      4.2           0
+         60%    4948     3091    1844    13  62.6 [ 61.5; 63.8]      63.3               63.4     -0.7      1.60         1.63         4      2.3           0
+         65%       0   (keine Tipps)
+         70%       0   (keine Tipps)
+         75%       0   (keine Tipps)
+         80%       0   (keine Tipps)
+         85%       0   (keine Tipps)
+         90%       0   (keine Tipps)
+         95%       0   (keine Tipps)
+
+  Favorit-Seite
+    Schwelle   Tipps  richtig  falsch  Push    Trefferquote % [95 %]  Ø Modell  Ø Modell richtige  Diff PP  BE-Quote BE vorsicht. Serie max  Ø Serie Spiel-Serie
+         50%    7386     4422    2940    24  60.1 [ 57.2; 62.6]      57.4               57.8     +2.6      1.66         1.75        42      8.1           7
+         55%    4924     3069    1838    17  62.5 [ 59.6; 65.1]      60.4               60.6     +2.1      1.60         1.68        28      5.7           7
+         60%    2462     1596     857     9  65.1 [ 62.3; 67.6]      63.3               63.4     +1.7      1.54         1.61        14      3.0           7
+         65%       0   (keine Tipps)
+         70%       0   (keine Tipps)
+         75%       0   (keine Tipps)
+         80%       0   (keine Tipps)
+         85%       0   (keine Tipps)
+         90%       0   (keine Tipps)
+         95%       0   (keine Tipps)
+
+  Aussenseiter-Seite
+    Schwelle   Tipps  richtig  falsch  Push    Trefferquote % [95 %]  Ø Modell  Ø Modell richtige  Diff PP  BE-Quote BE vorsicht. Serie max  Ø Serie Spiel-Serie
+         50%    6155     3400    2739    16  55.4 [ 52.8; 58.2]      58.9               59.3     -3.6      1.81         1.89        55      7.3          10
+         55%    4924     2793    2120    11  56.8 [ 54.3; 59.6]      60.4               60.6     -3.6      1.76         1.84        43      6.0          10
+         60%    2462     1483     975     4  60.3 [ 57.8; 63.1]      63.3               63.4     -3.0      1.66         1.73        20      3.2          10
+         65%       0   (keine Tipps)
+         70%       0   (keine Tipps)
+         75%       0   (keine Tipps)
+         80%       0   (keine Tipps)
+         85%       0   (keine Tipps)
+         90%       0   (keine Tipps)
+         95%       0   (keine Tipps)
+
+MARKT: Total (nur Over, Linien mu .. mu-5)  (1237 Spiele)
+  Over
+    Schwelle   Tipps  richtig  falsch  Push    Trefferquote % [95 %]  Ø Modell  Ø Modell richtige  Diff PP  BE-Quote BE vorsicht. Serie max  Ø Serie Spiel-Serie
+         50%    7422     4058    3353    11  54.8 [ 52.2; 57.5]      55.3               55.5     -0.6      1.83         1.92        48      9.2           8
+         55%    3711     2124    1580     7  57.3 [ 54.8; 60.1]      58.5               58.5     -1.2      1.74         1.83        24      5.0           8
+         60%    1237      725     507     5  58.8 [ 56.1; 61.6]      60.6               60.6     -1.7      1.70         1.78         8      1.7           8
+         65%       0   (keine Tipps)
+         70%       0   (keine Tipps)
+         75%       0   (keine Tipps)
+         80%       0   (keine Tipps)
+         85%       0   (keine Tipps)
+         90%       0   (keine Tipps)
+         95%       0   (keine Tipps)
+
+MARKT: Team Total (nur Over, Linien mu .. mu-5)  (1237 Spiele)
+  Heim
+    Schwelle   Tipps  richtig  falsch  Push    Trefferquote % [95 %]  Ø Modell  Ø Modell richtige  Diff PP  BE-Quote BE vorsicht. Serie max  Ø Serie Spiel-Serie
+         50%    7422     4309    3074    39  58.4 [ 55.9; 61.0]      58.4               59.0     -0.1      1.71         1.79        42      7.6           7
+         55%    4948     3028    1897    23  61.5 [ 59.0; 64.2]      61.8               62.0     -0.3      1.63         1.70        28      5.5           7
+         60%    3711     2325    1373    13  62.9 [ 60.3; 65.7]      63.5               63.5     -0.6      1.59         1.66        21      4.3           7
+         65%    1237      809     424     4  65.6 [ 63.2; 68.4]      66.7               66.7     -1.1      1.52         1.58         7      1.5           7
+         70%       0   (keine Tipps)
+         75%       0   (keine Tipps)
+         80%       0   (keine Tipps)
+         85%       0   (keine Tipps)
+         90%       0   (keine Tipps)
+         95%       0   (keine Tipps)
+
+  Gast
+    Schwelle   Tipps  richtig  falsch  Push    Trefferquote % [95 %]  Ø Modell  Ø Modell richtige  Diff PP  BE-Quote BE vorsicht. Serie max  Ø Serie Spiel-Serie
+         50%    7422     4389    2993    40  59.5 [ 56.9; 61.9]      58.4               59.0     +1.0      1.68         1.76        42      7.5           7
+         55%    4948     3100    1821    27  63.0 [ 60.5; 65.5]      61.8               62.0     +1.2      1.59         1.65        28      5.4           7
+         60%    3711     2382    1309    20  64.5 [ 62.1; 67.1]      63.5               63.6     +1.1      1.55         1.61        21      4.2           7
+         65%    1237      835     393     9  68.0 [ 65.6; 70.6]      66.7               66.7     +1.3      1.47         1.52         7      1.5           7
+         70%       0   (keine Tipps)
+         75%       0   (keine Tipps)
+         80%       0   (keine Tipps)
+         85%       0   (keine Tipps)
+         90%       0   (keine Tipps)
+         95%       0   (keine Tipps)
+
+  Heim und Gast zusammen
+    Schwelle   Tipps  richtig  falsch  Push    Trefferquote % [95 %]  Ø Modell  Ø Modell richtige  Diff PP  BE-Quote BE vorsicht. Serie max  Ø Serie Spiel-Serie
+         50%   14844     8698    6067    79  58.9 [ 57.0; 60.9]      58.4               59.0     +0.5      1.70         1.75        49      2.0           4
+         55%    9896     6128    3718    50  62.2 [ 60.3; 64.3]      61.8               62.0     +0.4      1.61         1.66        33      1.9           4
+         60%    7422     4707    2682    33  63.7 [ 61.8; 65.8]      63.5               63.6     +0.2      1.57         1.62        25      1.8           4
+         65%    2474     1644     817    13  66.8 [ 64.9; 68.9]      66.7               66.7     +0.1      1.50         1.54         9      1.6           4
+         70%       0   (keine Tipps)
+         75%       0   (keine Tipps)
+         80%       0   (keine Tipps)
+         85%       0   (keine Tipps)
+         90%       0   (keine Tipps)
+         95%       0   (keine Tipps)
+
+MARKT: Spielerpunkte (Over je Meilenstein k = 5..40; 2024-25 und 2025-26, 2460 Spiele)
+  Starter mit >= 10 bisherigen Spielen (220862 Tipps ab 50 %)
+    Schwelle   Tipps  richtig  falsch  Push    Trefferquote % [95 %]  Ø Modell  Ø Modell richtige  Diff PP  BE-Quote BE vorsicht. Serie max  Ø Serie Spiel-Serie
+         50%  220862   178140   42722     0  80.7 [ 80.2; 81.1]      82.3               85.1     -1.6      1.24         1.25        38      5.9           1
+         55%  206951   170942   36009     0  82.6 [ 82.2; 83.0]      84.3               86.5     -1.7      1.21         1.22        35      5.5           1
+         60%  193068   163018   30050     0  84.4 [ 84.0; 84.8]      86.2               87.9     -1.7      1.18         1.19        33      5.2           1
+         65%  179106   154375   24731     0  86.2 [ 85.8; 86.6]      88.0               89.3     -1.8      1.16         1.17        30      4.9           1
+         70%  164696   144724   19972     0  87.9 [ 87.5; 88.2]      89.8               90.7     -1.9      1.14         1.14        28      4.6           1
+         75%  149504   133869   15635     0  89.5 [ 89.2; 89.9]      91.6               92.2     -2.0      1.12         1.12        25      4.2           1
+         80%  133090   121391   11699     0  91.2 [ 90.9; 91.5]      93.3               93.7     -2.1      1.10         1.10        23      3.9           1
+         85%  114877   106728    8149     0  92.9 [ 92.6; 93.2]      95.0               95.2     -2.1      1.08         1.08        19      3.6           1
+         90%   93429    88388    5041     0  94.6 [ 94.3; 94.9]      96.7               96.8     -2.1      1.06         1.06        17      3.2           1
+         95%   65847    63531    2316     0  96.5 [ 96.2; 96.8]      98.4               98.5     -1.9      1.04         1.04        14      2.8           1
+
+  Starter mit < 10 bisherigen Spielen (666 Tipps ab 50 %)
+    Schwelle   Tipps  richtig  falsch  Push    Trefferquote % [95 %]  Ø Modell  Ø Modell richtige  Diff PP  BE-Quote BE vorsicht. Serie max  Ø Serie Spiel-Serie
+         50%     666      439     227     0  65.9 [ 57.3; 74.3]      78.6               80.8    -12.7      1.52         1.74        20      6.3           2
+         55%     608      408     200     0  67.1 [ 58.5; 75.5]      81.1               83.0    -14.0      1.49         1.71        19      6.1           2
+         60%     550      380     170     0  69.1 [ 59.9; 77.7]      83.6               84.9    -14.5      1.45         1.67        18      5.3           2
+         65%     489      345     144     0  70.6 [ 61.0; 79.5]      86.2               87.1    -15.7      1.42         1.64        18      5.1           2
+         70%     427      307     120     0  71.9 [ 62.4; 81.2]      88.9               89.5    -17.0      1.39         1.60        17      5.0           2
+         75%     374      275      99     0  73.5 [ 63.2; 83.6]      91.2               91.5    -17.7      1.36         1.58        17      5.0           2
+         80%     314      229      85     0  72.9 [ 62.0; 83.6]      93.8               94.3    -20.9      1.37         1.61        16      4.7           2
+         85%     261      194      67     0  74.3 [ 62.8; 86.0]      96.1               96.4    -21.8      1.35         1.59        15      3.9           2
+         90%     214      160      54     0  74.8 [ 61.7; 88.4]      98.0               98.3    -23.3      1.34         1.62        14      4.9           2
+         95%     180      138      42     0  76.7 [ 63.0; 90.7]      99.2               99.3    -22.5      1.30         1.59        13      5.2           2
+
+  Rotation (88520 Tipps ab 50 %)
+    Schwelle   Tipps  richtig  falsch  Push    Trefferquote % [95 %]  Ø Modell  Ø Modell richtige  Diff PP  BE-Quote BE vorsicht. Serie max  Ø Serie Spiel-Serie
+         50%   88520    62318   26202     0  70.4 [ 69.8; 71.0]      72.2               74.4     -1.8      1.42         1.43        31      4.5           1
+         55%   77908    56729   21179     0  72.8 [ 72.2; 73.4]      74.8               76.6     -2.0      1.37         1.39        26      4.1           1
+         60%   67536    50749   16787     0  75.1 [ 74.5; 75.8]      77.5               78.8     -2.4      1.33         1.34        23      3.7           1
+         65%   57406    44477   12929     0  77.5 [ 76.8; 78.1]      80.2               81.1     -2.7      1.29         1.30        21      3.4           1
+         70%   47360    37770    9590     0  79.8 [ 79.1; 80.4]      82.9               83.5     -3.1      1.25         1.26        18      3.1           1
+         75%   37436    30727    6709     0  82.1 [ 81.4; 82.8]      85.6               86.1     -3.5      1.22         1.23        17      2.8           1
+         80%   27893    23542    4351     0  84.4 [ 83.7; 85.1]      88.4               88.7     -4.0      1.18         1.19        14      2.5           1
+         85%   18822    16371    2451     0  87.0 [ 86.2; 87.7]      91.2               91.4     -4.2      1.15         1.16        11      2.1           2
+         90%   10632     9542    1090     0  89.7 [ 88.9; 90.6]      94.1               94.2     -4.4      1.11         1.12         9      1.9           2
+         95%    3860     3570     290     0  92.5 [ 91.3; 93.6]      97.2               97.2     -4.7      1.08         1.09         8      1.6           2
+
+  uebrige (22094 Tipps ab 50 %)
+    Schwelle   Tipps  richtig  falsch  Push    Trefferquote % [95 %]  Ø Modell  Ø Modell richtige  Diff PP  BE-Quote BE vorsicht. Serie max  Ø Serie Spiel-Serie
+         50%   22094    13257    8837     0  60.0 [ 58.9; 61.1]      62.7               64.0     -2.7      1.67         1.70        19      3.4           2
+         55%   16209    10170    6039     0  62.7 [ 61.7; 63.9]      66.4               67.5     -3.6      1.59         1.62        19      3.0           3
+         60%   11445     7584    3861     0  66.3 [ 65.0; 67.6]      70.1               70.9     -3.9      1.51         1.54        14      2.6           3
+         65%    7654     5311    2343     0  69.4 [ 68.0; 70.8]      73.9               74.5     -4.5      1.44         1.47        12      2.3           3
+         70%    4834     3479    1355     0  72.0 [ 70.3; 73.6]      77.7               78.2     -5.8      1.39         1.42        12      2.1           4
+         75%    2830     2136     694     0  75.5 [ 73.3; 77.5]      81.6               81.8     -6.1      1.32         1.36         7      1.9           4
+         80%    1472     1146     326     0  77.9 [ 74.9; 80.5]      85.5               85.7     -7.7      1.28         1.33         7      1.9           4
+         85%     664      537     127     0  80.9 [ 76.9; 84.7]      89.5               89.5     -8.6      1.24         1.30         7      1.6           3
+         90%     230      188      42     0  81.7 [ 74.3; 87.8]      93.4               93.4    -11.7      1.22         1.35         6      1.8           3
+         95%      56       45      11     0  80.4 [ 65.8; 92.7]      96.9               96.8    -16.5      1.24         1.52         3      1.6           2   (< 100 Tipps: nicht aussagekraeftig)
+
+  alle Spieler (332142 Tipps ab 50 %)
+    Schwelle   Tipps  richtig  falsch  Push    Trefferquote % [95 %]  Ø Modell  Ø Modell richtige  Diff PP  BE-Quote BE vorsicht. Serie max  Ø Serie Spiel-Serie
+         50%  332142   254154   77988     0  76.5 [ 76.2; 76.8]      78.3               81.4     -1.7      1.31         1.31        37      4.9           0
+         55%  301676   238249   63427     0  79.0 [ 78.6; 79.3]      80.9               83.3     -1.9      1.27         1.27        34      4.6           0
+         60%  272599   221731   50868     0  81.3 [ 81.0; 81.7]      83.4               85.2     -2.0      1.23         1.23        32      4.3           0
+         65%  244655   204508   40147     0  83.6 [ 83.3; 83.9]      85.7               87.1     -2.1      1.20         1.20        37      4.1           0
+         70%  217317   186280   31037     0  85.7 [ 85.4; 86.0]      88.0               89.0     -2.3      1.17         1.17        34      3.8           0
+         75%  190144   167007   23137     0  87.8 [ 87.5; 88.1]      90.2               90.9     -2.4      1.14         1.14        31      3.6           0
+         80%  162769   146308   16461     0  89.9 [ 89.6; 90.2]      92.4               92.8     -2.5      1.11         1.12        27      3.3           1
+         85%  134624   123830   10794     0  92.0 [ 91.7; 92.3]      94.5               94.7     -2.5      1.09         1.09        24      3.1           0
+         90%  104505    98278    6227     0  94.0 [ 93.7; 94.3]      96.4               96.6     -2.4      1.06         1.07        20      2.8           0
+         95%   69943    67284    2659     0  96.2 [ 95.9; 96.5]      98.4               98.4     -2.2      1.04         1.04        14      2.6           0
+
+4 TEILMENGEN: ERSTE/ZWEITE HAELFTE UND ERSTE 15 TEAMSPIELE GEGEN REST (bei Spielerpunkten: 1-9 bisherige Spiele gegen ab 10)
+MARKT: Sieger (Favorit des Modells)
+  alle Spiele: Tipps / Trefferquote % [95 %] je Teilmenge
+    Schwelle                       Hälfte 1                       Hälfte 2                       erste 15                           Rest
+         50%       618  62.5 [ 58.8; 66.3]        619  71.6 [ 67.9; 74.7]        218  67.0 [ 60.7; 73.2]       1019  67.0 [ 64.0; 69.6] 
+         55%       477  65.6 [ 61.3; 69.9]        511  74.0 [ 70.3; 77.4]        174  71.3 [ 64.4; 77.9]        814  69.7 [ 66.4; 72.6] 
+         60%       358  69.6 [ 64.9; 74.2]        386  78.2 [ 73.8; 82.0]        130  79.2 [ 72.1; 85.8]        614  73.0 [ 69.2; 76.3] 
+         65%       262  74.4 [ 68.9; 79.2]        278  82.4 [ 77.4; 86.6]        104  81.7 [ 73.7; 88.5]        436  77.8 [ 73.7; 81.3] 
+         70%       182  79.1 [ 72.9; 84.5]        179  86.0 [ 80.5; 90.7]         75  85.3 [ 76.8; 92.8]*       286  81.8 [ 77.2; 86.2] 
+         75%       115  79.1 [ 71.4; 86.1]        120  89.2 [ 83.0; 94.4]         50  86.0 [ 75.0; 95.2]*       185  83.8 [ 77.7; 88.8] 
+         80%        54  79.6 [ 68.4; 89.1]*        57  87.7 [ 78.3; 95.6]*        25  84.0 [ 68.2; 96.4]*        86  83.7 [ 75.3; 90.9]*
+         85%        21  90.5 [ 76.5;100.0]*        25  92.0 [ 79.2;100.0]*        12  91.7 [ 75.0;100.0]*        34  91.2 [ 80.8;100.0]*
+         90%         5 100.0 [100.0;100.0]*         4 100.0 [100.0;100.0]*         4 100.0 [100.0;100.0]*         5 100.0 [100.0;100.0]*
+         95%         1 100.0 [100.0;100.0]*                              -         1 100.0 [100.0;100.0]*                              -
+    (* = unter 100 Tipps: nicht aussagekraeftig)
+
+  Favorit Heim: Tipps / Trefferquote % [95 %] je Teilmenge
+    Schwelle                       Hälfte 1                       Hälfte 2                       erste 15                           Rest
+         50%       378  65.1 [ 60.2; 70.0]        399  70.7 [ 66.1; 74.7]        130  70.0 [ 61.7; 77.4]        647  67.5 [ 63.8; 70.8] 
+         55%       306  67.6 [ 62.1; 72.5]        347  70.9 [ 66.1; 75.2]        111  72.1 [ 63.5; 79.8]        542  68.8 [ 64.7; 72.3] 
+         60%       237  71.7 [ 65.8; 77.3]        275  75.6 [ 69.9; 80.3]         85  81.2 [ 73.2; 89.0]*       427  72.4 [ 67.9; 76.4] 
+         65%       172  75.0 [ 68.0; 81.3]        207  80.7 [ 74.6; 85.8]         67  80.6 [ 70.6; 89.4]*       312  77.6 [ 72.5; 82.2] 
+         70%       130  78.5 [ 70.3; 85.0]        138  84.1 [ 77.3; 89.8]         53  83.0 [ 72.2; 93.2]*       215  80.9 [ 75.3; 86.0] 
+         75%        94  78.7 [ 69.8; 86.7]*        95  88.4 [ 81.4; 94.5]*        40  85.0 [ 72.7; 95.8]*       149  83.2 [ 76.5; 89.0] 
+         80%        45  77.8 [ 65.4; 88.9]*        48  85.4 [ 74.5; 94.7]*        19  78.9 [ 58.8; 95.2]*        74  82.4 [ 72.9; 90.3]*
+         85%        19  89.5 [ 73.7;100.0]*        23  91.3 [ 77.4;100.0]*        10  90.0 [ 66.7;100.0]*        32  90.6 [ 80.0;100.0]*
+         90%         5 100.0 [100.0;100.0]*         4 100.0 [100.0;100.0]*         4 100.0 [100.0;100.0]*         5 100.0 [100.0;100.0]*
+         95%         1 100.0 [100.0;100.0]*                              -         1 100.0 [100.0;100.0]*                              -
+    (* = unter 100 Tipps: nicht aussagekraeftig)
+
+  Favorit Gast: Tipps / Trefferquote % [95 %] je Teilmenge
+    Schwelle                       Hälfte 1                       Hälfte 2                       erste 15                           Rest
+         50%       240  58.3 [ 52.2; 64.8]        220  73.2 [ 67.0; 79.0]         88  62.5 [ 52.3; 73.4]*       372  66.1 [ 60.8; 70.6] 
+         55%       171  62.0 [ 54.6; 69.5]        164  80.5 [ 74.5; 86.6]         63  69.8 [ 58.1; 82.4]*       272  71.3 [ 66.0; 76.4] 
+         60%       121  65.3 [ 56.8; 73.9]        111  84.7 [ 77.8; 91.4]         45  75.6 [ 61.7; 88.4]*       187  74.3 [ 67.8; 80.5] 
+         65%        90  73.3 [ 64.4; 82.2]*        71  87.3 [ 78.8; 94.8]*        37  83.8 [ 70.0; 94.6]*       124  78.2 [ 70.8; 85.1] 
+         70%        52  80.8 [ 69.6; 92.1]*        41  92.7 [ 83.7;100.0]*        22  90.9 [ 77.3;100.0]*        71  84.5 [ 75.4; 92.3]*
+         75%        21  81.0 [ 62.5; 95.8]*        25  92.0 [ 80.0;100.0]*        10  90.0 [ 66.7;100.0]*        36  86.1 [ 74.2; 96.7]*
+         80%         9  88.9 [ 63.6;100.0]*         9 100.0 [100.0;100.0]*         6 100.0 [100.0;100.0]*        12  91.7 [ 70.0;100.0]*
+         85%         2 100.0 [100.0;100.0]*         2 100.0 [100.0;100.0]*         2 100.0 [100.0;100.0]*         2 100.0 [100.0;100.0]*
+         90%                              -                              -                              -                              -
+         95%                              -                              -                              -                              -
+    (* = unter 100 Tipps: nicht aussagekraeftig)
+
+MARKT: Spread (Seite mit der hoeheren Deckungs-Chance, Linien mu-5 .. mu+5)
+  alle Tipps: Tipps / Trefferquote % [95 %] je Teilmenge
+    Schwelle                       Hälfte 1                       Hälfte 2                       erste 15                           Rest
+         50%      6778  57.6 [ 56.4; 58.9]       6789  58.2 [ 57.0; 59.4]       2390  59.0 [ 57.1; 61.0]      11177  57.7 [ 56.8; 58.6] 
+         55%      4927  60.0 [ 58.6; 61.4]       4941  59.3 [ 58.0; 60.6]       1738  61.1 [ 58.9; 63.5]       8130  59.3 [ 58.3; 60.4] 
+         60%      2464  63.1 [ 61.5; 64.9]       2471  62.2 [ 60.5; 63.9]        870  64.4 [ 61.7; 67.2]       4065  62.3 [ 61.0; 63.5] 
+         65%                              -                              -                              -                              -
+         70%                              -                              -                              -                              -
+         75%                              -                              -                              -                              -
+         80%                              -                              -                              -                              -
+         85%                              -                              -                              -                              -
+         90%                              -                              -                              -                              -
+         95%                              -                              -                              -                              -
+    (* = unter 100 Tipps: nicht aussagekraeftig)
+
+  Favorit-Seite: Tipps / Trefferquote % [95 %] je Teilmenge
+    Schwelle                       Hälfte 1                       Hälfte 2                       erste 15                           Rest
+         50%      3673  55.4 [ 51.5; 59.0]       3689  64.7 [ 61.0; 68.2]       1299  59.4 [ 53.5; 65.2]       6063  60.2 [ 57.1; 62.9] 
+         55%      2446  58.1 [ 54.1; 61.8]       2461  67.0 [ 63.2; 70.4]        865  62.1 [ 56.2; 68.1]       4042  62.6 [ 59.6; 65.4] 
+         60%      1223  60.8 [ 57.0; 64.5]       1230  69.3 [ 65.5; 72.7]        433  64.7 [ 58.6; 71.0]       2020  65.1 [ 62.0; 67.8] 
+         65%                              -                              -                              -                              -
+         70%                              -                              -                              -                              -
+         75%                              -                              -                              -                              -
+         80%                              -                              -                              -                              -
+         85%                              -                              -                              -                              -
+         90%                              -                              -                              -                              -
+         95%                              -                              -                              -                              -
+    (* = unter 100 Tipps: nicht aussagekraeftig)
+
+  Aussenseiter-Seite: Tipps / Trefferquote % [95 %] je Teilmenge
+    Schwelle                       Hälfte 1                       Hälfte 2                       erste 15                           Rest
+         50%      3061  60.4 [ 56.9; 64.3]       3078  50.4 [ 46.6; 54.4]       1080  58.5 [ 52.6; 64.9]       5059  54.7 [ 51.9; 57.7] 
+         55%      2449  62.0 [ 58.4; 65.8]       2464  51.7 [ 47.9; 55.8]        865  60.2 [ 54.1; 66.4]       4048  56.1 [ 53.4; 59.1] 
+         60%      1225  65.6 [ 61.9; 69.4]       1233  55.1 [ 51.1; 59.1]        433  64.2 [ 58.1; 70.6]       2025  59.5 [ 56.8; 62.7] 
+         65%                              -                              -                              -                              -
+         70%                              -                              -                              -                              -
+         75%                              -                              -                              -                              -
+         80%                              -                              -                              -                              -
+         85%                              -                              -                              -                              -
+         90%                              -                              -                              -                              -
+         95%                              -                              -                              -                              -
+    (* = unter 100 Tipps: nicht aussagekraeftig)
+
+MARKT: Total (nur Over, Linien mu .. mu-5)
+  Over: Tipps / Trefferquote % [95 %] je Teilmenge
+    Schwelle                       Hälfte 1                       Hälfte 2                       erste 15                           Rest
+         50%      3703  54.6 [ 51.1; 58.4]       3708  54.9 [ 50.8; 58.6]       1307  61.7 [ 55.6; 67.9]       6104  53.3 [ 50.4; 56.2] 
+         55%      1851  57.2 [ 53.7; 61.1]       1853  57.5 [ 53.4; 61.3]        654  64.7 [ 58.5; 71.0]       3050  55.8 [ 52.9; 58.8] 
+         60%       616  58.4 [ 54.9; 62.5]        616  59.3 [ 55.1; 63.2]        218  65.6 [ 59.3; 71.9]       1014  57.4 [ 54.4; 60.4] 
+         65%                              -                              -                              -                              -
+         70%                              -                              -                              -                              -
+         75%                              -                              -                              -                              -
+         80%                              -                              -                              -                              -
+         85%                              -                              -                              -                              -
+         90%                              -                              -                              -                              -
+         95%                              -                              -                              -                              -
+    (* = unter 100 Tipps: nicht aussagekraeftig)
+
+MARKT: Team Total (nur Over, Linien mu .. mu-5)
+  Heim: Tipps / Trefferquote % [95 %] je Teilmenge
+    Schwelle                       Hälfte 1                       Hälfte 2                       erste 15                           Rest
+         50%      3687  57.8 [ 54.3; 61.4]       3696  58.9 [ 55.0; 62.5]       1298  60.9 [ 54.8; 66.8]       6085  57.8 [ 55.0; 60.8] 
+         55%      2462  61.0 [ 57.3; 64.7]       2463  62.0 [ 58.1; 65.5]        866  64.9 [ 59.0; 70.7]       4059  60.8 [ 57.8; 63.7] 
+         60%      1850  62.4 [ 58.7; 66.2]       1848  63.4 [ 59.5; 66.9]        652  66.9 [ 61.1; 72.7]       3046  62.0 [ 59.2; 65.1] 
+         65%       616  64.6 [ 60.9; 68.4]        617  66.6 [ 62.7; 70.4]        217  70.0 [ 64.1; 75.9]       1016  64.7 [ 61.9; 67.8] 
+         70%                              -                              -                              -                              -
+         75%                              -                              -                              -                              -
+         80%                              -                              -                              -                              -
+         85%                              -                              -                              -                              -
+         90%                              -                              -                              -                              -
+         95%                              -                              -                              -                              -
+    (* = unter 100 Tipps: nicht aussagekraeftig)
+
+  Gast: Tipps / Trefferquote % [95 %] je Teilmenge
+    Schwelle                       Hälfte 1                       Hälfte 2                       erste 15                           Rest
+         50%      3685  58.9 [ 55.3; 62.4]       3697  60.0 [ 56.4; 63.8]       1302  63.6 [ 57.0; 69.7]       6080  58.6 [ 55.8; 61.4] 
+         55%      2458  62.2 [ 58.5; 65.9]       2463  63.8 [ 60.0; 67.4]        868  67.1 [ 60.5; 73.2]       4053  62.1 [ 59.4; 64.9] 
+         60%      1844  63.7 [ 60.1; 67.3]       1847  65.4 [ 61.6; 69.0]        653  68.6 [ 62.1; 74.7]       3038  63.7 [ 60.9; 66.4] 
+         65%       612  67.0 [ 63.5; 70.8]        616  69.0 [ 65.4; 72.7]        217  71.0 [ 64.6; 77.0]       1011  67.4 [ 64.5; 70.1] 
+         70%                              -                              -                              -                              -
+         75%                              -                              -                              -                              -
+         80%                              -                              -                              -                              -
+         85%                              -                              -                              -                              -
+         90%                              -                              -                              -                              -
+         95%                              -                              -                              -                              -
+    (* = unter 100 Tipps: nicht aussagekraeftig)
+
+  Heim und Gast zusammen: Tipps / Trefferquote % [95 %] je Teilmenge
+    Schwelle                       Hälfte 1                       Hälfte 2                       erste 15                           Rest
+         50%      7372  58.4 [ 55.7; 61.1]       7393  59.5 [ 56.5; 62.3]       2600  62.2 [ 57.4; 66.9]      12165  58.2 [ 56.1; 60.4] 
+         55%      4920  61.6 [ 58.9; 64.4]       4926  62.9 [ 60.0; 65.7]       1734  66.0 [ 61.4; 70.7]       8112  61.4 [ 59.3; 63.6] 
+         60%      3694  63.0 [ 60.3; 65.9]       3695  64.4 [ 61.5; 67.2]       1305  67.7 [ 63.1; 72.2]       6084  62.8 [ 60.7; 65.0] 
+         65%      1228  65.8 [ 63.0; 68.4]       1233  67.8 [ 65.0; 70.7]        434  70.5 [ 65.8; 74.9]       2027  66.0 [ 63.9; 68.2] 
+         70%                              -                              -                              -                              -
+         75%                              -                              -                              -                              -
+         80%                              -                              -                              -                              -
+         85%                              -                              -                              -                              -
+         90%                              -                              -                              -                              -
+         95%                              -                              -                              -                              -
+    (* = unter 100 Tipps: nicht aussagekraeftig)
+
+MARKT: Spielerpunkte
+  Starter mit >= 10 bisherigen Spielen: Tipps / Trefferquote % [95 %] je Teilmenge
+    Schwelle                       Hälfte 1                       Hälfte 2                       erste 15                           Rest
+         50%    117750  80.7 [ 80.2; 81.3]     103112  80.6 [ 80.0; 81.2]                               -    220862  80.7 [ 80.2; 81.1] 
+         55%    110379  82.7 [ 82.1; 83.2]      96572  82.5 [ 82.0; 83.1]                               -    206951  82.6 [ 82.2; 83.0] 
+         60%    102968  84.5 [ 83.9; 85.0]      90100  84.4 [ 83.8; 84.9]                               -    193068  84.4 [ 84.0; 84.8] 
+         65%     95560  86.2 [ 85.7; 86.7]      83546  86.2 [ 85.6; 86.7]                               -    179106  86.2 [ 85.8; 86.6] 
+         70%     87892  87.9 [ 87.3; 88.4]      76804  87.9 [ 87.4; 88.4]                               -    164696  87.9 [ 87.5; 88.2] 
+         75%     79820  89.5 [ 89.0; 90.0]      69684  89.6 [ 89.1; 90.1]                               -    149504  89.5 [ 89.2; 89.9] 
+         80%     71046  91.1 [ 90.6; 91.6]      62044  91.3 [ 90.8; 91.8]                               -    133090  91.2 [ 90.9; 91.5] 
+         85%     61305  92.8 [ 92.3; 93.2]      53572  93.0 [ 92.6; 93.5]                               -    114877  92.9 [ 92.6; 93.2] 
+         90%     49887  94.5 [ 94.1; 94.9]      43542  94.7 [ 94.3; 95.2]                               -     93429  94.6 [ 94.3; 94.9] 
+         95%     35125  96.3 [ 95.9; 96.7]      30722  96.7 [ 96.3; 97.1]                               -     65847  96.5 [ 96.2; 96.8] 
+    (* = unter 100 Tipps: nicht aussagekraeftig)
+
+  Starter mit < 10 bisherigen Spielen: Tipps / Trefferquote % [95 %] je Teilmenge
+    Schwelle                       Hälfte 1                       Hälfte 2                       erste 15                           Rest
+         50%       419  68.5 [ 58.2; 79.5]        247  61.5 [ 45.6; 74.7]        666  65.9 [ 57.3; 74.3]                               -
+         55%       387  70.0 [ 59.3; 81.4]        221  62.0 [ 45.9; 75.2]        608  67.1 [ 58.5; 75.5]                               -
+         60%       351  71.8 [ 60.9; 83.3]        199  64.3 [ 47.3; 77.9]        550  69.1 [ 59.9; 77.7]                               -
+         65%       318  73.3 [ 61.6; 85.0]        171  65.5 [ 48.2; 79.6]        489  70.6 [ 61.0; 79.5]                               -
+         70%       277  74.7 [ 62.8; 87.5]        150  66.7 [ 48.9; 81.7]        427  71.9 [ 62.4; 81.2]                               -
+         75%       250  75.6 [ 63.3; 88.4]        124  69.4 [ 48.7; 85.4]        374  73.5 [ 63.2; 83.6]                               -
+         80%       211  75.8 [ 62.9; 90.3]        103  67.0 [ 45.8; 84.1]        314  72.9 [ 62.0; 83.6]                               -
+         85%       181  76.2 [ 62.4; 91.7]         80  70.0 [ 45.6; 87.9]*       261  74.3 [ 62.8; 86.0]                               -
+         90%       152  75.7 [ 60.7; 93.1]         62  72.6 [ 43.2; 94.2]*       214  74.8 [ 61.7; 88.4]                               -
+         95%       126  77.0 [ 61.3; 95.5]         54  75.9 [ 46.9; 96.1]*       180  76.7 [ 63.0; 90.7]                               -
+    (* = unter 100 Tipps: nicht aussagekraeftig)
+
+  Rotation: Tipps / Trefferquote % [95 %] je Teilmenge
+    Schwelle                       Hälfte 1                       Hälfte 2                       erste 15                           Rest
+         50%     42352  68.3 [ 67.4; 69.2]      46168  72.3 [ 71.5; 73.2]       1207  62.7 [ 56.9; 68.4]      87313  70.5 [ 69.9; 71.1] 
+         55%     37232  70.8 [ 69.9; 71.8]      40676  74.6 [ 73.8; 75.5]       1081  65.0 [ 59.0; 70.9]      76827  72.9 [ 72.3; 73.6] 
+         60%     32268  73.3 [ 72.4; 74.3]      35268  76.8 [ 75.9; 77.7]        952  66.6 [ 60.3; 72.7]      66584  75.3 [ 74.6; 75.9] 
+         65%     27356  75.7 [ 74.8; 76.7]      30050  79.1 [ 78.2; 79.9]        826  68.4 [ 61.6; 74.7]      56580  77.6 [ 77.0; 78.3] 
+         70%     22571  78.1 [ 77.1; 79.1]      24789  81.2 [ 80.4; 82.1]        720  70.4 [ 63.4; 77.1]      46640  79.9 [ 79.2; 80.6] 
+         75%     17832  80.5 [ 79.5; 81.5]      19604  83.5 [ 82.7; 84.4]        600  73.2 [ 66.4; 79.5]      36836  82.2 [ 81.6; 82.9] 
+         80%     13304  83.0 [ 82.0; 84.1]      14589  85.7 [ 84.8; 86.7]        494  74.5 [ 67.1; 81.2]      27399  84.6 [ 83.9; 85.3] 
+         85%      8969  85.8 [ 84.7; 86.9]       9853  88.1 [ 87.1; 89.1]        392  76.0 [ 67.8; 82.8]      18430  87.2 [ 86.5; 88.0] 
+         90%      5107  88.7 [ 87.3; 89.9]       5525  90.7 [ 89.6; 91.9]        294  78.2 [ 69.8; 85.7]      10338  90.1 [ 89.2; 90.9] 
+         95%      1956  92.1 [ 90.5; 93.6]       1904  92.9 [ 91.2; 94.7]        212  82.5 [ 73.3; 89.9]       3648  93.1 [ 91.9; 94.2] 
+    (* = unter 100 Tipps: nicht aussagekraeftig)
+
+  uebrige: Tipps / Trefferquote % [95 %] je Teilmenge
+    Schwelle                       Hälfte 1                       Hälfte 2                       erste 15                           Rest
+         50%     10976  57.6 [ 56.2; 59.1]      11118  62.4 [ 60.8; 63.9]        781  55.4 [ 49.9; 61.3]      21313  60.2 [ 59.1; 61.3] 
+         55%      8048  60.5 [ 58.9; 62.1]       8161  65.0 [ 63.2; 66.6]        611  57.6 [ 51.3; 64.1]      15598  62.9 [ 61.8; 64.1] 
+         60%      5701  64.3 [ 62.5; 66.0]       5744  68.2 [ 66.3; 70.1]        448  60.3 [ 53.3; 67.2]      10997  66.5 [ 65.2; 67.8] 
+         65%      3866  68.0 [ 66.0; 70.0]       3788  70.8 [ 68.6; 72.9]        329  59.9 [ 51.9; 68.2]       7325  69.8 [ 68.4; 71.3] 
+         70%      2485  70.6 [ 68.2; 73.1]       2349  73.4 [ 70.8; 75.7]        233  60.1 [ 50.6; 69.9]       4601  72.6 [ 70.8; 74.3] 
+         75%      1516  74.3 [ 71.4; 77.3]       1314  76.8 [ 73.6; 79.9]        162  60.5 [ 49.2; 73.3]       2668  76.4 [ 74.3; 78.5] 
+         80%       809  76.9 [ 72.8; 80.7]        663  79.0 [ 75.0; 82.9]        103  59.2 [ 43.2; 75.0]       1369  79.3 [ 76.4; 82.0] 
+         85%       395  79.7 [ 74.3; 85.3]        269  82.5 [ 76.9; 87.8]         66  59.1 [ 39.2; 76.8]*       598  83.3 [ 79.4; 87.1] 
+         90%       176  82.4 [ 74.3; 89.9]         54  79.6 [ 66.7; 92.2]*        38  57.9 [ 31.8; 79.6]*       192  86.5 [ 79.9; 92.6] 
+         95%        52  82.7 [ 68.7; 93.9]*         4  50.0 [  0.0;100.0]*        19  73.7 [ 33.3;100.0]*        37  83.8 [ 68.8; 96.2]*
+    (* = unter 100 Tipps: nicht aussagekraeftig)
+
+  alle Spieler: Tipps / Trefferquote % [95 %] je Teilmenge
+    Schwelle                       Hälfte 1                       Hälfte 2                       erste 15                           Rest
+         50%    171497  76.2 [ 75.7; 76.6]     160645  76.9 [ 76.5; 77.4]       2654  61.4 [ 57.6; 65.3]     329488  76.6 [ 76.3; 77.0] 
+         55%    156046  78.7 [ 78.2; 79.1]     145630  79.3 [ 78.9; 79.8]       2300  63.6 [ 59.5; 67.8]     299376  79.1 [ 78.8; 79.4] 
+         60%    141288  81.1 [ 80.6; 81.6]     131311  81.6 [ 81.2; 82.1]       1950  65.8 [ 61.7; 70.2]     270649  81.5 [ 81.1; 81.8] 
+         65%    127100  83.4 [ 82.9; 83.8]     117555  83.8 [ 83.4; 84.3]       1644  67.3 [ 63.0; 72.0]     243011  83.7 [ 83.4; 84.0] 
+         70%    113225  85.5 [ 85.0; 86.0]     104092  85.9 [ 85.5; 86.4]       1380  69.1 [ 64.4; 73.8]     215937  85.8 [ 85.5; 86.1] 
+         75%     99418  87.6 [ 87.1; 88.1]      90726  88.1 [ 87.7; 88.5]       1136  71.5 [ 66.3; 76.3]     189008  87.9 [ 87.6; 88.3] 
+         80%     85370  89.7 [ 89.2; 90.1]      77399  90.1 [ 89.7; 90.5]        911  72.2 [ 66.7; 77.4]     161858  90.0 [ 89.7; 90.3] 
+         85%     70850  91.8 [ 91.3; 92.2]      63774  92.2 [ 91.8; 92.6]        719  73.9 [ 67.7; 79.4]     133905  92.1 [ 91.8; 92.4] 
+         90%     55322  93.9 [ 93.5; 94.3]      49183  94.2 [ 93.8; 94.6]        546  75.5 [ 68.4; 82.0]     103959  94.1 [ 93.9; 94.4] 
+         95%     37259  96.0 [ 95.6; 96.4]      32684  96.4 [ 96.0; 96.8]        411  79.6 [ 71.7; 87.0]      69532  96.3 [ 96.0; 96.6] 
+    (* = unter 100 Tipps: nicht aussagekraeftig)
+
+5 ZUSAMMENFASSUNG JE MARKT
+  Frage 1: Ab welcher Schwelle liegt die Trefferquote in BEIDEN Haelften mindestens 69.7 % (Break-even Quote 1,50 + 3 PP)? 'Durchgehend' = auch fuer alle hoeheren Schwellen mit mindestens 100 Tipps je Haelfte.
+MARKT: Sieger (Favorit des Modells)
+  alle Spiele
+    Schwelle  Tipps H1  Tipps H2  Quote H1  Quote H2  beide >= 69.7 %
+         50%       618       619      62.5      71.6             nein
+         55%       477       511      65.6      74.0             nein
+         60%       358       386      69.6      78.2             nein
+         65%       262       278      74.4      82.4               JA
+         70%       182       179      79.1      86.0               JA
+         75%       115       120      79.1      89.2               JA
+         80%        54        57      79.6      87.7  unter 100 Tipps
+         85%        21        25      90.5      92.0  unter 100 Tipps
+         90%         5         4     100.0     100.0  unter 100 Tipps
+         95%         1         0     100.0       -    unter 100 Tipps
+    => durchgehend erfuellt ab: 65 %
+    Zusatz: kleinste Schwelle, deren GANZE Stichprobe mit unterer Intervallgrenze ueber dem Break-even von Quote 1,50 (66.7 %) liegt: 55 %
+    Dein Vorschlag alle Spiele ab 70 %: Tipps 361 (H1 182, H2 179); Trefferquote  82.5 % [ 78.4; 86.3], H1  79.1 %, H2  86.0 %; Break-even-Quote 1.21; Ziel 69.7 % in beiden Haelften: erfuellt
+
+  Favorit Heim
+    Schwelle  Tipps H1  Tipps H2  Quote H1  Quote H2  beide >= 69.7 %
+         50%       378       399      65.1      70.7             nein
+         55%       306       347      67.6      70.9             nein
+         60%       237       275      71.7      75.6               JA
+         65%       172       207      75.0      80.7               JA
+         70%       130       138      78.5      84.1               JA
+         75%        94        95      78.7      88.4  unter 100 Tipps
+         80%        45        48      77.8      85.4  unter 100 Tipps
+         85%        19        23      89.5      91.3  unter 100 Tipps
+         90%         5         4     100.0     100.0  unter 100 Tipps
+         95%         1         0     100.0       -    unter 100 Tipps
+    => durchgehend erfuellt ab: 60 %
+    Zusatz: kleinste Schwelle, deren GANZE Stichprobe mit unterer Intervallgrenze ueber dem Break-even von Quote 1,50 (66.7 %) liegt: 60 %
+
+  Favorit Gast
+    Schwelle  Tipps H1  Tipps H2  Quote H1  Quote H2  beide >= 69.7 %
+         50%       240       220      58.3      73.2             nein
+         55%       171       164      62.0      80.5             nein
+         60%       121       111      65.3      84.7             nein
+         65%        90        71      73.3      87.3  unter 100 Tipps
+         70%        52        41      80.8      92.7  unter 100 Tipps
+         75%        21        25      81.0      92.0  unter 100 Tipps
+         80%         9         9      88.9     100.0  unter 100 Tipps
+         85%         2         2     100.0     100.0  unter 100 Tipps
+         90%         0         0       -         -    unter 100 Tipps
+         95%         0         0       -         -    unter 100 Tipps
+    => durchgehend erfuellt ab: keine Schwelle (mit >= 100 Tipps je Haelfte)
+    Zusatz: kleinste Schwelle, deren GANZE Stichprobe mit unterer Intervallgrenze ueber dem Break-even von Quote 1,50 (66.7 %) liegt: 60 %
+
+MARKT: Spread (Seite mit der hoeheren Deckungs-Chance, Linien mu-5 .. mu+5)
+  alle Tipps
+    Schwelle  Tipps H1  Tipps H2  Quote H1  Quote H2  beide >= 69.7 %
+         50%      6778      6789      57.6      58.2             nein
+         55%      4927      4941      60.0      59.3             nein
+         60%      2464      2471      63.1      62.2             nein
+         65%         0         0       -         -    unter 100 Tipps
+         70%         0         0       -         -    unter 100 Tipps
+         75%         0         0       -         -    unter 100 Tipps
+         80%         0         0       -         -    unter 100 Tipps
+         85%         0         0       -         -    unter 100 Tipps
+         90%         0         0       -         -    unter 100 Tipps
+         95%         0         0       -         -    unter 100 Tipps
+    => durchgehend erfuellt ab: keine Schwelle (mit >= 100 Tipps je Haelfte)
+    Zusatz: keine Schwelle, deren untere Intervallgrenze ueber dem Break-even von Quote 1,50 (66.7 %) liegt (mit >= 100 Tipps je Haelfte).
+    Dein Vorschlag alle Tipps ab 60 %: Tipps 4935 (H1 2464, H2 2471); Trefferquote  62.6 % [ 61.5; 63.8], H1  63.1 %, H2  62.2 %; Break-even-Quote 1.60; Ziel 69.7 % in beiden Haelften: NICHT erfuellt
+
+  Favorit-Seite
+    Schwelle  Tipps H1  Tipps H2  Quote H1  Quote H2  beide >= 69.7 %
+         50%      3673      3689      55.4      64.7             nein
+         55%      2446      2461      58.1      67.0             nein
+         60%      1223      1230      60.8      69.3             nein
+         65%         0         0       -         -    unter 100 Tipps
+         70%         0         0       -         -    unter 100 Tipps
+         75%         0         0       -         -    unter 100 Tipps
+         80%         0         0       -         -    unter 100 Tipps
+         85%         0         0       -         -    unter 100 Tipps
+         90%         0         0       -         -    unter 100 Tipps
+         95%         0         0       -         -    unter 100 Tipps
+    => durchgehend erfuellt ab: keine Schwelle (mit >= 100 Tipps je Haelfte)
+    Zusatz: keine Schwelle, deren untere Intervallgrenze ueber dem Break-even von Quote 1,50 (66.7 %) liegt (mit >= 100 Tipps je Haelfte).
+
+  Aussenseiter-Seite
+    Schwelle  Tipps H1  Tipps H2  Quote H1  Quote H2  beide >= 69.7 %
+         50%      3061      3078      60.4      50.4             nein
+         55%      2449      2464      62.0      51.7             nein
+         60%      1225      1233      65.6      55.1             nein
+         65%         0         0       -         -    unter 100 Tipps
+         70%         0         0       -         -    unter 100 Tipps
+         75%         0         0       -         -    unter 100 Tipps
+         80%         0         0       -         -    unter 100 Tipps
+         85%         0         0       -         -    unter 100 Tipps
+         90%         0         0       -         -    unter 100 Tipps
+         95%         0         0       -         -    unter 100 Tipps
+    => durchgehend erfuellt ab: keine Schwelle (mit >= 100 Tipps je Haelfte)
+    Zusatz: keine Schwelle, deren untere Intervallgrenze ueber dem Break-even von Quote 1,50 (66.7 %) liegt (mit >= 100 Tipps je Haelfte).
+
+MARKT: Total (nur Over, Linien mu .. mu-5)
+  Over
+    Schwelle  Tipps H1  Tipps H2  Quote H1  Quote H2  beide >= 69.7 %
+         50%      3703      3708      54.6      54.9             nein
+         55%      1851      1853      57.2      57.5             nein
+         60%       616       616      58.4      59.3             nein
+         65%         0         0       -         -    unter 100 Tipps
+         70%         0         0       -         -    unter 100 Tipps
+         75%         0         0       -         -    unter 100 Tipps
+         80%         0         0       -         -    unter 100 Tipps
+         85%         0         0       -         -    unter 100 Tipps
+         90%         0         0       -         -    unter 100 Tipps
+         95%         0         0       -         -    unter 100 Tipps
+    => durchgehend erfuellt ab: keine Schwelle (mit >= 100 Tipps je Haelfte)
+    Zusatz: keine Schwelle, deren untere Intervallgrenze ueber dem Break-even von Quote 1,50 (66.7 %) liegt (mit >= 100 Tipps je Haelfte).
+    Dein Vorschlag Rest ab 60 %: Tipps 1014 (H1 398, H2 616); Trefferquote  57.4 % [ 54.4; 60.4], H1  54.5 %, H2  59.3 %; Break-even-Quote 1.74; Ziel 69.7 % in beiden Haelften: NICHT erfuellt
+    Dein Vorschlag erste 15 Teamspiele ab 65 %: Tipps 0 (H1 0, H2 0); Trefferquote    -   % [   -  ;   -  ], H1    -   %, H2    -   %; Break-even-Quote inf   (unter 100 Tipps: nicht aussagekraeftig); Ziel 69.7 % in beiden Haelften: NICHT erfuellt
+
+MARKT: Team Total (nur Over, Linien mu .. mu-5)
+  Heim
+    Schwelle  Tipps H1  Tipps H2  Quote H1  Quote H2  beide >= 69.7 %
+         50%      3687      3696      57.8      58.9             nein
+         55%      2462      2463      61.0      62.0             nein
+         60%      1850      1848      62.4      63.4             nein
+         65%       616       617      64.6      66.6             nein
+         70%         0         0       -         -    unter 100 Tipps
+         75%         0         0       -         -    unter 100 Tipps
+         80%         0         0       -         -    unter 100 Tipps
+         85%         0         0       -         -    unter 100 Tipps
+         90%         0         0       -         -    unter 100 Tipps
+         95%         0         0       -         -    unter 100 Tipps
+    => durchgehend erfuellt ab: keine Schwelle (mit >= 100 Tipps je Haelfte)
+    Zusatz: keine Schwelle, deren untere Intervallgrenze ueber dem Break-even von Quote 1,50 (66.7 %) liegt (mit >= 100 Tipps je Haelfte).
+
+  Gast
+    Schwelle  Tipps H1  Tipps H2  Quote H1  Quote H2  beide >= 69.7 %
+         50%      3685      3697      58.9      60.0             nein
+         55%      2458      2463      62.2      63.8             nein
+         60%      1844      1847      63.7      65.4             nein
+         65%       612       616      67.0      69.0             nein
+         70%         0         0       -         -    unter 100 Tipps
+         75%         0         0       -         -    unter 100 Tipps
+         80%         0         0       -         -    unter 100 Tipps
+         85%         0         0       -         -    unter 100 Tipps
+         90%         0         0       -         -    unter 100 Tipps
+         95%         0         0       -         -    unter 100 Tipps
+    => durchgehend erfuellt ab: keine Schwelle (mit >= 100 Tipps je Haelfte)
+    Zusatz: keine Schwelle, deren untere Intervallgrenze ueber dem Break-even von Quote 1,50 (66.7 %) liegt (mit >= 100 Tipps je Haelfte).
+
+  Heim und Gast zusammen
+    Schwelle  Tipps H1  Tipps H2  Quote H1  Quote H2  beide >= 69.7 %
+         50%      7372      7393      58.4      59.5             nein
+         55%      4920      4926      61.6      62.9             nein
+         60%      3694      3695      63.0      64.4             nein
+         65%      1228      1233      65.8      67.8             nein
+         70%         0         0       -         -    unter 100 Tipps
+         75%         0         0       -         -    unter 100 Tipps
+         80%         0         0       -         -    unter 100 Tipps
+         85%         0         0       -         -    unter 100 Tipps
+         90%         0         0       -         -    unter 100 Tipps
+         95%         0         0       -         -    unter 100 Tipps
+    => durchgehend erfuellt ab: keine Schwelle (mit >= 100 Tipps je Haelfte)
+    Zusatz: keine Schwelle, deren untere Intervallgrenze ueber dem Break-even von Quote 1,50 (66.7 %) liegt (mit >= 100 Tipps je Haelfte).
+    Dein Vorschlag Rest ab 60 %: Tipps 6084 (H1 2389, H2 3695); Trefferquote  62.8 % [ 60.7; 65.0], H1  60.4 %, H2  64.4 %; Break-even-Quote 1.59; Ziel 69.7 % in beiden Haelften: NICHT erfuellt
+    Dein Vorschlag erste 15 Teamspiele ab 65 %: Tipps 434 (H1 434, H2 0); Trefferquote  70.5 % [ 65.8; 74.9], H1  70.5 %, H2    -   %; Break-even-Quote 1.42   (unter 100 Tipps: nicht aussagekraeftig); Ziel 69.7 % in beiden Haelften: NICHT erfuellt
+
+MARKT: Spielerpunkte
+  Starter mit >= 10 bisherigen Spielen
+    Schwelle  Tipps H1  Tipps H2  Quote H1  Quote H2  beide >= 69.7 %
+         50%    117750    103112      80.7      80.6               JA
+         55%    110379     96572      82.7      82.5               JA
+         60%    102968     90100      84.5      84.4               JA
+         65%     95560     83546      86.2      86.2               JA
+         70%     87892     76804      87.9      87.9               JA
+         75%     79820     69684      89.5      89.6               JA
+         80%     71046     62044      91.1      91.3               JA
+         85%     61305     53572      92.8      93.0               JA
+         90%     49887     43542      94.5      94.7               JA
+         95%     35125     30722      96.3      96.7               JA
+    => durchgehend erfuellt ab: 50 %
+    Zusatz: kleinste Schwelle, deren GANZE Stichprobe mit unterer Intervallgrenze ueber dem Break-even von Quote 1,50 (66.7 %) liegt: 50 %
+    Dein Vorschlag Starter mit >= 10 Spielen ab 80 %: Tipps 133090 (H1 71046, H2 62044); Trefferquote  91.2 % [ 90.9; 91.5], H1  91.1 %, H2  91.3 %; Break-even-Quote 1.10; Ziel 69.7 % in beiden Haelften: erfuellt
+
+  Starter mit < 10 bisherigen Spielen
+    Schwelle  Tipps H1  Tipps H2  Quote H1  Quote H2  beide >= 69.7 %
+         50%       419       247      68.5      61.5             nein
+         55%       387       221      70.0      62.0             nein
+         60%       351       199      71.8      64.3             nein
+         65%       318       171      73.3      65.5             nein
+         70%       277       150      74.7      66.7             nein
+         75%       250       124      75.6      69.4             nein
+         80%       211       103      75.8      67.0             nein
+         85%       181        80      76.2      70.0  unter 100 Tipps
+         90%       152        62      75.7      72.6  unter 100 Tipps
+         95%       126        54      77.0      75.9  unter 100 Tipps
+    => durchgehend erfuellt ab: keine Schwelle (mit >= 100 Tipps je Haelfte)
+    Zusatz: keine Schwelle, deren untere Intervallgrenze ueber dem Break-even von Quote 1,50 (66.7 %) liegt (mit >= 100 Tipps je Haelfte).
+
+  Rotation
+    Schwelle  Tipps H1  Tipps H2  Quote H1  Quote H2  beide >= 69.7 %
+         50%     42352     46168      68.3      72.3             nein
+         55%     37232     40676      70.8      74.6               JA
+         60%     32268     35268      73.3      76.8               JA
+         65%     27356     30050      75.7      79.1               JA
+         70%     22571     24789      78.1      81.2               JA
+         75%     17832     19604      80.5      83.5               JA
+         80%     13304     14589      83.0      85.7               JA
+         85%      8969      9853      85.8      88.1               JA
+         90%      5107      5525      88.7      90.7               JA
+         95%      1956      1904      92.1      92.9               JA
+    => durchgehend erfuellt ab: 55 %
+    Zusatz: kleinste Schwelle, deren GANZE Stichprobe mit unterer Intervallgrenze ueber dem Break-even von Quote 1,50 (66.7 %) liegt: 50 %
+
+  uebrige
+    Schwelle  Tipps H1  Tipps H2  Quote H1  Quote H2  beide >= 69.7 %
+         50%     10976     11118      57.6      62.4             nein
+         55%      8048      8161      60.5      65.0             nein
+         60%      5701      5744      64.3      68.2             nein
+         65%      3866      3788      68.0      70.8             nein
+         70%      2485      2349      70.6      73.4               JA
+         75%      1516      1314      74.3      76.8               JA
+         80%       809       663      76.9      79.0               JA
+         85%       395       269      79.7      82.5               JA
+         90%       176        54      82.4      79.6  unter 100 Tipps
+         95%        52         4      82.7      50.0  unter 100 Tipps
+    => durchgehend erfuellt ab: 70 %
+    Zusatz: kleinste Schwelle, deren GANZE Stichprobe mit unterer Intervallgrenze ueber dem Break-even von Quote 1,50 (66.7 %) liegt: 65 %
+
+  alle Spieler
+    Schwelle  Tipps H1  Tipps H2  Quote H1  Quote H2  beide >= 69.7 %
+         50%    171497    160645      76.2      76.9               JA
+         55%    156046    145630      78.7      79.3               JA
+         60%    141288    131311      81.1      81.6               JA
+         65%    127100    117555      83.4      83.8               JA
+         70%    113225    104092      85.5      85.9               JA
+         75%     99418     90726      87.6      88.1               JA
+         80%     85370     77399      89.7      90.1               JA
+         85%     70850     63774      91.8      92.2               JA
+         90%     55322     49183      93.9      94.2               JA
+         95%     37259     32684      96.0      96.4               JA
+    => durchgehend erfuellt ab: 50 %
+    Zusatz: kleinste Schwelle, deren GANZE Stichprobe mit unterer Intervallgrenze ueber dem Break-even von Quote 1,50 (66.7 %) liegt: 50 %
+
+EMPFEHLUNG (aus den Zahlen oben; keine Aenderung am Produktivmodell)
+  Kriterium: kleinste Schwelle, ab der die Trefferquote in beiden Haelften durchgehend mindestens das Ziel erreicht (>= 100 Tipps je Haelfte). Wo keine Schwelle das schafft, gilt: nicht empfohlen.
+  Sieger / alle: Mindest-Chance 65 %
+  Sieger / Favorit Heim: Mindest-Chance 60 %
+  Sieger / Favorit Gast: keine Schwelle erreicht das Ziel in beiden Haelften
+  Spread / alle: keine Schwelle erreicht das Ziel in beiden Haelften
+  Spread / Favorit-Seite: keine Schwelle erreicht das Ziel in beiden Haelften
+  Spread / Aussenseiter-Seite: keine Schwelle erreicht das Ziel in beiden Haelften
+  Total / alle: keine Schwelle erreicht das Ziel in beiden Haelften
+  Team Total / Heim: keine Schwelle erreicht das Ziel in beiden Haelften
+  Team Total / Gast: keine Schwelle erreicht das Ziel in beiden Haelften
+  Team Total / alle: keine Schwelle erreicht das Ziel in beiden Haelften
+  Spielerpunkte / Starter mit >= 10 bisherigen Spielen: Mindest-Chance 50 %
+  Spielerpunkte / Starter mit < 10 bisherigen Spielen: keine Schwelle erreicht das Ziel in beiden Haelften
+  Spielerpunkte / Rotation: Mindest-Chance 55 %
+  Spielerpunkte / uebrige: Mindest-Chance 70 %
+  Spielerpunkte / alle Spieler: Mindest-Chance 50 %
+
+6 EHRLICHE ZAHLEN
+  Tipps je Schwelle stehen in den Tabellen oben; Schwellen mit unter 100 Tipps sind gekennzeichnet. Linien eines Spiels sind korreliert (Intervalle nach Spielen). Die Spieler-Tipps stammen aus 2 Saisons, die Team-Maerkte aus 1 Saison (2025-26):
+  Konstanten des Produktivmodells (Sigmas, Blowout-Kurve, league_ppm) sind teils in-sample. Ohne Quoten: Break-even-Quote ist nur die Hochrechnung 1 / Trefferquote; echte Quoten, Abzug des Buchmachers und Linien-Verfuegbarkeit sind nicht gemessen.
+  Spreads/Totals: die Hauptlinie (k = 0) ist 50:50 per Konstruktion; hohe Schwellen sind bei Team-Maerkten gar nicht erreichbar (z. B. Total Over bei 5 Punkten Abstand hat nur etwa 60 % Modell-Chance).

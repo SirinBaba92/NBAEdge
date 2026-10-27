@@ -99,9 +99,10 @@ def over_under_rows(mean: float, lines: list[float], main: float | None, sigma: 
     """Zeilen fuer Total/Team Total (Over links, Under rechts), nach Linie aufsteigend."""
     rows = []
     for line in sorted(set(round(float(x), 2) for x in lines)):
-        left, right = percent_pair(prob_above(mean, line, sigma))
+        p_over = prob_above(mean, line, sigma)
+        left, right = percent_pair(p_over)
         rows.append({"line": line, "p_left": left, "p_right": right, "predicted": predicted_side(left, right),
-                     "is_main": main is not None and abs(line - main) < 1e-9})
+                     "is_main": main is not None and abs(line - main) < 1e-9, "p_left_raw": p_over})
     return rows
 
 
@@ -115,7 +116,7 @@ def spread_rows(exp_spread: float, favorite: str, lines: list[float], main: floa
         fav_pct, dog_pct = percent_pair(p_fav)
         left, right = (dog_pct, fav_pct) if favorite == "home" else (fav_pct, dog_pct)
         rows.append({"line": x, "p_left": left, "p_right": right, "predicted": predicted_side(left, right),
-                     "is_main": main is not None and abs(x - main) < 1e-9})
+                     "is_main": main is not None and abs(x - main) < 1e-9, "p_left_raw": (1.0 - p_fav) if favorite == "home" else p_fav})
     return rows
 
 

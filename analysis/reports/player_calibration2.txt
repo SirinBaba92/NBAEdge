@@ -1,0 +1,263 @@
+VARIANTEN V1 UND V2 DER SPIELER-PUNKTE-CHANCEN NACH GRUPPEN (A roh gegen V1 breiterer Kern und V2 Mittelwert-Unsicherheit), walk-forward, echte Boxscores, ohne Quoten
+Skripte analysis/backtest_player_calibration.py (Replay, run2 = Gitter) und analysis/backtest_player_calibration2_report.py (Auswertung); beide lesen nur. Produktivmodell unveraendert.
+ZAHLEN: 2 Saisons (2024-25, 2025-26), 327 Spieltage, 2460 Spiele, 52015 Spielerzeilen, 1872540 Paare Spieler x Meilenstein (k = 5..40). 'Zeilen' = Paare; Paare einer Spielerzeile/eines Spiels sind abhaengig (Bootstrap nach Spielen).
+
+KLAERUNG ZUM VORBERICHT (player_calibration.txt): Die Zahlen -5,5 bis -8,9 PP fuer Stufen 80-95 % stehen in der Tabelle 'um den Schnitt (|k - Schnitt| <= 3)' (80-85 %: -5,48; 85-90 %: -7,84; 90-95 %: -8,94). Die 2,7 bis 2,9 PP stammen aus der Gesamttabelle
+  ueber alle Meilensteine 5..40. Kein Widerspruch, sondern zwei Gruppen: Die Selbstsicherheit steckt bei Linien nahe am Spielerschnitt (dort liegen die Wetten); die vielen sicheren Chancen weit unter dem Schnitt verduennen das Gesamtbild.
+
+1 SUCHGITTER UND PARAMETERWAHL
+  V1, Lesart f (Faktor): h = c x (1 + 0,05 x); V1, Lesart c (fester Kern): h = c. Beide mit c = 1,0 bis 4,0 in 0,25er-Schritten (13 Werte). (V1f mit c = 1,0 ist A.)
+  V2: h^2 = (1 + 0,05 x)^2 + (c / sqrt(n) * x)^2, n = Spiele des Spielers mit mind. 8 Minuten im Verlauf; c = 0,5; 1; 1,5; 2; 2,5; 3; 3,5; 4; 5 (bisher bis 1,0, Optimum lag am Rand).
+  Parameterwahl: je Familie der Wert mit dem kleinsten Log-Loss ueber alle Paare der LERNHAELFTE (Hälften = erste/zweite Saisonhälfte nach Datum, beide Saisons gepoolt); angewandt auf die andere Haelfte, und umgekehrt (Kreuz-Anpassung).
+  Alle Zahlen fuer V1/V2 unten sind 'ausserhalb der Stichprobe': jede Zeile mit den Parametern, die auf der jeweils anderen Haelfte gewaehlt wurden. Zusatz: Optimum auf den ganzen Daten (nur zur Orientierung, nicht fuer die Regel).
+  Log-Loss je Parameter (Haelfte 1 / Haelfte 2 / ganz); A: 0.2556 / 0.2653 / 0.2605
+    V1 Faktor h=c(1+0,05x):
+      c=1      0.2556 / 0.2653 / 0.2605
+      c=1.25   0.2539 / 0.2635 / 0.2587
+      c=1.5    0.2525 / 0.2619 / 0.2572
+      c=1.75   0.2514 / 0.2606 / 0.2560
+      c=2      0.2508 / 0.2597 / 0.2552
+      c=2.25   0.2505 / 0.2591 / 0.2548
+      c=2.5    0.2505 / 0.2588 / 0.2547  <- Optimum ganze Daten
+      c=2.75   0.2509 / 0.2589 / 0.2549
+      c=3      0.2517 / 0.2593 / 0.2555
+      c=3.25   0.2527 / 0.2600 / 0.2564
+      c=3.5    0.2541 / 0.2610 / 0.2575
+      c=3.75   0.2557 / 0.2622 / 0.2589
+      c=4      0.2575 / 0.2636 / 0.2606
+    gewaehlt: gelernt auf Haelfte 1 -> c=2.25; gelernt auf Haelfte 2 -> c=2.5; ganze Daten -> c=2.5
+    V1 fester Kern h=c:
+      c=1      0.2584 / 0.2682 / 0.2633
+      c=1.25   0.2569 / 0.2667 / 0.2618
+      c=1.5    0.2555 / 0.2652 / 0.2604
+      c=1.75   0.2543 / 0.2639 / 0.2591
+      c=2      0.2532 / 0.2627 / 0.2580
+      c=2.25   0.2523 / 0.2616 / 0.2569
+      c=2.5    0.2515 / 0.2606 / 0.2560
+      c=2.75   0.2508 / 0.2598 / 0.2553
+      c=3      0.2503 / 0.2590 / 0.2547
+      c=3.25   0.2500 / 0.2585 / 0.2542
+      c=3.5    0.2498 / 0.2580 / 0.2539
+      c=3.75   0.2498 / 0.2577 / 0.2537
+      c=4      0.2499 / 0.2575 / 0.2537  <- Optimum ganze Daten
+    gewaehlt: gelernt auf Haelfte 1 -> c=3.75; gelernt auf Haelfte 2 -> c=4; ganze Daten -> c=4   [ACHTUNG: Optimum am Gitterrand]
+    V2 Mittelwert-Unsicherheit:
+      c=0.5    0.2529 / 0.2628 / 0.2579
+      c=1      0.2507 / 0.2606 / 0.2557
+      c=1.5    0.2501 / 0.2594 / 0.2548  <- Optimum ganze Daten
+      c=2      0.2509 / 0.2591 / 0.2550
+      c=2.5    0.2529 / 0.2596 / 0.2563
+      c=3      0.2559 / 0.2610 / 0.2584
+      c=3.5    0.2597 / 0.2630 / 0.2613
+      c=4      0.2640 / 0.2656 / 0.2648
+      c=5      0.2734 / 0.2719 / 0.2727
+    gewaehlt: gelernt auf Haelfte 1 -> c=1.5; gelernt auf Haelfte 2 -> c=2; ganze Daten -> c=1.5
+
+2 KALIBRIERUNG NACH GRUPPEN (Kreuz-Anpassung, ganze Daten). Je Variante: Zeilen, Ø-Abweichung in PP, Steigung b der Rekalibrierung [95 %] (ideal 1; < 1 = zu selbstsicher),
+  groesste Stufe mit >= 100 Zeilen (5-%-Stufe, Abweichung in PP = Trefferquote minus Ø-Modell, negativ = Modell zu hoch). Gruppen unter 100 Zeilen sind nicht aussagekraeftig.
+  Gesamt
+  Gesamt (alle Meilensteine)   (1872540 Zeilen)
+    A roh                        Zeilen  1872540  Ø-Abw.  0.78 PP  Steigung 0.835 [0.822; 0.848]  groesste Stufe: 90-95% (34562 Z.): -2.9 PP
+    V1 Faktor h=c(1+0,05x)       Zeilen  1872540  Ø-Abw.  0.68 PP  Steigung 1.033 [1.019; 1.047]  groesste Stufe: 65-70% (30690 Z.): +2.0 PP
+    V1 fester Kern h=c           Zeilen  1872540  Ø-Abw.  0.87 PP  Steigung 1.018 [1.004; 1.031]  groesste Stufe: 25-30% (54275 Z.): -3.0 PP
+    V2 Mittelwert-Unsicherheit   Zeilen  1872540  Ø-Abw.  0.53 PP  Steigung 1.013 [1.000; 1.025]  groesste Stufe: 55-60% (30523 Z.): +2.5 PP
+  2a Meilenstein-Hoehe: unter dem Spielerschnitt   (214285 Zeilen)
+    A roh                        Zeilen   214285  Ø-Abw.  2.18 PP  Steigung 0.636 [0.603; 0.666]  groesste Stufe: 45-50% (359 Z.): +8.1 PP
+    V1 Faktor h=c(1+0,05x)       Zeilen   214285  Ø-Abw.  1.63 PP  Steigung 0.928 [0.892; 0.958]  groesste Stufe: 50-55% (1359 Z.): +6.4 PP
+    V1 fester Kern h=c           Zeilen   214285  Ø-Abw.  0.86 PP  Steigung 0.921 [0.881; 0.952]  groesste Stufe: 50-55% (864 Z.): +6.1 PP
+    V2 Mittelwert-Unsicherheit   Zeilen   214285  Ø-Abw.  1.57 PP  Steigung 0.792 [0.762; 0.821]  groesste Stufe: 50-55% (1736 Z.): +8.7 PP
+  2a Meilenstein-Hoehe: um den Schnitt (+-3)   (252815 Zeilen)
+    A roh                        Zeilen   252815  Ø-Abw.  1.94 PP  Steigung 0.798 [0.777; 0.820]  groesste Stufe: 5-10% (214 Z.): +16.1 PP
+    V1 Faktor h=c(1+0,05x)       Zeilen   252815  Ø-Abw.  0.48 PP  Steigung 0.968 [0.945; 0.994]  groesste Stufe: 10-15% (231 Z.): +8.3 PP
+    V1 fester Kern h=c           Zeilen   252815  Ø-Abw.  1.51 PP  Steigung 1.007 [0.982; 1.034]  groesste Stufe: 15-20% (424 Z.): +2.3 PP
+    V2 Mittelwert-Unsicherheit   Zeilen   252815  Ø-Abw.  2.00 PP  Steigung 0.883 [0.862; 0.908]  groesste Stufe: 10-15% (820 Z.): +8.7 PP
+  2a Meilenstein-Hoehe: ueber dem Schnitt   (1405440 Zeilen)
+    A roh                        Zeilen  1405440  Ø-Abw.  0.57 PP  Steigung 0.636 [0.610; 0.664]  groesste Stufe: 55-60% (306 Z.): -9.0 PP
+    V1 Faktor h=c(1+0,05x)       Zeilen  1405440  Ø-Abw.  0.70 PP  Steigung 0.900 [0.870; 0.931]  groesste Stufe: 45-50% (2114 Z.): -5.7 PP
+    V1 fester Kern h=c           Zeilen  1405440  Ø-Abw.  0.87 PP  Steigung 0.871 [0.843; 0.901]  groesste Stufe: 55-60% (366 Z.): -8.1 PP
+    V2 Mittelwert-Unsicherheit   Zeilen  1405440  Ø-Abw.  0.44 PP  Steigung 0.948 [0.920; 0.974]  groesste Stufe: 40-45% (4546 Z.): -3.3 PP
+  2b Rolle: Starter   (578916 Zeilen)
+    A roh                        Zeilen   578916  Ø-Abw.  0.89 PP  Steigung 0.923 [0.908; 0.937]  groesste Stufe: 90-95% (27616 Z.): -2.5 PP
+    V1 Faktor h=c(1+0,05x)       Zeilen   578916  Ø-Abw.  1.75 PP  Steigung 1.127 [1.111; 1.141]  groesste Stufe: 15-20% (29434 Z.): -3.8 PP
+    V1 fester Kern h=c           Zeilen   578916  Ø-Abw.  1.26 PP  Steigung 1.066 [1.050; 1.080]  groesste Stufe: 15-20% (26865 Z.): -3.2 PP
+    V2 Mittelwert-Unsicherheit   Zeilen   578916  Ø-Abw.  1.57 PP  Steigung 1.080 [1.064; 1.096]  groesste Stufe: 10-15% (37985 Z.): -3.3 PP
+  2b Rolle: Rotation   (575784 Zeilen)
+    A roh                        Zeilen   575784  Ø-Abw.  0.78 PP  Steigung 0.884 [0.869; 0.902]  groesste Stufe: 95-100% (3860 Z.): -4.7 PP
+    V1 Faktor h=c(1+0,05x)       Zeilen   575784  Ø-Abw.  0.69 PP  Steigung 1.069 [1.054; 1.088]  groesste Stufe: 60-65% (11590 Z.): +1.9 PP
+    V1 fester Kern h=c           Zeilen   575784  Ø-Abw.  0.84 PP  Steigung 1.045 [1.028; 1.065]  groesste Stufe: 25-30% (17000 Z.): -2.3 PP
+    V2 Mittelwert-Unsicherheit   Zeilen   575784  Ø-Abw.  0.73 PP  Steigung 1.037 [1.022; 1.053]  groesste Stufe: 55-60% (10864 Z.): +2.7 PP
+  2b Rolle: uebrige   (717840 Zeilen)
+    A roh                        Zeilen   717840  Ø-Abw.  1.09 PP  Steigung 0.617 [0.588; 0.645]  groesste Stufe: 90-95% (174 Z.): -10.1 PP
+    V1 Faktor h=c(1+0,05x)       Zeilen   717840  Ø-Abw.  0.27 PP  Steigung 0.834 [0.800; 0.865]  groesste Stufe: 80-85% (464 Z.): -3.2 PP
+    V1 fester Kern h=c           Zeilen   717840  Ø-Abw.  0.82 PP  Steigung 0.861 [0.824; 0.894]  groesste Stufe: 40-45% (11455 Z.): -4.2 PP
+    V2 Mittelwert-Unsicherheit   Zeilen   717840  Ø-Abw.  0.51 PP  Steigung 0.906 [0.877; 0.932]  groesste Stufe: 85-90% (283 Z.): -2.9 PP
+  2c Bisherige Spiele: 1-9 Spiele   (55764 Zeilen)
+    A roh                        Zeilen    55764  Ø-Abw.  3.01 PP  Steigung n/a (instabil)  groesste Stufe: 90-95% (135 Z.): -29.2 PP
+    V1 Faktor h=c(1+0,05x)       Zeilen    55764  Ø-Abw.  1.96 PP  Steigung n/a (instabil)  groesste Stufe: 85-90% (158 Z.): -16.5 PP
+    V1 fester Kern h=c           Zeilen    55764  Ø-Abw.  1.68 PP  Steigung 0.509 [0.448; 0.607]  groesste Stufe: 80-85% (193 Z.): -14.5 PP
+    V2 Mittelwert-Unsicherheit   Zeilen    55764  Ø-Abw.  1.74 PP  Steigung 0.823 [0.702; 0.957]  groesste Stufe: 70-75% (146 Z.): +9.9 PP
+  2c Bisherige Spiele: 10-29 Spiele   (152892 Zeilen)
+    A roh                        Zeilen   152892  Ø-Abw.  1.46 PP  Steigung 0.561 [0.515; 0.610]  groesste Stufe: 85-90% (609 Z.): -6.0 PP
+    V1 Faktor h=c(1+0,05x)       Zeilen   152892  Ø-Abw.  0.45 PP  Steigung 0.805 [0.747; 0.860]  groesste Stufe: 95-100% (442 Z.): -1.8 PP
+    V1 fester Kern h=c           Zeilen   152892  Ø-Abw.  0.70 PP  Steigung 0.844 [0.788; 0.903]  groesste Stufe: 40-45% (2274 Z.): -3.5 PP
+    V2 Mittelwert-Unsicherheit   Zeilen   152892  Ø-Abw.  0.64 PP  Steigung 1.043 [0.984; 1.100]  groesste Stufe: 75-80% (620 Z.): +7.8 PP
+  2c Bisherige Spiele: 30-79 Spiele   (664668 Zeilen)
+    A roh                        Zeilen   664668  Ø-Abw.  0.79 PP  Steigung 0.832 [0.810; 0.855]  groesste Stufe: 85-90% (7877 Z.): -3.4 PP
+    V1 Faktor h=c(1+0,05x)       Zeilen   664668  Ø-Abw.  0.63 PP  Steigung 1.026 [1.003; 1.050]  groesste Stufe: 15-20% (26788 Z.): -1.8 PP
+    V1 fester Kern h=c           Zeilen   664668  Ø-Abw.  1.01 PP  Steigung 1.012 [0.988; 1.036]  groesste Stufe: 40-45% (13875 Z.): -3.9 PP
+    V2 Mittelwert-Unsicherheit   Zeilen   664668  Ø-Abw.  0.45 PP  Steigung 1.025 [1.002; 1.047]  groesste Stufe: 60-65% (8751 Z.): +2.4 PP
+  2c Bisherige Spiele: ab 80 Spiele   (999216 Zeilen)
+    A roh                        Zeilen   999216  Ø-Abw.  0.58 PP  Steigung 0.906 [0.891; 0.918]  groesste Stufe: 90-95% (24906 Z.): -2.6 PP
+    V1 Faktor h=c(1+0,05x)       Zeilen   999216  Ø-Abw.  1.05 PP  Steigung 1.090 [1.074; 1.103]  groesste Stufe: 65-70% (20501 Z.): +2.6 PP
+    V1 fester Kern h=c           Zeilen   999216  Ø-Abw.  0.99 PP  Steigung 1.056 [1.040; 1.070]  groesste Stufe: 25-30% (30780 Z.): -2.7 PP
+    V2 Mittelwert-Unsicherheit   Zeilen   999216  Ø-Abw.  0.61 PP  Steigung 1.010 [0.995; 1.023]  groesste Stufe: 55-60% (19490 Z.): +2.3 PP
+  Zusatz Spielverlauf: Blowout (Diff >= 20)   (456408 Zeilen)
+    A roh                        Zeilen   456408  Ø-Abw.  1.33 PP  Steigung 0.795 [0.767; 0.824]  groesste Stufe: 90-95% (7409 Z.): -7.0 PP
+    V1 Faktor h=c(1+0,05x)       Zeilen   456408  Ø-Abw.  1.40 PP  Steigung 0.992 [0.962; 1.025]  groesste Stufe: 45-50% (8372 Z.): -3.9 PP
+    V1 fester Kern h=c           Zeilen   456408  Ø-Abw.  1.92 PP  Steigung 0.991 [0.962; 1.024]  groesste Stufe: 45-50% (8921 Z.): -5.4 PP
+    V2 Mittelwert-Unsicherheit   Zeilen   456408  Ø-Abw.  1.10 PP  Steigung 0.967 [0.942; 0.996]  groesste Stufe: 85-90% (6199 Z.): -4.1 PP
+  Zusatz Spielverlauf: knapp (Diff < 20)   (1416132 Zeilen)
+    A roh                        Zeilen  1416132  Ø-Abw.  0.86 PP  Steigung 0.847 [0.830; 0.861]  groesste Stufe: 20-25% (42241 Z.): +1.8 PP
+    V1 Faktor h=c(1+0,05x)       Zeilen  1416132  Ø-Abw.  0.76 PP  Steigung 1.046 [1.028; 1.061]  groesste Stufe: 65-70% (23910 Z.): +3.2 PP
+    V1 fester Kern h=c           Zeilen  1416132  Ø-Abw.  0.79 PP  Steigung 1.026 [1.008; 1.041]  groesste Stufe: 25-30% (41387 Z.): -2.3 PP
+    V2 Mittelwert-Unsicherheit   Zeilen  1416132  Ø-Abw.  0.72 PP  Steigung 1.027 [1.012; 1.041]  groesste Stufe: 55-60% (23707 Z.): +3.9 PP
+  Zusatz Spielverlauf: Verlaengerung   (80244 Zeilen)
+    A roh                        Zeilen    80244  Ø-Abw.  4.00 PP  Steigung 0.788 [0.711; 0.857]  groesste Stufe: 30-35% (1845 Z.): +11.7 PP
+    V1 Faktor h=c(1+0,05x)       Zeilen    80244  Ø-Abw.  3.53 PP  Steigung 0.982 [0.896; 1.057]  groesste Stufe: 40-45% (1789 Z.): +9.6 PP
+    V1 fester Kern h=c           Zeilen    80244  Ø-Abw.  3.06 PP  Steigung 0.949 [0.870; 1.017]  groesste Stufe: 40-45% (1865 Z.): +7.6 PP
+    V2 Mittelwert-Unsicherheit   Zeilen    80244  Ø-Abw.  3.84 PP  Steigung 0.982 [0.904; 1.051]  groesste Stufe: 35-40% (1911 Z.): +11.7 PP
+  Zusatz Spielverlauf: ohne Verlaengerung   (1792296 Zeilen)
+    A roh                        Zeilen  1792296  Ø-Abw.  0.72 PP  Steigung 0.838 [0.825; 0.851]  groesste Stufe: 90-95% (32953 Z.): -3.1 PP
+    V1 Faktor h=c(1+0,05x)       Zeilen  1792296  Ø-Abw.  0.77 PP  Steigung 1.038 [1.024; 1.051]  groesste Stufe: 15-20% (74035 Z.): -2.2 PP
+    V1 fester Kern h=c           Zeilen  1792296  Ø-Abw.  0.99 PP  Steigung 1.023 [1.010; 1.036]  groesste Stufe: 25-30% (51866 Z.): -3.4 PP
+    V2 Mittelwert-Unsicherheit   Zeilen  1792296  Ø-Abw.  0.54 PP  Steigung 1.016 [1.003; 1.029]  groesste Stufe: 55-60% (29078 Z.): +2.1 PP
+  Zusatz Saisonphase: erste 15 Teamspiele   (342720 Zeilen)
+    A roh                        Zeilen   342720  Ø-Abw.  1.00 PP  Steigung 0.822 [0.793; 0.851]  groesste Stufe: 85-90% (5744 Z.): -4.1 PP
+    V1 Faktor h=c(1+0,05x)       Zeilen   342720  Ø-Abw.  1.18 PP  Steigung 1.058 [1.029; 1.088]  groesste Stufe: 30-35% (9165 Z.): -3.8 PP
+    V1 fester Kern h=c           Zeilen   342720  Ø-Abw.  1.55 PP  Steigung 1.034 [1.005; 1.063]  groesste Stufe: 40-45% (7702 Z.): -5.6 PP
+    V2 Mittelwert-Unsicherheit   Zeilen   342720  Ø-Abw.  1.30 PP  Steigung 1.104 [1.076; 1.132]  groesste Stufe: 15-20% (15790 Z.): -3.2 PP
+  Zusatz Saisonphase: ab 16. Teamspiel   (1529820 Zeilen)
+    A roh                        Zeilen  1529820  Ø-Abw.  0.83 PP  Steigung 0.838 [0.822; 0.852]  groesste Stufe: 90-95% (27945 Z.): -2.6 PP
+    V1 Faktor h=c(1+0,05x)       Zeilen  1529820  Ø-Abw.  0.61 PP  Steigung 1.029 [1.012; 1.044]  groesste Stufe: 65-70% (24747 Z.): +2.4 PP
+    V1 fester Kern h=c           Zeilen  1529820  Ø-Abw.  0.76 PP  Steigung 1.015 [0.998; 1.030]  groesste Stufe: 25-30% (44141 Z.): -2.6 PP
+    V2 Mittelwert-Unsicherheit   Zeilen  1529820  Ø-Abw.  0.48 PP  Steigung 0.995 [0.980; 1.008]  groesste Stufe: 55-60% (24558 Z.): +2.5 PP
+
+  2d Modell-Chance-Stufen (5-%-Stufen, ganze Daten, Kreuz-Anpassung): Diff PP (Zeilen) je Variante; 95-%-Intervall der Diff fuer A im Vorbericht. Ab 90 % mit < 100 Zeilen: x = nicht aussagekraeftig, * = < 100 Zeilen.
+    Stufe                           A roh     V1 Faktor h=c(1+0,05x)         V1 fester Kern h=c   V2 Mittelwert-Unsicherhe
+    0-5%        +0.47 [ +0.4; +0.5] ( 999465)   -0.06 [ -0.1; -0.0] ( 920998)   -0.03 [ -0.1; +0.0] ( 924916)   -0.10 [ -0.2; -0.0] ( 925797) 
+    5-10%       +0.74 [ +0.5; +1.0] ( 136342)   -1.41 [ -1.6; -1.2] ( 154258)   -1.44 [ -1.6; -1.2] ( 144060)   -0.93 [ -1.1; -0.7] ( 163796) 
+    10-15%      +0.90 [ +0.6; +1.2] (  88379)   -1.83 [ -2.1; -1.5] ( 101241)   -2.21 [ -2.5; -1.9] (  95462)   -0.95 [ -1.2; -0.7] ( 105300) 
+    15-20%      +1.04 [ +0.7; +1.4] (  67166)   -1.84 [ -2.2; -1.5] (  77429)   -2.62 [ -3.0; -2.2] (  74346)   -0.64 [ -1.0; -0.3] (  78884) 
+    20-25%      +1.24 [ +0.8; +1.7] (  55140)   -1.63 [ -2.0; -1.2] (  63888)   -2.73 [ -3.1; -2.3] (  62171)   -0.04 [ -0.4; +0.3] (  63935) 
+    25-30%      +0.80 [ +0.4; +1.2] (  47289)   -1.40 [ -1.8; -1.0] (  54923)   -2.97 [ -3.4; -2.5] (  54275)   +0.10 [ -0.4; +0.5] (  54197) 
+    30-35%      +0.77 [ +0.3; +1.3] (  41771)   -1.23 [ -1.7; -0.8] (  48763)   -2.89 [ -3.3; -2.5] (  48766)   +0.61 [ +0.1; +1.1] (  47184) 
+    35-40%      +0.34 [ -0.1; +0.8] (  37688)   -0.95 [ -1.4; -0.5] (  43994)   -2.73 [ -3.2; -2.3] (  44864)   +1.01 [ +0.5; +1.5] (  41914) 
+    40-45%      +0.29 [ -0.2; +0.8] (  34815)   -0.17 [ -0.7; +0.3] (  40649)   -2.73 [ -3.2; -2.2] (  41222)   +1.28 [ +0.7; +1.8] (  37948) 
+    45-50%      -0.05 [ -0.5; +0.5] (  32343)   -0.19 [ -0.7; +0.4] (  37345)   -2.29 [ -2.8; -1.8] (  38949)   +1.59 [ +1.1; +2.1] (  34847) 
+    50-55%      -0.27 [ -0.8; +0.3] (  30466)   +0.34 [ -0.2; +0.9] (  35323)   -1.47 [ -2.0; -0.9] (  36687)   +1.72 [ +1.2; +2.3] (  32601) 
+    55-60%      -0.69 [ -1.2; -0.1] (  29077)   +1.30 [ +0.8; +1.8] (  33227)   -0.93 [ -1.5; -0.4] (  34708)   +2.48 [ +1.9; +3.1] (  30523) 
+    60-65%      -0.86 [ -1.5; -0.3] (  27944)   +1.48 [ +0.9; +2.0] (  31840)   -0.24 [ -0.8; +0.3] (  33363)   +2.21 [ +1.6; +2.8] (  29084) 
+    65-70%      -0.82 [ -1.4; -0.3] (  27338)   +1.96 [ +1.4; +2.5] (  30690)   +0.30 [ -0.2; +0.9] (  32174)   +1.91 [ +1.4; +2.5] (  28151) 
+    70-75%      -1.58 [ -2.2; -1.0] (  27173)   +1.87 [ +1.4; +2.5] (  30001)   +0.67 [ +0.1; +1.2] (  31220)   +1.87 [ +1.3; +2.5] (  27394) 
+    75-80%      -1.91 [ -2.5; -1.3] (  27375)   +1.78 [ +1.2; +2.4] (  29508)   +0.56 [ +0.0; +1.1] (  30875)   +1.10 [ +0.6; +1.7] (  27295) 
+    80-85%      -2.66 [ -3.1; -2.1] (  28145)   +1.40 [ +0.9; +1.8] (  29316)   +0.66 [ +0.2; +1.1] (  30450)   +0.46 [ -0.0; +1.0] (  27460) 
+    85-90%      -2.70 [ -3.1; -2.2] (  30119)   +1.24 [ +0.8; +1.7] (  30293)   +0.60 [ +0.2; +1.0] (  31299)   -0.11 [ -0.6; +0.3] (  28774) 
+    90-95%      -2.90 [ -3.3; -2.5] (  34562)   +0.75 [ +0.4; +1.1] (  32639)   +0.24 [ -0.2; +0.6] (  33702)   -0.54 [ -0.9; -0.2] (  32401) 
+    95-100%     -2.16 [ -2.5; -1.9] (  69943)   -0.09 [ -0.4; +0.1] (  46215)   -0.29 [ -0.6; -0.0] (  49031)   -0.91 [ -1.2; -0.7] (  55055) 
+
+3 REGEL (Kreuz-Anpassung): Eine Variante zaehlt nur, wenn sie auf BEIDEN Pruefhaelften
+  (i) in jeder Gruppe aus 2a und 2b die Ø-Abweichung gegenueber A nicht verschlechtert (Variante <= A) UND insgesamt verbessert (Variante < A), und
+  (ii) keine 5-%-Stufe mit >= 100 Zeilen ueber 6 PP daneben hat. (ii) geprueft in zwei Lesarten: R1 = nur Gesamt (wie im Vorbericht); R2 = Gesamt UND in jeder Gruppe aus 2a/2b (streng).
+  Pruefhaelfte 2 (Parameter gelernt auf Haelfte 1); 935100 Paare
+    A roh                        Ø-Abw. Gesamt 1.14; unter dem Sp 1.92; um den Schni 1.88; ueber dem Sc 0.93; Starter 0.90; Rotation 1.29; uebrige 1.59   | Stufen > 6 PP: Gesamt 0, Gruppen 3
+    V1 Faktor h=c(1+0,05x)       Ø-Abw. Gesamt 0.50; unter dem Sp 1.30; um den Schni 1.65; ueber dem Sc 0.24; Starter 1.37!; Rotation 0.99; uebrige 0.85   | Stufen > 6 PP: Gesamt 0, Gruppen 1   (verschlechtert in: Starter)  => R1 verfehlt, R2 verfehlt
+    V1 fester Kern h=c           Ø-Abw. Gesamt 0.51; unter dem Sp 0.73; um den Schni 0.78; ueber dem Sc 0.44; Starter 1.08!; Rotation 0.59; uebrige 0.43   | Stufen > 6 PP: Gesamt 0, Gruppen 1   (verschlechtert in: Starter)  => R1 verfehlt, R2 verfehlt
+    V2 Mittelwert-Unsicherheit   Ø-Abw. Gesamt 0.79; unter dem Sp 1.20; um den Schni 2.59!; ueber dem Sc 0.42; Starter 0.90!; Rotation 1.13; uebrige 1.32   | Stufen > 6 PP: Gesamt 0, Gruppen 3   (verschlechtert in: um den Schnitt (+-3), Starter)  => R1 verfehlt, R2 verfehlt
+    ('!' = gegenueber A verschlechtert)
+  Pruefhaelfte 1 (Parameter gelernt auf Haelfte 2); 937440 Paare
+    A roh                        Ø-Abw. Gesamt 0.72; unter dem Sp 2.47; um den Schni 2.61; ueber dem Sc 0.52; Starter 0.92; Rotation 0.86; uebrige 0.75   | Stufen > 6 PP: Gesamt 0, Gruppen 19
+    V1 Faktor h=c(1+0,05x)       Ø-Abw. Gesamt 1.20; unter dem Sp 1.93; um den Schni 1.03; ueber dem Sc 1.35!; Starter 2.11!; Rotation 1.23!; uebrige 0.71   | Stufen > 6 PP: Gesamt 0, Gruppen 10   (verschlechtert in: ueber dem Schnitt, Starter, Rotation)  => R1 verfehlt, R2 verfehlt
+    V1 fester Kern h=c           Ø-Abw. Gesamt 1.42; unter dem Sp 0.99; um den Schni 2.72!; ueber dem Sc 1.48!; Starter 1.48!; Rotation 1.61!; uebrige 1.37!   | Stufen > 6 PP: Gesamt 0, Gruppen 12   (verschlechtert in: um den Schnitt (+-3), ueber dem Schnitt, Starter, Rotation, uebrige)  => R1 verfehlt, R2 verfehlt
+    V2 Mittelwert-Unsicherheit   Ø-Abw. Gesamt 1.09; unter dem Sp 2.24; um den Schni 1.62; ueber dem Sc 1.30!; Starter 2.25!; Rotation 1.01!; uebrige 0.39   | Stufen > 6 PP: Gesamt 0, Gruppen 11   (verschlechtert in: ueber dem Schnitt, Starter, Rotation)  => R1 verfehlt, R2 verfehlt
+    ('!' = gegenueber A verschlechtert)
+  Ergebnis:
+    V1 Faktor h=c(1+0,05x)       R1 (nur Gesamt-Stufen): zaehlt nicht (nein/nein); R2 (auch Gruppen-Stufen): zaehlt nicht (nein/nein)
+    V1 fester Kern h=c           R1 (nur Gesamt-Stufen): zaehlt nicht (nein/nein); R2 (auch Gruppen-Stufen): zaehlt nicht (nein/nein)
+    V2 Mittelwert-Unsicherheit   R1 (nur Gesamt-Stufen): zaehlt nicht (nein/nein); R2 (auch Gruppen-Stufen): zaehlt nicht (nein/nein)
+
+4 NEBENWIRKUNGEN
+  4a Ueberkorrektur der Raender (Diff PP = Trefferquote minus Ø-Modell [95 %]; positiv = Modell zu niedrig, negativ = zu hoch). Kreuz-Anpassung, ganze Daten.
+    Rand / Gruppe                                               A roh         V1 Faktor h=c(1+0,05x)             V1 fester Kern h=c       V2 Mittelwert-Unsicherhe
+    Chance < 20 %, alle                 +0.55 [ +0.5; +0.7] (1291352)   -0.48 [ -0.6; -0.4] (1253926)   -0.51 [ -0.6; -0.4] (1238784)   -0.31 [ -0.4; -0.2] (1273777) 
+    Chance < 20 %, Rolle Starter        -0.30 [ -0.5; -0.1] ( 255572)   -2.04 [ -2.2; -1.8] ( 241290)   -1.36 [ -1.6; -1.1] ( 243830)   -1.78 [ -2.0; -1.6] ( 245780) 
+    Chance < 20 %, Rolle Rotation       +0.45 [ +0.3; +0.6] ( 405648)   -0.63 [ -0.8; -0.5] ( 394524)   -0.58 [ -0.7; -0.4] ( 389908)   -0.37 [ -0.5; -0.2] ( 400965) 
+    Chance < 20 %, Rolle uebrige        +0.97 [ +0.8; +1.1] ( 630132)   +0.22 [ +0.1; +0.4] ( 618112)   -0.13 [ -0.3; -0.0] ( 605046)   +0.31 [ +0.2; +0.4] ( 627032) 
+    Chance < 20 %, Zusatz Blowout       +0.20 [ -0.0; +0.4] ( 326299)   -0.74 [ -0.9; -0.6] ( 317551)   -0.87 [ -1.1; -0.7] ( 313212)   -0.58 [ -0.8; -0.4] ( 322404) 
+    Chance < 20 %, Zusatz knapp         +0.68 [ +0.6; +0.8] ( 965053)   -0.39 [ -0.5; -0.3] ( 936375)   -0.39 [ -0.5; -0.3] ( 925572)   -0.22 [ -0.3; -0.1] ( 951373) 
+    Chance < 5 %, alle                  +0.47 [ +0.4; +0.5] ( 999465)   -0.06 [ -0.1; -0.0] ( 920998)   -0.03 [ -0.1; +0.0] ( 924916)   -0.10 [ -0.2; -0.0] ( 925797) 
+    Chance < 5 %, Rolle Starter         +0.10 [ -0.0; +0.3] ( 150033)   -0.80 [ -0.9; -0.7] ( 122901)   -0.37 [ -0.5; -0.2] ( 135357)   -0.72 [ -0.9; -0.6] ( 124814) 
+    Chance < 5 %, Rolle Rotation        +0.26 [ +0.2; +0.4] ( 311113)   -0.31 [ -0.4; -0.2] ( 286189)   -0.16 [ -0.2; -0.1] ( 289189)   -0.28 [ -0.4; -0.2] ( 289448) 
+    Chance < 5 %, Rolle uebrige         +0.68 [ +0.6; +0.8] ( 538319)   +0.25 [ +0.2; +0.3] ( 511908)   +0.15 [ +0.1; +0.2] ( 500370)   +0.16 [ +0.1; +0.2] ( 511535) 
+    Chance < 5 %, Zusatz Blowout        +0.36 [ +0.2; +0.5] ( 257090)   -0.10 [ -0.2; +0.0] ( 238537)   -0.12 [ -0.2; -0.0] ( 238087)   -0.14 [ -0.3; -0.0] ( 239685) 
+    Chance < 5 %, Zusatz knapp          +0.50 [ +0.4; +0.6] ( 742375)   -0.05 [ -0.1; +0.0] ( 682461)   +0.01 [ -0.1; +0.1] ( 686829)   -0.08 [ -0.2; -0.0] ( 686112) 
+    Chance >= 80 %, alle                -2.50 [ -2.8; -2.2] ( 162769)   +0.71 [ +0.4; +1.0] ( 138463)   +0.23 [ -0.1; +0.5] ( 144482)   -0.40 [ -0.7; -0.1] ( 143690) 
+    Chance >= 80 %, Rolle Starter       -2.14 [ -2.5; -1.8] ( 133404)   +0.81 [ +0.4; +1.1] ( 117988)   +0.21 [ -0.2; +0.5] ( 124002)   -0.16 [ -0.5; +0.2] ( 120289) 
+    Chance >= 80 %, Rolle Rotation      -3.97 [ -4.7; -3.3] (  27893)   +0.26 [ -0.5; +0.9] (  19809)   +0.42 [ -0.3; +1.2] (  19897)   -1.61 [ -2.3; -0.9] (  22472) 
+    Chance >= 80 %, Rolle uebrige       -7.67 [-10.3; -4.8] (   1472)   -3.54 [ -7.0; +0.5] (    666)   -2.50 [ -6.4; +1.3] (    583)   -2.57 [ -5.5; +0.7] (    929) 
+    Chance >= 80 %, Zusatz Blowout      -5.32 [ -6.0; -4.6] (  34986)   -2.00 [ -2.6; -1.3] (  29783)   -2.65 [ -3.3; -1.9] (  31043)   -3.08 [ -3.7; -2.4] (  31062) 
+    Chance >= 80 %, Zusatz knapp        -1.73 [ -2.1; -1.4] ( 127783)   +1.46 [ +1.1; +1.8] ( 108680)   +1.01 [ +0.6; +1.3] ( 113439)   +0.34 [ +0.0; +0.7] ( 112628) 
+    Chance >= 90 %, alle                -2.40 [ -2.7; -2.2] ( 104505)   +0.26 [ -0.1; +0.5] (  78854)   -0.07 [ -0.4; +0.2] (  82733)   -0.77 [ -1.1; -0.5] (  87456) 
+    Chance >= 90 %, Rolle Starter       -2.16 [ -2.5; -1.9] (  93643)   +0.30 [ -0.0; +0.6] (  73996)   -0.06 [ -0.4; +0.2] (  78269)   -0.65 [ -1.0; -0.4] (  79948) 
+    Chance >= 90 %, Rolle Rotation      -4.38 [ -5.2; -3.5] (  10632)   -0.34 [ -1.3; +0.7] (   4820)   -0.22 [ -1.3; +0.9] (   4440)   -2.06 [ -2.9; -1.1] (   7392) 
+    Chance >= 90 %, Rolle uebrige      -11.69 [-18.0; -5.7] (    230)  -13.03 [-26.9; -0.7] (     38)* -17.57 [-48.7; -0.1] (     24)*  -3.50 [ -9.8; +2.4] (    116) 
+    Chance >= 90 %, Zusatz Blowout      -4.70 [ -5.4; -3.9] (  22342)   -1.60 [ -2.2; -0.9] (  16910)   -2.11 [ -2.8; -1.4] (  17705)   -2.77 [ -3.4; -2.1] (  18850) 
+    Chance >= 90 %, Zusatz knapp        -1.78 [ -2.1; -1.5] (  82163)   +0.77 [ +0.4; +1.1] (  61944)   +0.48 [ +0.1; +0.8] (  65028)   -0.22 [ -0.6; +0.1] (  68606) 
+    Chance >= 95 %, alle                -2.16 [ -2.5; -1.9] (  69943)   -0.09 [ -0.4; +0.1] (  46215)   -0.29 [ -0.6; -0.0] (  49031)   -0.91 [ -1.2; -0.7] (  55055) 
+    Chance >= 95 %, Rolle Starter       -2.00 [ -2.4; -1.7] (  66027)   -0.08 [ -0.4; +0.2] (  45184)   -0.28 [ -0.6; -0.0] (  48087)   -0.85 [ -1.1; -0.6] (  52892) 
+    Chance >= 95 %, Rolle Rotation      -4.68 [ -5.8; -3.6] (   3860)   -0.68 [ -2.6; +1.0] (   1028)   -0.53 [ -2.6; +1.2] (    940)   -2.28 [ -3.6; -1.1] (   2154) 
+    Chance >= 95 %, Rolle uebrige      -16.54 [-28.3; -5.8] (     56)*  +2.17 [ +0.0; +2.2] (      3)*  +2.62 [ +0.0; +2.6] (      4)* -29.06 [-67.3; +4.2] (      9)*
+    Chance >= 95 %, Zusatz Blowout      -3.54 [ -4.2; -2.9] (  14933)   -1.15 [ -1.8; -0.5] (   9903)   -1.38 [ -2.1; -0.7] (  10458)   -2.04 [ -2.7; -1.4] (  11899) 
+    Chance >= 95 %, Zusatz knapp        -1.78 [ -2.1; -1.5] (  55010)   +0.20 [ -0.1; +0.5] (  36312)   +0.01 [ -0.3; +0.3] (  38573)   -0.60 [ -0.9; -0.3] (  43156) 
+    (* = unter 100 Zeilen, nicht aussagekraeftig)
+
+  4b Streuung: Verhaeltnis echte SD (Ist - Prognose-Mittel) / Modell-SD der jeweiligen Variante [95 %]; 1 = passend. Modell-Streuung = Wurzel aus Ø(Varianz der Punktewerte + Kernbreite h^2) der Variante. Kreuz-Anpassung.
+    Gruppe                              Zeilen                      A roh     V1 Faktor h=c(1+0,05x)         V1 fester Kern h=c   V2 Mittelwert-Unsicherhe
+    alle                                 52015        1.057 [1.049;1.066]        0.906 [0.899;0.914]        0.901 [0.894;0.909]        0.919 [0.911;0.928]
+    Rolle Starter                        16081        1.011 [1.000;1.024]        0.871 [0.861;0.883]        0.918 [0.907;0.930]        0.877 [0.866;0.890]
+    Rolle Rotation                       15994        1.054 [1.040;1.066]        0.911 [0.899;0.921]        0.895 [0.883;0.905]        0.934 [0.921;0.945]
+    Rolle uebrige                        19940        1.154 [1.135;1.173]        0.970 [0.954;0.986]        0.877 [0.863;0.892]        0.988 [0.971;1.006]
+    Spielverlauf Blowout                 12678        1.045 [1.025;1.068]        0.897 [0.879;0.916]        0.884 [0.867;0.902]        0.912 [0.891;0.932]
+    Spielverlauf knapp                   39337        1.059 [1.050;1.070]        0.908 [0.901;0.917]        0.906 [0.898;0.915]        0.921 [0.912;0.930]
+    Spielverlauf Verlaengerung            2229        1.182 [1.137;1.228]        1.014 [0.975;1.054]        1.015 [0.979;1.054]        1.010 [0.961;1.067]
+    Spielverlauf ohne Verl.              49786        1.049 [1.041;1.057]        0.900 [0.893;0.907]        0.894 [0.888;0.901]        0.913 [0.905;0.922]
+    Saisonphase erste 15 Teamsp.          9520        1.057 [1.040;1.075]        0.891 [0.876;0.905]        0.894 [0.879;0.909]        0.832 [0.813;0.849]
+    Saisonphase ab 16.                   42495        1.056 [1.046;1.067]        0.910 [0.901;0.918]        0.902 [0.894;0.911]        0.943 [0.935;0.953]
+    1-9 Spiele                            1549        1.527 [1.435;1.611]        1.184 [1.115;1.245]        1.042 [0.981;1.097]        0.622 [0.575;0.668]
+    10-29 Spiele                          4247        1.190 [1.154;1.225]        0.985 [0.956;1.015]        0.905 [0.878;0.933]        0.857 [0.830;0.883]
+    30-79 Spiele                         18463        1.063 [1.049;1.078]        0.906 [0.895;0.919]        0.889 [0.877;0.901]        0.921 [0.909;0.934]
+    ab 80 Spiele                         27756        1.032 [1.022;1.044]        0.892 [0.884;0.902]        0.903 [0.894;0.913]        0.947 [0.938;0.958]
+    Rolle Starter / Blowout               3513        0.976 [0.946;1.014]        0.842 [0.817;0.875]        0.885 [0.859;0.920]        0.853 [0.826;0.886]
+    Rolle Starter / knapp                12568        1.012 [0.999;1.027]        0.871 [0.860;0.884]        0.919 [0.907;0.932]        0.875 [0.863;0.888]
+    Rolle Rotation / Blowout              3576        1.000 [0.974;1.025]        0.866 [0.845;0.887]        0.850 [0.828;0.871]        0.883 [0.855;0.905]
+    Rolle Rotation / knapp               12418        1.069 [1.055;1.083]        0.923 [0.911;0.935]        0.907 [0.895;0.919]        0.948 [0.934;0.962]
+    Rolle uebrige / Blowout               5589        1.146 [1.101;1.186]        0.962 [0.924;0.995]        0.864 [0.829;0.893]        0.984 [0.944;1.020]
+    Rolle uebrige / knapp                14351        1.155 [1.131;1.178]        0.971 [0.951;0.990]        0.881 [0.863;0.898]        0.988 [0.966;1.008]
+
+  4c Brier und Log-Loss (Kreuz-Anpassung, ganze Daten)
+    A roh                        Brier 0.07940  Log-Loss 0.26046
+    V1 Faktor h=c(1+0,05x)       Brier 0.07923  Log-Loss 0.25479
+    V1 fester Kern h=c           Brier 0.07923  Log-Loss 0.25377
+    V2 Mittelwert-Unsicherheit   Brier 0.07941  Log-Loss 0.25517
+
+5 EMPFEHLUNG (aus den Zahlen oben; Produktivmodell bleibt unveraendert, 'player-2' waere eine eigene Version neben roh)
+  Rangfolge nach Log-Loss (kleiner = besser): V1 fester Kern h=c 0.25377, V1 Faktor h=c(1+0,05x) 0.25479, V2 Mittelwert-Unsicherheit 0.25517, A roh 0.26046
+  Keine Variante erfuellt die Regel (weder R1 noch R2). => Empfehlung: keine; roh (A) bleibt.
+  Hinweis zur Gruppenlage (Ø-Abw. PP, A / V1 Faktor / V1 fest / V2, ganze Daten): Starter 0.89 / 1.75 / 1.26 / 1.57; Rotation 0.78 / 0.69 / 0.84 / 0.73; uebrige 1.09 / 0.27 / 0.82 / 0.51
+  Auffaellig: Bei Startern ist A schon gut kalibriert (Steigung 0,92) und alle Varianten ueberkorrigieren (Steigung > 1); bei Rotation und uebrigen sowie bei wenig Verlauf ist A zu selbstsicher. Eine Variante nur fuer Nicht-Starter
+  (oder gestaffelt nach Rolle bzw. Zahl der Spiele) waere der naechste Test; er ist hier NICHT gemessen, die Regel oben gilt fuer die Varianten fuer alle Spieler.
+  Die Runde davor (player_calibration.txt) hatte V1 (c = 2, Faktor) und V2 (c = 1) nach einer schwaecheren Regel (nur Gesamt-Ø-Abweichung) durchgelassen; unter der strengeren Gruppenregel dieser Runde bestehen sie nicht.
+
+6 EHRLICHE ZAHLEN
+  2 Saisons, 327 Spieltage, 2460 Spiele, 52015 Spielerzeilen, 1872540 Paare. Zeilen je Gruppe/Stufe stehen in den Tabellen 2 und 4; Gruppen/Stufen unter 100 Zeilen sind markiert, Stufen ab 90 % mit < 100 Zeilen als 'x'.
+  Paare einer Spielerzeile sind stark abhaengig; Intervalle nach Spielen. Konstanten des Produktivmodells (Blowout-Kurve, league_ppm aus 2025-26) sind fuer 2025-26 teils in-sample. Overtime wird nicht modelliert; Ausfaelle unbekannt (A = 'wenn er spielt').
+  Die Parameter werden nach Log-Loss gewaehlt, die Regel misst die Kalibrierung (Ø-Abweichung); das ist bewusst getrennt, damit die Regel nicht auf demselben Mass eingestellt wird, das sie prueft.

@@ -65,3 +65,8 @@ LIVE_PACE_MULT_CLIP = (0.90, 1.10)
 LIVE_STATUS_ON_TRACK = 0.65
 LIVE_STATUS_DANGER = 0.35
 LIVE_STATUS_HOPELESS = 0.10
+
+# Sicherheitsstufen-Anzeige (Tab Score Projections, nur Anzeige; Grundlage: analysis/reports/threshold_test.txt, Stand 27.10.2026)
+SAFETY_DISCOUNT = 0.03          # Mindestquote = 1 / (Chance - SAFETY_DISCOUNT): drei Prozentpunkte Sicherheitsabschlag
+WINNER_MIN_PROB = 0.65          # Sieger-Zeichen "erfuellt" ab dieser Siegchance des Favoriten
+WINNER_STRONG_PROB = 0.70       # zusaetzlich "(stark)" ab dieser Siegchance

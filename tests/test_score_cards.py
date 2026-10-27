@@ -43,7 +43,8 @@ check("Kontrast aller Textfarben >= 4,5 : 1", worst >= 4.5, ", ".join(f"{k} {rat
 def greenish(h):
     r, g, b = (int(h[i:i + 2], 16) for i in (1, 3, 5)); return g > r + 25 and g > b + 25
 check("Plakette: weisse Fettschrift auf pill_bg: Kontrast >= 3 : 1 (WCAG grosser Text, 16 px fett), auf dem Sieg-Orange waeren es < 3 : 1", ratio(P["pill_text"], P["pill_bg"]) >= 3.0 and ratio(P["pill_text"], P["accent"]) < 3.0, f"{ratio(P['pill_text'], P['pill_bg']):.2f} : 1 (auf #f97316: {ratio(P['pill_text'], P['accent']):.2f} : 1)")
-check("keine gruene Farbe in der Palette", not any(greenish(v) for v in P.values() if v.startswith("#")))
+check("Gruen nur fuer das Sieger-Zeichen (win_ok_*), sonst keine gruene Farbe in der Palette", not any(greenish(v) for k, v in P.items() if v.startswith("#") and not k.startswith("win_ok_")) and all(greenish(v) for k, v in P.items() if k.startswith("win_ok_") and k != "win_ok_bg"))
+check("Sieger-Zeichen gruen: Schrift auf Hintergrund Kontrast >= 4,5 : 1", ratio(P["win_ok_text"], P["win_ok_bg"]) >= 4.5, f"{ratio(P['win_ok_text'], P['win_ok_bg']):.1f} : 1")
 accent_rules = [m.group(1) for m in re.finditer(r"(\.[\w-]+)\s*\{[^}]*" + re.escape(P["accent"]), sc.CARD_CSS)]
 check("Orange (#f97316) nur in .pc-fav und .pc-seg-fav; die Plakette .pc-lpct-pred nutzt das abgedunkelte Orange pill_bg", sorted(accent_rules) == [".pc-fav", ".pc-seg-fav"] and ".pc-lpct-pred" in sc.CARD_CSS and P["pill_bg"] in sc.CARD_CSS, str(accent_rules))
 
@@ -111,7 +112,8 @@ html_all = [flat_html(sc.render_card_html(sc.build_card_vm(p))) for p in cases]
 check("HTML ohne Zeilenumbruch und ohne Leerzeile/Einrueckung (flat_html)", all("\n" not in h and "  " not in h for h in html_all))
 check("keine leeren Platzhalter-Elemente (<div></div>, leere Chips)", not any(re.search(r'<div class="pc-(?:chip|info|city|name|side)[^"]*"></div>', h) for h in html_all))
 check("kein 'Edge'/'Value' in den Karten", not any(re.search(r"edge|value", h, re.I) for h in html_all))
-check("kein Gruen im Karten-HTML/CSS", not re.search(r"#(?:[0-9a-f]{2}){3}", sc.CARD_CSS + "".join(html_all)) or not any(greenish(c) for c in set(re.findall(r"#(?:[0-9a-f]{6})", (sc.CARD_CSS + "".join(html_all)).lower()))))
+_gr_css = {c for c in set(re.findall(r"#(?:[0-9a-f]{6})", (sc.CARD_CSS + "".join(html_all)).lower())) if greenish(c)}
+check("Gruen im Karten-HTML/CSS nur in den Farben des Sieger-Zeichens (win_ok_*), in keiner anderen Regel", _gr_css <= {P["win_ok_text"], P["win_ok_border"]} and all(("win_ok" in m.group(0) or P["win_ok_text"] in m.group(0) or P["win_ok_border"] in m.group(0)) for m in re.finditer(r"[^{}]*\{[^}]*#(?:%s|%s)[^}]*\}" % (P["win_ok_text"][1:], P["win_ok_border"][1:]), sc.CARD_CSS) if ".pc-winner-ok" not in m.group(0)) and ".pc-winner-ok" in sc.CARD_CSS, str(sorted(_gr_css)))
 check("tabular-nums fuer Karte und Scores", sc.CARD_CSS.count("font-variant-numeric:tabular-nums") >= 3)
 check("Score mind. 46 px, waechst mit der Breite (clamp)", "font-size:clamp(46px" in sc.CARD_CSS)
 check("Karte nutzt volle Breite bis 1400 px", "width:100%; max-width:1400px" in sc.CARD_CSS)

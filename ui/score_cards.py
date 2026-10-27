@@ -18,6 +18,7 @@ from html import escape
 from pathlib import Path
 
 from config.settings import SPREAD_DEVIATION_YELLOW, TOTAL_DEVIATION_YELLOW
+from engine import safety_levels as safety
 
 LOGO_DIR = Path(__file__).resolve().parent.parent / "data" / "logos"
 
@@ -39,6 +40,8 @@ PALETTE = {
     "pill_text": "#ffffff",     # weisse, fette Schrift in der Plakette der vorhergesagten Seite
     "pill_bg": "#ea580c",       # Plaketten-Hintergrund: leicht abgedunkeltes Orange (weisse 16-px-Fettschrift: Kontrast >= 3 : 1 = WCAG grosser Text; auf #f97316 waeren es nur 2,8 : 1). Der Balken bleibt #f97316.
     "fb_bg": "#1d2236", "fb_text": "#d7deec", "fb_border": "#4a5572",
+    # Sieger-Zeichen "erfuellt" (Sicherheitsstufe, DESIGN_REGELN.md Regel 89): die EINZIGE gruene Stelle der Karte, nie fuer Abweichungen Modell gegen Markt
+    "win_ok_bg": "#12301f", "win_ok_text": "#86efac", "win_ok_border": "#2f7d4f",
 }
 
 # (Kuerzel, Stadt, Teamname). Abgleich mit nba_api in tests/test_score_cards.py.
@@ -227,8 +230,11 @@ def build_card_vm(proj: dict, entry: dict | None = None, tables: dict | None = N
     win_note = None                                  # nur Projektionen mit Siegchance aus der Spread-Verteilung (sigmas_version 2); aeltere Schnappschuss-Karten: kein Hinweis
     if proj.get("win_prob_source") == "normal_spread" and proj.get("sigma_spread"):
         win_note = f"Siegchance und Spread aus derselben Verteilung (Sigma {fmt_num(float(proj['sigma_spread']))})"
+    snapshot = tables is not None or result is not None          # Schnappschuss-Karten beendeter Spiele: unveraendert (keine Sicherheitsstufen)
     vm = {"home": h, "away": a, "fav": fav, "spread": sp, "total": tt, "warnings": warnings, "details": details, "win_note": win_note,
-          "origin": origin, "origin_warnings": origin_warnings, "lines": _line_blocks(proj, entry, h, a, tables, result)}
+          "origin": origin, "origin_warnings": origin_warnings, "lines": _line_blocks(proj, entry, h, a, tables, result),
+          "winner": None if snapshot else safety.winner_sign(max(h["p"], a["p"]) if fav else None)}
+    vm["minodds_note"] = bool(vm["lines"]) and not snapshot
     t2 = proj.get("team2")
     if t2 and t2.get("active") and tables is None and result is None:       # nur laufende Projektionen; beendete Spiele (Schnappschuss-Karten) bleiben wie gespeichert
         from engine import team_injury as ti
@@ -266,9 +272,9 @@ def _line_blocks(proj: dict, entry: dict | None, h: dict, a: dict, tables: dict 
                 x = r["line"]
                 label = f"{fav_nick} {MINUS}{fmt_num(x)}" if x > 0 else f"{fav_nick} +{fmt_num(abs(x))}" if x < 0 else "PK"
                 left_name, right_name = a["nick"], h["nick"]
-                rows.append({**r, "label": label, "left": f"{left_name} {r['p_left']} %", "right": f"{r['p_right']} % {right_name}", "style": "spread"})
+                rows.append({**r, "label": label, "left": f"{left_name} {r['p_left']} %", "right": f"{r['p_right']} % {right_name}", "style": "spread", "min_odds": safety.row_min_odds_text(r)})
             else:
-                rows.append({**r, "label": fmt_num(r["line"]), "left": f"Over {r['p_left']} %", "right": f"{r['p_right']} % Under", "style": "ou"})
+                rows.append({**r, "label": fmt_num(r["line"]), "left": f"Over {r['p_left']} %", "right": f"{r['p_right']} % Under", "style": "ou", "min_odds": safety.row_min_odds_text(r)})
         blocks.append({"key": key, "title": title, "rows": rows, "note": t.get("note"), "source": t.get("source")})
     return blocks
 
@@ -283,17 +289,21 @@ def line_block_body_html(block: dict) -> str:
     if not block["rows"]:
         return f'<div class="pc-lnote">{escape(block.get("note") or "keine Linie")}</div>'
     body = ""
+    has_min = any(r.get("min_odds") for r in block["rows"])           # Spalte "Mindestquote" nur, wenn mindestens eine Zeile eine Seite mit Chance >= 50 % hat (nicht in Schnappschuss-Karten)
+    if has_min:
+        body += '<div class="pc-lhead"><span>Mindestquote</span></div>'
     for r in block["rows"]:
         lcls = "pc-lseg pc-seg-fav" if r["predicted"] == "left" else "pc-lseg pc-seg-other"
         rcls = "pc-lseg pc-seg-fav" if r["predicted"] == "right" else "pc-lseg pc-seg-other"
-        main = (" pc-lmain" if r["is_main"] else "") + (" pc-lrow-chip" if r.get("outcome") else "")
+        main = (" pc-lmain" if r["is_main"] else "") + (" pc-lrow-chip" if r.get("outcome") else "") + (" pc-lmincol" if has_min else "")
+        mincell = (f'<span class="pc-lmin">{escape(r["min_odds"]) if r.get("min_odds") else "–"}</span>' if has_min else "")
         chip = (f'<span class="pc-lchip pc-lchip-{r["outcome"]}">{OUTCOME_TEXT[r["outcome"]]}</span>' if r.get("outcome") else "")
         tag = '<span class="pc-ltag">Hauptlinie</span>' if r["is_main"] else ""
         body += (f'<div class="pc-lrow{main}"><span class="pc-lline">{escape(r["label"])}{tag}</span>'
                  f'<span class="pc-lpct pc-lpct-l"><span class="pc-lpill{" pc-lpct-pred" if r["predicted"] == "left" else ""}">{escape(r["left"])}</span></span>'
                  f'<span class="pc-lbar" role="img" aria-label="{escape(r["left"])} gegen {escape(r["right"])}">'
                  f'<span class="{lcls}" style="width:{r["p_left"]}%"></span><span class="{rcls}" style="width:{r["p_right"]}%"></span></span>'
-                 f'<span class="pc-lpct pc-lpct-r"><span class="pc-lpill{" pc-lpct-pred" if r["predicted"] == "right" else ""}">{escape(r["right"])}</span></span>{chip}</div>')
+                 f'<span class="pc-lpct pc-lpct-r"><span class="pc-lpill{" pc-lpct-pred" if r["predicted"] == "right" else ""}">{escape(r["right"])}</span></span>{chip}{mincell}</div>')
     if block.get("note"):
         body += f'<div class="pc-lnote">{escape(block["note"])}</div>'
     return body
@@ -313,6 +323,8 @@ def render_line_expanders(vm: dict, key: str) -> None:
                 if block["key"] in t2_lines and block["key"] != "total":          # Spread und Team Totals aendern sich mit dem Schalter, das Total nicht
                     body = f'<div class="pc-var pc-var-std">{body}</div><div class="pc-var pc-var-t2">{line_block_body_html(t2_lines[block["key"]])}</div>'
                 st.markdown("".join(line.strip() for line in body.splitlines()), unsafe_allow_html=True)
+        if vm.get("minodds_note"):
+            st.markdown(f'<div class="pc-minnote">{escape(safety.note_text())}</div>', unsafe_allow_html=True)
 
 
 def _logo_html(team: dict, logo_dir) -> str:
@@ -371,7 +383,8 @@ def _variant_items(vm: dict) -> dict:
         "bar": [f'<div class="pc-bar-labels"><span>{escape(a["nick"])} {a["pct"]} %</span><span>{escape(h["nick"])} {h["pct"]} %</span></div>',
                 f'<div class="pc-bar" role="img" aria-label="Siegwahrscheinlichkeit {escape(a["nick"])} {a["pct"]} %, {escape(h["nick"])} {h["pct"]} %">'
                 f'<div class="{away_seg}" style="width:{a["p"] * 100:.1f}%"></div>'
-                f'<div class="{home_seg}" style="width:{h["p"] * 100:.1f}%"></div></div>'],
+                f'<div class="{home_seg}" style="width:{h["p"] * 100:.1f}%"></div></div>',
+                *([f'<div class="pc-winner pc-winner-{"low" if w["level"] == "low" else "ok"}"><span>{escape(w["text"])}</span></div>'] if (w := vm.get("winner")) else [])],
         "spread": [_model_col("SPREAD", vm["spread"])],
     }
 
@@ -484,6 +497,14 @@ def _css() -> str:
 .pc-lchip-hit {{ background:{P['chip_blue_bg']}; border:1px solid {P['chip_blue_border']}; color:{P['chip_blue_text']}; }}
 .pc-lchip-miss, .pc-lchip-push {{ background:{P['chip_gray_bg']}; border:1px solid {P['chip_gray_border']}; color:{P['chip_gray_text']}; }}
 .pc-lrow-chip {{ grid-template-columns:minmax(150px,210px) 160px minmax(120px,1fr) 160px minmax(104px,auto); }}
+.pc-lmincol {{ grid-template-columns:minmax(150px,210px) 160px minmax(120px,1fr) 160px minmax(96px,auto); }}
+.pc-lmin {{ justify-self:end; white-space:nowrap; font-weight:700; font-size:16px; color:{P['text_soft']}; font-variant-numeric:tabular-nums; }}
+.pc-lhead {{ text-align:right; padding:0 12px 4px; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:{P['label']}; }}
+.pc-minnote {{ font-size:13px; color:{P['label']}; padding:6px 10px 2px; }}
+.pc-winner {{ max-width:1040px; margin:10px auto 0; text-align:center; font-size:13px; font-weight:600; }}
+.pc-winner span {{ display:inline-block; padding:3px 12px; border-radius:999px; }}
+.pc-winner-ok span {{ background:{P['win_ok_bg']}; border:1px solid {P['win_ok_border']}; color:{P['win_ok_text']}; }}
+.pc-winner-low span {{ background:{P['chip_gray_bg']}; border:1px solid {P['chip_gray_border']}; color:{P['chip_gray_text']}; }}
 .pc-lbar {{ display:flex; height:14px; border-radius:7px; overflow:hidden; background:{P['bar_other']}; min-width:0; }}
 .pc-lseg {{ display:block; height:100%; }}
 .pc-lnote {{ font-size:13px; color:{P['label']}; padding:8px 10px 0; }}
@@ -504,7 +525,7 @@ def _css() -> str:
 .pc-sw[open] .pc-sw-std {{ background:transparent; color:{P['label']}; }}
 .pc-sw[open] .pc-sw-t2 {{ background:{P['pill_bg']}; color:{P['pill_text']}; }}
 @media (max-width:760px) {{ .pc-head {{ grid-template-columns:1fr; }} .pc-model {{ grid-template-columns:1fr; gap:24px; }} .pc-card {{ padding:24px 18px 18px; }} }}
-@media (max-width:1200px) {{ .pc-lrow {{ grid-template-columns:auto 1fr auto; grid-template-areas:"line line line" "pl bar pr"; row-gap:6px; padding:8px 10px; }} .pc-lline {{ grid-area:line; }} .pc-lpct-l {{ grid-area:pl; }} .pc-lbar {{ grid-area:bar; }} .pc-lpct-r {{ grid-area:pr; }} .pc-lrow-chip {{ grid-template-columns:auto 1fr auto; grid-template-areas:"line line chip" "pl bar pr"; }} .pc-lchip {{ grid-area:chip; }} .pc-lpill {{ padding:3px 8px; font-size:15px; }} }}
+@media (max-width:1200px) {{ .pc-lrow {{ grid-template-columns:auto 1fr auto; grid-template-areas:"line line line" "pl bar pr"; row-gap:6px; padding:8px 10px; }} .pc-lline {{ grid-area:line; }} .pc-lpct-l {{ grid-area:pl; }} .pc-lbar {{ grid-area:bar; }} .pc-lpct-r {{ grid-area:pr; }} .pc-lrow-chip {{ grid-template-columns:auto 1fr auto; grid-template-areas:"line line chip" "pl bar pr"; }} .pc-lchip {{ grid-area:chip; }} .pc-lmincol {{ grid-template-columns:auto 1fr auto; grid-template-areas:"line line min" "pl bar pr"; }} .pc-lmin {{ grid-area:min; }} .pc-lpill {{ padding:3px 8px; font-size:15px; }} }}
 </style>
 """
 
