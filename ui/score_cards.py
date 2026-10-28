@@ -166,8 +166,9 @@ def origin_info(proj: dict, h: dict, a: dict, now: float | None = None) -> tuple
     return text, warns
 
 
-def build_card_vm(proj: dict, entry: dict | None = None, tables: dict | None = None, result: dict | None = None) -> dict:
-    """Anzeigewerte. Rechnet nichts neu: alle Zahlen stammen aus proj; Abweichungen sind Differenzen der angezeigten Werte."""
+def build_card_vm(proj: dict, entry: dict | None = None, tables: dict | None = None, result: dict | None = None, past: dict | None = None) -> dict:
+    """Anzeigewerte. Rechnet nichts neu: alle Zahlen stammen aus proj; Abweichungen sind Differenzen der angezeigten Werte.
+    past: Karte eines vergangenen Tages (ui/score_history.card_inputs): {'result': (Gast, Heim) | None, 'pred': (Gast, Heim), 't2': bool}; wie jede Schnappschuss-Karte ohne Mindestquoten und Sieger-Zeichen; mit `entry` (gespeicherter Pre-Match-Eintrag) zeigt sie die gespeicherten Betano-Quoten."""
     h, a = team_info(proj["home_team"]), team_info(proj["away_team"])
     h["name"], a["name"] = proj["home_team"], proj["away_team"]
     h["score"], a["score"] = proj["home_score"], proj["away_score"]
@@ -231,14 +232,15 @@ def build_card_vm(proj: dict, entry: dict | None = None, tables: dict | None = N
     win_note = None                                  # nur Projektionen mit Siegchance aus der Spread-Verteilung (sigmas_version 2); aeltere Schnappschuss-Karten: kein Hinweis
     if proj.get("win_prob_source") == "normal_spread" and proj.get("sigma_spread"):
         win_note = f"Siegchance und Spread aus derselben Verteilung (Sigma {fmt_num(float(proj['sigma_spread']))})"
-    snapshot = tables is not None or result is not None          # Schnappschuss-Karten beendeter Spiele: unveraendert (keine Sicherheitsstufen)
+    snapshot = past is not None or tables is not None or result is not None          # Schnappschuss-Karten beendeter Spiele: unveraendert (keine Sicherheitsstufen)
     vm = {"home": h, "away": a, "fav": fav, "spread": sp, "total": tt, "warnings": warnings, "details": details, "win_note": win_note,
-          "origin": origin, "origin_warnings": origin_warnings, "lines": _line_blocks(proj, entry, h, a, tables, result),
+          "origin": origin, "origin_warnings": origin_warnings, "lines": _line_blocks(proj, entry, h, a, tables, result, past is not None),
           "winner": None if snapshot else safety.winner_sign(max(h["p"], a["p"]) if fav else None)}
     vm["minodds_note"] = bool(vm["lines"]) and not snapshot
-    vm["moneyline"] = None if snapshot else bq.winner_quotes(entry)          # gespeicherte Betano-Sieger-Quoten (Gast/Heim) als Text, sonst None
+    vm["past"] = past
+    vm["moneyline"] = bq.winner_quotes(entry) if past is not None else None if snapshot else bq.winner_quotes(entry)          # gespeicherte Betano-Sieger-Quoten (Gast/Heim) als Text, sonst None
     t2 = proj.get("team2")
-    if t2 and t2.get("active") and tables is None and result is None:       # nur laufende Projektionen; beendete Spiele (Schnappschuss-Karten) bleiben wie gespeichert
+    if t2 and t2.get("active") and tables is None and result is None and past is None:       # nur laufende Projektionen; beendete Spiele (Schnappschuss-Karten) bleiben wie gespeichert
         from engine import team_injury as ti
         vm2 = build_card_vm(ti.variant_proj({k: v for k, v in proj.items() if k != "team2"}, t2), entry)
         vm["t2"] = {"vm": vm2, "note": ti.note_text(proj, t2, h["nick"], a["nick"]), "delta": t2.get("delta_spread")}
@@ -251,11 +253,11 @@ def _fmt_x(x: float) -> str:
     return fmt_num(x)
 
 
-def _line_blocks(proj: dict, entry: dict | None, h: dict, a: dict, tables: dict | None = None, result: dict | None = None) -> list[dict] | None:
+def _line_blocks(proj: dict, entry: dict | None, h: dict, a: dict, tables: dict | None = None, result: dict | None = None, past: bool = False) -> list[dict] | None:
     """Vier Bloecke (SPREAD, TOTAL, TEAM TOTAL Gast, TEAM TOTAL Heim) mit Zeilen: Linie links, Balken mit Prozentzahlen (engine/line_probabilities.py).
     Titel sind fest (aendern sich nie). Ohne market_lines (Mock): None."""
     from engine.line_probabilities import build_line_tables
-    live = tables is None and result is None                                         # Schnappschuss-Karten beendeter Spiele: keine Betano-Quoten
+    live = (tables is None and result is None) or past                                         # Schnappschuss-Karten beendeter Spiele: keine Betano-Quoten
     tables = tables if tables is not None else build_line_tables(proj, entry)       # tables: gespeicherte Zeilen eines beendeten Spiels (Schnappschuss)
     if tables is None:
         return None
@@ -275,10 +277,10 @@ def _line_blocks(proj: dict, entry: dict | None, h: dict, a: dict, tables: dict 
                 x = r["line"]
                 label = f"{fav_nick} {MINUS}{fmt_num(x)}" if x > 0 else f"{fav_nick} +{fmt_num(abs(x))}" if x < 0 else "PK"
                 left_name, right_name = a["nick"], h["nick"]
-                rows.append({**r, "label": label, "left": f"{left_name} {r['p_left']} %", "right": f"{r['p_right']} % {right_name}", "style": "spread", "min_odds": safety.row_min_odds_text(r),
+                rows.append({**r, "label": label, "left": f"{left_name} {r['p_left']} %", "right": f"{r['p_right']} % {right_name}", "style": "spread", "min_odds": None if past else safety.row_min_odds_text(r),
                              "quote": bq.row_quote_text(entry, key, t, r) if live else None})
             else:
-                rows.append({**r, "label": fmt_num(r["line"]), "left": f"Over {r['p_left']} %", "right": f"{r['p_right']} % Under", "style": "ou", "min_odds": safety.row_min_odds_text(r),
+                rows.append({**r, "label": fmt_num(r["line"]), "left": f"Over {r['p_left']} %", "right": f"{r['p_right']} % Under", "style": "ou", "min_odds": None if past else safety.row_min_odds_text(r),
                              "quote": bq.row_quote_text(entry, key, t, r) if live else None})
         blocks.append({"key": key, "title": title, "rows": rows, "note": t.get("note"), "source": t.get("source")})
     return blocks
@@ -296,15 +298,16 @@ def line_block_body_html(block: dict) -> str:
     body = ""
     has_min = any(r.get("min_odds") for r in block["rows"])           # Spalte "Mindestquote" nur, wenn mindestens eine Zeile eine Seite mit Chance >= 50 % hat (nicht in Schnappschuss-Karten)
     has_q = any(r.get("quote") for r in block["rows"])                # Spalte "Quote" (Betano, orange Seite) nur, wenn mindestens eine Zeile eine gespeicherte Betano-Quote hat
+    has_chip = has_q and any(r.get("outcome") for r in block["rows"])  # Karten vergangener Tage (Quote + Chip): alle Zeilen des Blocks bekommen die sechste Spalte, damit der Chip in der Zeile steht
     if has_q:
-        body += ('<div class="pc-lhead pc-lhgrid pc-lqcol' + (' pc-lmincol' if has_min else '') + '"><span></span><span class="pc-lhq">Quote</span><span></span><span></span><span></span>'
-                 + ('<span class="pc-lhm">Mindestquote</span>' if has_min else '') + '</div>')
+        body += ('<div class="pc-lhead pc-lhgrid pc-lqcol' + (' pc-lmincol' if has_min else '') + (' pc-lrow-chip' if has_chip else '') + '"><span></span><span class="pc-lhq">Quote</span><span></span><span></span><span></span>'
+                 + ('<span></span>' if has_chip else '') + ('<span class="pc-lhm">Mindestquote</span>' if has_min else '') + '</div>')
     elif has_min:
         body += '<div class="pc-lhead"><span>Mindestquote</span></div>'
     for r in block["rows"]:
         lcls = "pc-lseg pc-seg-fav" if r["predicted"] == "left" else "pc-lseg pc-seg-other"
         rcls = "pc-lseg pc-seg-fav" if r["predicted"] == "right" else "pc-lseg pc-seg-other"
-        main = (" pc-lmain" if r["is_main"] else "") + (" pc-lrow-chip" if r.get("outcome") else "") + (" pc-lmincol" if has_min else "") + (" pc-lqcol" if has_q else "")
+        main = (" pc-lmain" if r["is_main"] else "") + (" pc-lrow-chip" if r.get("outcome") or has_chip else "") + (" pc-lmincol" if has_min else "") + (" pc-lqcol" if has_q else "")
         qcell = f'<span class="pc-lq">{escape(r["quote"]) if r.get("quote") else ""}</span>' if has_q else ""
         mincell = (f'<span class="pc-lmin">{escape(r["min_odds"]) if r.get("min_odds") else "–"}</span>' if has_min else "")
         chip = (f'<span class="pc-lchip pc-lchip-{r["outcome"]}">{OUTCOME_TEXT[r["outcome"]]}</span>' if r.get("outcome") else "")
@@ -330,6 +333,8 @@ def render_line_expanders(vm: dict, key: str) -> None:
         for block in vm["lines"]:
             with st.expander(block["title"]):
                 body = line_block_body_html(block)
+                if (vm.get("past") or {}).get("t2"):            # vergangener Tag mit Ausfall-Prognose: die gespeicherten Linien sind die des Standard-Modells
+                    body = '<div class="pc-lnote">Linien: Standard-Modell</div>' + body
                 if block["key"] in t2_lines and block["key"] != "total":          # Spread und Team Totals aendern sich mit dem Schalter, das Total nicht
                     body = f'<div class="pc-var pc-var-std">{body}</div><div class="pc-var pc-var-t2">{line_block_body_html(t2_lines[block["key"]])}</div>'
                 st.markdown("".join(line.strip() for line in body.splitlines()), unsafe_allow_html=True)
@@ -400,6 +405,33 @@ def _variant_items(vm: dict) -> dict:
     }
 
 
+def _past_mid(past: dict) -> list[str]:
+    """Mitte der Karte eines vergangenen Tages: tatsaechliches Ergebnis (Gast : Heim), der Sieger hell; ohne gespeichertes Ergebnis Striche."""
+    res = past.get("result")
+    if not res:
+        return ['<span class="pc-score pc-dog">–</span>', '<span class="pc-at">@</span>', '<span class="pc-score pc-dog">–</span>']
+    a, h = res
+    cls = lambda mine, other: "pc-score pc-fav" if mine > other else "pc-score pc-dog"
+    return [f'<span class="{cls(a, h)}">{a}</span>', '<span class="pc-at">@</span>', f'<span class="{cls(h, a)}">{h}</span>']
+
+
+def _past_pred_row(past: dict) -> list[str]:
+    """Zweite Zeile der Karten-Mitte (gleiche drei Spalten wie das Ergebnis): Prognose-Punkte Gast | 'Modell-Prognose' (mit Hinweis bei Ausfaellen) | Prognose-Punkte Heim.
+    Das Team mit den hoeheren prognostizierten Punkten orange, das andere gedaempft (bei Gleichstand beide gedaempft). Ohne Prognose: keine Zeile."""
+    pred = past.get("pred")
+    if not pred:
+        return []
+    a, h = pred
+    cls = lambda mine, other: "pc-pscore pc-fav" if mine > other else "pc-pscore pc-dog"
+    note = '<span class="pc-predt2">Prognose mit Ausfällen</span>' if past.get("t2") else ""
+    return [f'<span class="{cls(a, h)}">{a}</span>', f'<span class="pc-pmid">Modell-Prognose{note}</span>', f'<span class="{cls(h, a)}">{h}</span>']
+
+
+def _past_lines(past: dict) -> str:
+    """Zeile unter dem Kopf: 'kein Ergebnis gespeichert' (falls zutreffend), sonst nichts."""
+    return "" if past.get("result") else '<div class="pc-predline">kein Ergebnis gespeichert</div>'
+
+
 def _switchable(std: list[str], t2: list[str] | None) -> list[str]:
     """Ohne team-2: unveraenderte Teile. Mit team-2: beide Varianten, per CSS (Schalter) umgeblendet."""
     if t2 is None:
@@ -416,6 +448,9 @@ def render_card_html(vm: dict, logo_dir: Path | str | None = None) -> str:
     h, a, fav = vm["home"], vm["away"], vm["fav"]
     t2 = vm.get("t2")
     std = _variant_items(vm)
+    past = vm.get("past")
+    if past:                                            # vergangener Tag: unter den Teams das tatsaechliche Ergebnis, darunter die gespeicherte Modell-Prognose
+        std["mid"] = _past_mid(past) + _past_pred_row(past)
     alt = _variant_items(t2["vm"]) if t2 else {}
     note_html = f'<div class="pc-warnings"><div class="pc-chip pc-chip-yellow">{escape(t2["note"])}</div></div>' if t2 and t2.get("note") else ""
     warn_html = ""
@@ -433,11 +468,12 @@ def render_card_html(vm: dict, logo_dir: Path | str | None = None) -> str:
         _switch_html() if t2 else "",
         '<div class="pc-head">',
         _team_html(a, "AWAY", logo_dir),
-        '<div class="pc-mid">',
+        '<div class="pc-mid pc-mid-past">' if past else '<div class="pc-mid">',
         *_switchable(std["mid"], alt.get("mid")),
         '</div>',
         _team_html(h, "HOME", logo_dir),
         '</div>',
+        _past_lines(past) if past else "",
         *_switchable(std["bar"], alt.get("bar")),
         f'<div class="pc-winnote">{escape(vm["win_note"])}</div>' if vm.get("win_note") else "",
         note_html,
@@ -515,8 +551,17 @@ def _css() -> str:
 .pc-lhq, .pc-lhm {{ justify-self:end; white-space:nowrap; }}
 .pc-lqcol {{ grid-template-columns:minmax(150px,210px) 72px 160px minmax(120px,1fr) 160px; }}
 .pc-lqcol.pc-lmincol {{ grid-template-columns:minmax(150px,210px) 72px 160px minmax(120px,1fr) 160px minmax(96px,auto); }}
+.pc-lqcol.pc-lrow-chip {{ grid-template-columns:minmax(110px,170px) 60px 160px minmax(90px,1fr) 160px max-content; gap:10px; }}
 .pc-lq {{ justify-self:end; white-space:nowrap; font-weight:600; font-size:16px; color:{P['text_soft']}; font-variant-numeric:tabular-nums; }}
 .pc-bar-odds {{ display:flex; justify-content:space-between; max-width:1040px; margin:6px auto 0; font-size:14px; font-weight:600; color:{P['text_soft']}; font-variant-numeric:tabular-nums; }}
+.pc-daychip {{ display:inline-block; float:right; padding:6px 14px; border-radius:999px; font-size:14px; font-weight:600; white-space:nowrap; }}
+.pc-daychip-now {{ background:{P['win_ok_bg']}; border:1px solid {P['win_ok_border']}; color:{P['win_ok_text']}; }}
+.pc-daychip-past {{ background:{P['chip_gray_bg']}; border:1px solid {P['chip_gray_border']}; color:{P['chip_gray_text']}; }}
+.pc-mid-past {{ display:grid; grid-template-columns:auto auto auto; justify-items:center; align-items:center; column-gap:clamp(14px,2vw,28px); row-gap:6px; }}
+.pc-pscore {{ font-size:clamp(23px,2.2vw,33px); font-weight:700; line-height:1; font-variant-numeric:tabular-nums; }}
+.pc-pmid {{ display:flex; flex-direction:column; align-items:center; font-size:15px; color:{P['label']}; }}
+.pc-predt2 {{ font-size:11px; color:{P['text_soft']}; margin-top:2px; }}
+.pc-predline {{ text-align:center; font-size:14px; color:{P['label']}; margin-top:10px; }}
 .pc-minnote {{ font-size:13px; color:{P['label']}; padding:6px 10px 2px; }}
 .pc-winner {{ max-width:1040px; margin:10px auto 0; text-align:center; font-size:13px; font-weight:600; }}
 .pc-winner span {{ display:inline-block; padding:3px 12px; border-radius:999px; }}
@@ -543,6 +588,7 @@ def _css() -> str:
 .pc-sw[open] .pc-sw-t2 {{ background:{P['pill_bg']}; color:{P['pill_text']}; }}
 @media (max-width:760px) {{ .pc-head {{ grid-template-columns:1fr; }} .pc-model {{ grid-template-columns:1fr; gap:24px; }} .pc-card {{ padding:24px 18px 18px; }} }}
 @media (max-width:1200px) {{ .pc-lrow {{ grid-template-columns:auto 1fr auto; grid-template-areas:"line line line" "pl bar pr"; row-gap:6px; padding:8px 10px; }} .pc-lline {{ grid-area:line; }} .pc-lpct-l {{ grid-area:pl; }} .pc-lbar {{ grid-area:bar; }} .pc-lpct-r {{ grid-area:pr; }} .pc-lrow-chip {{ grid-template-columns:auto 1fr auto; grid-template-areas:"line line chip" "pl bar pr"; }} .pc-lchip {{ grid-area:chip; }} .pc-lmincol {{ grid-template-columns:auto 1fr auto; grid-template-areas:"line line min" "pl bar pr"; }} .pc-lmin {{ grid-area:min; }} .pc-lqcol {{ grid-template-columns:auto 1fr auto; grid-template-areas:"line line quote" "pl bar pr"; }} .pc-lqcol.pc-lmincol {{ grid-template-areas:"line quote min" "pl bar pr"; }} .pc-lq {{ grid-area:quote; }} .pc-lhgrid {{ display:flex; justify-content:flex-end; gap:24px; }} .pc-lhgrid span:empty {{ display:none; }} .pc-lpill {{ padding:3px 8px; font-size:15px; }} }}
+@media (max-width:1400px) {{ .pc-lqcol.pc-lrow-chip {{ grid-template-columns:170px 1fr 128px; grid-template-areas:"line quote chip" "pl bar pr"; grid-template-rows:minmax(29px,auto) auto; row-gap:6px; column-gap:14px; padding:8px 10px; }} .pc-lqcol.pc-lrow-chip .pc-lline {{ grid-area:line; }} .pc-lqcol.pc-lrow-chip .pc-lq {{ grid-area:quote; }} .pc-lqcol.pc-lrow-chip .pc-lchip {{ grid-area:chip; }} .pc-lqcol.pc-lrow-chip .pc-lpct-l {{ grid-area:pl; }} .pc-lqcol.pc-lrow-chip .pc-lbar {{ grid-area:bar; }} .pc-lqcol.pc-lrow-chip .pc-lpct-r {{ grid-area:pr; }} .pc-lhead.pc-lqcol.pc-lrow-chip {{ display:grid; grid-template-columns:170px 1fr 128px; column-gap:14px; padding:0 10px 4px; }} .pc-lhead.pc-lqcol.pc-lrow-chip span:empty {{ display:none; }} .pc-lhead.pc-lqcol.pc-lrow-chip .pc-lhq {{ grid-column:2; }} }}
 </style>
 """
 

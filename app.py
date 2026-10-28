@@ -39,7 +39,7 @@ from data import market_lines, pregame_lines
 from data import pre_match_store
 from data import projection_snapshots
 from data import live_feed as lf_feed
-from ui import score_order
+from ui import score_day, score_history, score_order
 from data.odds import parse_odds
 from data.odds_client import credits_info, describe_age, get_odds, cache_problem as odds_cache_problem
 from data.injuries import fetch_team_news
@@ -778,29 +778,73 @@ for _ in tab_body("📊 Score Projections"):
     st.caption(
         "Endprojektion = Modell + Vegas-Mischung + Playoff-Modifikator + gespeicherte Team-Bias-Korrektur."
     )
-    projections = st.session_state.projections
-    _fin_all = projection_snapshots.finished_cards(exclude={str((p_.get("_line_inputs") or {}).get("entry_key") or p_["home_team"]) for p_ in projections})
-    if not projections and not _fin_all:
+    # Spieltag-Logik (ui/score_day.py): gezeigt wird nur der aktive US-Spieltag. Das ist reine Anzeige; st.session_state.projections, record_snapshots und alle anderen Tabs
+    # bekommen weiterhin die ungefilterte Liste. Ausgewertet wird bei jedem Rerun (Neuladen, "Refresh Odds"), ohne Timer und ohne Abruf.
+    _all_proj = st.session_state.projections
+    _gkey = lambda p_: str((p_.get("_line_inputs") or {}).get("entry_key") or p_["home_team"])
+    _now = time.time()
+    try:
+        _feed_state = lf_feed.get_feed().state(_now)
+    except Exception:
+        _feed_state = None
+    def _feed_status(day_, home_, away_):
+        g_ = lf_feed.find_game(_feed_state, day_, home_, away_) if _feed_state is not None else None
+        return g_.status if g_ is not None else None
+    _snap_games = projection_snapshots.load().get("games", {})
+    _day_games = [{"date": p_.get("game_date"), "start": p_.get("game_start"), "status": p_.get("game_status"), "has_result": bool((_snap_games.get(_gkey(p_)) or {}).get("result")),
+                   "feed_status": _feed_status(p_.get("game_date"), p_["home_team"], p_["away_team"])} for p_ in _all_proj]
+    _fin_every = projection_snapshots.finished_cards(hours=10 ** 6, exclude={_gkey(p_) for p_ in _all_proj})
+    _card_day = lambda f_: score_day.game_day({"date": f_["card"].get("game_date"), "start": f_["card"].get("game_start")})
+    _active = score_day.display_day(_day_games, _now, [_card_day(f_) for f_ in _fin_every])
+    projections = [p_ for p_, g_ in zip(_all_proj, _day_games) if _active is not None and score_day.game_day(g_) == _active]
+    # Beendete Spiele aus dem Schnappschuss: alle des gezeigten Spieltags (statt der 24-Stunden-Regel); ausgeschlossen, was noch in der ungefilterten Liste steht.
+    # Sind alle geladenen Spiele beendet, bleibt der zuletzt gespielte Tag sichtbar, bis ein neuer Spieltag geladen ist; "Keine Spiele" nur bei ganz leerer Liste.
+    _fin_all = [] if _active is None else [f_ for f_ in _fin_every if _card_day(f_) == _active]
+    # Leiste: Vortag / Auswahlliste / Folgetag / Heute und Hinweis-Chip. Vergangene Tage kommen rein lesend aus der Schnappschuss-Datei (ui/score_history.py, projection_snapshots.load():
+    # Zwischenspeicher je Dateistand), nie ueber st.session_state.projections; kein record_snapshots, kein Abruf, keine Cache-Datei. Eine neue Sitzung startet auf dem aktiven Spieltag.
+    st.markdown(flat_html(CARD_CSS), unsafe_allow_html=True)
+    _act_keys = [_gkey(p_) for p_, g_ in zip(_all_proj, _day_games) if _active is not None and score_day.game_day(g_) == _active] + [f_["key"] for f_ in _fin_every if _active is not None and _card_day(f_) == _active]
+    _days = score_history.day_counts(_snap_games, _active, _act_keys)
+    _isos = [d_.isoformat() for d_, _, _ in _days]
+    _labels = {d_.isoformat(): score_history.day_label(d_, n_, a_) for d_, n_, a_ in _days}
+    _act_iso = _active.isoformat() if _active is not None else None
+    _sel = st.session_state.get("score_day_sel")
+    if _sel not in _isos or (_sel == st.session_state.get("score_day_active") and _act_iso != _sel and _act_iso is not None):      # neue Sitzung, unbekannter Tag oder Spieltag-Wechsel: aktiver Spieltag
+        _sel = st.session_state["score_day_sel"] = _act_iso or (_isos[-1] if _isos else None)
+    st.session_state["score_day_active"] = _act_iso
+    _past_view = False
+    if _isos:
+        _prev_d, _next_d = score_history.neighbours([date.fromisoformat(i_) for i_ in _isos], date.fromisoformat(_sel))
+        _go = lambda iso_: st.session_state.__setitem__("score_day_sel", iso_)
+        _c1, _c2, _c3, _c4, _c5 = st.columns([1, 3, 1, 1, 2.4])
+        _c1.button("◀ Vortag", key="score_day_prev", disabled=_prev_d is None, on_click=_go, args=(_prev_d.isoformat() if _prev_d else None,), use_container_width=True)
+        _c2.selectbox("Spieltag", _isos, format_func=lambda i_: _labels[i_], key="score_day_sel", label_visibility="collapsed")
+        _c3.button("Folgetag ▶", key="score_day_next", disabled=_next_d is None, on_click=_go, args=(_next_d.isoformat() if _next_d else None,), use_container_width=True)
+        _c4.button("Heute", key="score_day_today", disabled=_act_iso is None or st.session_state["score_day_sel"] == _act_iso, on_click=_go, args=(_act_iso,), use_container_width=True)
+        _past_view = st.session_state["score_day_sel"] != _act_iso
+        _c5.markdown('<div class="pc-daychip pc-daychip-past">Vergangener Tag · nur ansehen</div>' if _past_view else '<div class="pc-daychip pc-daychip-now">Aktueller Spieltag</div>', unsafe_allow_html=True)
+    if _past_view:
+        st.caption("Gespeicherte Vorab-Prognose mit Ergebnis, so wie sie vor Anpfiff war. Es wird nichts gespeichert und nichts abgerufen.")
+        with st.container(key="sc_cards"):
+            _entries = market_lines.load_entries()          # gespeicherte Pre-Match-Eintraege (nur lesen, Zwischenspeicher je Dateistand): Betano-Quoten der vergangenen Karten
+            for _it in score_history.past_items(_snap_games, date.fromisoformat(st.session_state["score_day_sel"])):
+                _pcard, _pinfo = score_history.card_inputs(_it)
+                _pvm = build_card_vm(_pcard, entry=_entries.get(_it["key"]), tables=_it["tables"], result=_it["result"], past=_pinfo)
+                _ph = hashlib.md5(_it["key"].encode("utf-8")).hexdigest()[:10]
+                with st.container(key=f"sc_game_{_ph}"):
+                    st.markdown(flat_html(render_card_html(_pvm)), unsafe_allow_html=True)
+                    render_line_expanders(_pvm, _ph)
+    elif _active is None:
         st.markdown(
-            '<div class="no-bets"><div style="font-size:3rem">📊</div><div style="margin-top:16px">Keine Spiele gefunden</div></div>',
+            '<div class="no-bets"><div style="font-size:3rem">📊</div><div style="margin-top:16px">Keine Spiele</div></div>',
             unsafe_allow_html=True,
         )
     else:
-        st.markdown(flat_html(CARD_CSS), unsafe_allow_html=True)
         # Stabile Identitaet je Spiel: Streamlit ordnet den Auf/Zu-Zustand der Expander ueber die POSITION im Elementbaum zu. Wuerde die Sortierung nach |Spread|
         # (z. B. nach Refresh Odds oder neuer Eigenlinie) die Karten im Baum umstellen, wanderte der Zustand zu einem anderen Spiel. Darum steht jede Karte in einem
         # Container mit festem Schluessel je Spiel in FESTER Reihenfolge (nach Spiel-Schluessel); die sichtbare Sortierung nach |Spread| macht CSS (order).
-        _gkey = lambda p_: str((p_.get("_line_inputs") or {}).get("entry_key") or p_["home_team"])
         _hash = lambda p_: hashlib.md5(_gkey(p_).encode("utf-8")).hexdigest()[:10]
         # Reihenfolge: nicht begonnen, laufend, beendet; je Gruppe nach Anpfiff, bei gleichem Anpfiff nach |Spread| (ui/score_order.py). Status: Live-Feed-Stand (kein Abruf), sonst Uhrzeit/BDL-Status.
-        _now = time.time()
-        try:
-            _feed_state = lf_feed.get_feed().state(_now)
-        except Exception:
-            _feed_state = None
-        def _feed_status(day_, home_, away_):
-            g_ = lf_feed.find_game(_feed_state, day_, home_, away_) if _feed_state is not None else None
-            return g_.status if g_ is not None else None
         _items = [(_hash(p_), p_.get("game_start"), score_order.status_group(p_.get("game_start"), p_.get("game_status"), _now, _feed_status(p_.get("game_date"), p_["home_team"], p_["away_team"])))
                   for p_ in sorted(projections, key=lambda x: -abs(x["exp_spread"]))]
         _items += [(hashlib.md5(f_["key"].encode("utf-8")).hexdigest()[:10], f_["card"].get("game_start"), score_order.FINAL) for f_ in _fin_all]      # beendete Spiele aus dem Schnappschuss

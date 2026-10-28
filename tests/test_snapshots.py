@@ -292,7 +292,7 @@ snap.record_snapshots([pf], {}, model=MODEL, now=nowx - 9 * H) if False else Non
 pf["_line_inputs"]["game_start"] = fs
 d = json.loads(snap.snapshot_path().read_text())
 kf = pf["_line_inputs"]["entry_key"]
-d["games"][kf] = {"game_date": "2026-10-21", "start_utc": fs, "home": "Miami Heat", "away": "Chicago Bulls", "card": snap._jsonable({k: v for k, v in pf.items() if k != "_line_inputs"}),
+d["games"][kf] = {"game_date": dt.date.today().isoformat(), "start_utc": fs, "home": "Miami Heat", "away": "Chicago Bulls", "card": snap._jsonable({k: v for k, v in pf.items() if k != "_line_inputs"} | {"game_date": dt.date.today().isoformat()}),
                   "versions": [{"saved_at": "x", "hash": "h", **snap.build_snapshot(pf, None, MODEL)}], "result": {"home_points": 118, "away_points": 100, "recorded_at": ps.iso_now(nowx), "source": "update_model"}}
 snap.snapshot_path().write_text(json.dumps(d)); snap._cache.update(sig=None, data=None)
 at = AppTest.from_file(str(ROOT / "app.py"), default_timeout=120).run()
@@ -305,7 +305,10 @@ check("beendetes Spiel (Schnappschuss + Ergebnis): Karte erscheint zusaetzlich (
 old_rec = d["games"][kf]["result"]["recorded_at"]
 d["games"][kf]["result"]["recorded_at"] = ps.iso_now(nowx - 30 * H); snap.snapshot_path().write_text(json.dumps(d)); snap._cache.update(sig=None, data=None)
 at = AppTest.from_file(str(ROOT / "app.py"), default_timeout=120).run()
-check("beendetes Spiel verschwindet nach 24 Stunden wieder aus der Anzeige", len([m for m in at.tabs[sp_idx].markdown if 'class="pc-card' in m.value]) == 3)
+check("beendetes Spiel bleibt am aktiven Spieltag stehen (Spieltag-Logik statt 24-Stunden-Regel)", len([m for m in at.tabs[sp_idx].markdown if 'class="pc-card' in m.value]) == 4)
+d["games"][kf]["card"]["game_date"] = "2026-10-21"; d["games"][kf]["game_date"] = "2026-10-21"; snap.snapshot_path().write_text(json.dumps(d)); snap._cache.update(sig=None, data=None)
+at = AppTest.from_file(str(ROOT / "app.py"), default_timeout=120).run()
+check("beendetes Spiel eines frueheren Spieltags verschwindet aus dem Tab", len([m for m in at.tabs[sp_idx].markdown if 'class="pc-card' in m.value]) == 3)
 # Mock/Audit-Modus und Projektion ohne Linien: kein Absturz
 st = snap.record_snapshots([{"home_team": K, "away_team": P, "exp_spread": 1, "exp_total": 220, "home_score": 110, "away_score": 109}], {}, model=MODEL)
 check("Mock-Projektion ohne market_lines/Anpfiff: kein Schnappschuss, kein Absturz", st["locked"] == 1)

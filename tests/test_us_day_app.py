@@ -1,6 +1,6 @@
 """Tests: die uebrigen date.today()-Stellen in app.py meinen den US-Spieltag (us_today), nicht das Berliner Systemdatum.
 Stellen: build_mock_projections (is_playoff, game_date), refresh_data (Rueckfall game_date), fetch_completed_games (Offline-Mock _display_date, Abfragetage dates[]).
-Jede Pruefung laeuft mit dem alten Quelltext (git HEAD) und dem neuen: Zeitpunkt 27.10.2026 00:30 Berliner Zeit = 26.10. 18:30 in New York.
+Jede Pruefung laeuft mit dem alten Quelltext (git-Stand 62b3091, vor der US-Tag-Korrektur) und dem neuen: Zeitpunkt 27.10.2026 00:30 Berliner Zeit = 26.10. 18:30 in New York.
 Offline (tests/fake_net.py, Temp-Verzeichnisse). Aufruf aus dem Projektordner: venv/bin/python tests/test_us_day_app.py"""
 import ast, datetime as dt, os, subprocess, sys, types, warnings
 from pathlib import Path
@@ -29,7 +29,7 @@ class FakeDate:
     @staticmethod
     def today(): return BERLIN_DATE                       # Berliner Systemdatum
 new_src = (ROOT / "app.py").read_text()
-old_src = subprocess.run(["git", "show", "HEAD:app.py"], capture_output=True, text=True, cwd=ROOT).stdout
+old_src = subprocess.run(["git", "show", "62b3091:app.py"], capture_output=True, text=True, cwd=ROOT).stdout
 def func(src, name):
     node = next(n for n in ast.parse(src).body if isinstance(n, ast.FunctionDef) and n.name == name)
     node.decorator_list = []                              # @st.cache_data weglassen
