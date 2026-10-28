@@ -212,7 +212,7 @@ def render_bet_list() -> None:
     page = lt.get_page(state)
     items = collect_items(page.get("bet_rows") or [])
     nm = bc.names()
-    with st.expander(f"Wettliste nach Kategorien · {len(items)} Wette(n)", expanded=bool(items)):
+    with st.expander(f"Wettliste nach Kategorien · {len(items)} Wette(n)", expanded=False):          # beim Betreten des Tabs geschlossen
         err = ds.load_error()
         if err:
             st.error(err)

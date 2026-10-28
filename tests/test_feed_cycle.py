@@ -25,9 +25,9 @@ DAY = "2026-10-22"
 class R:
     def __init__(self, payload): self.status_code, self._p, self.text = 200, payload, ""
     def json(self): return self._p
-def row(gid, status, period, clock, hs, as_):
+def row(gid, status, period, clock, hs, as_, start="2026-10-22T23:00:00Z"):
     t = lambda nick, sc: {"teamCity": nick.split()[0], "teamName": nick.split()[1], "teamTricode": nick[:3].upper(), "score": sc, "periods": []}
-    return {"gameId": gid, "gameStatus": status, "gameStatusText": "", "period": period, "gameClock": clock, "gameEt": f"{DAY}T19:00:00-04:00", "gameTimeUTC": "2026-10-22T23:00:00Z", "homeTeam": t(f"Heim{gid} Falken", hs), "awayTeam": t(f"Gast{gid} Baeren", as_)}
+    return {"gameId": gid, "gameStatus": status, "gameStatusText": "", "period": period, "gameClock": clock, "gameEt": f"{DAY}T19:00:00-04:00", "gameTimeUTC": start, "homeTeam": t(f"Heim{gid} Falken", hs), "awayTeam": t(f"Gast{gid} Baeren", as_)}
 def box(period, clock, hs, as_):
     s = {"fieldGoalsAttempted": 30, "freeThrowsAttempted": 8, "reboundsOffensive": 4, "turnoversTotal": 5}
     return {"gameStatus": 2, "period": period, "gameClock": clock, "homeTeam": {"score": hs, "statistics": dict(s), "players": []}, "awayTeam": {"score": as_, "statistics": dict(s), "players": []}}
@@ -37,7 +37,7 @@ class Net:
         self.calls.append("espn" if "espn" in url else "board" if "scoreboard" in url else "box")
         if "espn" in url: return R({"events": []})
         self.n += 1
-        if "scoreboard" in url: return R({"scoreboard": {"gameDate": DAY, "games": [row("A", 2, 2, f"PT{max(0, 10 - self.n // 4):02d}M00.00S", 40, 38), row("B", 2, 1, "PT05M00.00S", 20, 18), row("C", 1, 0, "", 0, 0)]}})
+        if "scoreboard" in url: return R({"scoreboard": {"gameDate": DAY, "games": [row("A", 2, 2, f"PT{max(0, 10 - self.n // 4):02d}M00.00S", 40, 38), row("B", 2, 1, "PT05M00.00S", 20, 18), row("C", 1, 0, "", 0, 0, "2026-10-23T23:00:00Z")]}})
         gid = url.rsplit("_", 1)[1].split(".")[0]
         return R({"game": box(2, "PT09M00.00S", 40, 38) if gid == "A" else box(1, "PT05M00.00S", 20, 18)})
     def count(self, k): return self.calls.count(k)

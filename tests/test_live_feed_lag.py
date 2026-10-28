@@ -140,7 +140,7 @@ for label, r_, b_ in (("Halbzeit", row(period=2, clock="", text="Halftime", hs=5
     check(f"Pause '{label}': 10 Minuten, kein Alarm, keine Zeile, Quelle NBA.com, kein ESPN", G(s_).source == "NBA.com" and s_.freeze_note is None and "hinkt" not in s_.status_line and n.espn_calls() == 0)
 n = Net(); f_, s_ = one(n, row(period=2, clock="", text="Halftime", hs=55, as_=50), boxgame(period=3, clock="PT12M00.00S", hs=55, as_=50), secs=30)
 check("Halbzeit im Scoreboard, Boxscore schon Q3 12:00 (zweite Haelfte laeuft): neuere Periode gilt", G(s_).source == lf.SOURCE_BOX_SUB and G(s_).clock_label == "Q3 12:00")
-n = Net(); n.row = row(status=1, period=0, clock="", hs=0, as_=0); n.box = boxgame(period=1, clock="PT11M00.00S", hs=2, as_=0)
+n = Net(); n.row = row(status=1, period=0, clock="", hs=0, as_=0); n.box = boxgame(period=1, clock="PT11M00.00S", hs=2, as_=0); n.row["gameTimeUTC"] = "2026-10-23T23:00:00Z"      # Startzeit in der Zukunft: Boxscore wird nicht herangezogen (nach der Startzeit: tests/test_live_feed_pre_start.py)
 f_, s_ = one(n)
 check("Spiel laut Scoreboard noch nicht begonnen: Boxscore wird gar nicht erst herangezogen", G(s_).status == "PRE" and G(s_).source == "NBA.com")
 

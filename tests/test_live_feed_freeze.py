@@ -115,7 +115,7 @@ for label, r_ in (("Halbzeit", row(period=2, clock="", text="Halftime", hs=55, a
     n = Net(); n.row = r_; n.box = boxgame(period=r_["period"], clock="PT05M00.00S", hs=70, as_=60)    # selbst ein 'neuerer' Boxscore loest hier nichts aus
     f_, s_ = run(n, 600)
     check(f"Pause '{label}': 10 Minuten unveraendert, kein Alarm, Quelle NBA.com", s_.freeze_note is None and g(s_).source == "NBA.com" and g(s_).frozen_since_s is None and n.count("espn") == 0)
-n = Net(); n.row = row(status=1, period=0, clock="", hs=0, as_=0)
+n = Net(); n.row = row(status=1, period=0, clock="", hs=0, as_=0); n.row["gameTimeUTC"] = "2026-10-23T23:00:00Z"      # Startzeit in der Zukunft (ab der Startzeit sucht der Feed den Boxscore: tests/test_live_feed_pre_start.py)
 f_, s_ = run(n, 600)
 check("vor dem Anpfiff (PRE) und beendet (FINAL): kein Alarm", s_.freeze_note is None and g(s_).source == "NBA.com")
 n = Net(); n.row = row(status=3, period=4, clock="", text="Final", hs=100, as_=90)

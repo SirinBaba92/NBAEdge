@@ -42,6 +42,7 @@ ESPN_URL = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scorebo
 START_TOLERANCE_SECONDS = 3 * 3600   # Anpfiff NBA.com gegen ESPN darf so weit auseinanderliegen
 SOURCE_NBA, SOURCE_ESPN = "NBA.com", "ESPN"
 SOURCE_BOX_SUB, SOURCE_ESPN_SUB = "NBA.com-Boxscore (Ersatz)", "ESPN (Ersatz)"
+PRE_PROBE_MAX_SECONDS = 4 * 3600     # Boxscore-Abfrage fuer Spiele, die das Scoreboard noch als "vor dem Anpfiff" fuehrt: ab der geplanten Startzeit, hoechstens so lange (verschobene Spiele nicht endlos)
 FREEZE_SECONDS = 90.0                # laeuft das Spiel laut Scoreboard, aber Uhr UND Stand sind so lange unveraendert: Verdacht auf eingefrorene Daten
 BOX_FRESH_SECONDS = 75.0             # ein Boxscore darf hoechstens so alt sein, um das eingefrorene Scoreboard zu ersetzen
 LAG_WARN_SECONDS = 120.0            # Rueckstand des Scoreboards (Spielzeit), ab dem die Statuszeile gelb wird
@@ -562,12 +563,14 @@ class LiveFeed:
             entry = self._box.setdefault(g.game_id, {"at": None, "poss": None, "error": None, "attempt": float("-inf"), "players": (), "scores": None, "clock": None, "final_done": False, "final_tries": 0})
             self._load_final_offline(g, entry, t)
         live_due = [g for g in self._games.values() if g.clock.is_live and t - info(g.game_id).get("attempt", float("-inf")) >= BOX_SECONDS]
+        pre_due = [g for g in self._games.values() if g.clock.status == 1 and self._pre_started(g, t) and t - info(g.game_id).get("attempt", float("-inf")) >= BOX_SECONDS]   # Scoreboard sagt noch "vor dem Anpfiff", Startzeit erreicht
         final_due = [g for g in self._games.values() if g.clock.is_final and not info(g.game_id).get("final_done") and info(g.game_id).get("final_tries", 0) < FINAL_MAX_TRIES
                      and t - info(g.game_id).get("attempt", float("-inf")) >= BOX_SECONDS]
-        for g in (live_due + final_due)[:MAX_BOXES_PER_REFRESH]:
+        for g in (live_due + pre_due + final_due)[:MAX_BOXES_PER_REFRESH]:
             entry = self._box.setdefault(g.game_id, {"at": None, "poss": None, "error": None, "attempt": float("-inf"), "players": (), "scores": None, "clock": None, "final_done": False, "final_tries": 0})
             gv = self._games[g.game_id]
             final = gv.clock.is_final
+            pre = gv.clock.status == 1                                  # Suche nach dem Spielstart: eigene Regeln (404/Status 1 sind normal und aendern nichts)
             if t < self._next_allowed:
                 break
             entry["attempt"] = t
@@ -578,6 +581,13 @@ class LiveFeed:
                     poss, players, scores, bclock = self._parse_box(res.data["game"])
                 except (KeyError, TypeError, ValueError):
                     res = _Res(200, None, _message(SOURCE_NBA, 200, "format"))
+            if pre:
+                if not res.ok:
+                    if res.status not in (200, 404):                     # 404 vor dem Spielstart ist normal; echte Fehler (403/429/Zeitueberschreitung): gemeinsame Pause wie bei laufenden Spielen
+                        self._next_allowed = t + self._backoff.failure()
+                    continue                                              # Fehler oder unlesbar: Spiel bleibt "vor dem Anpfiff", kein Fehlerhinweis am Spiel
+                if bclock is None or bclock.status != 2:
+                    continue                                              # Boxscore meldet das Spiel noch nicht als laufend (Status 1): nichts aendern
             if res.ok:
                 players = self._with_idle(entry, players, bclock, gv)
                 entry.update(at=t, poss=poss, error=None, players=players, scores=scores, clock=bclock)
@@ -596,6 +606,15 @@ class LiveFeed:
             gv = self._games[g.game_id]
             self._games[g.game_id] = replace(gv, possessions=entry["poss"], box_error=entry["error"], players=entry["players"] or (),
                                              players_complete=entry["scores"] == (gv.home_score, gv.away_score))
+
+    @staticmethod
+    def _pre_started(g: GameView, t: float) -> bool:
+        """Geplante Startzeit erreicht (und nicht laenger als PRE_PROBE_MAX_SECONDS her)? Ohne lesbare Startzeit: nein."""
+        try:
+            start = datetime.fromisoformat(str(g.start_utc).replace("Z", "+00:00")).timestamp()
+        except ValueError:
+            return False
+        return 0 <= t - start <= PRE_PROBE_MAX_SECONDS
 
     def _try_espn(self, t: float) -> None:
         """NBA.com-Scoreboard faellt aus: Stand/Uhr/Status der bekannten Spiele von ESPN, nur bei eindeutiger Zuordnung."""
@@ -643,6 +662,8 @@ class LiveFeed:
             return False                                                 # Punkte duerfen nie zurueckgehen: nicht vermischen
         if clock.status == 3:
             return clock.period >= gc.REG_PERIODS and scores[0] != scores[1] and sum(scores) >= 120
+        if clock.status == 2 and raw.clock.status == 1:
+            return True                                                  # Scoreboard fuehrt das Spiel noch "vor dem Anpfiff", der Boxscore meldet: laeuft (Punkte schon geprueft)
         if clock.status != 2 or raw.clock.status != 2:
             return False
         if clock.period != raw.clock.period:
@@ -664,10 +685,10 @@ class LiveFeed:
         for gid, raw in self._raw.items():
             e = self._box.get(gid) or {}
             bclock = e.get("clock")
-            if (raw.clock.is_live and bclock is not None and e.get("at") is not None and t - e["at"] <= BOX_FRESH_SECONDS and e.get("scores") is not None
+            if ((raw.clock.is_live or raw.clock.status == 1) and bclock is not None and e.get("at") is not None and t - e["at"] <= BOX_FRESH_SECONDS and e.get("scores") is not None
                     and self._box_newer(bclock, e["scores"], raw)):
                 since = t - self._sig[gid][1] if gid in self._sig else 0.0
-                frozen = since if since >= FREEZE_SECONDS else None
+                frozen = since if since >= FREEZE_SECONDS and raw.clock.is_live else None       # ein PRE-Spiel ist nicht "eingefroren", nur verspaetet
                 self._substitute(gid, raw, bclock, e["scores"], SOURCE_BOX_SUB, frozen, t)
                 done.add(gid)
                 if frozen is not None:

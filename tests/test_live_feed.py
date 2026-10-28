@@ -131,7 +131,7 @@ check("Boxscore nur fuer Spiele mit Status 'laeuft' laut Scoreboard (auch Halbze
 check("Besitze aus dem Boxscore (FGA + 0,44 FTA - OREB + TOV je Team), Alter und kein Fehler", abs(G["G2"].possessions.home - (60 + 0.44 * 20 - 8 + 10)) < 1e-9 and G["G2"].box_age_s == 0 and G["G2"].box_error is None and G["G1"].possessions is None and G["G6"].possessions is None)
 
 # ----------------------------------------------------------------- Zwischenspeicher: Scoreboard 15 s, Boxscore 30 s
-net = Net(); net.rows = [row("A1"), row("A2", status=1, period=0, clock="", hs=0, as_=0), row("A3", home=("Boston", "Celtics", "BOS"), away=("Miami", "Heat", "MIA"))]
+net = Net(); net.rows = [row("A1"), row("A2", status=1, period=0, clock="", hs=0, as_=0, start="2026-10-23T23:00:00Z"), row("A3", home=("Boston", "Celtics", "BOS"), away=("Miami", "Heat", "MIA"))]
 feed = feed_with(net)
 feed.refresh(T0)
 check("erster Abruf: 1 Scoreboard + 2 Boxscores (A1, A3)", net.kinds() == ["board", "box", "box"], str(net.kinds()))
@@ -143,7 +143,7 @@ net.reset(); feed.refresh(T0 + 29.9)
 check("nach 29,9 s: nichts", net.calls == [])
 net.reset(); feed.refresh(T0 + 30)
 check("nach 30 s: Scoreboard und beide Boxscores", net.kinds() == ["board", "box", "box"], str(net.kinds()))
-net = Net(); net.rows = [row("A1"), row("A2", status=1, period=0, clock="", hs=0, as_=0), row("A3", home=("Boston", "Celtics", "BOS"), away=("Miami", "Heat", "MIA"))]
+net = Net(); net.rows = [row("A1"), row("A2", status=1, period=0, clock="", hs=0, as_=0, start="2026-10-23T23:00:00Z"), row("A3", home=("Boston", "Celtics", "BOS"), away=("Miami", "Heat", "MIA"))]
 feed = feed_with(net)
 for s in range(0, 61):
     feed.refresh(T0 + s)
@@ -151,7 +151,7 @@ check("jede Sekunde 61 Sekunden lang gefragt: Scoreboard 5 x (0, 15, 30, 45, 60 
 check("Alter der Daten wird mitgefuehrt (Box 30 s alt ohne neuen Abruf)", feed.state(T0 + 75).games[0].box_age_s == 15 and feed.state(T0 + 75).age_s == 15)
 
 # ----------------------------------------------------------------- Fehler: 403 mit letztem guten Stand und Pausenverdopplung
-net = Net(); net.rows = [row("B1", status=2), row("B2", status=1, period=0, clock="", hs=0, as_=0, home=("Boston", "Celtics", "BOS"), away=("Miami", "Heat", "MIA"))]
+net = Net(); net.rows = [row("B1", status=2), row("B2", status=1, period=0, clock="", hs=0, as_=0, home=("Boston", "Celtics", "BOS"), away=("Miami", "Heat", "MIA"), start="2026-10-23T23:00:00Z")]
 feed = feed_with(net)
 good = feed.refresh(T0)
 net.status = 403
