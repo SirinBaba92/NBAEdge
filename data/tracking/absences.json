@@ -2110,14 +2110,14 @@
             "team": "Boston Celtics",
             "set_at": "2026-10-27T07:22:21+01:00",
             "source": "espn",
-            "fetched_at": "2026-10-27T22:25:08+01:00"
+            "fetched_at": "2026-10-27T23:35:09+01:00"
           },
           "1643548": {
             "name": "Tyler Bilodeau",
             "team": "Brooklyn Nets",
             "set_at": "2026-10-27T07:22:21+01:00",
             "source": "espn",
-            "fetched_at": "2026-10-27T22:25:08+01:00"
+            "fetched_at": "2026-10-27T23:35:09+01:00"
           }
         },
         "doubtful": {
@@ -2126,7 +2126,7 @@
             "team": "Boston Celtics",
             "set_at": "2026-10-27T22:24:02+01:00",
             "source": "espn",
-            "fetched_at": "2026-10-27T22:25:08+01:00"
+            "fetched_at": "2026-10-27T23:35:09+01:00"
           }
         },
         "updated_at": "2026-10-27T22:24:02+01:00",
@@ -2154,7 +2154,7 @@
         ],
         "auto": {
           "source": "espn",
-          "fetched_at": "2026-10-27T22:25:08+01:00",
+          "fetched_at": "2026-10-27T23:35:09+01:00",
           "unmatched": []
         }
       },
@@ -2165,14 +2165,14 @@
             "team": "Detroit Pistons",
             "set_at": "2026-10-27T07:22:21+01:00",
             "source": "espn",
-            "fetched_at": "2026-10-27T22:25:08+01:00"
+            "fetched_at": "2026-10-27T23:35:09+01:00"
           },
           "1630631": {
             "name": "Jose Alvarado",
             "team": "New York Knicks",
             "set_at": "2026-10-27T07:22:21+01:00",
             "source": "espn",
-            "fetched_at": "2026-10-27T22:25:08+01:00"
+            "fetched_at": "2026-10-27T23:35:09+01:00"
           }
         },
         "doubtful": {
@@ -2181,14 +2181,14 @@
             "team": "Detroit Pistons",
             "set_at": "2026-10-27T07:22:21+01:00",
             "source": "espn",
-            "fetched_at": "2026-10-27T22:25:08+01:00"
+            "fetched_at": "2026-10-27T23:35:09+01:00"
           },
           "1630198": {
             "name": "Isaiah Joe",
             "team": "Detroit Pistons",
             "set_at": "2026-10-27T07:22:21+01:00",
             "source": "espn",
-            "fetched_at": "2026-10-27T22:25:08+01:00"
+            "fetched_at": "2026-10-27T23:35:09+01:00"
           }
         },
         "updated_at": "2026-10-27T07:22:21+01:00",
@@ -2208,7 +2208,7 @@
         ],
         "auto": {
           "source": "espn",
-          "fetched_at": "2026-10-27T22:25:08+01:00",
+          "fetched_at": "2026-10-27T23:35:09+01:00",
           "unmatched": []
         }
       },
@@ -2219,42 +2219,42 @@
             "team": "Sacramento Kings",
             "set_at": "2026-10-27T07:22:21+01:00",
             "source": "espn",
-            "fetched_at": "2026-10-27T22:25:08+01:00"
+            "fetched_at": "2026-10-27T23:35:09+01:00"
           },
           "1642875": {
             "name": "Maxime Raynaud",
             "team": "Sacramento Kings",
             "set_at": "2026-10-27T07:22:21+01:00",
             "source": "espn",
-            "fetched_at": "2026-10-27T22:25:08+01:00"
+            "fetched_at": "2026-10-27T23:35:09+01:00"
           },
           "1631099": {
             "name": "Keegan Murray",
             "team": "Sacramento Kings",
             "set_at": "2026-10-27T07:22:21+01:00",
             "source": "espn",
-            "fetched_at": "2026-10-27T22:25:08+01:00"
+            "fetched_at": "2026-10-27T23:35:09+01:00"
           },
           "1627732": {
             "name": "Ben Simmons",
             "team": "Sacramento Kings",
             "set_at": "2026-10-27T07:22:21+01:00",
             "source": "espn",
-            "fetched_at": "2026-10-27T22:25:08+01:00"
+            "fetched_at": "2026-10-27T23:35:09+01:00"
           },
           "202699": {
             "name": "Tobias Harris",
             "team": "San Antonio Spurs",
             "set_at": "2026-10-27T07:22:21+01:00",
             "source": "espn",
-            "fetched_at": "2026-10-27T22:25:08+01:00"
+            "fetched_at": "2026-10-27T23:35:09+01:00"
           },
           "1643519": {
             "name": "Jayden Quaintance",
             "team": "San Antonio Spurs",
             "set_at": "2026-10-27T07:22:21+01:00",
             "source": "espn",
-            "fetched_at": "2026-10-27T22:25:08+01:00"
+            "fetched_at": "2026-10-27T23:35:09+01:00"
           }
         },
         "doubtful": {},
@@ -2276,7 +2276,7 @@
         ],
         "auto": {
           "source": "espn",
-          "fetched_at": "2026-10-27T22:25:08+01:00",
+          "fetched_at": "2026-10-27T23:35:09+01:00",
           "unmatched": []
         }
       },
@@ -2287,21 +2287,21 @@
             "team": "Los Angeles Lakers",
             "set_at": "2026-10-27T07:22:21+01:00",
             "source": "espn",
-            "fetched_at": "2026-10-27T22:25:08+01:00"
+            "fetched_at": "2026-10-27T23:35:09+01:00"
           },
           "1642959": {
             "name": "Chris Youngblood",
             "team": "Portland Trail Blazers",
             "set_at": "2026-10-27T07:22:21+01:00",
             "source": "espn",
-            "fetched_at": "2026-10-27T22:25:08+01:00"
+            "fetched_at": "2026-10-27T23:35:09+01:00"
           },
           "1631101": {
             "name": "Shaedon Sharpe",
             "team": "Portland Trail Blazers",
             "set_at": "2026-10-27T07:22:21+01:00",
             "source": "espn",
-            "fetched_at": "2026-10-27T22:25:08+01:00"
+            "fetched_at": "2026-10-27T23:35:09+01:00"
           }
         },
         "doubtful": {
@@ -2310,7 +2310,7 @@
             "team": "Portland Trail Blazers",
             "set_at": "2026-10-27T07:22:21+01:00",
             "source": "espn",
-            "fetched_at": "2026-10-27T22:25:08+01:00"
+            "fetched_at": "2026-10-27T23:35:09+01:00"
           }
         },
         "updated_at": "2026-10-27T22:24:02+01:00",
@@ -2343,7 +2343,7 @@
         ],
         "auto": {
           "source": "espn",
-          "fetched_at": "2026-10-27T22:25:08+01:00",
+          "fetched_at": "2026-10-27T23:35:09+01:00",
           "unmatched": []
         }
       }

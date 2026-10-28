@@ -1,7 +1,7 @@
 {
  "version": 1,
  "format": "nbaedge-projection-snapshots",
- "updated_at": "2026-10-27T22:24:18+01:00",
+ "updated_at": "2026-10-28T13:48:38+01:00",
  "games": {
   "2026-10-21|2026-10-21T23:30:00Z|Miami Heat|Minnesota Timberwolves": {
    "game_date": "2026-10-21",
@@ -82116,6 +82116,311 @@
       "home_win_prob": 0.8656,
       "away_win_prob": 0.1344
      }
+    },
+    {
+     "saved_at": "2026-10-27T23:34:30+01:00",
+     "hash": "5a20d1e254b213c2",
+     "model": {
+      "file_mtime": "2026-10-27T08:00:06+01:00",
+      "file_size": 738178,
+      "sha1": "a7395993c6b750da9cb3955dafb542b028c97da1",
+      "ratings_as_of": "2026-10-26"
+     },
+     "projection": {
+      "exp_spread": 14.6,
+      "exp_total": 224.0,
+      "home_score": 119.0,
+      "away_score": 105.0,
+      "home_win_prob": 0.8656,
+      "away_win_prob": 0.1344,
+      "home_win_prob_elo": 0.8874,
+      "away_win_prob_elo": 0.1126,
+      "market_total": 222.5,
+      "market_spread": 12.5
+     },
+     "markets": {
+      "spread": {
+       "line": 12.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-27T23:34:23+01:00",
+       "cache_line": 12.6,
+       "warn": false
+      },
+      "total": {
+       "line": 222.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-27T23:34:23+01:00",
+       "cache_line": 222.8,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": 105.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-27T23:34:23+01:00",
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": 117.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-27T23:34:23+01:00",
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": "eigene Eingabe",
+       "favorite": "home",
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 10.5,
+         "p_left": 38,
+         "p_right": 62,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 11.5,
+         "p_left": 41,
+         "p_right": 59,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 12.5,
+         "p_left": 44,
+         "p_right": 56,
+         "predicted": "right",
+         "is_main": true
+        },
+        {
+         "line": 13.5,
+         "p_left": 47,
+         "p_right": 53,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 14.5,
+         "p_left": 50,
+         "p_right": 50,
+         "predicted": null,
+         "is_main": false
+        }
+       ]
+      },
+      "total": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 219.5,
+         "p_left": 60,
+         "p_right": 40,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 220.5,
+         "p_left": 57,
+         "p_right": 43,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 221.5,
+         "p_left": 55,
+         "p_right": 45,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 222.5,
+         "p_left": 53,
+         "p_right": 47,
+         "predicted": "left",
+         "is_main": true
+        },
+        {
+         "line": 223.5,
+         "p_left": 51,
+         "p_right": 49,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 224.5,
+         "p_left": 49,
+         "p_right": 51,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 225.5,
+         "p_left": 47,
+         "p_right": 53,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 102.5,
+         "p_left": 59,
+         "p_right": 41,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 103.5,
+         "p_left": 55,
+         "p_right": 45,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 104.5,
+         "p_left": 52,
+         "p_right": 48,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 105.5,
+         "p_left": 48,
+         "p_right": 52,
+         "predicted": "right",
+         "is_main": true
+        },
+        {
+         "line": 106.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 107.5,
+         "p_left": 41,
+         "p_right": 59,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 108.5,
+         "p_left": 38,
+         "p_right": 62,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 114.5,
+         "p_left": 65,
+         "p_right": 35,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 115.5,
+         "p_left": 62,
+         "p_right": 38,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 116.5,
+         "p_left": 59,
+         "p_right": 41,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 117.5,
+         "p_left": 55,
+         "p_right": 45,
+         "predicted": "left",
+         "is_main": true
+        },
+        {
+         "line": 118.5,
+         "p_left": 52,
+         "p_right": 48,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 119.5,
+         "p_left": 48,
+         "p_right": 52,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 120.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": {
+      "entry_key": "2026-10-27|2026-10-27T23:30:00Z|Boston Celtics|Brooklyn Nets",
+      "winner_incl_ot": "2026-10-27T23:34:23+01:00",
+      "spread": "2026-10-27T23:34:23+01:00",
+      "total": "2026-10-27T23:34:23+01:00",
+      "team_totals": "2026-10-27T23:34:23+01:00",
+      "player_points": "2026-10-27T23:34:23+01:00"
+     },
+     "team2": {
+      "version": "team-2",
+      "base": "Vorjahr",
+      "measure_home": 0.0,
+      "measure_away": 0.0,
+      "missing_home": [],
+      "missing_away": [],
+      "delta_spread": -0.0,
+      "exp_spread": 14.6,
+      "exp_total": 224.0,
+      "home_score": 119.0,
+      "away_score": 105.0,
+      "home_win_prob": 0.8656,
+      "away_win_prob": 0.1344
+     }
     }
    ],
    "card": {
@@ -82158,8 +82463,8 @@
       "line": 12.5,
       "source": "eigene Eingabe",
       "bookmaker": "Betano",
-      "at": 1793136045.0,
-      "at_iso": "2026-10-27T22:20:45+01:00",
+      "at": 1793140463.0,
+      "at_iso": "2026-10-27T23:34:23+01:00",
       "cache_line": 12.6,
       "cache_at": 1793134800.510277,
       "cache_source": "cache_vorab",
@@ -82171,8 +82476,8 @@
       "line": 222.5,
       "source": "eigene Eingabe",
       "bookmaker": "Betano",
-      "at": 1793136045.0,
-      "at_iso": "2026-10-27T22:20:45+01:00",
+      "at": 1793140463.0,
+      "at_iso": "2026-10-27T23:34:23+01:00",
       "cache_line": 222.8,
       "cache_at": 1793134800.510277,
       "cache_source": "cache_vorab",
@@ -82181,15 +82486,15 @@
       "warn": false
      },
      "team_total_away": {
-      "line": 104.5,
+      "line": 105.5,
       "source": "eigene Eingabe",
       "bookmaker": "Betano",
-      "at": 1793136045.0,
-      "at_iso": "2026-10-27T22:20:45+01:00",
+      "at": 1793140463.0,
+      "at_iso": "2026-10-27T23:34:23+01:00",
       "cache_line": null,
       "cache_at": null,
       "cache_source": null,
-      "own_line": 104.5,
+      "own_line": 105.5,
       "deviation": null,
       "warn": false
      },
@@ -82197,8 +82502,8 @@
       "line": 117.5,
       "source": "eigene Eingabe",
       "bookmaker": "Betano",
-      "at": 1793136045.0,
-      "at_iso": "2026-10-27T22:20:45+01:00",
+      "at": 1793140463.0,
+      "at_iso": "2026-10-27T23:34:23+01:00",
       "cache_line": null,
       "cache_at": null,
       "cache_source": null,
@@ -82233,7 +82538,12 @@
      "active": false
     }
    },
-   "result": null
+   "result": {
+    "home_points": 125,
+    "away_points": 124,
+    "recorded_at": "2026-10-28T03:35:03+01:00",
+    "source": "upcoming_cache"
+   }
   },
   "2026-10-27|2026-10-28T00:00:00Z|New York Knicks|Detroit Pistons": {
    "game_date": "2026-10-27",
@@ -84004,6 +84314,317 @@
       "home_win_prob": 0.6334,
       "away_win_prob": 0.3666
      }
+    },
+    {
+     "saved_at": "2026-10-27T23:35:15+01:00",
+     "hash": "bf83e14d212fb4bd",
+     "model": {
+      "file_mtime": "2026-10-27T08:00:06+01:00",
+      "file_size": 738178,
+      "sha1": "a7395993c6b750da9cb3955dafb542b028c97da1",
+      "ratings_as_of": "2026-10-26"
+     },
+     "projection": {
+      "exp_spread": 3.4,
+      "exp_total": 221.0,
+      "home_score": 112.0,
+      "away_score": 109.0,
+      "home_win_prob": 0.6016,
+      "away_win_prob": 0.3984,
+      "home_win_prob_elo": 0.6608,
+      "away_win_prob_elo": 0.3392,
+      "market_total": 219.5,
+      "market_spread": 4.5
+     },
+     "markets": {
+      "spread": {
+       "line": 4.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-27T23:34:34+01:00",
+       "cache_line": 4.1,
+       "warn": false
+      },
+      "total": {
+       "line": 219.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-27T22:23:24+01:00",
+       "cache_line": 219.5,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": 107.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-27T23:34:34+01:00",
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": 111.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-27T22:23:24+01:00",
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": "eigene Eingabe",
+       "favorite": "home",
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 2.5,
+         "p_left": 47,
+         "p_right": 53,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 3.5,
+         "p_left": 50,
+         "p_right": 50,
+         "predicted": null,
+         "is_main": false
+        },
+        {
+         "line": 4.5,
+         "p_left": 53,
+         "p_right": 47,
+         "predicted": "left",
+         "is_main": true
+        },
+        {
+         "line": 5.5,
+         "p_left": 56,
+         "p_right": 44,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 6.5,
+         "p_left": 59,
+         "p_right": 41,
+         "predicted": "left",
+         "is_main": false
+        }
+       ]
+      },
+      "total": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 216.5,
+         "p_left": 60,
+         "p_right": 40,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 217.5,
+         "p_left": 57,
+         "p_right": 43,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 218.5,
+         "p_left": 55,
+         "p_right": 45,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 219.5,
+         "p_left": 53,
+         "p_right": 47,
+         "predicted": "left",
+         "is_main": true
+        },
+        {
+         "line": 220.5,
+         "p_left": 51,
+         "p_right": 49,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 221.5,
+         "p_left": 49,
+         "p_right": 51,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 222.5,
+         "p_left": 47,
+         "p_right": 53,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 104.5,
+         "p_left": 65,
+         "p_right": 35,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 105.5,
+         "p_left": 62,
+         "p_right": 38,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 106.5,
+         "p_left": 59,
+         "p_right": 41,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 107.5,
+         "p_left": 55,
+         "p_right": 45,
+         "predicted": "left",
+         "is_main": true
+        },
+        {
+         "line": 108.5,
+         "p_left": 52,
+         "p_right": 48,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 109.5,
+         "p_left": 48,
+         "p_right": 52,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 110.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 108.5,
+         "p_left": 62,
+         "p_right": 38,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 109.5,
+         "p_left": 59,
+         "p_right": 41,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 110.5,
+         "p_left": 55,
+         "p_right": 45,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 111.5,
+         "p_left": 52,
+         "p_right": 48,
+         "predicted": "left",
+         "is_main": true
+        },
+        {
+         "line": 112.5,
+         "p_left": 48,
+         "p_right": 52,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 113.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 114.5,
+         "p_left": 41,
+         "p_right": 59,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": {
+      "entry_key": "2026-10-27|2026-10-28T00:00:00Z|New York Knicks|Detroit Pistons",
+      "winner_incl_ot": "2026-10-27T22:23:24+01:00",
+      "spread": "2026-10-27T23:34:34+01:00",
+      "total": "2026-10-27T23:34:34+01:00",
+      "team_totals": "2026-10-27T23:34:34+01:00",
+      "player_points": "2026-10-27T23:34:34+01:00"
+     },
+     "team2": {
+      "version": "team-2",
+      "base": "Vorjahr",
+      "measure_home": 0.0,
+      "measure_away": 0.1656,
+      "missing_home": [],
+      "missing_away": [
+       {
+        "person_id": 1631105,
+        "name": "Jalen Duren",
+        "share": 0.1656
+       }
+      ],
+      "delta_spread": 1.19,
+      "exp_spread": 4.6,
+      "exp_total": 221.0,
+      "home_score": 113.0,
+      "away_score": 108.0,
+      "home_win_prob": 0.6363,
+      "away_win_prob": 0.3637
+     }
     }
    ],
    "card": {
@@ -84019,15 +84640,15 @@
     "market_diff": 3.0,
     "lineup_warning": false,
     "model_spread": 3.1,
-    "exp_spread": 3.3,
-    "market_spread_used": 4.1,
+    "exp_spread": 3.4,
+    "market_spread_used": 4.5,
     "spread_market_weight": 0.25,
     "is_playoff": false,
     "playoff_adjustment": 0.0,
     "home_bias_adjustment": 0.0,
     "away_bias_adjustment": 0.0,
-    "home_win_prob": 0.5987,
-    "away_win_prob": 0.4013,
+    "home_win_prob": 0.6016,
+    "away_win_prob": 0.3984,
     "home_win_prob_elo": 0.6608,
     "away_win_prob_elo": 0.3392,
     "win_prob_source": "normal_spread",
@@ -84037,22 +84658,22 @@
     "game_start": "2026-10-28T00:00:00.000Z",
     "game_status": "2026-10-28T00:00:00Z",
     "market_total": 219.5,
-    "market_spread": 4.1,
+    "market_spread": 4.5,
     "cache_market_total": 219.5,
     "cache_market_spread": 4.1,
     "market_source": "cache_vorab",
     "market_lines": {
      "spread": {
-      "line": 4.1,
-      "source": "Cache",
-      "bookmaker": "",
-      "at": 1793134800.510277,
-      "at_iso": null,
+      "line": 4.5,
+      "source": "eigene Eingabe",
+      "bookmaker": "Betano",
+      "at": 1793140474.0,
+      "at_iso": "2026-10-27T23:34:34+01:00",
       "cache_line": 4.1,
       "cache_at": 1793134800.510277,
       "cache_source": "cache_vorab",
       "own_line": 4.5,
-      "deviation": null,
+      "deviation": 0.4,
       "warn": false
      },
      "total": {
@@ -84072,8 +84693,8 @@
       "line": 107.5,
       "source": "eigene Eingabe",
       "bookmaker": "Betano",
-      "at": 1793136204.0,
-      "at_iso": "2026-10-27T22:23:24+01:00",
+      "at": 1793140474.0,
+      "at_iso": "2026-10-27T23:34:34+01:00",
       "cache_line": null,
       "cache_at": null,
       "cache_source": null,
@@ -84117,17 +84738,22 @@
       }
      ],
      "delta_spread": 1.19,
-     "exp_spread": 4.5,
+     "exp_spread": 4.6,
      "home_score": 113,
      "away_score": 108,
      "exp_total": 221,
-     "home_win_prob": 0.6334,
-     "away_win_prob": 0.3666,
+     "home_win_prob": 0.6363,
+     "away_win_prob": 0.3637,
      "pp_shift": 3.5,
      "active": true
     }
    },
-   "result": null
+   "result": {
+    "home_points": 111,
+    "away_points": 97,
+    "recorded_at": "2026-10-28T08:00:03+01:00",
+    "source": "update_model"
+   }
   },
   "2026-10-27|2026-10-28T00:00:00Z|San Antonio Spurs|Sacramento Kings": {
    "game_date": "2026-10-27",
@@ -85948,6 +86574,327 @@
       "home_win_prob": 0.926,
       "away_win_prob": 0.074
      }
+    },
+    {
+     "saved_at": "2026-10-27T23:35:15+01:00",
+     "hash": "4121941bb488da9c",
+     "model": {
+      "file_mtime": "2026-10-27T08:00:06+01:00",
+      "file_size": 738178,
+      "sha1": "a7395993c6b750da9cb3955dafb542b028c97da1",
+      "ratings_as_of": "2026-10-26"
+     },
+     "projection": {
+      "exp_spread": 17.0,
+      "exp_total": 233.0,
+      "home_score": 125.0,
+      "away_score": 108.0,
+      "home_win_prob": 0.9011,
+      "away_win_prob": 0.0989,
+      "home_win_prob_elo": 0.97,
+      "away_win_prob_elo": 0.03,
+      "market_total": 232.5,
+      "market_spread": 18.5
+     },
+     "markets": {
+      "spread": {
+       "line": 18.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-27T23:34:52+01:00",
+       "cache_line": 18.5,
+       "warn": false
+      },
+      "total": {
+       "line": 232.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-27T23:34:52+01:00",
+       "cache_line": 232.5,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": 106.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-27T23:34:52+01:00",
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": 125.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-27T23:34:52+01:00",
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": "eigene Eingabe",
+       "favorite": "home",
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 16.5,
+         "p_left": 48,
+         "p_right": 52,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 17.5,
+         "p_left": 52,
+         "p_right": 48,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 18.5,
+         "p_left": 55,
+         "p_right": 45,
+         "predicted": "left",
+         "is_main": true
+        },
+        {
+         "line": 19.5,
+         "p_left": 58,
+         "p_right": 42,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 20.5,
+         "p_left": 60,
+         "p_right": 40,
+         "predicted": "left",
+         "is_main": false
+        }
+       ]
+      },
+      "total": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 229.5,
+         "p_left": 57,
+         "p_right": 43,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 230.5,
+         "p_left": 55,
+         "p_right": 45,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 231.5,
+         "p_left": 53,
+         "p_right": 47,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 232.5,
+         "p_left": 51,
+         "p_right": 49,
+         "predicted": "left",
+         "is_main": true
+        },
+        {
+         "line": 233.5,
+         "p_left": 49,
+         "p_right": 51,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 234.5,
+         "p_left": 47,
+         "p_right": 53,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 235.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 103.5,
+         "p_left": 65,
+         "p_right": 35,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 104.5,
+         "p_left": 62,
+         "p_right": 38,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 105.5,
+         "p_left": 59,
+         "p_right": 41,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 106.5,
+         "p_left": 55,
+         "p_right": 45,
+         "predicted": "left",
+         "is_main": true
+        },
+        {
+         "line": 107.5,
+         "p_left": 52,
+         "p_right": 48,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 108.5,
+         "p_left": 48,
+         "p_right": 52,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 109.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 122.5,
+         "p_left": 59,
+         "p_right": 41,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 123.5,
+         "p_left": 55,
+         "p_right": 45,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 124.5,
+         "p_left": 52,
+         "p_right": 48,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 125.5,
+         "p_left": 48,
+         "p_right": 52,
+         "predicted": "right",
+         "is_main": true
+        },
+        {
+         "line": 126.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 127.5,
+         "p_left": 41,
+         "p_right": 59,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 128.5,
+         "p_left": 38,
+         "p_right": 62,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": {
+      "entry_key": "2026-10-27|2026-10-28T00:00:00Z|San Antonio Spurs|Sacramento Kings",
+      "winner_incl_ot": "2026-10-27T23:34:52+01:00",
+      "spread": "2026-10-27T23:34:52+01:00",
+      "total": "2026-10-27T23:34:52+01:00",
+      "team_totals": "2026-10-27T23:34:52+01:00",
+      "player_points": "2026-10-27T23:34:52+01:00"
+     },
+     "team2": {
+      "version": "team-2",
+      "base": "Vorjahr",
+      "measure_home": 0.0,
+      "measure_away": 0.2866,
+      "missing_home": [],
+      "missing_away": [
+       {
+        "person_id": 1642875,
+        "name": "Maxime Raynaud",
+        "share": 0.1122
+       },
+       {
+        "person_id": 1642928,
+        "name": "Dylan Cardwell",
+        "share": 0.0487
+       },
+       {
+        "person_id": 1631099,
+        "name": "Keegan Murray",
+        "share": 0.1257
+       }
+      ],
+      "delta_spread": 2.06,
+      "exp_spread": 19.1,
+      "exp_total": 233.0,
+      "home_score": 126.0,
+      "away_score": 107.0,
+      "home_win_prob": 0.926,
+      "away_win_prob": 0.074
+     }
     }
    ],
    "card": {
@@ -85990,8 +86937,8 @@
       "line": 18.5,
       "source": "eigene Eingabe",
       "bookmaker": "Betano",
-      "at": 1793136214.0,
-      "at_iso": "2026-10-27T22:23:34+01:00",
+      "at": 1793140492.0,
+      "at_iso": "2026-10-27T23:34:52+01:00",
       "cache_line": 18.5,
       "cache_at": 1793134800.510277,
       "cache_source": "cache_vorab",
@@ -86003,8 +86950,8 @@
       "line": 232.5,
       "source": "eigene Eingabe",
       "bookmaker": "Betano",
-      "at": 1793136214.0,
-      "at_iso": "2026-10-27T22:23:34+01:00",
+      "at": 1793140492.0,
+      "at_iso": "2026-10-27T23:34:52+01:00",
       "cache_line": 232.5,
       "cache_at": 1793134800.510277,
       "cache_source": "cache_vorab",
@@ -86016,8 +86963,8 @@
       "line": 106.5,
       "source": "eigene Eingabe",
       "bookmaker": "Betano",
-      "at": 1793136214.0,
-      "at_iso": "2026-10-27T22:23:34+01:00",
+      "at": 1793140492.0,
+      "at_iso": "2026-10-27T23:34:52+01:00",
       "cache_line": null,
       "cache_at": null,
       "cache_source": null,
@@ -86029,8 +86976,8 @@
       "line": 125.5,
       "source": "eigene Eingabe",
       "bookmaker": "Betano",
-      "at": 1793136214.0,
-      "at_iso": "2026-10-27T22:23:34+01:00",
+      "at": 1793140492.0,
+      "at_iso": "2026-10-27T23:34:52+01:00",
       "cache_line": null,
       "cache_at": null,
       "cache_source": null,
@@ -86081,7 +87028,12 @@
      "active": true
     }
    },
-   "result": null
+   "result": {
+    "home_points": 130,
+    "away_points": 103,
+    "recorded_at": "2026-10-28T03:35:03+01:00",
+    "source": "upcoming_cache"
+   }
   },
   "2026-10-27|2026-10-28T03:00:00Z|Los Angeles Lakers|Portland Trail Blazers": {
    "game_date": "2026-10-27",
@@ -87868,6 +88820,309 @@
       "home_win_prob": 0.6075,
       "away_win_prob": 0.3925
      }
+    },
+    {
+     "saved_at": "2026-10-27T23:35:15+01:00",
+     "hash": "5430bdf68ba595b9",
+     "model": {
+      "file_mtime": "2026-10-27T08:00:06+01:00",
+      "file_size": 738178,
+      "sha1": "a7395993c6b750da9cb3955dafb542b028c97da1",
+      "ratings_as_of": "2026-10-26"
+     },
+     "projection": {
+      "exp_spread": 2.2,
+      "exp_total": 230.0,
+      "home_score": 116.0,
+      "away_score": 114.0,
+      "home_win_prob": 0.5662,
+      "away_win_prob": 0.4338,
+      "home_win_prob_elo": 0.5507,
+      "away_win_prob_elo": 0.4493,
+      "market_total": 234.5,
+      "market_spread": 1.5
+     },
+     "markets": {
+      "spread": {
+       "line": 1.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-27T23:35:03+01:00",
+       "cache_line": 2.0,
+       "warn": false
+      },
+      "total": {
+       "line": 234.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-27T23:35:03+01:00",
+       "cache_line": 233.5,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": 116.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-27T23:35:03+01:00",
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": 117.5,
+       "source": "eigene Eingabe",
+       "bookmaker": "Betano",
+       "line_at": "2026-10-27T22:23:46+01:00",
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": "eigene Eingabe",
+       "favorite": "home",
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 1.5,
+         "p_left": 48,
+         "p_right": 52,
+         "predicted": "right",
+         "is_main": true
+        },
+        {
+         "line": 2.5,
+         "p_left": 51,
+         "p_right": 49,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 3.5,
+         "p_left": 54,
+         "p_right": 46,
+         "predicted": "left",
+         "is_main": false
+        }
+       ]
+      },
+      "total": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 231.5,
+         "p_left": 47,
+         "p_right": 53,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 232.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 233.5,
+         "p_left": 43,
+         "p_right": 57,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 234.5,
+         "p_left": 40,
+         "p_right": 60,
+         "predicted": "right",
+         "is_main": true
+        },
+        {
+         "line": 235.5,
+         "p_left": 38,
+         "p_right": 62,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 236.5,
+         "p_left": 36,
+         "p_right": 64,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 237.5,
+         "p_left": 34,
+         "p_right": 66,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 113.5,
+         "p_left": 52,
+         "p_right": 48,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 114.5,
+         "p_left": 48,
+         "p_right": 52,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 115.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 116.5,
+         "p_left": 41,
+         "p_right": 59,
+         "predicted": "right",
+         "is_main": true
+        },
+        {
+         "line": 117.5,
+         "p_left": 38,
+         "p_right": 62,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 118.5,
+         "p_left": 35,
+         "p_right": 65,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 119.5,
+         "p_left": 32,
+         "p_right": 68,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": "eigene Eingabe",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 114.5,
+         "p_left": 55,
+         "p_right": 45,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 115.5,
+         "p_left": 52,
+         "p_right": 48,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 116.5,
+         "p_left": 48,
+         "p_right": 52,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 117.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": true
+        },
+        {
+         "line": 118.5,
+         "p_left": 41,
+         "p_right": 59,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 119.5,
+         "p_left": 38,
+         "p_right": 62,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 120.5,
+         "p_left": 35,
+         "p_right": 65,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": {
+      "entry_key": "2026-10-27|2026-10-28T03:00:00Z|Los Angeles Lakers|Portland Trail Blazers",
+      "winner_incl_ot": "2026-10-27T23:35:03+01:00",
+      "spread": "2026-10-27T23:35:03+01:00",
+      "total": "2026-10-27T23:35:03+01:00",
+      "team_totals": "2026-10-27T23:35:03+01:00",
+      "player_points": "2026-10-27T23:35:03+01:00"
+     },
+     "team2": {
+      "version": "team-2",
+      "base": "Vorjahr",
+      "measure_home": 0.0162,
+      "measure_away": 0.1805,
+      "missing_home": [
+       {
+        "person_id": 1642876,
+        "name": "Adou Thiero",
+        "share": 0.0162
+       }
+      ],
+      "missing_away": [
+       {
+        "person_id": 1631101,
+        "name": "Shaedon Sharpe",
+        "share": 0.1805
+       }
+      ],
+      "delta_spread": 1.18,
+      "exp_spread": 3.4,
+      "exp_total": 230.0,
+      "home_score": 117.0,
+      "away_score": 113.0,
+      "home_win_prob": 0.6016,
+      "away_win_prob": 0.3984
+     }
     }
    ],
    "card": {
@@ -87876,22 +89131,22 @@
     "home_score": 116,
     "away_score": 114,
     "exp_total": 230,
-    "blended_total_before_rounding": 230.2,
+    "blended_total_before_rounding": 230.5,
     "model_total": 228.6,
-    "market_total_used": 233.5,
+    "market_total_used": 234.5,
     "market_weight": 0.32,
-    "market_diff": 4.9,
+    "market_diff": 5.9,
     "lineup_warning": false,
     "model_spread": 2.4,
-    "exp_spread": 2.4,
-    "market_spread_used": 2.5,
+    "exp_spread": 2.2,
+    "market_spread_used": 1.5,
     "spread_market_weight": 0.25,
     "is_playoff": false,
     "playoff_adjustment": 0.0,
     "home_bias_adjustment": 0.0,
     "away_bias_adjustment": 0.0,
-    "home_win_prob": 0.5721,
-    "away_win_prob": 0.4279,
+    "home_win_prob": 0.5662,
+    "away_win_prob": 0.4338,
     "home_win_prob_elo": 0.5507,
     "away_win_prob_elo": 0.4493,
     "win_prob_source": "normal_spread",
@@ -87900,44 +89155,44 @@
     "game_date": "2026-10-27",
     "game_start": "2026-10-28T03:00:00.000Z",
     "game_status": "2026-10-28T03:00:00Z",
-    "market_total": 233.5,
-    "market_spread": 2.5,
+    "market_total": 234.5,
+    "market_spread": 1.5,
     "cache_market_total": 233.5,
     "cache_market_spread": 2.0,
     "market_source": "cache_vorab",
     "market_lines": {
      "spread": {
-      "line": 2.5,
+      "line": 1.5,
       "source": "eigene Eingabe",
       "bookmaker": "Betano",
-      "at": 1793136226.0,
-      "at_iso": "2026-10-27T22:23:46+01:00",
+      "at": 1793140503.0,
+      "at_iso": "2026-10-27T23:35:03+01:00",
       "cache_line": 2.0,
       "cache_at": 1793134800.510277,
       "cache_source": "cache_vorab",
-      "own_line": 2.5,
+      "own_line": 1.5,
       "deviation": 0.5,
       "warn": false
      },
      "total": {
-      "line": 233.5,
+      "line": 234.5,
       "source": "eigene Eingabe",
       "bookmaker": "Betano",
-      "at": 1793136226.0,
-      "at_iso": "2026-10-27T22:23:46+01:00",
+      "at": 1793140503.0,
+      "at_iso": "2026-10-27T23:35:03+01:00",
       "cache_line": 233.5,
       "cache_at": 1793134800.510277,
       "cache_source": "cache_vorab",
-      "own_line": 233.5,
-      "deviation": 0.0,
+      "own_line": 234.5,
+      "deviation": 1.0,
       "warn": false
      },
      "team_total_away": {
       "line": 116.5,
       "source": "eigene Eingabe",
       "bookmaker": "Betano",
-      "at": 1793136226.0,
-      "at_iso": "2026-10-27T22:23:46+01:00",
+      "at": 1793140503.0,
+      "at_iso": "2026-10-27T23:35:03+01:00",
       "cache_line": null,
       "cache_at": null,
       "cache_source": null,
@@ -87987,14 +89242,4567 @@
       }
      ],
      "delta_spread": 1.18,
-     "exp_spread": 3.6,
+     "exp_spread": 3.4,
      "home_score": 117,
      "away_score": 113,
      "exp_total": 230,
-     "home_win_prob": 0.6075,
-     "away_win_prob": 0.3925,
+     "home_win_prob": 0.6016,
+     "away_win_prob": 0.3984,
      "pp_shift": 3.5,
      "active": true
+    }
+   },
+   "result": {
+    "home_points": 129,
+    "away_points": 136,
+    "recorded_at": "2026-10-28T08:00:03+01:00",
+    "source": "update_model"
+   }
+  },
+  "2026-10-28|2026-10-28T23:00:00Z|Atlanta Hawks|Miami Heat": {
+   "game_date": "2026-10-28",
+   "start_utc": "2026-10-28T23:00:00Z",
+   "home": "Atlanta Hawks",
+   "away": "Miami Heat",
+   "versions": [
+    {
+     "saved_at": "2026-10-28T01:21:18+01:00",
+     "hash": "fa79fc6581a16ded",
+     "model": {
+      "file_mtime": "2026-10-27T08:00:06+01:00",
+      "file_size": 738178,
+      "sha1": "a7395993c6b750da9cb3955dafb542b028c97da1",
+      "ratings_as_of": "2026-10-26"
+     },
+     "projection": {
+      "exp_spread": 6.9,
+      "exp_total": 238.0,
+      "home_score": 122.0,
+      "away_score": 116.0,
+      "home_win_prob": 0.6994,
+      "away_win_prob": 0.3006,
+      "home_win_prob_elo": 0.7066,
+      "away_win_prob_elo": 0.2934,
+      "market_total": null,
+      "market_spread": null
+     },
+     "markets": {
+      "spread": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "total": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "total": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": null,
+     "team2": {
+      "version": "team-2",
+      "base": "Vorjahr",
+      "measure_home": 0.0,
+      "measure_away": 0.0,
+      "missing_home": [],
+      "missing_away": [],
+      "delta_spread": -0.0,
+      "exp_spread": 6.9,
+      "exp_total": 238.0,
+      "home_score": 122.0,
+      "away_score": 116.0,
+      "home_win_prob": 0.6994,
+      "away_win_prob": 0.3006
+     }
+    },
+    {
+     "saved_at": "2026-10-28T13:48:38+01:00",
+     "hash": "11338d4db6e1cc70",
+     "model": {
+      "file_mtime": "2026-10-28T08:00:03+01:00",
+      "file_size": 738360,
+      "sha1": "6348107b87148ecbe00e747196d4de9dbfb05f7b",
+      "ratings_as_of": "2026-10-27"
+     },
+     "projection": {
+      "exp_spread": 6.9,
+      "exp_total": 238.0,
+      "home_score": 122.0,
+      "away_score": 116.0,
+      "home_win_prob": 0.6994,
+      "away_win_prob": 0.3006,
+      "home_win_prob_elo": 0.7066,
+      "away_win_prob_elo": 0.2934,
+      "market_total": null,
+      "market_spread": null
+     },
+     "markets": {
+      "spread": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "total": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "total": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": null,
+     "team2": {
+      "version": "team-2",
+      "base": "Vorjahr",
+      "measure_home": 0.0,
+      "measure_away": 0.0,
+      "missing_home": [],
+      "missing_away": [],
+      "delta_spread": -0.0,
+      "exp_spread": 6.9,
+      "exp_total": 238.0,
+      "home_score": 122.0,
+      "away_score": 116.0,
+      "home_win_prob": 0.6994,
+      "away_win_prob": 0.3006
+     }
+    }
+   ],
+   "card": {
+    "home_team": "Atlanta Hawks",
+    "away_team": "Miami Heat",
+    "home_score": 122,
+    "away_score": 116,
+    "exp_total": 238,
+    "blended_total_before_rounding": 237.9,
+    "model_total": 237.9,
+    "market_total_used": null,
+    "market_weight": 0.0,
+    "market_diff": 0.0,
+    "lineup_warning": false,
+    "model_spread": 6.9,
+    "exp_spread": 6.9,
+    "market_spread_used": null,
+    "spread_market_weight": 0.0,
+    "is_playoff": false,
+    "playoff_adjustment": 0.0,
+    "home_bias_adjustment": 0.0,
+    "away_bias_adjustment": 0.0,
+    "home_win_prob": 0.6994,
+    "away_win_prob": 0.3006,
+    "home_win_prob_elo": 0.7066,
+    "away_win_prob_elo": 0.2934,
+    "win_prob_source": "normal_spread",
+    "sigma_spread": 13.2,
+    "sigmas_version": "2",
+    "game_date": "2026-10-28",
+    "game_start": "2026-10-28T23:00:00.000Z",
+    "game_status": "2026-10-28T23:00:00Z",
+    "market_total": null,
+    "market_spread": null,
+    "cache_market_total": null,
+    "cache_market_spread": null,
+    "market_source": null,
+    "market_lines": {
+     "spread": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "total": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "team_total_away": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "team_total_home": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     }
+    },
+    "total_over_odds": null,
+    "total_under_odds": null,
+    "spread_home_odds": null,
+    "spread_away_odds": null,
+    "home_team_total": null,
+    "away_team_total": null,
+    "team2": {
+     "version": "team-2",
+     "base": "Vorjahr",
+     "games_home": 4,
+     "games_away": 4,
+     "measure_home": 0,
+     "measure_away": 0,
+     "missing_home": [],
+     "missing_away": [],
+     "delta_spread": -0.0,
+     "exp_spread": 6.9,
+     "home_score": 122,
+     "away_score": 116,
+     "exp_total": 238,
+     "home_win_prob": 0.6994,
+     "away_win_prob": 0.3006,
+     "pp_shift": 0.0,
+     "active": false
+    }
+   },
+   "result": null
+  },
+  "2026-10-28|2026-10-28T23:00:00Z|Cleveland Cavaliers|Washington Wizards": {
+   "game_date": "2026-10-28",
+   "start_utc": "2026-10-28T23:00:00Z",
+   "home": "Cleveland Cavaliers",
+   "away": "Washington Wizards",
+   "versions": [
+    {
+     "saved_at": "2026-10-28T01:21:18+01:00",
+     "hash": "273cf89fc588b6f7",
+     "model": {
+      "file_mtime": "2026-10-27T08:00:06+01:00",
+      "file_size": 738178,
+      "sha1": "a7395993c6b750da9cb3955dafb542b028c97da1",
+      "ratings_as_of": "2026-10-26"
+     },
+     "projection": {
+      "exp_spread": 14.4,
+      "exp_total": 239.0,
+      "home_score": 127.0,
+      "away_score": 112.0,
+      "home_win_prob": 0.8623,
+      "away_win_prob": 0.1377,
+      "home_win_prob_elo": 0.9604,
+      "away_win_prob_elo": 0.0396,
+      "market_total": null,
+      "market_spread": null
+     },
+     "markets": {
+      "spread": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "total": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "total": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": null,
+     "team2": {
+      "version": "team-2",
+      "base": "Vorjahr",
+      "measure_home": 0.0,
+      "measure_away": 0.0,
+      "missing_home": [],
+      "missing_away": [],
+      "delta_spread": -0.0,
+      "exp_spread": 14.4,
+      "exp_total": 239.0,
+      "home_score": 127.0,
+      "away_score": 112.0,
+      "home_win_prob": 0.8623,
+      "away_win_prob": 0.1377
+     }
+    },
+    {
+     "saved_at": "2026-10-28T13:48:38+01:00",
+     "hash": "c1a21faf2bffa54b",
+     "model": {
+      "file_mtime": "2026-10-28T08:00:03+01:00",
+      "file_size": 738360,
+      "sha1": "6348107b87148ecbe00e747196d4de9dbfb05f7b",
+      "ratings_as_of": "2026-10-27"
+     },
+     "projection": {
+      "exp_spread": 14.4,
+      "exp_total": 239.0,
+      "home_score": 127.0,
+      "away_score": 112.0,
+      "home_win_prob": 0.8623,
+      "away_win_prob": 0.1377,
+      "home_win_prob_elo": 0.9604,
+      "away_win_prob_elo": 0.0396,
+      "market_total": null,
+      "market_spread": null
+     },
+     "markets": {
+      "spread": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "total": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "total": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": null,
+     "team2": {
+      "version": "team-2",
+      "base": "Vorjahr",
+      "measure_home": 0.0,
+      "measure_away": 0.0,
+      "missing_home": [],
+      "missing_away": [],
+      "delta_spread": -0.0,
+      "exp_spread": 14.4,
+      "exp_total": 239.0,
+      "home_score": 127.0,
+      "away_score": 112.0,
+      "home_win_prob": 0.8623,
+      "away_win_prob": 0.1377
+     }
+    }
+   ],
+   "card": {
+    "home_team": "Cleveland Cavaliers",
+    "away_team": "Washington Wizards",
+    "home_score": 127,
+    "away_score": 112,
+    "exp_total": 239,
+    "blended_total_before_rounding": 238.6,
+    "model_total": 238.6,
+    "market_total_used": null,
+    "market_weight": 0.0,
+    "market_diff": 0.0,
+    "lineup_warning": false,
+    "model_spread": 14.4,
+    "exp_spread": 14.4,
+    "market_spread_used": null,
+    "spread_market_weight": 0.0,
+    "is_playoff": false,
+    "playoff_adjustment": 0.0,
+    "home_bias_adjustment": 0.0,
+    "away_bias_adjustment": 0.0,
+    "home_win_prob": 0.8623,
+    "away_win_prob": 0.1377,
+    "home_win_prob_elo": 0.9604,
+    "away_win_prob_elo": 0.0396,
+    "win_prob_source": "normal_spread",
+    "sigma_spread": 13.2,
+    "sigmas_version": "2",
+    "game_date": "2026-10-28",
+    "game_start": "2026-10-28T23:00:00.000Z",
+    "game_status": "2026-10-28T23:00:00Z",
+    "market_total": null,
+    "market_spread": null,
+    "cache_market_total": null,
+    "cache_market_spread": null,
+    "market_source": null,
+    "market_lines": {
+     "spread": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "total": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "team_total_away": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "team_total_home": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     }
+    },
+    "total_over_odds": null,
+    "total_under_odds": null,
+    "spread_home_odds": null,
+    "spread_away_odds": null,
+    "home_team_total": null,
+    "away_team_total": null,
+    "team2": {
+     "version": "team-2",
+     "base": "Vorjahr",
+     "games_home": 3,
+     "games_away": 4,
+     "measure_home": 0,
+     "measure_away": 0,
+     "missing_home": [],
+     "missing_away": [],
+     "delta_spread": -0.0,
+     "exp_spread": 14.4,
+     "home_score": 127,
+     "away_score": 112,
+     "exp_total": 239,
+     "home_win_prob": 0.8623,
+     "away_win_prob": 0.1377,
+     "pp_shift": 0.0,
+     "active": false
+    }
+   },
+   "result": null
+  },
+  "2026-10-28|2026-10-28T23:00:00Z|Detroit Pistons|Charlotte Hornets": {
+   "game_date": "2026-10-28",
+   "start_utc": "2026-10-28T23:00:00Z",
+   "home": "Detroit Pistons",
+   "away": "Charlotte Hornets",
+   "versions": [
+    {
+     "saved_at": "2026-10-28T01:21:18+01:00",
+     "hash": "ac2f48e19d2ffac4",
+     "model": {
+      "file_mtime": "2026-10-27T08:00:06+01:00",
+      "file_size": 738178,
+      "sha1": "a7395993c6b750da9cb3955dafb542b028c97da1",
+      "ratings_as_of": "2026-10-26"
+     },
+     "projection": {
+      "exp_spread": 7.7,
+      "exp_total": 224.0,
+      "home_score": 116.0,
+      "away_score": 108.0,
+      "home_win_prob": 0.7202,
+      "away_win_prob": 0.2798,
+      "home_win_prob_elo": 0.8071,
+      "away_win_prob_elo": 0.1929,
+      "market_total": null,
+      "market_spread": null
+     },
+     "markets": {
+      "spread": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "total": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "total": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": null,
+     "team2": {
+      "version": "team-2",
+      "base": "Vorjahr",
+      "measure_home": 0.0,
+      "measure_away": 0.0,
+      "missing_home": [],
+      "missing_away": [],
+      "delta_spread": -0.0,
+      "exp_spread": 7.7,
+      "exp_total": 224.0,
+      "home_score": 116.0,
+      "away_score": 108.0,
+      "home_win_prob": 0.7202,
+      "away_win_prob": 0.2798
+     }
+    },
+    {
+     "saved_at": "2026-10-28T13:48:38+01:00",
+     "hash": "6c7a9ea59eb2c594",
+     "model": {
+      "file_mtime": "2026-10-28T08:00:03+01:00",
+      "file_size": 738360,
+      "sha1": "6348107b87148ecbe00e747196d4de9dbfb05f7b",
+      "ratings_as_of": "2026-10-27"
+     },
+     "projection": {
+      "exp_spread": 6.9,
+      "exp_total": 223.0,
+      "home_score": 115.0,
+      "away_score": 108.0,
+      "home_win_prob": 0.6994,
+      "away_win_prob": 0.3006,
+      "home_win_prob_elo": 0.6924,
+      "away_win_prob_elo": 0.3076,
+      "market_total": null,
+      "market_spread": null
+     },
+     "markets": {
+      "spread": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "total": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "total": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": null,
+     "team2": {
+      "version": "team-2",
+      "base": "Vorjahr",
+      "measure_home": 0.0,
+      "measure_away": 0.0,
+      "missing_home": [],
+      "missing_away": [],
+      "delta_spread": -0.0,
+      "exp_spread": 6.9,
+      "exp_total": 223.0,
+      "home_score": 115.0,
+      "away_score": 108.0,
+      "home_win_prob": 0.6994,
+      "away_win_prob": 0.3006
+     }
+    }
+   ],
+   "card": {
+    "home_team": "Detroit Pistons",
+    "away_team": "Charlotte Hornets",
+    "home_score": 115,
+    "away_score": 108,
+    "exp_total": 223,
+    "blended_total_before_rounding": 223.2,
+    "model_total": 223.2,
+    "market_total_used": null,
+    "market_weight": 0.0,
+    "market_diff": 0.0,
+    "lineup_warning": false,
+    "model_spread": 6.9,
+    "exp_spread": 6.9,
+    "market_spread_used": null,
+    "spread_market_weight": 0.0,
+    "is_playoff": false,
+    "playoff_adjustment": 0.0,
+    "home_bias_adjustment": 0.0,
+    "away_bias_adjustment": 0.0,
+    "home_win_prob": 0.6994,
+    "away_win_prob": 0.3006,
+    "home_win_prob_elo": 0.6924,
+    "away_win_prob_elo": 0.3076,
+    "win_prob_source": "normal_spread",
+    "sigma_spread": 13.2,
+    "sigmas_version": "2",
+    "game_date": "2026-10-28",
+    "game_start": "2026-10-28T23:00:00.000Z",
+    "game_status": "2026-10-28T23:00:00Z",
+    "market_total": null,
+    "market_spread": null,
+    "cache_market_total": null,
+    "cache_market_spread": null,
+    "market_source": null,
+    "market_lines": {
+     "spread": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "total": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "team_total_away": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "team_total_home": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     }
+    },
+    "total_over_odds": null,
+    "total_under_odds": null,
+    "spread_home_odds": null,
+    "spread_away_odds": null,
+    "home_team_total": null,
+    "away_team_total": null,
+    "team2": {
+     "version": "team-2",
+     "base": "Vorjahr",
+     "games_home": 4,
+     "games_away": 4,
+     "measure_home": 0,
+     "measure_away": 0,
+     "missing_home": [],
+     "missing_away": [],
+     "delta_spread": -0.0,
+     "exp_spread": 6.9,
+     "home_score": 115,
+     "away_score": 108,
+     "exp_total": 223,
+     "home_win_prob": 0.6994,
+     "away_win_prob": 0.3006,
+     "pp_shift": 0.0,
+     "active": false
+    }
+   },
+   "result": null
+  },
+  "2026-10-28|2026-10-28T23:00:00Z|Indiana Pacers|Philadelphia 76ers": {
+   "game_date": "2026-10-28",
+   "start_utc": "2026-10-28T23:00:00Z",
+   "home": "Indiana Pacers",
+   "away": "Philadelphia 76ers",
+   "versions": [
+    {
+     "saved_at": "2026-10-28T01:21:18+01:00",
+     "hash": "3f0860b6fb12c319",
+     "model": {
+      "file_mtime": "2026-10-27T08:00:06+01:00",
+      "file_size": 738178,
+      "sha1": "a7395993c6b750da9cb3955dafb542b028c97da1",
+      "ratings_as_of": "2026-10-26"
+     },
+     "projection": {
+      "exp_spread": -6.0,
+      "exp_total": 234.0,
+      "home_score": 114.0,
+      "away_score": 120.0,
+      "home_win_prob": 0.3247,
+      "away_win_prob": 0.6753,
+      "home_win_prob_elo": 0.183,
+      "away_win_prob_elo": 0.817,
+      "market_total": 238.9,
+      "market_spread": -2.4
+     },
+     "markets": {
+      "spread": {
+       "line": -2.4,
+       "source": "Cache",
+       "bookmaker": null,
+       "line_at": "2026-10-27T22:00:00+01:00",
+       "cache_line": -2.4,
+       "warn": false
+      },
+      "total": {
+       "line": 238.9,
+       "source": "Cache",
+       "bookmaker": null,
+       "line_at": "2026-10-27T22:00:00+01:00",
+       "cache_line": 238.9,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": "Staffel",
+       "favorite": "away",
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 0.5,
+         "p_left": 66,
+         "p_right": 34,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 1.5,
+         "p_left": 63,
+         "p_right": 37,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 2.5,
+         "p_left": 60,
+         "p_right": 40,
+         "predicted": "left",
+         "is_main": true
+        },
+        {
+         "line": 3.5,
+         "p_left": 58,
+         "p_right": 42,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 4.5,
+         "p_left": 55,
+         "p_right": 45,
+         "predicted": "left",
+         "is_main": false
+        }
+       ]
+      },
+      "total": {
+       "kind": "over_under",
+       "source": "Staffel",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 236.0,
+         "p_left": 46,
+         "p_right": 54,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 237.0,
+         "p_left": 44,
+         "p_right": 56,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 238.0,
+         "p_left": 41,
+         "p_right": 59,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 239.0,
+         "p_left": 39,
+         "p_right": 61,
+         "predicted": "right",
+         "is_main": true
+        },
+        {
+         "line": 240.0,
+         "p_left": 37,
+         "p_right": 63,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 241.0,
+         "p_left": 35,
+         "p_right": 65,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 242.0,
+         "p_left": 33,
+         "p_right": 67,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": "Staffel",
+       "favorite": null,
+       "derived": true,
+       "note": "Hauptlinie rechnerisch aus Total und Spread (kein Marktwert)",
+       "rows": [
+        {
+         "line": 117.5,
+         "p_left": 59,
+         "p_right": 41,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 118.5,
+         "p_left": 55,
+         "p_right": 45,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 119.5,
+         "p_left": 52,
+         "p_right": 48,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 120.5,
+         "p_left": 48,
+         "p_right": 52,
+         "predicted": "right",
+         "is_main": true
+        },
+        {
+         "line": 121.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 122.5,
+         "p_left": 41,
+         "p_right": 59,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 123.5,
+         "p_left": 38,
+         "p_right": 62,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": "Staffel",
+       "favorite": null,
+       "derived": true,
+       "note": "Hauptlinie rechnerisch aus Total und Spread (kein Marktwert)",
+       "rows": [
+        {
+         "line": 115.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 116.5,
+         "p_left": 41,
+         "p_right": 59,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 117.5,
+         "p_left": 38,
+         "p_right": 62,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 118.5,
+         "p_left": 35,
+         "p_right": 65,
+         "predicted": "right",
+         "is_main": true
+        },
+        {
+         "line": 119.5,
+         "p_left": 32,
+         "p_right": 68,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 120.5,
+         "p_left": 29,
+         "p_right": 71,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 121.5,
+         "p_left": 26,
+         "p_right": 74,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": null,
+     "team2": {
+      "version": "team-2",
+      "base": "Vorjahr",
+      "measure_home": 0.0,
+      "measure_away": 0.0,
+      "missing_home": [],
+      "missing_away": [],
+      "delta_spread": -0.0,
+      "exp_spread": -6.0,
+      "exp_total": 234.0,
+      "home_score": 114.0,
+      "away_score": 120.0,
+      "home_win_prob": 0.3247,
+      "away_win_prob": 0.6753
+     }
+    },
+    {
+     "saved_at": "2026-10-28T13:48:38+01:00",
+     "hash": "4e9e090819338358",
+     "model": {
+      "file_mtime": "2026-10-28T08:00:03+01:00",
+      "file_size": 738360,
+      "sha1": "6348107b87148ecbe00e747196d4de9dbfb05f7b",
+      "ratings_as_of": "2026-10-27"
+     },
+     "projection": {
+      "exp_spread": -6.0,
+      "exp_total": 234.0,
+      "home_score": 114.0,
+      "away_score": 120.0,
+      "home_win_prob": 0.3247,
+      "away_win_prob": 0.6753,
+      "home_win_prob_elo": 0.2209,
+      "away_win_prob_elo": 0.7791,
+      "market_total": 238.9,
+      "market_spread": -2.4
+     },
+     "markets": {
+      "spread": {
+       "line": -2.4,
+       "source": "Cache",
+       "bookmaker": null,
+       "line_at": "2026-10-27T22:00:00+01:00",
+       "cache_line": -2.4,
+       "warn": false
+      },
+      "total": {
+       "line": 238.9,
+       "source": "Cache",
+       "bookmaker": null,
+       "line_at": "2026-10-27T22:00:00+01:00",
+       "cache_line": 238.9,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": "Staffel",
+       "favorite": "away",
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 0.5,
+         "p_left": 66,
+         "p_right": 34,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 1.5,
+         "p_left": 63,
+         "p_right": 37,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 2.5,
+         "p_left": 60,
+         "p_right": 40,
+         "predicted": "left",
+         "is_main": true
+        },
+        {
+         "line": 3.5,
+         "p_left": 58,
+         "p_right": 42,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 4.5,
+         "p_left": 55,
+         "p_right": 45,
+         "predicted": "left",
+         "is_main": false
+        }
+       ]
+      },
+      "total": {
+       "kind": "over_under",
+       "source": "Staffel",
+       "favorite": null,
+       "derived": false,
+       "note": null,
+       "rows": [
+        {
+         "line": 236.0,
+         "p_left": 46,
+         "p_right": 54,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 237.0,
+         "p_left": 44,
+         "p_right": 56,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 238.0,
+         "p_left": 41,
+         "p_right": 59,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 239.0,
+         "p_left": 39,
+         "p_right": 61,
+         "predicted": "right",
+         "is_main": true
+        },
+        {
+         "line": 240.0,
+         "p_left": 37,
+         "p_right": 63,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 241.0,
+         "p_left": 35,
+         "p_right": 65,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 242.0,
+         "p_left": 33,
+         "p_right": 67,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": "Staffel",
+       "favorite": null,
+       "derived": true,
+       "note": "Hauptlinie rechnerisch aus Total und Spread (kein Marktwert)",
+       "rows": [
+        {
+         "line": 117.5,
+         "p_left": 59,
+         "p_right": 41,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 118.5,
+         "p_left": 55,
+         "p_right": 45,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 119.5,
+         "p_left": 52,
+         "p_right": 48,
+         "predicted": "left",
+         "is_main": false
+        },
+        {
+         "line": 120.5,
+         "p_left": 48,
+         "p_right": 52,
+         "predicted": "right",
+         "is_main": true
+        },
+        {
+         "line": 121.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 122.5,
+         "p_left": 41,
+         "p_right": 59,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 123.5,
+         "p_left": 38,
+         "p_right": 62,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": "Staffel",
+       "favorite": null,
+       "derived": true,
+       "note": "Hauptlinie rechnerisch aus Total und Spread (kein Marktwert)",
+       "rows": [
+        {
+         "line": 115.5,
+         "p_left": 45,
+         "p_right": 55,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 116.5,
+         "p_left": 41,
+         "p_right": 59,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 117.5,
+         "p_left": 38,
+         "p_right": 62,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 118.5,
+         "p_left": 35,
+         "p_right": 65,
+         "predicted": "right",
+         "is_main": true
+        },
+        {
+         "line": 119.5,
+         "p_left": 32,
+         "p_right": 68,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 120.5,
+         "p_left": 29,
+         "p_right": 71,
+         "predicted": "right",
+         "is_main": false
+        },
+        {
+         "line": 121.5,
+         "p_left": 26,
+         "p_right": 74,
+         "predicted": "right",
+         "is_main": false
+        }
+       ]
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": null,
+     "team2": {
+      "version": "team-2",
+      "base": "Vorjahr",
+      "measure_home": 0.0,
+      "measure_away": 0.0,
+      "missing_home": [],
+      "missing_away": [],
+      "delta_spread": -0.0,
+      "exp_spread": -6.0,
+      "exp_total": 234.0,
+      "home_score": 114.0,
+      "away_score": 120.0,
+      "home_win_prob": 0.3247,
+      "away_win_prob": 0.6753
+     }
+    }
+   ],
+   "card": {
+    "home_team": "Indiana Pacers",
+    "away_team": "Philadelphia 76ers",
+    "home_score": 114,
+    "away_score": 120,
+    "exp_total": 234,
+    "blended_total_before_rounding": 233.6,
+    "model_total": 228.8,
+    "market_total_used": 238.9,
+    "market_weight": 0.48,
+    "market_diff": 10.1,
+    "lineup_warning": true,
+    "model_spread": -7.2,
+    "exp_spread": -6.0,
+    "market_spread_used": -2.4,
+    "spread_market_weight": 0.25,
+    "is_playoff": false,
+    "playoff_adjustment": 0.0,
+    "home_bias_adjustment": 0.0,
+    "away_bias_adjustment": 0.0,
+    "home_win_prob": 0.3247,
+    "away_win_prob": 0.6753,
+    "home_win_prob_elo": 0.2209,
+    "away_win_prob_elo": 0.7791,
+    "win_prob_source": "normal_spread",
+    "sigma_spread": 13.2,
+    "sigmas_version": "2",
+    "game_date": "2026-10-28",
+    "game_start": "2026-10-28T23:00:00.000Z",
+    "game_status": "2026-10-28T23:00:00Z",
+    "market_total": 238.9,
+    "market_spread": -2.4,
+    "cache_market_total": 238.9,
+    "cache_market_spread": -2.4,
+    "market_source": "cache_vorab",
+    "market_lines": {
+     "spread": {
+      "line": -2.4,
+      "source": "Cache",
+      "bookmaker": "",
+      "at": 1793134800.510277,
+      "at_iso": null,
+      "cache_line": -2.4,
+      "cache_at": 1793134800.510277,
+      "cache_source": "cache_vorab",
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "total": {
+      "line": 238.9,
+      "source": "Cache",
+      "bookmaker": "",
+      "at": 1793134800.510277,
+      "at_iso": null,
+      "cache_line": 238.9,
+      "cache_at": 1793134800.510277,
+      "cache_source": "cache_vorab",
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "team_total_away": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "team_total_home": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     }
+    },
+    "total_over_odds": 1.88,
+    "total_under_odds": 1.91,
+    "spread_home_odds": 1.91,
+    "spread_away_odds": 1.9,
+    "home_team_total": null,
+    "away_team_total": null,
+    "team2": {
+     "version": "team-2",
+     "base": "Vorjahr",
+     "games_home": 4,
+     "games_away": 4,
+     "measure_home": 0,
+     "measure_away": 0,
+     "missing_home": [],
+     "missing_away": [],
+     "delta_spread": -0.0,
+     "exp_spread": -6.0,
+     "home_score": 114,
+     "away_score": 120,
+     "exp_total": 234,
+     "home_win_prob": 0.3247,
+     "away_win_prob": 0.6753,
+     "pp_shift": 0.0,
+     "active": false
+    }
+   },
+   "result": null
+  },
+  "2026-10-28|2026-10-28T23:30:00Z|Toronto Raptors|Orlando Magic": {
+   "game_date": "2026-10-28",
+   "start_utc": "2026-10-28T23:30:00Z",
+   "home": "Toronto Raptors",
+   "away": "Orlando Magic",
+   "versions": [
+    {
+     "saved_at": "2026-10-28T01:21:18+01:00",
+     "hash": "14973da52b471ff2",
+     "model": {
+      "file_mtime": "2026-10-27T08:00:06+01:00",
+      "file_size": 738178,
+      "sha1": "a7395993c6b750da9cb3955dafb542b028c97da1",
+      "ratings_as_of": "2026-10-26"
+     },
+     "projection": {
+      "exp_spread": 1.0,
+      "exp_total": 227.0,
+      "home_score": 114.0,
+      "away_score": 113.0,
+      "home_win_prob": 0.5302,
+      "away_win_prob": 0.4698,
+      "home_win_prob_elo": 0.5066,
+      "away_win_prob_elo": 0.4934,
+      "market_total": null,
+      "market_spread": null
+     },
+     "markets": {
+      "spread": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "total": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "total": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": null,
+     "team2": {
+      "version": "team-2",
+      "base": "Vorjahr",
+      "measure_home": 0.0,
+      "measure_away": 0.0,
+      "missing_home": [],
+      "missing_away": [],
+      "delta_spread": -0.0,
+      "exp_spread": 1.0,
+      "exp_total": 227.0,
+      "home_score": 114.0,
+      "away_score": 113.0,
+      "home_win_prob": 0.5302,
+      "away_win_prob": 0.4698
+     }
+    },
+    {
+     "saved_at": "2026-10-28T13:48:38+01:00",
+     "hash": "62dc13ea3f191ccc",
+     "model": {
+      "file_mtime": "2026-10-28T08:00:03+01:00",
+      "file_size": 738360,
+      "sha1": "6348107b87148ecbe00e747196d4de9dbfb05f7b",
+      "ratings_as_of": "2026-10-27"
+     },
+     "projection": {
+      "exp_spread": 1.0,
+      "exp_total": 227.0,
+      "home_score": 114.0,
+      "away_score": 113.0,
+      "home_win_prob": 0.5302,
+      "away_win_prob": 0.4698,
+      "home_win_prob_elo": 0.5066,
+      "away_win_prob_elo": 0.4934,
+      "market_total": null,
+      "market_spread": null
+     },
+     "markets": {
+      "spread": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "total": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "total": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": null,
+     "team2": {
+      "version": "team-2",
+      "base": "Vorjahr",
+      "measure_home": 0.0,
+      "measure_away": 0.0,
+      "missing_home": [],
+      "missing_away": [],
+      "delta_spread": -0.0,
+      "exp_spread": 1.0,
+      "exp_total": 227.0,
+      "home_score": 114.0,
+      "away_score": 113.0,
+      "home_win_prob": 0.5302,
+      "away_win_prob": 0.4698
+     }
+    }
+   ],
+   "card": {
+    "home_team": "Toronto Raptors",
+    "away_team": "Orlando Magic",
+    "home_score": 114,
+    "away_score": 113,
+    "exp_total": 227,
+    "blended_total_before_rounding": 226.3,
+    "model_total": 226.3,
+    "market_total_used": null,
+    "market_weight": 0.0,
+    "market_diff": 0.0,
+    "lineup_warning": false,
+    "model_spread": 1.0,
+    "exp_spread": 1.0,
+    "market_spread_used": null,
+    "spread_market_weight": 0.0,
+    "is_playoff": false,
+    "playoff_adjustment": 0.0,
+    "home_bias_adjustment": 0.0,
+    "away_bias_adjustment": 0.0,
+    "home_win_prob": 0.5302,
+    "away_win_prob": 0.4698,
+    "home_win_prob_elo": 0.5066,
+    "away_win_prob_elo": 0.4934,
+    "win_prob_source": "normal_spread",
+    "sigma_spread": 13.2,
+    "sigmas_version": "2",
+    "game_date": "2026-10-28",
+    "game_start": "2026-10-28T23:30:00.000Z",
+    "game_status": "2026-10-28T23:30:00Z",
+    "market_total": null,
+    "market_spread": null,
+    "cache_market_total": null,
+    "cache_market_spread": null,
+    "market_source": null,
+    "market_lines": {
+     "spread": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "total": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "team_total_away": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "team_total_home": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     }
+    },
+    "total_over_odds": null,
+    "total_under_odds": null,
+    "spread_home_odds": null,
+    "spread_away_odds": null,
+    "home_team_total": null,
+    "away_team_total": null,
+    "team2": {
+     "version": "team-2",
+     "base": "Vorjahr",
+     "games_home": 3,
+     "games_away": 3,
+     "measure_home": 0,
+     "measure_away": 0,
+     "missing_home": [],
+     "missing_away": [],
+     "delta_spread": -0.0,
+     "exp_spread": 1.0,
+     "home_score": 114,
+     "away_score": 113,
+     "exp_total": 227,
+     "home_win_prob": 0.5302,
+     "away_win_prob": 0.4698,
+     "pp_shift": 0.0,
+     "active": false
+    }
+   },
+   "result": null
+  },
+  "2026-10-28|2026-10-29T00:00:00Z|Chicago Bulls|New York Knicks": {
+   "game_date": "2026-10-28",
+   "start_utc": "2026-10-29T00:00:00Z",
+   "home": "Chicago Bulls",
+   "away": "New York Knicks",
+   "versions": [
+    {
+     "saved_at": "2026-10-28T01:21:18+01:00",
+     "hash": "bc33f749c0857b96",
+     "model": {
+      "file_mtime": "2026-10-27T08:00:06+01:00",
+      "file_size": 738178,
+      "sha1": "a7395993c6b750da9cb3955dafb542b028c97da1",
+      "ratings_as_of": "2026-10-26"
+     },
+     "projection": {
+      "exp_spread": -12.6,
+      "exp_total": 229.0,
+      "home_score": 108.0,
+      "away_score": 121.0,
+      "home_win_prob": 0.1699,
+      "away_win_prob": 0.8301,
+      "home_win_prob_elo": 0.03,
+      "away_win_prob_elo": 0.97,
+      "market_total": null,
+      "market_spread": null
+     },
+     "markets": {
+      "spread": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "total": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "total": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": null,
+     "team2": {
+      "version": "team-2",
+      "base": "Vorjahr",
+      "measure_home": 0.0,
+      "measure_away": 0.0,
+      "missing_home": [],
+      "missing_away": [],
+      "delta_spread": -0.0,
+      "exp_spread": -12.6,
+      "exp_total": 229.0,
+      "home_score": 108.0,
+      "away_score": 121.0,
+      "home_win_prob": 0.1699,
+      "away_win_prob": 0.8301
+     }
+    },
+    {
+     "saved_at": "2026-10-28T13:48:38+01:00",
+     "hash": "787f7ebdf1c8a13a",
+     "model": {
+      "file_mtime": "2026-10-28T08:00:03+01:00",
+      "file_size": 738360,
+      "sha1": "6348107b87148ecbe00e747196d4de9dbfb05f7b",
+      "ratings_as_of": "2026-10-27"
+     },
+     "projection": {
+      "exp_spread": -13.3,
+      "exp_total": 229.0,
+      "home_score": 108.0,
+      "away_score": 121.0,
+      "home_win_prob": 0.1568,
+      "away_win_prob": 0.8432,
+      "home_win_prob_elo": 0.0529,
+      "away_win_prob_elo": 0.9471,
+      "market_total": null,
+      "market_spread": null
+     },
+     "markets": {
+      "spread": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "total": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "total": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": null,
+     "team2": {
+      "version": "team-2",
+      "base": "Vorjahr",
+      "measure_home": 0.0,
+      "measure_away": 0.0,
+      "missing_home": [],
+      "missing_away": [],
+      "delta_spread": -0.0,
+      "exp_spread": -13.3,
+      "exp_total": 229.0,
+      "home_score": 108.0,
+      "away_score": 121.0,
+      "home_win_prob": 0.1568,
+      "away_win_prob": 0.8432
+     }
+    }
+   ],
+   "card": {
+    "home_team": "Chicago Bulls",
+    "away_team": "New York Knicks",
+    "home_score": 108,
+    "away_score": 121,
+    "exp_total": 229,
+    "blended_total_before_rounding": 229.0,
+    "model_total": 229.0,
+    "market_total_used": null,
+    "market_weight": 0.0,
+    "market_diff": 0.0,
+    "lineup_warning": false,
+    "model_spread": -13.3,
+    "exp_spread": -13.3,
+    "market_spread_used": null,
+    "spread_market_weight": 0.0,
+    "is_playoff": false,
+    "playoff_adjustment": 0.0,
+    "home_bias_adjustment": 0.0,
+    "away_bias_adjustment": 0.0,
+    "home_win_prob": 0.1568,
+    "away_win_prob": 0.8432,
+    "home_win_prob_elo": 0.0529,
+    "away_win_prob_elo": 0.9471,
+    "win_prob_source": "normal_spread",
+    "sigma_spread": 13.2,
+    "sigmas_version": "2",
+    "game_date": "2026-10-28",
+    "game_start": "2026-10-29T00:00:00.000Z",
+    "game_status": "2026-10-29T00:00:00Z",
+    "market_total": null,
+    "market_spread": null,
+    "cache_market_total": null,
+    "cache_market_spread": null,
+    "market_source": null,
+    "market_lines": {
+     "spread": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "total": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "team_total_away": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "team_total_home": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     }
+    },
+    "total_over_odds": null,
+    "total_under_odds": null,
+    "spread_home_odds": null,
+    "spread_away_odds": null,
+    "home_team_total": null,
+    "away_team_total": null,
+    "team2": {
+     "version": "team-2",
+     "base": "Vorjahr",
+     "games_home": 4,
+     "games_away": 4,
+     "measure_home": 0,
+     "measure_away": 0,
+     "missing_home": [],
+     "missing_away": [],
+     "delta_spread": -0.0,
+     "exp_spread": -13.3,
+     "home_score": 108,
+     "away_score": 121,
+     "exp_total": 229,
+     "home_win_prob": 0.1568,
+     "away_win_prob": 0.8432,
+     "pp_shift": 0.0,
+     "active": false
+    }
+   },
+   "result": null
+  },
+  "2026-10-28|2026-10-29T00:00:00Z|Milwaukee Bucks|Houston Rockets": {
+   "game_date": "2026-10-28",
+   "start_utc": "2026-10-29T00:00:00Z",
+   "home": "Milwaukee Bucks",
+   "away": "Houston Rockets",
+   "versions": [
+    {
+     "saved_at": "2026-10-28T01:21:18+01:00",
+     "hash": "772dabe9550d4b89",
+     "model": {
+      "file_mtime": "2026-10-27T08:00:06+01:00",
+      "file_size": 738178,
+      "sha1": "a7395993c6b750da9cb3955dafb542b028c97da1",
+      "ratings_as_of": "2026-10-26"
+     },
+     "projection": {
+      "exp_spread": -10.8,
+      "exp_total": 231.0,
+      "home_score": 110.0,
+      "away_score": 121.0,
+      "home_win_prob": 0.2066,
+      "away_win_prob": 0.7934,
+      "home_win_prob_elo": 0.146,
+      "away_win_prob_elo": 0.854,
+      "market_total": null,
+      "market_spread": null
+     },
+     "markets": {
+      "spread": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "total": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "total": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": null,
+     "team2": {
+      "version": "team-2",
+      "base": "Vorjahr",
+      "measure_home": 0.0,
+      "measure_away": 0.0,
+      "missing_home": [],
+      "missing_away": [],
+      "delta_spread": -0.0,
+      "exp_spread": -10.8,
+      "exp_total": 231.0,
+      "home_score": 110.0,
+      "away_score": 121.0,
+      "home_win_prob": 0.2066,
+      "away_win_prob": 0.7934
+     }
+    },
+    {
+     "saved_at": "2026-10-28T13:48:38+01:00",
+     "hash": "f8c2f0aa7900f5de",
+     "model": {
+      "file_mtime": "2026-10-28T08:00:03+01:00",
+      "file_size": 738360,
+      "sha1": "6348107b87148ecbe00e747196d4de9dbfb05f7b",
+      "ratings_as_of": "2026-10-27"
+     },
+     "projection": {
+      "exp_spread": -10.8,
+      "exp_total": 231.0,
+      "home_score": 110.0,
+      "away_score": 121.0,
+      "home_win_prob": 0.2066,
+      "away_win_prob": 0.7934,
+      "home_win_prob_elo": 0.146,
+      "away_win_prob_elo": 0.854,
+      "market_total": null,
+      "market_spread": null
+     },
+     "markets": {
+      "spread": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "total": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "total": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": null,
+     "team2": {
+      "version": "team-2",
+      "base": "Vorjahr",
+      "measure_home": 0.0,
+      "measure_away": 0.0,
+      "missing_home": [],
+      "missing_away": [],
+      "delta_spread": -0.0,
+      "exp_spread": -10.8,
+      "exp_total": 231.0,
+      "home_score": 110.0,
+      "away_score": 121.0,
+      "home_win_prob": 0.2066,
+      "away_win_prob": 0.7934
+     }
+    }
+   ],
+   "card": {
+    "home_team": "Milwaukee Bucks",
+    "away_team": "Houston Rockets",
+    "home_score": 110,
+    "away_score": 121,
+    "exp_total": 231,
+    "blended_total_before_rounding": 231.3,
+    "model_total": 231.3,
+    "market_total_used": null,
+    "market_weight": 0.0,
+    "market_diff": 0.0,
+    "lineup_warning": false,
+    "model_spread": -10.8,
+    "exp_spread": -10.8,
+    "market_spread_used": null,
+    "spread_market_weight": 0.0,
+    "is_playoff": false,
+    "playoff_adjustment": 0.0,
+    "home_bias_adjustment": 0.0,
+    "away_bias_adjustment": 0.0,
+    "home_win_prob": 0.2066,
+    "away_win_prob": 0.7934,
+    "home_win_prob_elo": 0.146,
+    "away_win_prob_elo": 0.854,
+    "win_prob_source": "normal_spread",
+    "sigma_spread": 13.2,
+    "sigmas_version": "2",
+    "game_date": "2026-10-28",
+    "game_start": "2026-10-29T00:00:00.000Z",
+    "game_status": "2026-10-29T00:00:00Z",
+    "market_total": null,
+    "market_spread": null,
+    "cache_market_total": null,
+    "cache_market_spread": null,
+    "market_source": null,
+    "market_lines": {
+     "spread": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "total": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "team_total_away": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "team_total_home": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     }
+    },
+    "total_over_odds": null,
+    "total_under_odds": null,
+    "spread_home_odds": null,
+    "spread_away_odds": null,
+    "home_team_total": null,
+    "away_team_total": null,
+    "team2": {
+     "version": "team-2",
+     "base": "Vorjahr",
+     "games_home": 4,
+     "games_away": 4,
+     "measure_home": 0,
+     "measure_away": 0,
+     "missing_home": [],
+     "missing_away": [],
+     "delta_spread": -0.0,
+     "exp_spread": -10.8,
+     "home_score": 110,
+     "away_score": 121,
+     "exp_total": 231,
+     "home_win_prob": 0.2066,
+     "away_win_prob": 0.7934,
+     "pp_shift": 0.0,
+     "active": false
+    }
+   },
+   "result": null
+  },
+  "2026-10-28|2026-10-29T00:00:00Z|Minnesota Timberwolves|Golden State Warriors": {
+   "game_date": "2026-10-28",
+   "start_utc": "2026-10-29T00:00:00Z",
+   "home": "Minnesota Timberwolves",
+   "away": "Golden State Warriors",
+   "versions": [
+    {
+     "saved_at": "2026-10-28T01:21:18+01:00",
+     "hash": "142b190b7e440e61",
+     "model": {
+      "file_mtime": "2026-10-27T08:00:06+01:00",
+      "file_size": 738178,
+      "sha1": "a7395993c6b750da9cb3955dafb542b028c97da1",
+      "ratings_as_of": "2026-10-26"
+     },
+     "projection": {
+      "exp_spread": 11.2,
+      "exp_total": 232.0,
+      "home_score": 122.0,
+      "away_score": 110.0,
+      "home_win_prob": 0.8019,
+      "away_win_prob": 0.1981,
+      "home_win_prob_elo": 0.8751,
+      "away_win_prob_elo": 0.1249,
+      "market_total": null,
+      "market_spread": null
+     },
+     "markets": {
+      "spread": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "total": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "total": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": null,
+     "team2": {
+      "version": "team-2",
+      "base": "Vorjahr",
+      "measure_home": 0.0,
+      "measure_away": 0.0,
+      "missing_home": [],
+      "missing_away": [],
+      "delta_spread": -0.0,
+      "exp_spread": 11.2,
+      "exp_total": 232.0,
+      "home_score": 122.0,
+      "away_score": 110.0,
+      "home_win_prob": 0.8019,
+      "away_win_prob": 0.1981
+     }
+    },
+    {
+     "saved_at": "2026-10-28T13:48:38+01:00",
+     "hash": "ee2971b627c5001f",
+     "model": {
+      "file_mtime": "2026-10-28T08:00:03+01:00",
+      "file_size": 738360,
+      "sha1": "6348107b87148ecbe00e747196d4de9dbfb05f7b",
+      "ratings_as_of": "2026-10-27"
+     },
+     "projection": {
+      "exp_spread": 11.2,
+      "exp_total": 232.0,
+      "home_score": 122.0,
+      "away_score": 110.0,
+      "home_win_prob": 0.8019,
+      "away_win_prob": 0.1981,
+      "home_win_prob_elo": 0.8751,
+      "away_win_prob_elo": 0.1249,
+      "market_total": null,
+      "market_spread": null
+     },
+     "markets": {
+      "spread": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "total": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "total": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": null,
+     "team2": {
+      "version": "team-2",
+      "base": "Vorjahr",
+      "measure_home": 0.0,
+      "measure_away": 0.0,
+      "missing_home": [],
+      "missing_away": [],
+      "delta_spread": -0.0,
+      "exp_spread": 11.2,
+      "exp_total": 232.0,
+      "home_score": 122.0,
+      "away_score": 110.0,
+      "home_win_prob": 0.8019,
+      "away_win_prob": 0.1981
+     }
+    }
+   ],
+   "card": {
+    "home_team": "Minnesota Timberwolves",
+    "away_team": "Golden State Warriors",
+    "home_score": 122,
+    "away_score": 110,
+    "exp_total": 232,
+    "blended_total_before_rounding": 232.1,
+    "model_total": 232.1,
+    "market_total_used": null,
+    "market_weight": 0.0,
+    "market_diff": 0.0,
+    "lineup_warning": false,
+    "model_spread": 11.2,
+    "exp_spread": 11.2,
+    "market_spread_used": null,
+    "spread_market_weight": 0.0,
+    "is_playoff": false,
+    "playoff_adjustment": 0.0,
+    "home_bias_adjustment": 0.0,
+    "away_bias_adjustment": 0.0,
+    "home_win_prob": 0.8019,
+    "away_win_prob": 0.1981,
+    "home_win_prob_elo": 0.8751,
+    "away_win_prob_elo": 0.1249,
+    "win_prob_source": "normal_spread",
+    "sigma_spread": 13.2,
+    "sigmas_version": "2",
+    "game_date": "2026-10-28",
+    "game_start": "2026-10-29T00:00:00.000Z",
+    "game_status": "2026-10-29T00:00:00Z",
+    "market_total": null,
+    "market_spread": null,
+    "cache_market_total": null,
+    "cache_market_spread": null,
+    "market_source": null,
+    "market_lines": {
+     "spread": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "total": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "team_total_away": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "team_total_home": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     }
+    },
+    "total_over_odds": null,
+    "total_under_odds": null,
+    "spread_home_odds": null,
+    "spread_away_odds": null,
+    "home_team_total": null,
+    "away_team_total": null,
+    "team2": {
+     "version": "team-2",
+     "base": "Vorjahr",
+     "games_home": 4,
+     "games_away": 4,
+     "measure_home": 0,
+     "measure_away": 0,
+     "missing_home": [],
+     "missing_away": [],
+     "delta_spread": -0.0,
+     "exp_spread": 11.2,
+     "home_score": 122,
+     "away_score": 110,
+     "exp_total": 232,
+     "home_win_prob": 0.8019,
+     "away_win_prob": 0.1981,
+     "pp_shift": 0.0,
+     "active": false
+    }
+   },
+   "result": null
+  },
+  "2026-10-28|2026-10-29T00:00:00Z|New Orleans Pelicans|Denver Nuggets": {
+   "game_date": "2026-10-28",
+   "start_utc": "2026-10-29T00:00:00Z",
+   "home": "New Orleans Pelicans",
+   "away": "Denver Nuggets",
+   "versions": [
+    {
+     "saved_at": "2026-10-28T01:21:18+01:00",
+     "hash": "e4a23a673bb374d3",
+     "model": {
+      "file_mtime": "2026-10-27T08:00:06+01:00",
+      "file_size": 738178,
+      "sha1": "a7395993c6b750da9cb3955dafb542b028c97da1",
+      "ratings_as_of": "2026-10-26"
+     },
+     "projection": {
+      "exp_spread": -5.2,
+      "exp_total": 244.0,
+      "home_score": 119.0,
+      "away_score": 125.0,
+      "home_win_prob": 0.3468,
+      "away_win_prob": 0.6532,
+      "home_win_prob_elo": 0.3913,
+      "away_win_prob_elo": 0.6087,
+      "market_total": null,
+      "market_spread": null
+     },
+     "markets": {
+      "spread": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "total": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "total": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": null,
+     "team2": {
+      "version": "team-2",
+      "base": "Vorjahr",
+      "measure_home": 0.0,
+      "measure_away": 0.0,
+      "missing_home": [],
+      "missing_away": [],
+      "delta_spread": -0.0,
+      "exp_spread": -5.2,
+      "exp_total": 244.0,
+      "home_score": 119.0,
+      "away_score": 125.0,
+      "home_win_prob": 0.3468,
+      "away_win_prob": 0.6532
+     }
+    },
+    {
+     "saved_at": "2026-10-28T13:48:38+01:00",
+     "hash": "57e41d0db380b1dd",
+     "model": {
+      "file_mtime": "2026-10-28T08:00:03+01:00",
+      "file_size": 738360,
+      "sha1": "6348107b87148ecbe00e747196d4de9dbfb05f7b",
+      "ratings_as_of": "2026-10-27"
+     },
+     "projection": {
+      "exp_spread": -5.2,
+      "exp_total": 244.0,
+      "home_score": 119.0,
+      "away_score": 125.0,
+      "home_win_prob": 0.3468,
+      "away_win_prob": 0.6532,
+      "home_win_prob_elo": 0.3201,
+      "away_win_prob_elo": 0.6799,
+      "market_total": null,
+      "market_spread": null
+     },
+     "markets": {
+      "spread": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "total": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "total": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": null,
+     "team2": {
+      "version": "team-2",
+      "base": "Vorjahr",
+      "measure_home": 0.0,
+      "measure_away": 0.0,
+      "missing_home": [],
+      "missing_away": [],
+      "delta_spread": -0.0,
+      "exp_spread": -5.2,
+      "exp_total": 244.0,
+      "home_score": 119.0,
+      "away_score": 125.0,
+      "home_win_prob": 0.3468,
+      "away_win_prob": 0.6532
+     }
+    }
+   ],
+   "card": {
+    "home_team": "New Orleans Pelicans",
+    "away_team": "Denver Nuggets",
+    "home_score": 119,
+    "away_score": 125,
+    "exp_total": 244,
+    "blended_total_before_rounding": 244.0,
+    "model_total": 244.0,
+    "market_total_used": null,
+    "market_weight": 0.0,
+    "market_diff": 0.0,
+    "lineup_warning": false,
+    "model_spread": -5.2,
+    "exp_spread": -5.2,
+    "market_spread_used": null,
+    "spread_market_weight": 0.0,
+    "is_playoff": false,
+    "playoff_adjustment": 0.0,
+    "home_bias_adjustment": 0.0,
+    "away_bias_adjustment": 0.0,
+    "home_win_prob": 0.3468,
+    "away_win_prob": 0.6532,
+    "home_win_prob_elo": 0.3201,
+    "away_win_prob_elo": 0.6799,
+    "win_prob_source": "normal_spread",
+    "sigma_spread": 13.2,
+    "sigmas_version": "2",
+    "game_date": "2026-10-28",
+    "game_start": "2026-10-29T00:00:00.000Z",
+    "game_status": "2026-10-29T00:00:00Z",
+    "market_total": null,
+    "market_spread": null,
+    "cache_market_total": null,
+    "cache_market_spread": null,
+    "market_source": null,
+    "market_lines": {
+     "spread": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "total": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "team_total_away": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "team_total_home": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     }
+    },
+    "total_over_odds": null,
+    "total_under_odds": null,
+    "spread_home_odds": null,
+    "spread_away_odds": null,
+    "home_team_total": null,
+    "away_team_total": null,
+    "team2": {
+     "version": "team-2",
+     "base": "Vorjahr",
+     "games_home": 3,
+     "games_away": 3,
+     "measure_home": 0,
+     "measure_away": 0,
+     "missing_home": [],
+     "missing_away": [],
+     "delta_spread": -0.0,
+     "exp_spread": -5.2,
+     "home_score": 119,
+     "away_score": 125,
+     "exp_total": 244,
+     "home_win_prob": 0.3468,
+     "away_win_prob": 0.6532,
+     "pp_shift": 0.0,
+     "active": false
+    }
+   },
+   "result": null
+  },
+  "2026-10-28|2026-10-29T01:00:00Z|Utah Jazz|San Antonio Spurs": {
+   "game_date": "2026-10-28",
+   "start_utc": "2026-10-29T01:00:00Z",
+   "home": "Utah Jazz",
+   "away": "San Antonio Spurs",
+   "versions": [
+    {
+     "saved_at": "2026-10-28T01:21:18+01:00",
+     "hash": "b8d0fd6dafba935d",
+     "model": {
+      "file_mtime": "2026-10-27T08:00:06+01:00",
+      "file_size": 738178,
+      "sha1": "a7395993c6b750da9cb3955dafb542b028c97da1",
+      "ratings_as_of": "2026-10-26"
+     },
+     "projection": {
+      "exp_spread": -15.0,
+      "exp_total": 237.0,
+      "home_score": 111.0,
+      "away_score": 126.0,
+      "home_win_prob": 0.1279,
+      "away_win_prob": 0.8721,
+      "home_win_prob_elo": 0.03,
+      "away_win_prob_elo": 0.97,
+      "market_total": null,
+      "market_spread": null
+     },
+     "markets": {
+      "spread": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "total": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "total": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": null,
+     "team2": {
+      "version": "team-2",
+      "base": "Vorjahr",
+      "measure_home": 0.0,
+      "measure_away": 0.0,
+      "missing_home": [],
+      "missing_away": [],
+      "delta_spread": -0.0,
+      "exp_spread": -15.0,
+      "exp_total": 237.0,
+      "home_score": 111.0,
+      "away_score": 126.0,
+      "home_win_prob": 0.1279,
+      "away_win_prob": 0.8721
+     }
+    },
+    {
+     "saved_at": "2026-10-28T13:48:38+01:00",
+     "hash": "fb6e956e82613d48",
+     "model": {
+      "file_mtime": "2026-10-28T08:00:03+01:00",
+      "file_size": 738360,
+      "sha1": "6348107b87148ecbe00e747196d4de9dbfb05f7b",
+      "ratings_as_of": "2026-10-27"
+     },
+     "projection": {
+      "exp_spread": -15.1,
+      "exp_total": 237.0,
+      "home_score": 111.0,
+      "away_score": 126.0,
+      "home_win_prob": 0.1263,
+      "away_win_prob": 0.8737,
+      "home_win_prob_elo": 0.03,
+      "away_win_prob_elo": 0.97,
+      "market_total": null,
+      "market_spread": null
+     },
+     "markets": {
+      "spread": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "total": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "total": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": null,
+     "team2": {
+      "version": "team-2",
+      "base": "Vorjahr",
+      "measure_home": 0.0,
+      "measure_away": 0.0,
+      "missing_home": [],
+      "missing_away": [],
+      "delta_spread": -0.0,
+      "exp_spread": -15.1,
+      "exp_total": 237.0,
+      "home_score": 111.0,
+      "away_score": 126.0,
+      "home_win_prob": 0.1263,
+      "away_win_prob": 0.8737
+     }
+    }
+   ],
+   "card": {
+    "home_team": "Utah Jazz",
+    "away_team": "San Antonio Spurs",
+    "home_score": 111,
+    "away_score": 126,
+    "exp_total": 237,
+    "blended_total_before_rounding": 237.7,
+    "model_total": 237.7,
+    "market_total_used": null,
+    "market_weight": 0.0,
+    "market_diff": 0.0,
+    "lineup_warning": false,
+    "model_spread": -15.1,
+    "exp_spread": -15.1,
+    "market_spread_used": null,
+    "spread_market_weight": 0.0,
+    "is_playoff": false,
+    "playoff_adjustment": 0.0,
+    "home_bias_adjustment": 0.0,
+    "away_bias_adjustment": 0.0,
+    "home_win_prob": 0.1263,
+    "away_win_prob": 0.8737,
+    "home_win_prob_elo": 0.03,
+    "away_win_prob_elo": 0.97,
+    "win_prob_source": "normal_spread",
+    "sigma_spread": 13.2,
+    "sigmas_version": "2",
+    "game_date": "2026-10-28",
+    "game_start": "2026-10-29T01:00:00.000Z",
+    "game_status": "2026-10-29T01:00:00Z",
+    "market_total": null,
+    "market_spread": null,
+    "cache_market_total": null,
+    "cache_market_spread": null,
+    "market_source": null,
+    "market_lines": {
+     "spread": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "total": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "team_total_away": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "team_total_home": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     }
+    },
+    "total_over_odds": null,
+    "total_under_odds": null,
+    "spread_home_odds": null,
+    "spread_away_odds": null,
+    "home_team_total": null,
+    "away_team_total": null,
+    "team2": {
+     "version": "team-2",
+     "base": "Vorjahr",
+     "games_home": 4,
+     "games_away": 4,
+     "measure_home": 0,
+     "measure_away": 0,
+     "missing_home": [],
+     "missing_away": [],
+     "delta_spread": -0.0,
+     "exp_spread": -15.1,
+     "home_score": 111,
+     "away_score": 126,
+     "exp_total": 237,
+     "home_win_prob": 0.1263,
+     "away_win_prob": 0.8737,
+     "pp_shift": 0.0,
+     "active": false
+    }
+   },
+   "result": null
+  },
+  "2026-10-28|2026-10-29T01:30:00Z|Dallas Mavericks|Oklahoma City Thunder": {
+   "game_date": "2026-10-28",
+   "start_utc": "2026-10-29T01:30:00Z",
+   "home": "Dallas Mavericks",
+   "away": "Oklahoma City Thunder",
+   "versions": [
+    {
+     "saved_at": "2026-10-28T01:21:18+01:00",
+     "hash": "fe27df0c020a1e79",
+     "model": {
+      "file_mtime": "2026-10-27T08:00:06+01:00",
+      "file_size": 738178,
+      "sha1": "a7395993c6b750da9cb3955dafb542b028c97da1",
+      "ratings_as_of": "2026-10-26"
+     },
+     "projection": {
+      "exp_spread": -10.3,
+      "exp_total": 231.0,
+      "home_score": 110.0,
+      "away_score": 121.0,
+      "home_win_prob": 0.2176,
+      "away_win_prob": 0.7824,
+      "home_win_prob_elo": 0.1423,
+      "away_win_prob_elo": 0.8577,
+      "market_total": null,
+      "market_spread": null
+     },
+     "markets": {
+      "spread": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "total": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "total": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": null,
+     "team2": {
+      "version": "team-2",
+      "base": "Vorjahr",
+      "measure_home": 0.0,
+      "measure_away": 0.0,
+      "missing_home": [],
+      "missing_away": [],
+      "delta_spread": -0.0,
+      "exp_spread": -10.3,
+      "exp_total": 231.0,
+      "home_score": 110.0,
+      "away_score": 121.0,
+      "home_win_prob": 0.2176,
+      "away_win_prob": 0.7824
+     }
+    },
+    {
+     "saved_at": "2026-10-28T13:48:38+01:00",
+     "hash": "5b4c9bf2a7966b67",
+     "model": {
+      "file_mtime": "2026-10-28T08:00:03+01:00",
+      "file_size": 738360,
+      "sha1": "6348107b87148ecbe00e747196d4de9dbfb05f7b",
+      "ratings_as_of": "2026-10-27"
+     },
+     "projection": {
+      "exp_spread": -10.3,
+      "exp_total": 231.0,
+      "home_score": 110.0,
+      "away_score": 121.0,
+      "home_win_prob": 0.2176,
+      "away_win_prob": 0.7824,
+      "home_win_prob_elo": 0.1423,
+      "away_win_prob_elo": 0.8577,
+      "market_total": null,
+      "market_spread": null
+     },
+     "markets": {
+      "spread": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "total": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "total": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": null,
+     "team2": {
+      "version": "team-2",
+      "base": "Vorjahr",
+      "measure_home": 0.0,
+      "measure_away": 0.0,
+      "missing_home": [],
+      "missing_away": [],
+      "delta_spread": -0.0,
+      "exp_spread": -10.3,
+      "exp_total": 231.0,
+      "home_score": 110.0,
+      "away_score": 121.0,
+      "home_win_prob": 0.2176,
+      "away_win_prob": 0.7824
+     }
+    }
+   ],
+   "card": {
+    "home_team": "Dallas Mavericks",
+    "away_team": "Oklahoma City Thunder",
+    "home_score": 110,
+    "away_score": 121,
+    "exp_total": 231,
+    "blended_total_before_rounding": 230.7,
+    "model_total": 230.7,
+    "market_total_used": null,
+    "market_weight": 0.0,
+    "market_diff": 0.0,
+    "lineup_warning": false,
+    "model_spread": -10.3,
+    "exp_spread": -10.3,
+    "market_spread_used": null,
+    "spread_market_weight": 0.0,
+    "is_playoff": false,
+    "playoff_adjustment": 0.0,
+    "home_bias_adjustment": 0.0,
+    "away_bias_adjustment": 0.0,
+    "home_win_prob": 0.2176,
+    "away_win_prob": 0.7824,
+    "home_win_prob_elo": 0.1423,
+    "away_win_prob_elo": 0.8577,
+    "win_prob_source": "normal_spread",
+    "sigma_spread": 13.2,
+    "sigmas_version": "2",
+    "game_date": "2026-10-28",
+    "game_start": "2026-10-29T01:30:00.000Z",
+    "game_status": "2026-10-29T01:30:00Z",
+    "market_total": null,
+    "market_spread": null,
+    "cache_market_total": null,
+    "cache_market_spread": null,
+    "market_source": null,
+    "market_lines": {
+     "spread": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "total": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "team_total_away": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "team_total_home": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     }
+    },
+    "total_over_odds": null,
+    "total_under_odds": null,
+    "spread_home_odds": null,
+    "spread_away_odds": null,
+    "home_team_total": null,
+    "away_team_total": null,
+    "team2": {
+     "version": "team-2",
+     "base": "Vorjahr",
+     "games_home": 4,
+     "games_away": 4,
+     "measure_home": 0,
+     "measure_away": 0,
+     "missing_home": [],
+     "missing_away": [],
+     "delta_spread": -0.0,
+     "exp_spread": -10.3,
+     "home_score": 110,
+     "away_score": 121,
+     "exp_total": 231,
+     "home_win_prob": 0.2176,
+     "away_win_prob": 0.7824,
+     "pp_shift": 0.0,
+     "active": false
+    }
+   },
+   "result": null
+  },
+  "2026-10-28|2026-10-29T02:30:00Z|LA Clippers|Los Angeles Lakers": {
+   "game_date": "2026-10-28",
+   "start_utc": "2026-10-29T02:30:00Z",
+   "home": "LA Clippers",
+   "away": "Los Angeles Lakers",
+   "versions": [
+    {
+     "saved_at": "2026-10-28T01:21:18+01:00",
+     "hash": "bfc6d8c41a1d8064",
+     "model": {
+      "file_mtime": "2026-10-27T08:00:06+01:00",
+      "file_size": 738178,
+      "sha1": "a7395993c6b750da9cb3955dafb542b028c97da1",
+      "ratings_as_of": "2026-10-26"
+     },
+     "projection": {
+      "exp_spread": -2.4,
+      "exp_total": 230.0,
+      "home_score": 114.0,
+      "away_score": 116.0,
+      "home_win_prob": 0.4279,
+      "away_win_prob": 0.5721,
+      "home_win_prob_elo": 0.4064,
+      "away_win_prob_elo": 0.5936,
+      "market_total": null,
+      "market_spread": null
+     },
+     "markets": {
+      "spread": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "total": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "total": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": null,
+     "team2": {
+      "version": "team-2",
+      "base": "Vorjahr",
+      "measure_home": 0.0,
+      "measure_away": 0.0,
+      "missing_home": [],
+      "missing_away": [],
+      "delta_spread": -0.0,
+      "exp_spread": -2.4,
+      "exp_total": 230.0,
+      "home_score": 114.0,
+      "away_score": 116.0,
+      "home_win_prob": 0.4279,
+      "away_win_prob": 0.5721
+     }
+    },
+    {
+     "saved_at": "2026-10-28T13:48:38+01:00",
+     "hash": "d1d2adcc14dc33ca",
+     "model": {
+      "file_mtime": "2026-10-28T08:00:03+01:00",
+      "file_size": 738360,
+      "sha1": "6348107b87148ecbe00e747196d4de9dbfb05f7b",
+      "ratings_as_of": "2026-10-27"
+     },
+     "projection": {
+      "exp_spread": -1.1,
+      "exp_total": 231.0,
+      "home_score": 115.0,
+      "away_score": 116.0,
+      "home_win_prob": 0.4668,
+      "away_win_prob": 0.5332,
+      "home_win_prob_elo": 0.5458,
+      "away_win_prob_elo": 0.4542,
+      "market_total": null,
+      "market_spread": null
+     },
+     "markets": {
+      "spread": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "total": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_away": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      },
+      "team_total_home": {
+       "line": null,
+       "source": null,
+       "bookmaker": null,
+       "line_at": null,
+       "cache_line": null,
+       "warn": false
+      }
+     },
+     "tables": {
+      "spread": {
+       "kind": "spread",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "total": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_away": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      },
+      "team_home": {
+       "kind": "over_under",
+       "source": null,
+       "favorite": null,
+       "derived": false,
+       "note": "keine Linie",
+       "rows": []
+      }
+     },
+     "sigmas": {
+      "spread": 13.2,
+      "total": 18.6,
+      "team_total": 11.6
+     },
+     "sigmas_version": "2",
+     "pre_match_ref": null,
+     "team2": {
+      "version": "team-2",
+      "base": "Vorjahr",
+      "measure_home": 0.0,
+      "measure_away": 0.0,
+      "missing_home": [],
+      "missing_away": [],
+      "delta_spread": -0.0,
+      "exp_spread": -1.1,
+      "exp_total": 231.0,
+      "home_score": 115.0,
+      "away_score": 116.0,
+      "home_win_prob": 0.4668,
+      "away_win_prob": 0.5332
+     }
+    }
+   ],
+   "card": {
+    "home_team": "LA Clippers",
+    "away_team": "Los Angeles Lakers",
+    "home_score": 115,
+    "away_score": 116,
+    "exp_total": 231,
+    "blended_total_before_rounding": 231.3,
+    "model_total": 231.3,
+    "market_total_used": null,
+    "market_weight": 0.0,
+    "market_diff": 0.0,
+    "lineup_warning": false,
+    "model_spread": -1.1,
+    "exp_spread": -1.1,
+    "market_spread_used": null,
+    "spread_market_weight": 0.0,
+    "is_playoff": false,
+    "playoff_adjustment": 0.0,
+    "home_bias_adjustment": 0.0,
+    "away_bias_adjustment": 0.0,
+    "home_win_prob": 0.4668,
+    "away_win_prob": 0.5332,
+    "home_win_prob_elo": 0.5458,
+    "away_win_prob_elo": 0.4542,
+    "win_prob_source": "normal_spread",
+    "sigma_spread": 13.2,
+    "sigmas_version": "2",
+    "game_date": "2026-10-28",
+    "game_start": "2026-10-29T02:30:00.000Z",
+    "game_status": "2026-10-29T02:30:00Z",
+    "market_total": null,
+    "market_spread": null,
+    "cache_market_total": null,
+    "cache_market_spread": null,
+    "market_source": null,
+    "market_lines": {
+     "spread": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "total": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "team_total_away": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     },
+     "team_total_home": {
+      "line": null,
+      "source": null,
+      "bookmaker": "",
+      "at": null,
+      "at_iso": null,
+      "cache_line": null,
+      "cache_at": null,
+      "cache_source": null,
+      "own_line": null,
+      "deviation": null,
+      "warn": false
+     }
+    },
+    "total_over_odds": null,
+    "total_under_odds": null,
+    "spread_home_odds": null,
+    "spread_away_odds": null,
+    "home_team_total": null,
+    "away_team_total": null,
+    "team2": {
+     "version": "team-2",
+     "base": "Vorjahr",
+     "games_home": 3,
+     "games_away": 4,
+     "measure_home": 0,
+     "measure_away": 0,
+     "missing_home": [],
+     "missing_away": [],
+     "delta_spread": -0.0,
+     "exp_spread": -1.1,
+     "home_score": 115,
+     "away_score": 116,
+     "exp_total": 231,
+     "home_win_prob": 0.4668,
+     "away_win_prob": 0.5332,
+     "pp_shift": 0.0,
+     "active": false
     }
    },
    "result": null
