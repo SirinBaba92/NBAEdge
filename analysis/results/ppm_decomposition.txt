@@ -1,0 +1,148 @@
+Punkte pro Minute zerlegen (Stufe 1): R gegen S = erwartete Minuten x Wuerfe/Minute x Punkte/Wurf (beschreibend; die Entscheidungsregel steht unten)
+Verlauf: alle Spiele vor dem Spieltag (Mittelwert ohne Zeitgewichtung) oder die letzten 20. Gruppen nach Zahl bisheriger Spiele (alle Saisons zusammen gezaehlt) und Starter (erwartete Minuten roh > 28).
+Spalten: Zeilen / mittlerer absoluter Fehler (MAE) / Wurzel des mittleren quadratischen Fehlers (RMSE) / Verzerrung (tatsaechlich minus erwartet). Ohne Verlaengerungsspiele und ohne Spiel 0022400061.
+
+VORAB FESTGELEGTE ENTSCHEIDUNGSREGEL: Eine Variante zaehlt als besser, wenn sie in allen drei Testsaisons in der Gruppe 1-9 Spiele den quadratischen Fehler gegenueber R senkt und in der Gruppe ab 30 Spielen nicht verschlechtert.
+Parameter (k, k_min) je Fenster nur aus zwei Saisons gewaehlt (kleinster RMSE in Gruppe 1-9, Nebenbedingung: ab 30 Spielen nicht schlechter als R), getestet auf der dritten.
+
+0. DATENPRUEFUNG
+  Lokal: 2*FGM + 3PM + FTM gegen Punkte: 79335 Spielerzeilen, 0 abweichend (max. Abweichung 0 Punkte).
+  Play-by-Play 2023-24: 1230 Spiele verglichen (0 ohne lesbare Datei), 25045 Spielerzeilen mit Wuerfen; Wurfzahlen weichen bei 34 ab; Punkte aus PBP-Wuerfen weichen bei 4 von den lokalen Punkten ab; Spieler im PBP ohne lokale Zeile: 0.
+  Play-by-Play 2024-25: 1229 Spiele verglichen (0 ohne lesbare Datei), 24968 Spielerzeilen mit Wuerfen; Wurfzahlen weichen bei 25 ab; Punkte aus PBP-Wuerfen weichen bei 3 von den lokalen Punkten ab; Spieler im PBP ohne lokale Zeile: 0.
+  Play-by-Play 2025-26: 1230 Spiele verglichen (0 ohne lesbare Datei), 25501 Spielerzeilen mit Wuerfen; Wurfzahlen weichen bei 42 ab; Punkte aus PBP-Wuerfen weichen bei 11 von den lokalen Punkten ab; Spieler im PBP ohne lokale Zeile: 0.
+
+Zeilen mit Prognose ohne bisheriges Spiel (nicht auswertbar): 1.
+
+
+1. AUSGEWAEHLTE PARAMETER (aus den zwei Trainingssaisons)
+  Test 2023-24, Fenster alle: k = 50, k_min = 100   [keine Kombination hielt ab 30 Spielen den Fehler von R (im Training); nur Gruppe 1-9 entschied]
+  Test 2023-24, Fenster l20: k = 50, k_min = 100   [keine Kombination hielt ab 30 Spielen den Fehler von R (im Training); nur Gruppe 1-9 entschied]
+  Test 2024-25, Fenster alle: k = 200, k_min = 100   [keine Kombination hielt ab 30 Spielen den Fehler von R (im Training); nur Gruppe 1-9 entschied]
+  Test 2024-25, Fenster l20: k = 200, k_min = 100
+  Test 2025-26, Fenster alle: k = 200, k_min = 100   [keine Kombination hielt ab 30 Spielen den Fehler von R (im Training); nur Gruppe 1-9 entschied]
+  Test 2025-26, Fenster l20: k = 200, k_min = 100
+
+2. TABELLEN JE GRUPPE (Zeilen / MAE / RMSE / Verzerrung)
+Gruppe 1-9 Spiele
+  Variante             2023-24                   2024-25                   2025-26          
+  R              3987   4.381   5.872  +0.167 |     718   3.631   5.071  +0.593 |     703   3.995   5.563  +0.716
+  S0 alle        3987   4.359   5.857  +0.212 |     718   3.608   5.056  +0.682 |     703   4.015   5.588  +0.755
+  S0 l20         3987   4.359   5.857  +0.212 |     718   3.608   5.056  +0.682 |     703   4.015   5.588  +0.755
+  S_best alle    3987   4.364   5.725  -0.099 |     718   3.722   4.914  -0.475 |     703   4.015   5.378  -0.343
+  S_best l20     3987   4.364   5.725  -0.099 |     718   3.722   4.914  -0.475 |     703   4.015   5.378  -0.343
+
+Gruppe 10-29 Spiele
+  Variante             2023-24                   2024-25                   2025-26          
+  R              8376   4.408   5.794  +0.076 |    2114   3.642   4.921  +0.313 |    1632   3.905   5.234  +0.534
+  S0 alle        8376   4.395   5.788  +0.155 |    2114   3.625   4.925  +0.428 |    1632   3.907   5.277  +0.682
+  S0 l20         8376   4.401   5.793  +0.137 |    2114   3.631   4.934  +0.413 |    1632   3.906   5.273  +0.661
+  S_best alle    8376   4.427   5.766  -0.022 |    2114   3.707   4.918  -0.106 |    1632   3.952   5.195  +0.135
+  S_best l20     8376   4.434   5.770  -0.042 |    2114   3.716   4.924  -0.133 |    1632   3.949   5.186  +0.101
+
+Gruppe ab 30 Spiele
+  Variante             2023-24                   2024-25                   2025-26          
+  R             11585   4.828   6.278  -0.092 |   21825   4.774   6.179  -0.092 |   22838   4.709   6.100  -0.169
+  S0 alle       11585   4.842   6.295  -0.088 |   21825   4.815   6.244  +0.008 |   22838   4.785   6.215  +0.193
+  S0 l20        11585   4.853   6.315  -0.081 |   21825   4.796   6.213  -0.057 |   22838   4.720   6.131  -0.132
+  S_best alle   11585   4.845   6.279  -0.125 |   21825   4.819   6.231  -0.041 |   22838   4.791   6.208  +0.139
+  S_best l20    11585   4.859   6.280  -0.128 |   21825   4.804   6.178  -0.120 |   22838   4.739   6.103  -0.171
+
+Gruppe Starter
+  Variante             2023-24                   2024-25                   2025-26          
+  R              8368   5.761   7.368  -0.508 |    8154   5.726   7.241  -0.490 |    7392   5.686   7.257  -0.577
+  S0 alle        8368   5.767   7.364  -0.499 |    8154   5.814   7.350  -0.405 |    7392   5.799   7.418  +0.197
+  S0 l20         8368   5.788   7.393  -0.495 |    8154   5.768   7.286  -0.509 |    7392   5.728   7.310  -0.651
+  S_best alle    8368   5.742   7.323  -0.137 |    8154   5.799   7.331  -0.298 |    7392   5.790   7.406  +0.232
+  S_best l20     8368   5.755   7.336  -0.016 |    8154   5.724   7.238  -0.104 |    7392   5.660   7.233  -0.161
+
+3. ENTSCHEIDUNGSREGEL (je Variante, mit den aus zwei Saisons gewaehlten Parametern bei S_best)
+  S0 alle: 1-9 Spiele besser in allen drei Saisons: nein; ab 30 Spielen nicht schlechter in allen drei Saisons: nein; Regel erfuellt: NEIN
+  S0 l20: 1-9 Spiele besser in allen drei Saisons: nein; ab 30 Spielen nicht schlechter in allen drei Saisons: nein; Regel erfuellt: NEIN
+  S_best alle: 1-9 Spiele besser in allen drei Saisons: ja; ab 30 Spielen nicht schlechter in allen drei Saisons: nein; Regel erfuellt: NEIN
+  S_best l20: 1-9 Spiele besser in allen drei Saisons: ja; ab 30 Spielen nicht schlechter in allen drei Saisons: nein; Regel erfuellt: NEIN
+
+4. GANZES GITTER (RMSE je Gruppe und Saison, ohne Auswahl; R zuerst) - zur Einsicht, nicht zur Auswahl
+Saison 2023-24: Variante      1-9 Spiele  10-29 Spiele  ab 30 Spiele       Starter
+  R                                5.872         5.794         6.278         7.368
+  S alle k=25 kmin=100             5.756         5.772         6.281         7.335
+  S alle k=25 kmin=200             5.910         5.814         6.284         7.392
+  S alle k=25 kmin=400             6.090         5.918         6.308         7.504
+  S alle k=50 kmin=100             5.725         5.766         6.279         7.323
+  S alle k=50 kmin=200             5.879         5.808         6.281         7.380
+  S alle k=50 kmin=400             6.058         5.911         6.305         7.492
+  S alle k=100 kmin=100            5.706         5.762         6.275         7.313
+  S alle k=100 kmin=200            5.860         5.803         6.277         7.369
+  S alle k=100 kmin=400            6.040         5.905         6.301         7.481
+  S alle k=200 kmin=100            5.698         5.760         6.272         7.305
+  S alle k=200 kmin=200            5.852         5.801         6.274         7.362
+  S alle k=200 kmin=400            6.031         5.902         6.297         7.474
+  S l20 k=25 kmin=100              5.756         5.777         6.287         7.352
+  S l20 k=25 kmin=200              5.910         5.824         6.313         7.427
+  S l20 k=25 kmin=400              6.090         5.937         6.398         7.591
+  S l20 k=50 kmin=100              5.725         5.770         6.280         7.336
+  S l20 k=50 kmin=200              5.879         5.817         6.305         7.411
+  S l20 k=50 kmin=400              6.058         5.929         6.389         7.575
+  S l20 k=100 kmin=100             5.706         5.764         6.272         7.321
+  S l20 k=100 kmin=200             5.860         5.811         6.297         7.396
+  S l20 k=100 kmin=400             6.040         5.921         6.380         7.561
+  S l20 k=200 kmin=100             5.698         5.762         6.267         7.311
+  S l20 k=200 kmin=200             5.852         5.808         6.291         7.386
+  S l20 k=200 kmin=400             6.031         5.917         6.372         7.551
+
+Saison 2024-25: Variante      1-9 Spiele  10-29 Spiele  ab 30 Spiele       Starter
+  R                                5.071         4.921         6.179         7.241
+  S alle k=25 kmin=100             4.917         4.916         6.233         7.334
+  S alle k=25 kmin=200             4.953         4.945         6.228         7.325
+  S alle k=25 kmin=400             4.990         5.000         6.229         7.320
+  S alle k=50 kmin=100             4.909         4.912         6.232         7.333
+  S alle k=50 kmin=200             4.946         4.942         6.227         7.325
+  S alle k=50 kmin=400             4.985         4.998         6.228         7.320
+  S alle k=100 kmin=100            4.910         4.913         6.231         7.332
+  S alle k=100 kmin=200            4.949         4.943         6.227         7.324
+  S alle k=100 kmin=400            4.989         5.000         6.227         7.319
+  S alle k=200 kmin=100            4.914         4.918         6.231         7.331
+  S alle k=200 kmin=200            4.954         4.948         6.226         7.323
+  S alle k=200 kmin=400            4.996         5.005         6.227         7.319
+  S l20 k=25 kmin=100              4.917         4.921         6.190         7.252
+  S l20 k=25 kmin=200              4.953         4.951         6.215         7.282
+  S l20 k=25 kmin=400              4.990         5.009         6.295         7.400
+  S l20 k=50 kmin=100              4.909         4.918         6.185         7.246
+  S l20 k=50 kmin=200              4.946         4.949         6.209         7.277
+  S l20 k=50 kmin=400              4.985         5.008         6.289         7.395
+  S l20 k=100 kmin=100             4.910         4.919         6.180         7.240
+  S l20 k=100 kmin=200             4.949         4.950         6.204         7.271
+  S l20 k=100 kmin=400             4.989         5.010         6.282         7.389
+  S l20 k=200 kmin=100             4.914         4.924         6.178         7.238
+  S l20 k=200 kmin=200             4.954         4.956         6.201         7.268
+  S l20 k=200 kmin=400             4.996         5.016         6.277         7.385
+
+Saison 2025-26: Variante      1-9 Spiele  10-29 Spiele  ab 30 Spiele       Starter
+  R                                5.563         5.234         6.100         7.257
+  S alle k=25 kmin=100             5.380         5.225         6.209         7.409
+  S alle k=25 kmin=200             5.422         5.230         6.207         7.408
+  S alle k=25 kmin=400             5.475         5.252         6.208         7.409
+  S alle k=50 kmin=100             5.373         5.214         6.209         7.408
+  S alle k=50 kmin=200             5.414         5.219         6.207         7.407
+  S alle k=50 kmin=400             5.467         5.240         6.208         7.409
+  S alle k=100 kmin=100            5.373         5.203         6.208         7.407
+  S alle k=100 kmin=200            5.415         5.207         6.206         7.407
+  S alle k=100 kmin=400            5.468         5.228         6.207         7.409
+  S alle k=200 kmin=100            5.378         5.195         6.208         7.406
+  S alle k=200 kmin=200            5.420         5.198         6.206         7.406
+  S alle k=200 kmin=400            5.473         5.217         6.207         7.408
+  S l20 k=25 kmin=100              5.380         5.221         6.110         7.258
+  S l20 k=25 kmin=200              5.422         5.228         6.135         7.286
+  S l20 k=25 kmin=400              5.475         5.255         6.215         7.405
+  S l20 k=50 kmin=100              5.373         5.208         6.106         7.250
+  S l20 k=50 kmin=200              5.414         5.215         6.131         7.279
+  S l20 k=50 kmin=400              5.467         5.241         6.210         7.400
+  S l20 k=100 kmin=100             5.373         5.196         6.103         7.241
+  S l20 k=100 kmin=200             5.415         5.202         6.127         7.271
+  S l20 k=100 kmin=400             5.468         5.226         6.206         7.394
+  S l20 k=200 kmin=100             5.378         5.186         6.103         7.233
+  S l20 k=200 kmin=200             5.420         5.192         6.127         7.264
+  S l20 k=200 kmin=400             5.473         5.215         6.205         7.388
+
+5. NICHT GEPRUEFT
+  Signifikanz (kein Test, kein Bootstrap); Zeitgewichtung wie im bisherigen Modell; Wirkung auf Chancen/Meilensteine (nicht Teil dieser Stufe); getrennte k fuer Feldwuerfe und Freiwuerfe;
+  Verlauf nur ab 2023-24 (2022-23 liegt nicht lokal vor); Spiele 'ohne bisheriges Spiel' fehlen; Parameterauswahl nur nach RMSE der Gruppe 1-9 mit Nebenbedingung ab 30 Spielen.

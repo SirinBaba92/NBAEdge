@@ -1,0 +1,108 @@
+Experiment 5.1, Stufe 2: Hybrid fuer Spieler mit wenigen Spielen, geprueft an den Chancen der Spielerpunkte-Meilensteine (P(Punkte >= k), k = 1..60). NUR ANALYSE, kein Netz;
+
+Hybrid fuer Spieler mit wenigen Spielen (Stufe 2) - Chancen der Meilensteine k = 1..60, Zeile = Spieler x Meilenstein; Treffer = Punkte >= k (beschreibend, Entscheidungsregel unten)
+Gruppen nach Zahl bisheriger Spiele (alle Saisons zusammen, ab 2023-24): 1-9 und ab 10. In der Gruppe ab 10 sind ALLE Varianten exakt R (gleicher Rechenweg).
+Varianten: R roh. H0 = Mittelwert der Punkte aus der Zerlegung S, Punktewerte multiplikativ umskaliert (Streuung im Verhaeltnis wie R). H1_w = H0 + Punktewerte um den Mittelwert mit Faktor w gespreizt (vor der Normalglaettung,
+Begrenzung bei 0). C_w = Kontrolle: nur Spreizung, Mittelwert wie R. Parameter je Anpassung nur aus den zwei Trainingssaisons gewaehlt; Test auf der dritten.
+Brier/Log-Loss kleiner = besser. Verzerrung = mittlere Chance minus Trefferquote (Prozentpunkte). Kalibrierung ab 50/65/80/90 %: Zeilen / mittlere Chance / Trefferquote.
+VORAB FESTGELEGTE REGEL: besser, wenn in allen drei Testsaisons in Gruppe 1-9 Brier UND Log-Loss kleiner als R sind und die Luecke (Betrag, Chance minus Trefferquote) ab 80 % kleiner wird.
+
+1. GEWAEHLTE PARAMETER
+  Test 2023-24: S mit k = 50, k_min = 100 [keine Kombination hielt ab 30 Spielen den Fehler von R (im Training); nur Gruppe 1-9 entschied]; w (H1) = 1.2, w (Kontrolle) = 1.6
+  Test 2024-25: S mit k = 200, k_min = 100 [keine Kombination hielt ab 30 Spielen den Fehler von R (im Training); nur Gruppe 1-9 entschied]; w (H1) = 1.2, w (Kontrolle) = 1.2
+  Test 2025-26: S mit k = 200, k_min = 100 [keine Kombination hielt ab 30 Spielen den Fehler von R (im Training); nur Gruppe 1-9 entschied]; w (H1) = 1.2, w (Kontrolle) = 1.2
+
+2. TABELLEN
+Gruppe 1-9 Spiele
+  Kennzahl                       2023-24       2024-25       2025-26        gesamt
+  Spielerzeilen                     3987           718           703          5408
+  Meilenstein-Zeilen              239220         43080         42180        324480
+  Punkte tatsaechlich (Ø)          9.361         5.089         6.145         8.376
+  Punkte erwartet R                9.194         4.496         5.429         8.081
+  Punkte erwartet H0               9.385         5.507         6.411         8.483
+  Punkte erwartet H1               9.452         5.592         6.506         8.557
+  Punkte erwartet C                9.392         4.557         5.491         8.243
+  Brier R                        0.05405       0.04504       0.05015       0.05235
+  Brier H0                       0.05312       0.04431       0.04936       0.05146
+  Brier H1                       0.05291       0.04395       0.04915       0.05123
+  Brier C                        0.05414       0.04456       0.04968       0.05229
+  Log-Loss R                     0.22318       0.20275       0.23754       0.22233
+  Log-Loss H0                    0.20511       0.17604       0.20803       0.20163
+  Log-Loss H1                    0.19548       0.16710       0.19734       0.19196
+  Log-Loss C                     0.20032       0.19081       0.22199       0.20188
+  Verzerrung (PP) R                -0.21         -0.87         -1.08         -0.41
+  Verzerrung (PP) H0                0.11          0.80          0.54          0.25
+  Verzerrung (PP) H1                0.23          0.96          0.72          0.39
+  Verzerrung (PP) C                 0.16         -0.75         -0.96         -0.11
+  ab 50 % R                      35028/84.9%/78.3%        2982/77.6%/67.6%        3562/79.3%/71.2%       41572/83.9%/76.9%
+  ab 50 % H0                     35477/84.1%/78.1%        3606/77.9%/64.8%        4155/78.9%/68.5%       43238/83.1%/76.0%
+  ab 50 % H1                     35159/81.9%/78.2%        3539/75.4%/65.0%        4094/76.5%/68.7%       42792/80.8%/76.2%
+  ab 50 % C                      34126/78.8%/78.7%        2933/75.1%/67.9%        3522/76.8%/71.4%       40581/78.4%/77.3%
+  ab 65 % R                      28961/90.6%/83.3%        2179/85.0%/73.4%        2695/86.3%/76.1%       33835/89.9%/82.1%
+  ab 65 % H0                     28950/90.2%/83.4%        2666/85.2%/70.9%        3088/86.4%/74.0%       34704/89.4%/81.6%
+  ab 65 % H1                     27567/88.7%/84.2%        2462/83.3%/72.2%        2888/84.5%/74.5%       32917/87.9%/82.5%
+  ab 65 % C                      25226/86.4%/85.5%        2028/83.0%/74.4%        2516/84.5%/77.0%       29770/86.0%/84.1%
+  ab 80 % R                      22726/95.6%/87.9%        1394/92.0%/79.2%        1797/93.2%/81.1%       25917/95.2%/87.0%
+  ab 80 % H0                     22351/95.3%/88.0%        1716/92.3%/77.6%        2068/93.2%/78.7%       26135/95.0%/86.5%
+  ab 80 % H1                     20136/94.6%/89.4%        1415/91.3%/79.3%        1768/92.1%/79.8%       23319/94.2%/88.1%
+  ab 80 % C                      16668/93.5%/91.0%        1149/91.0%/80.8%        1533/92.1%/82.4%       19350/93.2%/89.7%
+  ab 90 % R                      18007/98.3%/91.0%         822/96.8%/83.7%        1180/97.3%/85.2%       20009/98.2%/90.4%
+  ab 90 % H0                     17411/98.2%/91.5%        1047/97.0%/83.0%        1352/97.4%/82.0%       19810/98.1%/90.4%
+  ab 90 % H1                     14884/98.0%/92.8%         782/96.5%/85.2%        1042/97.1%/82.6%       16708/97.9%/91.8%
+  ab 90 % C                      11260/97.6%/94.0%         622/96.2%/85.5%         905/97.0%/86.1%       12787/97.5%/93.0%
+
+Gruppe ab 10 Spielen
+  Kennzahl                       2023-24       2024-25       2025-26        gesamt
+  Spielerzeilen                    19961         23939         24470         68370
+  Meilenstein-Zeilen             1197660       1436340       1468200       4102200
+  Punkte tatsaechlich (Ø)         11.213        10.897        10.846        10.971
+  Punkte erwartet R               11.235        10.953        10.968        11.041
+  Punkte erwartet H0              11.235        10.953        10.968        11.041
+  Punkte erwartet H1              11.235        10.953        10.968        11.041
+  Punkte erwartet C               11.235        10.953        10.968        11.041
+  Brier R                        0.05486       0.05478       0.05458       0.05473
+  Brier H0                       0.05486       0.05478       0.05458       0.05473
+  Brier H1                       0.05486       0.05478       0.05458       0.05473
+  Brier C                        0.05486       0.05478       0.05458       0.05473
+  Log-Loss R                     0.18074       0.17864       0.17757       0.17887
+  Log-Loss H0                    0.18074       0.17864       0.17757       0.17887
+  Log-Loss H1                    0.18074       0.17864       0.17757       0.17887
+  Log-Loss C                     0.18074       0.17864       0.17757       0.17887
+  Verzerrung (PP) R                 0.08          0.14          0.25          0.16
+  Verzerrung (PP) H0                0.08          0.14          0.25          0.16
+  Verzerrung (PP) H1                0.08          0.14          0.25          0.16
+  Verzerrung (PP) C                 0.08          0.14          0.25          0.16
+  ab 50 % R                     211875/83.4%/81.0%      245476/82.6%/80.5%      251317/82.4%/80.4%      708668/82.8%/80.6%
+  ab 50 % H0                    211875/83.4%/81.0%      245476/82.6%/80.5%      251317/82.4%/80.4%      708668/82.8%/80.6%
+  ab 50 % H1                    211875/83.4%/81.0%      245476/82.6%/80.5%      251317/82.4%/80.4%      708668/82.8%/80.6%
+  ab 50 % C                     211875/83.4%/81.0%      245476/82.6%/80.5%      251317/82.4%/80.4%      708668/82.8%/80.6%
+  ab 65 % R                     173446/89.1%/86.5%      198586/88.6%/86.2%      202648/88.4%/86.1%      574680/88.7%/86.2%
+  ab 65 % H0                    173446/89.1%/86.5%      198586/88.6%/86.2%      202648/88.4%/86.1%      574680/88.7%/86.2%
+  ab 65 % H1                    173446/89.1%/86.5%      198586/88.6%/86.2%      202648/88.4%/86.1%      574680/88.7%/86.2%
+  ab 65 % C                     173446/89.1%/86.5%      198586/88.6%/86.2%      202648/88.4%/86.1%      574680/88.7%/86.2%
+  ab 80 % R                     132576/94.2%/91.5%      149019/93.9%/91.5%      151326/93.8%/91.3%      432921/93.9%/91.4%
+  ab 80 % H0                    132576/94.2%/91.5%      149019/93.9%/91.5%      151326/93.8%/91.3%      432921/93.9%/91.4%
+  ab 80 % H1                    132576/94.2%/91.5%      149019/93.9%/91.5%      151326/93.8%/91.3%      432921/93.9%/91.4%
+  ab 80 % C                     132576/94.2%/91.5%      149019/93.9%/91.5%      151326/93.8%/91.3%      432921/93.9%/91.4%
+  ab 90 % R                      98184/97.3%/94.9%      108378/97.1%/95.1%      108987/97.1%/94.9%      315549/97.2%/95.0%
+  ab 90 % H0                     98184/97.3%/94.9%      108378/97.1%/95.1%      108987/97.1%/94.9%      315549/97.2%/95.0%
+  ab 90 % H1                     98184/97.3%/94.9%      108378/97.1%/95.1%      108987/97.1%/94.9%      315549/97.2%/95.0%
+  ab 90 % C                      98184/97.3%/94.9%      108378/97.1%/95.1%      108987/97.1%/94.9%      315549/97.2%/95.0%
+
+3. ENTSCHEIDUNGSREGEL (Gruppe 1-9 Spiele, drei Testsaisons)
+  H0: Brier in allen Saisons kleiner: ja; Log-Loss: ja; Luecke ab 80 % kleiner: nein; Regel erfuellt: NEIN
+  H1 (gewaehltes w): Brier in allen Saisons kleiner: ja; Log-Loss: ja; Luecke ab 80 % kleiner: nein; Regel erfuellt: NEIN
+  Kontrolle (nur Streuung): Brier in allen Saisons kleiner: nein; Log-Loss: ja; Luecke ab 80 % kleiner: ja; Regel erfuellt: NEIN
+  Gruppe ab 10 Spielen identisch zu R: ja
+
+4. JE w (Gruppe 1-9, Brier / Log-Loss je Testsaison, w fest, Parameter wie gewaehlt)
+  H1 w=1.2: 2023-24 0.05291/0.19548   2024-25 0.04395/0.16710   2025-26 0.04915/0.19734
+  H1 w=1.4: 2023-24 0.05315/0.19069   2024-25 0.04394/0.16166   2025-26 0.04926/0.19095
+  H1 w=1.6: 2023-24 0.05373/0.18911   2024-25 0.04419/0.15868   2025-26 0.04961/0.18761
+  Kontrolle w=1.2: 2023-24 0.05369/0.21101   2024-25 0.04456/0.19081   2025-26 0.04968/0.22199
+  Kontrolle w=1.4: 2023-24 0.05375/0.20394   2024-25 0.04435/0.18254   2025-26 0.04948/0.21079
+  Kontrolle w=1.6: 2023-24 0.05414/0.20032   2024-25 0.04433/0.17689   2025-26 0.04949/0.20294
+
+5. NICHT GEPRUEFT
+  Signifikanz (nur Zeilenzahlen je Stufe, die Zeilen eines Spiels sind abhaengig); andere Wege der Spreizung (zum Beispiel breiterer Glaettungskern); Zeitgewichtung; getrennte Parameter fuer Starter und Bank;
+  Wirkung auf Teamabgleich und App; Verlauf nur ab 2023-24 (Gruppe 1-9 ist in 2023-24 grossteils der Saisonanfang).

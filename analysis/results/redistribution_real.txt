@@ -1,0 +1,61 @@
+Umverteilung bei Ausfaellen mit echten Inaktiven-Listen (nur Zahlen)
+Rueckfluss = (Mittel Summe Abweichung Mitspieler in A minus in K) / erwartete Minuten bzw. Punkte des Ausfalls. Klammer: 95-%-Bereich (Bootstrap ueber Spiele, 1000 Ziehungen).
+
+1. Ein Ausfall (Gruppe A) - A: genau ein Ausfall
+  2023-24: A 443 Spiele / 498 Team-Spiele, K 575; Ausfall erw. 29.1 Min / 14.2 Pkt; Summe Abweichung A -3.22 Min / -1.23 Pkt, K -13.08 / -6.76; Rueckfluss Minuten 0.34 [0.25; 0.43], Punkte 0.39 [0.26; 0.53]
+  2024-25: A 338 Spiele / 369 Team-Spiele, K 413; Ausfall erw. 28.6 Min / 15.1 Pkt; Summe Abweichung A -11.64 Min / -5.43 Pkt, K -19.41 / -11.86; Rueckfluss Minuten 0.27 [0.14; 0.42], Punkte 0.43 [0.26; 0.59]
+  2025-26: A 391 Spiele / 419 Team-Spiele, K 281; Ausfall erw. 29.4 Min / 16.8 Pkt; Summe Abweichung A -14.12 Min / -7.21 Pkt, K -27.00 / -15.02; Rueckfluss Minuten 0.44 [0.30; 0.57], Punkte 0.47 [0.31; 0.63]
+  gesamt: A 1172 Spiele / 1286 Team-Spiele, K 1269; Ausfall erw. 29.0 Min / 15.3 Pkt; Summe Abweichung A -9.19 Min / -4.38 Pkt, K -18.22 / -10.25; Rueckfluss Minuten 0.31 [0.24; 0.38], Punkte 0.38 [0.30; 0.47]
+
+2. Zwei Ausfaelle (Gruppe B) - B: genau zwei Ausfaelle (geteilt durch die Summe beider)
+  2023-24: A 268 Spiele / 284 Team-Spiele, K 575; Ausfall erw. 58.5 Min / 28.7 Pkt; Summe Abweichung A +10.13 Min / +4.64 Pkt, K -13.08 / -6.76; Rueckfluss Minuten 0.40 [0.34; 0.45], Punkte 0.40 [0.32; 0.48]
+  2024-25: A 269 Spiele / 287 Team-Spiele, K 413; Ausfall erw. 58.2 Min / 29.6 Pkt; Summe Abweichung A -2.59 Min / +0.20 Pkt, K -19.41 / -11.86; Rueckfluss Minuten 0.29 [0.22; 0.36], Punkte 0.41 [0.32; 0.50]
+  2025-26: A 359 Spiele / 392 Team-Spiele, K 281; Ausfall erw. 57.5 Min / 29.9 Pkt; Summe Abweichung A -4.31 Min / -1.38 Pkt, K -27.00 / -15.02; Rueckfluss Minuten 0.39 [0.33; 0.47], Punkte 0.46 [0.37; 0.54]
+  gesamt: A 896 Spiele / 963 Team-Spiele, K 1269; Ausfall erw. 58.0 Min / 29.4 Pkt; Summe Abweichung A +0.46 Min / +0.87 Pkt, K -18.22 / -10.25; Rueckfluss Minuten 0.32 [0.28; 0.36], Punkte 0.38 [0.33; 0.43]
+
+6. Gegenprobe Rest/Coach - Gegenprobe INACTIVE_REST/COACH, genau einer
+  2023-24: A 14 Spiele / 14 Team-Spiele, K 575; Ausfall erw. 28.4 Min / 12.6 Pkt; Summe Abweichung A -4.24 Min / +2.23 Pkt, K -13.08 / -6.76; Rueckfluss Minuten 0.31 [-0.09; 0.68], Punkte 0.71 [0.08; 1.25]
+  2024-25: A 12 Spiele / 12 Team-Spiele, K 413; Ausfall erw. 27.5 Min / 14.2 Pkt; Summe Abweichung A -7.64 Min / -2.19 Pkt, K -19.41 / -11.86; Rueckfluss Minuten 0.43 [0.02; 0.86], Punkte 0.68 [0.21; 1.10]
+  2025-26: A 5 Spiele / 5 Team-Spiele, K 281; Ausfall erw. 26.0 Min / 12.1 Pkt; Summe Abweichung A -26.08 Min / -14.96 Pkt, K -27.00 / -15.02; Rueckfluss Minuten 0.04 [-0.79; 0.60], Punkte 0.01 [-0.71; 0.51]
+  gesamt: A 31 Spiele / 31 Team-Spiele, K 1269; Ausfall erw. 27.7 Min / 13.1 Pkt; Summe Abweichung A -9.08 Min / -2.25 Pkt, K -18.22 / -10.25; Rueckfluss Minuten 0.33 [0.06; 0.61], Punkte 0.61 [0.24; 0.94]
+
+4a. Verteilung auf Mitspieler in A nach Rolle (erwartete Minuten roh; Summen je Team-Spiel)
+  Kategorie | Mittel A Min | Mittel K Min | Diff Min | Anteil Min | Mittel A Pkt | Mittel K Pkt | Diff Pkt | Anteil Pkt
+  Starter (>28) | -4.49 | -6.10 | +1.62 | 18 % | -2.58 | -4.99 | +2.40 | 41 %
+  mittlere (12-28) | -4.27 | -10.45 | +6.17 | 68 % | -1.68 | -4.73 | +3.04 | 52 %
+  Bank (<12) | -0.43 | -1.67 | +1.24 | 14 % | -0.12 | -0.54 | +0.42 | 7 %
+
+4b. nach Position im Spiel (Boxscore, Angabe nach dem Spiel)
+  Kategorie | Mittel A Min | Mittel K Min | Diff Min | Anteil Min | Mittel A Pkt | Mittel K Pkt | Diff Pkt | Anteil Pkt
+  Center | +0.29 | -0.55 | +0.84 | 9 % | +0.01 | -0.40 | +0.41 | 7 %
+  PF | -0.01 | -0.57 | +0.56 | 6 % | -0.32 | -0.41 | +0.09 | 2 %
+  PG | +0.15 | -0.76 | +0.91 | 10 % | +0.00 | -1.26 | +1.26 | 22 %
+  SF | +0.30 | -0.56 | +0.85 | 9 % | -0.05 | -0.75 | +0.70 | 12 %
+  SG | +0.27 | -0.47 | +0.75 | 8 % | +0.15 | -0.65 | +0.80 | 14 %
+  keine Angabe | -10.19 | -15.31 | +5.12 | 57 % | -4.18 | -6.79 | +2.61 | 44 %
+
+4c. nach Startermerkmal im Spiel (Boxscore, Angabe nach dem Spiel)
+  Kategorie | Mittel A Min | Mittel K Min | Diff Min | Anteil Min | Mittel A Pkt | Mittel K Pkt | Diff Pkt | Anteil Pkt
+  Starter im Spiel | +1.00 | -2.91 | +3.92 | 43 % | -0.21 | -3.47 | +3.26 | 56 %
+  von der Bank | -10.19 | -15.31 | +5.12 | 57 % | -4.18 | -6.79 | +2.61 | 44 %
+  ohne Angabe | +0.00 | +0.00 | +0.00 | 0 % | +0.00 | +0.00 | +0.00 | 0 %
+
+5. Ausfall nach Groesse in A (erwartete Minuten des Ausfalls)
+  20 bis 28 Min. gesamt: A 495 Spiele / 516 Team-Spiele, K 1269; Ausfall erw. 24.4 Min / 10.3 Pkt; Summe Abweichung A -12.88 Min / -8.06 Pkt, K -18.22 / -10.25; Rueckfluss Minuten 0.22 [0.13; 0.33], Punkte 0.21 [0.04; 0.40]
+    20 bis 28 Min. 2023-24: A 180 Spiele / 188 Team-Spiele, K 575; Ausfall erw. 24.5 Min / 9.5 Pkt; Summe Abweichung A -7.01 Min / -5.54 Pkt, K -13.08 / -6.76; Rueckfluss Minuten 0.25 [0.11; 0.39], Punkte 0.13 [-0.16; 0.41]
+    20 bis 28 Min. 2024-25: A 161 Spiele / 169 Team-Spiele, K 413; Ausfall erw. 24.5 Min / 10.5 Pkt; Summe Abweichung A -14.08 Min / -7.68 Pkt, K -19.41 / -11.86; Rueckfluss Minuten 0.22 [0.03; 0.40], Punkte 0.40 [0.12; 0.71]
+    20 bis 28 Min. 2025-26: A 154 Spiele / 159 Team-Spiele, K 281; Ausfall erw. 24.2 Min / 11.0 Pkt; Summe Abweichung A -18.55 Min / -11.44 Pkt, K -27.00 / -15.02; Rueckfluss Minuten 0.35 [0.16; 0.53], Punkte 0.33 [0.01; 0.64]
+  ueber 28 Min. gesamt: A 734 Spiele / 770 Team-Spiele, K 1269; Ausfall erw. 32.1 Min / 18.6 Pkt; Summe Abweichung A -6.72 Min / -1.92 Pkt, K -18.22 / -10.25; Rueckfluss Minuten 0.36 [0.29; 0.44], Punkte 0.45 [0.36; 0.54]
+    ueber 28 Min. 2023-24: A 292 Spiele / 310 Team-Spiele, K 575; Ausfall erw. 31.8 Min / 17.0 Pkt; Summe Abweichung A -0.92 Min / +1.39 Pkt, K -13.08 / -6.76; Rueckfluss Minuten 0.38 [0.30; 0.47], Punkte 0.48 [0.36; 0.61]
+    ueber 28 Min. 2024-25: A 194 Spiele / 200 Team-Spiele, K 413; Ausfall erw. 32.1 Min / 18.9 Pkt; Summe Abweichung A -9.58 Min / -3.53 Pkt, K -19.41 / -11.86; Rueckfluss Minuten 0.31 [0.17; 0.45], Punkte 0.44 [0.29; 0.61]
+    ueber 28 Min. 2025-26: A 248 Spiele / 260 Team-Spiele, K 281; Ausfall erw. 32.5 Min / 20.3 Pkt; Summe Abweichung A -11.42 Min / -4.62 Pkt, K -27.00 / -15.02; Rueckfluss Minuten 0.48 [0.33; 0.61], Punkte 0.51 [0.36; 0.66]
+
+7. Variante C des Modells: nicht aufgerufen. Sie braucht den Schnappschuss des Spielmodells (Spread, Total, Teampunkte) aus data/tracking und die Betano-Eintraege des Spiels (context_for_game, game_player_odds); beides gibt es nur fuer aufgezeichnete Spiele, nicht fuer 2023-24 bis 2025-26.
+
+Hinweise (was nicht erfasst ist):
+ - Mitspieler ohne Prognosezeile (z. B. kein Verlauf, nicht in der Prognosedatei) fehlen in der Summe; Einsatz mit Minuten 0 ist nicht vorhanden (Rueckfluss nur bei Einsatz).
+ - Weitere Inaktive mit kleiner Rolle (Mittel bis 12 Min.) und Inaktive anderer Status (z. B. GLEAGUE_TWOWAY, DND, REST) sind in A, B und K erlaubt und nicht herausgerechnet.
+ - Erwartete Minuten und Punkte des Ausfalls sind Mittel der letzten 10 Einsaetze (Spielerverlauf aus data/cache, ueber Saisongrenzen), nicht die Prognose des Modells; Ausfaelle ohne 5 Einsaetze zaehlen nicht als Ausfall, schliessen A aber aus.
+ - Position und Startermerkmal stammen aus dem Boxscore des Spiels (nach dem Spiel bekannt) und nur fuer Spiele der Gruppen A und K. Der Boxscore nennt die Position nur bei Startern: 'keine Angabe' in 4b sind dieselben Spieler wie 'von der Bank' in 4c.
+ - Die Summe der Abweichungen in K ist nicht 0 (Mitspieler mit Prognose spielen im Mittel weniger als roh erwartet, u. a. weil Spieler ohne Prognosezeile Minuten bekommen); deshalb wird A gegen K verglichen.
+ - Keine Signifikanztests ueber den Bootstrap-Bereich hinaus; Rest/Coach-Gegenprobe wird mit derselben Gruppe K verglichen.

@@ -1,0 +1,54 @@
+Rueckfluss der Minuten und Punkte eines ausgefallenen Spielers (beschreibend, keine Bewertung)
+WICHTIG - was im Projekt fehlt: Listen der Inaktiven (INACTIVE_INJURY, INACTIVE_GLEAGUE_TWOWAY) fuer 2023-24 bis 2025-26 liegen NICHT vor (die lokalen Spielerdaten sind der LeagueGameLog ohne Inaktive; die Boxscores des Recorders
+enthalten nur 2026-27 und keine Inaktiven). Auch die Prognose-Variante C (Neuberechnung mit Ausfaellen) steht nicht in den Dateien (nur A roh und B Teamabgleich ohne Ausfaelle), und eine Position gibt es lokal nicht.
+Deshalb gilt hier eine NAeHERUNG fuer 'Ausfall': ein Stammspieler, der laut seinem eigenen Verlauf erwartet worden waere, aber im Spiel nicht eingesetzt wurde:
+  - Er hat im letzten Spiel seines Teams (gleiche Saison) gespielt (Minuten > 0) und im aktuellen Spiel nicht (keine Zeile oder 0 Minuten),
+  - er spielt fuer dasselbe Team in mindestens einem der naechsten 5 Teamspiele wieder (schliesst Wechsel und lange Ausfaelle aus),
+  - Mittel seiner letzten 10 Spiele vor dem Spieltag (mindestens 5 Spiele): Minuten > 20. Diese Mittelwerte (Minuten und Punkte) ersetzen 'erwartete Minuten/Punkte roh' des Ausfalls, weil fuer Nichtgespielte keine Prognosezeile existiert.
+  Die Naeherung enthaelt auch Ruhetage, Entscheidungen des Trainers und nicht gemeldete Verletzungen; sie trennt nicht zwischen Verletzung und anderen Gruenden.
+Nur Team-Spiele mit genau einem Ausfall; ohne Verlaengerung und ohne Spiel 0022400061. Abweichung = tatsaechlich minus erwartet roh, Summe ueber die Mitspieler mit Prognose.
+
+1. ANZAHL
+                                       2023-24   2024-25   2025-26    gesamt
+  Team-Spiele mit genau 1 Ausfall          491       551       606      1648
+  Team-Spiele mit 2 oder mehr Kandidaten        94       176       182       452
+  Team-Spiele ohne Kandidat (Vergleich)      1732      1615      1565      4912
+
+2. RUECKFLUSS INSGESAMT (Mittel / Streuung)
+  Rueckfluss = Summe der Mitspieler-Abweichungen / erwartete Minuten bzw. Punkte des Ausfalls; Vergleich: Summe der Abweichungen in Spielen ohne Kandidat (absolut)
+                                                                 2023-24                   2024-25                   2025-26                    gesamt
+  Ausfall erwartete Minuten (Mittel)                               29.53                     28.41                     27.22                     28.31
+  Ausfall erwartete Punkte (Mittel)                                15.52                     14.78                     14.23                     14.79
+  Summe Abweichung Minuten (Ausfall)            +13.187 / 24.214 (n=491)   +7.823 / 26.349 (n=551)   +5.291 / 26.742 (n=606)  +8.490 / 26.067 (n=1648)
+  Summe Abweichung Minuten (ohne Ausfall)       -4.829 / 24.995 (n=1732)  -8.901 / 28.657 (n=1615)  -9.663 / 28.751 (n=1565)  -7.708 / 27.531 (n=4912)
+  Summe Abweichung Punkte (Ausfall)              +7.172 / 18.488 (n=491)   +5.562 / 18.708 (n=551)   +3.379 / 19.031 (n=606)  +5.239 / 18.816 (n=1648)
+  Summe Abweichung Punkte (ohne Ausfall)        -3.004 / 17.368 (n=1732)  -4.481 / 19.211 (n=1615)  -5.095 / 19.775 (n=1565)  -4.156 / 18.787 (n=4912)
+  Rueckfluss Minuten (Anteil)                     +0.425 / 0.846 (n=491)    +0.264 / 0.972 (n=551)    +0.169 / 1.033 (n=606)   +0.277 / 0.965 (n=1648)
+  Rueckfluss Punkte (Anteil)                      +0.288 / 1.662 (n=491)    +0.276 / 1.761 (n=551)    +0.134 / 1.764 (n=606)   +0.227 / 1.734 (n=1648)
+  Rueckfluss Minuten abzgl. Vergleich                             +0.610                    +0.589                    +0.549                    +0.572
+  Rueckfluss Punkte abzgl. Vergleich                              +0.656                    +0.680                    +0.596                    +0.635
+  Prognose-Variante C (Neuberechnung mit Ausfaellen): nicht in den Dateien, kein Vergleich moeglich. Position der Mitspieler: lokal nicht vorhanden.
+
+3. VERTEILUNG AUF DIE MITSPIELER NACH ROLLE (alle Saisons; Mittel der Abweichungssumme der Gruppe je Spiel: mit Ausfall / ohne Ausfall / Differenz; Anteil = Differenz / erwartete Ausfall-Minuten bzw. -Punkte)
+  Rolle (erw. Min. roh)   Minuten: mit / ohne / Diff / Anteil       Punkte: mit / ohne / Diff / Anteil
+  Starter (>28)           -1.91 / -4.24 / +2.33 / +0.082            +0.43 / -2.85 / +3.28 / +0.222
+  mittlere (12-28)        +6.75 / -3.83 / +10.58 / +0.374           +3.47 / -1.49 / +4.97 / +0.336
+  Bank (<12)              +3.65 / +0.36 / +3.29 / +0.116            +1.33 / +0.18 / +1.15 / +0.078
+  Summe der drei Rollen   Anteil +0.572                             Anteil +0.635
+
+4. NACH GROESSE DES AUSFALLS (erwartete Minuten des Ausfalls; alle Saisons)
+  Groesse             Spiele  Rueckfluss Minuten (Mittel/Streuung)    Rueckfluss Punkte (Mittel/Streuung)     abzgl. Vergleich Min. / Pkt.
+  20 bis 28 Min.         807  +0.204 / 1.124                          -0.000 / 2.186                          +0.540 / +0.550
+      Starter (>28)     Minuten-Anteil +0.090               Punkte-Anteil +0.152
+      mittlere (12-28)  Minuten-Anteil +0.339               Punkte-Anteil +0.334
+      Bank (<12)        Minuten-Anteil +0.111               Punkte-Anteil +0.064
+  ueber 28 Min.          841  +0.347 / 0.777                          +0.446 / 1.100                          +0.595 / +0.679
+      Starter (>28)     Minuten-Anteil +0.076               Punkte-Anteil +0.258
+      mittlere (12-28)  Minuten-Anteil +0.398               Punkte-Anteil +0.336
+      Bank (<12)        Minuten-Anteil +0.121               Punkte-Anteil +0.085
+
+5. NICHT GEPRUEFT
+  Echte Inaktiven-Listen (INACTIVE_INJURY / INACTIVE_GLEAGUE_TWOWAY) fuer 2023-24 bis 2025-26: nicht im Projekt, daher die Naeherung oben (Verletzung nicht von Ruhetag oder Trainerentscheidung getrennt).
+  Spieler ohne Einsatz fehlen in den Prognosedateien (nur Minuten > 0): Mitspieler, die ebenfalls fehlten, und ein zweiter Ausfall im selben Spiel sind nicht erfasst; Spiele mit zwei oder mehr Kandidaten sind ausgeschlossen (Zahl oben).
+  Spieler ohne Prognose, die trotzdem spielten, fehlen in der Summe der Mitspieler. Erwartete Minuten/Punkte des Ausfalls sind Mittel der letzten 10 Spiele, nicht die Prognose des Modells.
+  Prognose-Variante C und Position: nicht vorhanden. Keine Signifikanztests; erstes Teamspiel einer Saison hat keinen Vorgaenger und wird nicht betrachtet; lineups_<Saison>.csv.gz wurde nicht gebraucht.
