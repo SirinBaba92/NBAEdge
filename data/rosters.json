@@ -1,7 +1,7 @@
 {
  "version": 1,
  "format": "nbaedge-rosters",
- "fetched_at": "2026-10-26T06:32:46+01:00",
+ "fetched_at": "2026-10-28T21:39:10+01:00",
  "source": "nba_api.PlayerIndex",
  "season": "2026-27",
  "abrufe": 1,
@@ -505,7 +505,7 @@
     "person_id": 1643573,
     "name": "Kylan Boswell",
     "position": "G",
-    "jersey": "",
+    "jersey": "18",
     "team_id": 1610612766,
     "team_abbreviation": "CHA"
    },
@@ -521,7 +521,7 @@
     "person_id": 1642369,
     "name": "Michael Ajayi",
     "position": "G",
-    "jersey": "",
+    "jersey": "10",
     "team_id": 1610612766,
     "team_abbreviation": "CHA"
    },
@@ -2209,7 +2209,7 @@
     "person_id": 202691,
     "name": "Klay Thompson",
     "position": "G-F",
-    "jersey": "22",
+    "jersey": "11",
     "team_id": 1610612748,
     "team_abbreviation": "MIA"
    },
@@ -2470,6 +2470,14 @@
     "name": "Donte DiVincenzo",
     "position": "G",
     "jersey": "0",
+    "team_id": 1610612750,
+    "team_abbreviation": "MIN"
+   },
+   {
+    "person_id": 1642402,
+    "name": "Enrique Freeman",
+    "position": "F",
+    "jersey": "25",
     "team_id": 1610612750,
     "team_abbreviation": "MIN"
    },
@@ -2955,7 +2963,7 @@
     "person_id": 1642877,
     "name": "Micah Peavy",
     "position": "G-F",
-    "jersey": "7",
+    "jersey": "16",
     "team_id": 1610612760,
     "team_abbreviation": "OKC"
    },
@@ -3151,7 +3159,7 @@
     "person_id": 1631126,
     "name": "Caleb Love",
     "position": "G",
-    "jersey": "2",
+    "jersey": "8",
     "team_id": 1610612755,
     "team_abbreviation": "PHI"
    },
@@ -3289,7 +3297,7 @@
     "person_id": 1631166,
     "name": "Drew Timme",
     "position": "F",
-    "jersey": "17",
+    "jersey": "2",
     "team_id": 1610612756,
     "team_abbreviation": "PHX"
    },
@@ -3451,7 +3459,7 @@
     "person_id": 1643257,
     "name": "Jayson Kent",
     "position": "F",
-    "jersey": "",
+    "jersey": "29",
     "team_id": 1610612757,
     "team_abbreviation": "POR"
    },
@@ -3913,7 +3921,7 @@
     "person_id": 1642927,
     "name": "Nate Bittle",
     "position": "C",
-    "jersey": "",
+    "jersey": "12",
     "team_id": 1610612761,
     "team_abbreviation": "TOR"
    },
