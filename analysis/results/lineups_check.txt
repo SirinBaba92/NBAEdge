@@ -1,0 +1,83 @@
+Pruefung der Aufstellungstabelle (analysis/build_lineups.py): Stints aus dem Play-by-Play gegen die lokalen Minuten je Spieler und Spiel.
+Lokale Minuten sind ganze Minuten (Ligaprotokoll); Abweichungen bis 0,5 Min sind deshalb durch Rundung allein moeglich.
+
+=== 2023-24 ===
+Spiele erwartet (lokale Spielerdaten): 1230 | PBP-Dateien: 1230 | gelesen: 1230 | nicht lesbar (uebersprungen): 0 | ohne lokale Spielerdaten: 0
+Stints: 50638
+Minuten je Spieler und Spiel (Stints gegen lokale Minuten, 26399 Spieler-Spiele): Abweichung <= 0,5 Min: 26393 (99.98 %); <= 1 Min: 26393 (99.98 %); groesser als 1 Min: 6 (0.02 %)
+Die 10 groessten Abweichungen (Abweichung, Spiel, Spieler, Minuten aus Stints, lokale Minuten):
+    2.83  0022300339  1630592 Jalen Wilson  Stints 8.17  lokal 11
+    2.29  0022300339  1628969 Mikal Bridges  Stints 42.29  lokal 40
+    2.27  0022301210  1628380 Zach Collins  Stints 30.27  lokal 28
+    2.05  0022301210  1630200 Tre Jones  Stints 23.95  lokal 26
+    1.68  0022300339  1630541 Moses Moody  Stints 12.32  lokal 14
+    1.68  0022300339  202691 Klay Thompson  Stints 35.68  lokal 34
+    0.50  0022301229  203507 Giannis Antetokounmpo  Stints 40.50  lokal 41
+    0.50  0022301225  1641738 Kobe Brown  Stints 13.50  lokal 14
+    0.50  0022301225  1641707 Taylor Hendricks  Stints 11.50  lokal 12
+    0.50  0022301221  1629675 Naz Reid  Stints 23.50  lokal 24
+Spiele, bei denen am Ende nicht genau 5 Spieler je Team auf dem Feld stehen: 0
+Spiele, bei denen die Teamsumme nicht 240 plus 25 je Verlaengerung ist: 0
+Auffaelligkeiten (Zahl der Faelle): keine
+
+=== 2024-25 ===
+Spiele erwartet (lokale Spielerdaten): 1230 | PBP-Dateien: 1230 | gelesen: 1230 | nicht lesbar (uebersprungen): 0 | ohne lokale Spielerdaten: 0
+Stints: 51812
+Minuten je Spieler und Spiel (Stints gegen lokale Minuten, 26302 Spieler-Spiele): Abweichung <= 0,5 Min: 26271 (99.88 %); <= 1 Min: 26280 (99.92 %); groesser als 1 Min: 22 (0.08 %)
+Die 10 groessten Abweichungen (Abweichung, Spiel, Spieler, Minuten aus Stints, lokale Minuten):
+    4.63  0022400061  1630214 Xavier Tillman  Stints 13.37  lokal 18
+    4.37  0022400061  1630202 Payton Pritchard  Stints 20.63  lokal 25
+    4.25  0022400061  1641775 Jordan Walsh  Stints 1.75  lokal 6
+    4.17  0022400061  1630573 Sam Hauser  Stints 19.83  lokal 24
+    4.00  0022400061  1629674 Neemias Queta  Stints 0.00  lokal 4
+    3.73  0022400331  1631110 Jeremy Sochan  Stints 35.73  lokal 32
+    2.35  0022400903  1629216 Gabe Vincent  Stints 21.65  lokal 24
+    2.09  0022400720  1630549 Day'Ron Sharpe  Stints 18.09  lokal 16
+    2.05  0022400223  1631105 Jalen Duren  Stints 36.05  lokal 34
+    2.04  0022400903  1627827 Dorian Finney-Smith  Stints 40.04  lokal 38
+Spiele, bei denen am Ende nicht genau 5 Spieler je Team auf dem Feld stehen: 1 (z. B. 0022400061)
+Spiele, bei denen die Teamsumme nicht 240 plus 25 je Verlaengerung ist: 1 (z. B. 0022400061 (218.3, 240.0 statt 240))
+Auffaelligkeiten (Zahl der Faelle): out_nicht_auf_feld 1, stint_nicht_5 1
+
+=== 2025-26 ===
+Spiele erwartet (lokale Spielerdaten): 1230 | PBP-Dateien: 1230 | gelesen: 1230 | nicht lesbar (uebersprungen): 0 | ohne lokale Spielerdaten: 0
+Stints: 55066
+Minuten je Spieler und Spiel (Stints gegen lokale Minuten, 26649 Spieler-Spiele): Abweichung <= 0,5 Min: 26647 (99.99 %); <= 1 Min: 26647 (99.99 %); groesser als 1 Min: 2 (0.01 %)
+Die 10 groessten Abweichungen (Abweichung, Spiel, Spieler, Minuten aus Stints, lokale Minuten):
+    2.03  0022500264  1627739 Kris Dunn  Stints 22.97  lokal 25
+    1.97  0022500264  1642920 Kobe Sanders  Stints 27.97  lokal 26
+    0.50  0022501229  1626145 Tyus Jones  Stints 9.50  lokal 10
+    0.50  0022501220  1641740 Jaylen Clark  Stints 16.50  lokal 17
+    0.50  0022501218  1641750 Ryan Kalkbrenner  Stints 20.50  lokal 21
+    0.50  0022501214  1631213 Tyrese Martin  Stints 15.50  lokal 16
+    0.50  0022501213  1642383 Walter Clayton Jr.  Stints 7.50  lokal 8
+    0.50  0022501213  203994 Jusuf Nurkić  Stints 27.50  lokal 28
+    0.50  0022501210  1630595 Cade Cunningham  Stints 22.50  lokal 23
+    0.50  0022501207  1642877 Micah Peavy  Stints 10.50  lokal 11
+Spiele, bei denen am Ende nicht genau 5 Spieler je Team auf dem Feld stehen: 0
+Spiele, bei denen die Teamsumme nicht 240 plus 25 je Verlaengerung ist: 0
+Auffaelligkeiten (Zahl der Faelle): keine
+
+=== gesamt (2023-24, 2024-25, 2025-26) ===
+Spiele erwartet (lokale Spielerdaten): 3690 | PBP-Dateien: 3690 | gelesen: 3690 | nicht lesbar (uebersprungen): 0 | ohne lokale Spielerdaten: 0
+Stints: 157516
+Minuten je Spieler und Spiel (Stints gegen lokale Minuten, 79350 Spieler-Spiele): Abweichung <= 0,5 Min: 79311 (99.95 %); <= 1 Min: 79320 (99.96 %); groesser als 1 Min: 30 (0.04 %)
+Die 10 groessten Abweichungen (Abweichung, Spiel, Spieler, Minuten aus Stints, lokale Minuten):
+    4.63  0022400061  1630214 Xavier Tillman  Stints 13.37  lokal 18
+    4.37  0022400061  1630202 Payton Pritchard  Stints 20.63  lokal 25
+    4.25  0022400061  1641775 Jordan Walsh  Stints 1.75  lokal 6
+    4.17  0022400061  1630573 Sam Hauser  Stints 19.83  lokal 24
+    4.00  0022400061  1629674 Neemias Queta  Stints 0.00  lokal 4
+    3.73  0022400331  1631110 Jeremy Sochan  Stints 35.73  lokal 32
+    2.83  0022300339  1630592 Jalen Wilson  Stints 8.17  lokal 11
+    2.35  0022400903  1629216 Gabe Vincent  Stints 21.65  lokal 24
+    2.29  0022300339  1628969 Mikal Bridges  Stints 42.29  lokal 40
+    2.27  0022301210  1628380 Zach Collins  Stints 30.27  lokal 28
+Spiele, bei denen am Ende nicht genau 5 Spieler je Team auf dem Feld stehen: 1 (z. B. 0022400061)
+Spiele, bei denen die Teamsumme nicht 240 plus 25 je Verlaengerung ist: 1 (z. B. 0022400061 (218.3, 240.0 statt 240))
+Auffaelligkeiten (Zahl der Faelle): out_nicht_auf_feld 1, stint_nicht_5 1
+
+=== Startaufstellung: aus Ereignissen abgeleitet gegen Boxscore-Feld 'starter' (12 aufgezeichnete Spiele vom 28.10.2026) ===
+Spiele: 12, Teams: 24
+  nur aus Ereignissen: Team exakt richtig 24 von 24 (100.0 %), Spieler richtig 120 von 120 (100.0 %), Teams mit weniger als 5 gefunden: 0, mit mehr als 5 Kandidaten: 0
+  Ereignisse + Minuten (Ergaenzung durchgehend aktiver Spieler ohne Ereignis): Team exakt richtig 24 von 24 (100.0 %), Spieler richtig 120 von 120 (100.0 %), Teams mit weniger als 5 gefunden: 0, mit mehr als 5 Kandidaten: 0

@@ -169,6 +169,78 @@ def live_table_data(game, entry: dict, shown: dict | None = None) -> dict:
     return out
 
 
+def _final_dict(players, entry: dict) -> dict:
+    """{person_id: {'points', 'minutes', 'played', 'reason'}} fuer die Spieler des Snapshots aus einer Spielerliste (PlayerLive); Spieler ohne Eintrag: nicht gespielt."""
+    by_id = {int(p.person_id): p for p in players}
+    out = {}
+    for sp in entry.get("players", []):
+        pl = by_id.get(int(sp["person_id"]))
+        if pl is None or not pl.played:
+            out[int(sp["person_id"])] = {"points": 0, "minutes": 0.0, "played": False, "reason": "" if pl is None else (pl.reason or "")}
+        else:
+            out[int(sp["person_id"])] = {"points": pl.points, "minutes": pl.minutes, "played": True, "reason": ""}
+    return out
+
+
+def final_table_data(game, entry: dict) -> dict:
+    """Erzielte Punkte und Spielminuten je Spieler des Snapshots bei einem BEENDETEN Spiel: {person_id: {'points', 'minutes', 'played', 'reason'}} aus dem schon vorhandenen Boxscore des Live-Feeds
+    (kein Abruf). Nur wenn das Spiel beendet ist und der Boxscore zum Endstand passt (players_complete), sonst {}. Spieler des Snapshots ohne Eintrag im Boxscore: nicht gespielt."""
+    if game is None or not game.clock.is_final or not game.players or not getattr(game, "players_complete", False):
+        return {}
+    return _final_dict(game.players, entry)
+
+
+def recorder_game_dir(key: str):
+    """Ordner des Recorders (NUR LESEN, ~/NBAEdge_live_history oder NBAEDGE_LIVE_DIR) zu einem game_key ueber context.json; None, wenn es keinen gibt. Je Tagesordner zwischengespeichert."""
+    import json
+    import os
+    from pathlib import Path
+    root = Path(os.environ.get("NBAEDGE_LIVE_DIR") or Path.home() / "NBAEdge_live_history")
+    day_dir = root / key.split("|")[0]
+
+    def build():
+        idx = {}
+        for p in day_dir.glob("*/context.json"):
+            try:
+                idx[json.loads(p.read_text(encoding="utf-8")).get("game_key")] = p.parent
+            except (OSError, ValueError):
+                continue
+        return idx
+    try:
+        n = sum(1 for _ in day_dir.iterdir())
+    except OSError:
+        return None
+    return memo("rec_index", (str(day_dir), n, _sig(day_dir)), build).get(key)
+
+
+def recorder_final_data(key: str, entry: dict) -> dict:
+    """Wie final_table_data, aber aus final_box.json.gz des Recorders (nur lesen, kein Netz): fuer Spiele, die nicht mehr im Scoreboard des Live-Feeds stehen (aeltere Spieltage). {} ohne Aufzeichnung,
+    bei unlesbarer Datei oder wenn die Aufzeichnung nicht abgeschlossen ist (result.json fehlt; der Recorder schreibt sie nach final_box und final_pbp). Der Status im Boxscore selbst
+    kann beim Abruf noch "Ende" (2) statt 3 zeigen und zaehlt deshalb nicht."""
+    import gzip
+    import json
+    d = recorder_game_dir(key)
+    if d is None:
+        return {}
+    path = d / "final_box.json.gz"
+    if not (d / "result.json").exists():
+        return {}
+
+    def build():
+        try:
+            g = json.loads(gzip.decompress(path.read_bytes()).decode("utf-8")).get("game") or {}
+            return lf.players_from_box(g)
+        except Exception:
+            return ()
+    players = memo("rec_final", (str(path), _sig(path)), build)
+    return _final_dict(players, entry) if players else {}
+
+
+def final_for_game(game, entry: dict, key: str) -> dict:
+    """Erzielte Punkte/Minuten eines beendeten Spiels: zuerst der Live-Feed (final_table_data), sonst die Aufzeichnung des Recorders (recorder_final_data)."""
+    return final_table_data(game, entry) or recorder_final_data(key, entry)
+
+
 def bets_summary(rows: list[dict]) -> dict:
     """Tagessumme: alle gespeicherten Wetten zaehlen bei 'Wetten' und 'Einsatz'; offen/gewonnen/verloren/nicht gespielt/Gewinn nur mit Status (ds.summarize)."""
     lives = [bl for r in rows for bl in r["lives"].values()]
@@ -237,6 +309,7 @@ def _render_table(key: str, entry: dict, mode: str, sort: str, state, show_all: 
     shown = pv.shown_milestones(model)
     live = memo("live_table", (key, id(entry), mode, window, game_signature(game), repr(sorted((k, tuple(sorted(v))) for k, v in shown.items()))), lambda: live_table_data(game, entry, shown))
     pv.attach_live(model, live)
+    pv.attach_final(model, final_for_game(game, entry, key))
     if game is not None and game.clock.is_live:
         score = f"{game.away_score} : {game.home_score} ({game.clock_label}, Abstand {abs(game.home_score - game.away_score)})"
         extra = " · Stand von " + game.source if game.source != "NBA.com" else ""

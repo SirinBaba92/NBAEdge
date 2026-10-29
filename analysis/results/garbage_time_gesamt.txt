@@ -1,0 +1,21 @@
+=== gesamt (2023-24, 2024-25, 2025-26) ===
+
+G1: dauerhaft >= 20 Punkte ab Periode 3
+  Spiele mit Garbage Time: 775 von 3690 (21.0 %); mittlere Dauer in diesen Spielen: 11.4 Min
+  Anteil der Starter-Minuten, die in der Garbage Time anfallen (in Spielen mit Garbage Time; Minuten der Starter des fuehrenden bzw. zurueckliegenden Teams): fuehrend 13.1 %, zurueckliegend 14.1 %
+  Mittlere Minuten eines Starters: mit Garbage Time 27.3 (n = 7750), ohne 31.2 (n = 29148)
+  Mittlere Minuten eines Nicht-Starters (nur Spieler mit Einsatz): mit Garbage Time 14.6 (n = 10992), ohne 16.0 (n = 31167)
+  Punkte pro Minute der Starter (nur G1; Punkte aus Wurf- und Freiwurf-Ereignissen): in der Garbage Time 0.555 (15963 Pkt in 28774 Starter-Min), ausserhalb in denselben Spielen 0.515 (94173 Pkt in 182765 Min), in Spielen ohne Garbage Time 0.517 (470214 Pkt in 909085 Min)
+
+G2: dauerhaft >= 15 Punkte ab Periode 3
+  Spiele mit Garbage Time: 1276 von 3690 (34.6 %); mittlere Dauer in diesen Spielen: 12.8 Min
+  Anteil der Starter-Minuten, die in der Garbage Time anfallen (in Spielen mit Garbage Time; Minuten der Starter des fuehrenden bzw. zurueckliegenden Teams): fuehrend 18.1 %, zurueckliegend 18.2 %
+  Mittlere Minuten eines Starters: mit Garbage Time 28.1 (n = 12760), ohne 31.6 (n = 24138)
+  Mittlere Minuten eines Nicht-Starters (nur Spieler mit Einsatz): mit Garbage Time 14.4 (n = 17656), ohne 16.6 (n = 24503)
+
+G3: >= 20 Punkte in den letzten 6 Minuten von Viertel 4 (unabhaengig vom Verlauf)
+  Spiele mit Garbage Time: 1228 von 3690 (33.3 %); mittlere Dauer in diesen Spielen: 4.0 Min
+  Anteil der Starter-Minuten, die in der Garbage Time anfallen (in Spielen mit Garbage Time; Minuten der Starter des fuehrenden bzw. zurueckliegenden Teams): fuehrend 2.4 %, zurueckliegend 2.9 %
+  Mittlere Minuten eines Starters: mit Garbage Time 27.8 (n = 12279), ohne 31.7 (n = 24619)
+  Mittlere Minuten eines Nicht-Starters (nur Spieler mit Einsatz): mit Garbage Time 14.4 (n = 17177), ohne 16.5 (n = 24982)
+

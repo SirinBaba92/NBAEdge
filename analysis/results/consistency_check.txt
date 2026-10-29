@@ -1,0 +1,145 @@
+Konsistenzpruefung Spielerpunkte gegen Teampunkte (analysis/consistency_check.py), nur Zahlen.
+Definitionen und Rechenweg: Kopf der Datei analysis/consistency_check.py.
+3. Teamabgleich-Faktor: steht nicht in den Dateien (nur die Ergebnisse A und B); die Haeufigkeit der Grenzen 0,6 und 1,4 ist daraus nicht ermittelbar.
+Hinweis: Die Spielerdateien enthalten nur Spieler mit Prognose und Minuten > 0; Spieler, die nicht spielten, fehlen (Abdeckung < 100 %).
+
+=== 2023-24 === (Team-Spiele 2430, erkannte Spiele mit Verlaengerung 59, Spielerzeilen ohne verbundenes Teamspiel 0)
+--- 2023-24, alle ---
+Team-Spiele: Heim 1215, Gast 1215 (Spiele mit beiden Seiten: 1215)
+  1. Abdeckung (Punkte der Spieler mit Prognose / Teampunkte): Mittel (Streuung) Heim 99.2 % (2.5 %)                     Gast 99.0 % (3.2 %)
+  2. Summe erwartet A roh gegen erwartete Teampunkte x mittlere Abdeckung: Mittel / Streuung / Anteil > 5 Heim -1.86 / 16.03 / 71.2 %             Gast -0.28 / 16.16 / 73.6 %
+  2. Summe erwartet A roh gegen tatsaechliche Punkte derselben Spieler: Mittel / Streuung / Anteil > 5 Heim -1.66 / 18.09 / 76.6 %             Gast +0.14 / 19.27 / 78.0 %
+  2. Summe erwartet B Teamabgleich gegen erwartete Teampunkte x mittlere Abdeckung: Mittel / Streuung / Anteil > 5 Heim -8.92 / 15.42 / 66.9 %             Gast -9.07 / 15.07 / 65.8 %
+  2. Summe erwartet B Teamabgleich gegen tatsaechliche Punkte derselben Spieler: Mittel / Streuung / Anteil > 5 Heim -8.72 / 17.88 / 77.7 %             Gast -8.65 / 18.48 / 79.6 %
+  4a. Korrelation Teamfehler und Summenfehler der Spieler (A roh)                Heim 0.513                              Gast 0.570
+  4a. dasselbe mit Teamabgleich (B)                                              Heim 0.537                              Gast 0.593
+  4b. mittlere paarweise Korrelation der Roh-Fehler (>= 15 erwartete Min; Paare) Heim -0.024 (34379)                     Gast -0.007 (34118)
+  4c. Korrelation Teamfehler Heim und Gast im selben Spiel: 0.251 (1215 Spiele)
+--- 2023-24, ohne Verlaengerung ---
+Team-Spiele: Heim 1156, Gast 1156 (Spiele mit beiden Seiten: 1156)
+  1. Abdeckung (Punkte der Spieler mit Prognose / Teampunkte): Mittel (Streuung) Heim 99.2 % (2.6 %)                     Gast 99.0 % (3.2 %)
+  2. Summe erwartet A roh gegen erwartete Teampunkte x mittlere Abdeckung: Mittel / Streuung / Anteil > 5 Heim -1.69 / 16.12 / 71.5 %             Gast -0.13 / 16.33 / 74.3 %
+  2. Summe erwartet A roh gegen tatsaechliche Punkte derselben Spieler: Mittel / Streuung / Anteil > 5 Heim -0.97 / 17.97 / 76.4 %             Gast +0.85 / 19.18 / 77.7 %
+  2. Summe erwartet B Teamabgleich gegen erwartete Teampunkte x mittlere Abdeckung: Mittel / Streuung / Anteil > 5 Heim -8.74 / 15.51 / 67.0 %             Gast -8.89 / 15.24 / 65.7 %
+  2. Summe erwartet B Teamabgleich gegen tatsaechliche Punkte derselben Spieler: Mittel / Streuung / Anteil > 5 Heim -8.02 / 17.72 / 77.0 %             Gast -7.91 / 18.35 / 78.8 %
+  4a. Korrelation Teamfehler und Summenfehler der Spieler (A roh)                Heim 0.497                              Gast 0.552
+  4a. dasselbe mit Teamabgleich (B)                                              Heim 0.518                              Gast 0.575
+  4b. mittlere paarweise Korrelation der Roh-Fehler (>= 15 erwartete Min; Paare) Heim -0.026 (32765)                     Gast -0.006 (32520)
+  4c. Korrelation Teamfehler Heim und Gast im selben Spiel: 0.198 (1156 Spiele)
+--- 2023-24, mit Verlaengerung ---
+Team-Spiele: Heim 59, Gast 59 (Spiele mit beiden Seiten: 59)
+  1. Abdeckung (Punkte der Spieler mit Prognose / Teampunkte): Mittel (Streuung) Heim 99.6 % (1.3 %)                     Gast 99.4 % (2.1 %)
+  2. Summe erwartet A roh gegen erwartete Teampunkte x mittlere Abdeckung: Mittel / Streuung / Anteil > 5 Heim -5.26 / 13.91 / 66.1 %             Gast -3.25 / 12.08 / 61.0 %
+  2. Summe erwartet A roh gegen tatsaechliche Punkte derselben Spieler: Mittel / Streuung / Anteil > 5 Heim -15.14 / 14.93 / 81.4 %            Gast -13.75 / 15.50 / 84.7 %
+  2. Summe erwartet B Teamabgleich gegen erwartete Teampunkte x mittlere Abdeckung: Mittel / Streuung / Anteil > 5 Heim -12.57 / 13.21 / 66.1 %            Gast -12.62 / 10.98 / 71.2 %
+  2. Summe erwartet B Teamabgleich gegen tatsaechliche Punkte derselben Spieler: Mittel / Streuung / Anteil > 5 Heim -22.46 / 15.49 / 91.5 %            Gast -23.12 / 14.69 / 94.9 %
+  4a. Korrelation Teamfehler und Summenfehler der Spieler (A roh)                Heim 0.481                              Gast 0.652
+  4a. dasselbe mit Teamabgleich (B)                                              Heim 0.573                              Gast 0.658
+  4b. mittlere paarweise Korrelation der Roh-Fehler (>= 15 erwartete Min; Paare) Heim -0.061 (1614)                      Gast -0.070 (1598)
+  4c. Korrelation Teamfehler Heim und Gast im selben Spiel: 0.728 (59 Spiele)
+
+=== 2024-25 === (Team-Spiele 2460, erkannte Spiele mit Verlaengerung 59, Spielerzeilen ohne verbundenes Teamspiel 0)
+--- 2024-25, alle ---
+Team-Spiele: Heim 1230, Gast 1230 (Spiele mit beiden Seiten: 1230)
+  1. Abdeckung (Punkte der Spieler mit Prognose / Teampunkte): Mittel (Streuung) Heim 99.7 % (1.6 %)                     Gast 99.6 % (1.8 %)
+  2. Summe erwartet A roh gegen erwartete Teampunkte x mittlere Abdeckung: Mittel / Streuung / Anteil > 5 Heim -0.83 / 19.00 / 76.8 %             Gast +0.72 / 18.01 / 77.0 %
+  2. Summe erwartet A roh gegen tatsaechliche Punkte derselben Spieler: Mittel / Streuung / Anteil > 5 Heim -0.91 / 20.98 / 79.7 %             Gast +0.16 / 20.37 / 79.3 %
+  2. Summe erwartet B Teamabgleich gegen erwartete Teampunkte x mittlere Abdeckung: Mittel / Streuung / Anteil > 5 Heim -10.49 / 17.29 / 72.4 %            Gast -10.89 / 15.85 / 70.6 %
+  2. Summe erwartet B Teamabgleich gegen tatsaechliche Punkte derselben Spieler: Mittel / Streuung / Anteil > 5 Heim -10.56 / 19.70 / 82.1 %            Gast -11.45 / 18.50 / 80.5 %
+  4a. Korrelation Teamfehler und Summenfehler der Spieler (A roh)                Heim 0.444                              Gast 0.492
+  4a. dasselbe mit Teamabgleich (B)                                              Heim 0.494                              Gast 0.539
+  4b. mittlere paarweise Korrelation der Roh-Fehler (>= 15 erwartete Min; Paare) Heim -0.005 (37074)                     Gast -0.004 (36995)
+  4c. Korrelation Teamfehler Heim und Gast im selben Spiel: 0.249 (1230 Spiele)
+--- 2024-25, ohne Verlaengerung ---
+Team-Spiele: Heim 1171, Gast 1171 (Spiele mit beiden Seiten: 1171)
+  1. Abdeckung (Punkte der Spieler mit Prognose / Teampunkte): Mittel (Streuung) Heim 99.7 % (1.5 %)                     Gast 99.6 % (1.7 %)
+  2. Summe erwartet A roh gegen erwartete Teampunkte x mittlere Abdeckung: Mittel / Streuung / Anteil > 5 Heim -0.41 / 18.84 / 76.7 %             Gast +0.90 / 18.09 / 76.8 %
+  2. Summe erwartet A roh gegen tatsaechliche Punkte derselben Spieler: Mittel / Streuung / Anteil > 5 Heim -0.01 / 20.57 / 79.3 %             Gast +0.88 / 20.25 / 79.6 %
+  2. Summe erwartet B Teamabgleich gegen erwartete Teampunkte x mittlere Abdeckung: Mittel / Streuung / Anteil > 5 Heim -9.98 / 17.07 / 71.7 %             Gast -10.71 / 15.90 / 70.9 %
+  2. Summe erwartet B Teamabgleich gegen tatsaechliche Punkte derselben Spieler: Mittel / Streuung / Anteil > 5 Heim -9.59 / 19.20 / 81.4 %             Gast -10.73 / 18.33 / 79.8 %
+  4a. Korrelation Teamfehler und Summenfehler der Spieler (A roh)                Heim 0.423                              Gast 0.476
+  4a. dasselbe mit Teamabgleich (B)                                              Heim 0.473                              Gast 0.523
+  4b. mittlere paarweise Korrelation der Roh-Fehler (>= 15 erwartete Min; Paare) Heim -0.007 (35497)                     Gast -0.005 (35371)
+  4c. Korrelation Teamfehler Heim und Gast im selben Spiel: 0.198 (1171 Spiele)
+--- 2024-25, mit Verlaengerung ---
+Team-Spiele: Heim 59, Gast 59 (Spiele mit beiden Seiten: 59)
+  1. Abdeckung (Punkte der Spieler mit Prognose / Teampunkte): Mittel (Streuung) Heim 99.7 % (2.6 %)                     Gast 99.5 % (3.4 %)
+  2. Summe erwartet A roh gegen erwartete Teampunkte x mittlere Abdeckung: Mittel / Streuung / Anteil > 5 Heim -9.14 / 20.45 / 79.7 %             Gast -2.87 / 15.94 / 83.1 %
+  2. Summe erwartet A roh gegen tatsaechliche Punkte derselben Spieler: Mittel / Streuung / Anteil > 5 Heim -18.63 / 21.40 / 86.4 %            Gast -14.00 / 17.49 / 74.6 %
+  2. Summe erwartet B Teamabgleich gegen erwartete Teampunkte x mittlere Abdeckung: Mittel / Streuung / Anteil > 5 Heim -20.47 / 18.56 / 86.4 %            Gast -14.65 / 14.36 / 64.4 %
+  2. Summe erwartet B Teamabgleich gegen tatsaechliche Punkte derselben Spieler: Mittel / Streuung / Anteil > 5 Heim -29.96 / 19.62 / 96.6 %            Gast -25.78 / 15.94 / 93.2 %
+  4a. Korrelation Teamfehler und Summenfehler der Spieler (A roh)                Heim 0.450                              Gast 0.473
+  4a. dasselbe mit Teamabgleich (B)                                              Heim 0.473                              Gast 0.502
+  4b. mittlere paarweise Korrelation der Roh-Fehler (>= 15 erwartete Min; Paare) Heim -0.028 (1577)                      Gast -0.045 (1624)
+  4c. Korrelation Teamfehler Heim und Gast im selben Spiel: 0.784 (59 Spiele)
+
+=== 2025-26 === (Team-Spiele 2460, erkannte Spiele mit Verlaengerung 54, Spielerzeilen ohne verbundenes Teamspiel 0)
+--- 2025-26, alle ---
+Team-Spiele: Heim 1230, Gast 1230 (Spiele mit beiden Seiten: 1230)
+  1. Abdeckung (Punkte der Spieler mit Prognose / Teampunkte): Mittel (Streuung) Heim 99.7 % (1.7 %)                     Gast 99.6 % (1.9 %)
+  2. Summe erwartet A roh gegen erwartete Teampunkte x mittlere Abdeckung: Mittel / Streuung / Anteil > 5 Heim +0.07 / 18.57 / 75.9 %             Gast +1.44 / 18.93 / 77.8 %
+  2. Summe erwartet A roh gegen tatsaechliche Punkte derselben Spieler: Mittel / Streuung / Anteil > 5 Heim -0.02 / 20.48 / 79.8 %             Gast +0.98 / 21.28 / 80.3 %
+  2. Summe erwartet B Teamabgleich gegen erwartete Teampunkte x mittlere Abdeckung: Mittel / Streuung / Anteil > 5 Heim -9.96 / 16.47 / 74.4 %             Gast -10.12 / 16.78 / 73.7 %
+  2. Summe erwartet B Teamabgleich gegen tatsaechliche Punkte derselben Spieler: Mittel / Streuung / Anteil > 5 Heim -10.05 / 18.71 / 79.6 %            Gast -10.58 / 19.52 / 80.5 %
+  4a. Korrelation Teamfehler und Summenfehler der Spieler (A roh)                Heim 0.468                              Gast 0.468
+  4a. dasselbe mit Teamabgleich (B)                                              Heim 0.517                              Gast 0.513
+  4b. mittlere paarweise Korrelation der Roh-Fehler (>= 15 erwartete Min; Paare) Heim -0.006 (40320)                     Gast 0.002 (40411)
+  4c. Korrelation Teamfehler Heim und Gast im selben Spiel: 0.250 (1230 Spiele)
+--- 2025-26, ohne Verlaengerung ---
+Team-Spiele: Heim 1176, Gast 1176 (Spiele mit beiden Seiten: 1176)
+  1. Abdeckung (Punkte der Spieler mit Prognose / Teampunkte): Mittel (Streuung) Heim 99.6 % (1.7 %)                     Gast 99.6 % (1.9 %)
+  2. Summe erwartet A roh gegen erwartete Teampunkte x mittlere Abdeckung: Mittel / Streuung / Anteil > 5 Heim +0.06 / 18.72 / 75.9 %             Gast +1.52 / 18.90 / 77.9 %
+  2. Summe erwartet A roh gegen tatsaechliche Punkte derselben Spieler: Mittel / Streuung / Anteil > 5 Heim +0.52 / 20.43 / 79.4 %             Gast +1.62 / 21.11 / 80.4 %
+  2. Summe erwartet B Teamabgleich gegen erwartete Teampunkte x mittlere Abdeckung: Mittel / Streuung / Anteil > 5 Heim -9.93 / 16.66 / 74.8 %             Gast -10.06 / 16.75 / 74.0 %
+  2. Summe erwartet B Teamabgleich gegen tatsaechliche Punkte derselben Spieler: Mittel / Streuung / Anteil > 5 Heim -9.47 / 18.68 / 79.0 %             Gast -9.97 / 19.36 / 79.8 %
+  4a. Korrelation Teamfehler und Summenfehler der Spieler (A roh)                Heim 0.453                              Gast 0.458
+  4a. dasselbe mit Teamabgleich (B)                                              Heim 0.500                              Gast 0.503
+  4b. mittlere paarweise Korrelation der Roh-Fehler (>= 15 erwartete Min; Paare) Heim -0.006 (38548)                     Gast 0.001 (38755)
+  4c. Korrelation Teamfehler Heim und Gast im selben Spiel: 0.197 (1176 Spiele)
+--- 2025-26, mit Verlaengerung ---
+Team-Spiele: Heim 54, Gast 54 (Spiele mit beiden Seiten: 54)
+  1. Abdeckung (Punkte der Spieler mit Prognose / Teampunkte): Mittel (Streuung) Heim 100.0 % (0.3 %)                    Gast 99.7 % (1.6 %)
+  2. Summe erwartet A roh gegen erwartete Teampunkte x mittlere Abdeckung: Mittel / Streuung / Anteil > 5 Heim +0.27 / 15.22 / 74.1 %             Gast -0.29 / 19.76 / 75.9 %
+  2. Summe erwartet A roh gegen tatsaechliche Punkte derselben Spieler: Mittel / Streuung / Anteil > 5 Heim -11.86 / 18.09 / 88.9 %            Gast -12.90 / 20.36 / 79.6 %
+  2. Summe erwartet B Teamabgleich gegen erwartete Teampunkte x mittlere Abdeckung: Mittel / Streuung / Anteil > 5 Heim -10.51 / 11.70 / 66.7 %            Gast -11.23 / 17.42 / 66.7 %
+  2. Summe erwartet B Teamabgleich gegen tatsaechliche Punkte derselben Spieler: Mittel / Streuung / Anteil > 5 Heim -22.64 / 14.56 / 92.6 %            Gast -23.83 / 18.45 / 94.4 %
+  4a. Korrelation Teamfehler und Summenfehler der Spieler (A roh)                Heim 0.545                              Gast 0.340
+  4a. dasselbe mit Teamabgleich (B)                                              Heim 0.604                              Gast 0.393
+  4b. mittlere paarweise Korrelation der Roh-Fehler (>= 15 erwartete Min; Paare) Heim -0.048 (1772)                      Gast -0.029 (1656)
+  4c. Korrelation Teamfehler Heim und Gast im selben Spiel: 0.746 (54 Spiele)
+
+=== gesamt === (Team-Spiele 7350, erkannte Spiele mit Verlaengerung 172, Spielerzeilen ohne verbundenes Teamspiel 0)
+--- gesamt, alle ---
+Team-Spiele: Heim 3675, Gast 3675 (Spiele mit beiden Seiten: 3675)
+  1. Abdeckung (Punkte der Spieler mit Prognose / Teampunkte): Mittel (Streuung) Heim 99.5 % (2.0 %)                     Gast 99.4 % (2.4 %)
+  2. Summe erwartet A roh gegen erwartete Teampunkte x mittlere Abdeckung: Mittel / Streuung / Anteil > 5 Heim -0.87 / 17.95 / 74.5 %             Gast +0.63 / 17.77 / 75.9 %
+  2. Summe erwartet A roh gegen tatsaechliche Punkte derselben Spieler: Mittel / Streuung / Anteil > 5 Heim -0.86 / 19.90 / 78.7 %             Gast +0.43 / 20.33 / 79.2 %
+  2. Summe erwartet B Teamabgleich gegen erwartete Teampunkte x mittlere Abdeckung: Mittel / Streuung / Anteil > 5 Heim -9.79 / 16.41 / 71.3 %             Gast -10.03 / 15.92 / 70.3 %
+  2. Summe erwartet B Teamabgleich gegen tatsaechliche Punkte derselben Spieler: Mittel / Streuung / Anteil > 5 Heim -9.78 / 18.79 / 79.8 %             Gast -10.23 / 18.87 / 80.2 %
+  4a. Korrelation Teamfehler und Summenfehler der Spieler (A roh)                Heim 0.472                              Gast 0.507
+  4a. dasselbe mit Teamabgleich (B)                                              Heim 0.514                              Gast 0.548
+  4b. mittlere paarweise Korrelation der Roh-Fehler (>= 15 erwartete Min; Paare) Heim -0.011 (111773)                    Gast -0.003 (111524)
+  4c. Korrelation Teamfehler Heim und Gast im selben Spiel: 0.250 (3675 Spiele)
+--- gesamt, ohne Verlaengerung ---
+Team-Spiele: Heim 3503, Gast 3503 (Spiele mit beiden Seiten: 3503)
+  1. Abdeckung (Punkte der Spieler mit Prognose / Teampunkte): Mittel (Streuung) Heim 99.5 % (2.0 %)                     Gast 99.4 % (2.4 %)
+  2. Summe erwartet A roh gegen erwartete Teampunkte x mittlere Abdeckung: Mittel / Streuung / Anteil > 5 Heim -0.67 / 17.97 / 74.7 %             Gast +0.77 / 17.84 / 76.0 %
+  2. Summe erwartet A roh gegen tatsaechliche Punkte derselben Spieler: Mittel / Streuung / Anteil > 5 Heim -0.15 / 19.70 / 78.4 %             Gast +1.12 / 20.20 / 79.2 %
+  2. Summe erwartet B Teamabgleich gegen erwartete Teampunkte x mittlere Abdeckung: Mittel / Streuung / Anteil > 5 Heim -9.56 / 16.43 / 71.3 %             Gast -9.89 / 15.98 / 70.4 %
+  2. Summe erwartet B Teamabgleich gegen tatsaechliche Punkte derselben Spieler: Mittel / Streuung / Anteil > 5 Heim -9.03 / 18.55 / 79.1 %             Gast -9.54 / 18.72 / 79.5 %
+  4a. Korrelation Teamfehler und Summenfehler der Spieler (A roh)                Heim 0.454                              Gast 0.492
+  4a. dasselbe mit Teamabgleich (B)                                              Heim 0.496                              Gast 0.533
+  4b. mittlere paarweise Korrelation der Roh-Fehler (>= 15 erwartete Min; Paare) Heim -0.012 (106810)                    Gast -0.003 (106646)
+  4c. Korrelation Teamfehler Heim und Gast im selben Spiel: 0.198 (3503 Spiele)
+--- gesamt, mit Verlaengerung ---
+Team-Spiele: Heim 172, Gast 172 (Spiele mit beiden Seiten: 172)
+  1. Abdeckung (Punkte der Spieler mit Prognose / Teampunkte): Mittel (Streuung) Heim 99.7 % (1.7 %)                     Gast 99.5 % (2.5 %)
+  2. Summe erwartet A roh gegen erwartete Teampunkte x mittlere Abdeckung: Mittel / Streuung / Anteil > 5 Heim -4.85 / 17.18 / 73.3 %             Gast -2.19 / 16.08 / 72.7 %
+  2. Summe erwartet A roh gegen tatsaechliche Punkte derselben Spieler: Mittel / Streuung / Anteil > 5 Heim -15.31 / 18.44 / 85.5 %            Gast -13.57 / 17.72 / 79.7 %
+  2. Summe erwartet B Teamabgleich gegen erwartete Teampunkte x mittlere Abdeckung: Mittel / Streuung / Anteil > 5 Heim -14.63 / 15.42 / 72.7 %            Gast -12.88 / 14.39 / 67.4 %
+  2. Summe erwartet B Teamabgleich gegen tatsaechliche Punkte derselben Spieler: Mittel / Streuung / Anteil > 5 Heim -25.09 / 17.03 / 93.6 %            Gast -24.26 / 16.31 / 94.2 %
+  4a. Korrelation Teamfehler und Summenfehler der Spieler (A roh)                Heim 0.461                              Gast 0.473
+  4a. dasselbe mit Teamabgleich (B)                                              Heim 0.508                              Gast 0.508
+  4b. mittlere paarweise Korrelation der Roh-Fehler (>= 15 erwartete Min; Paare) Heim -0.044 (4963)                      Gast -0.048 (4878)
+  4c. Korrelation Teamfehler Heim und Gast im selben Spiel: 0.752 (172 Spiele)
+

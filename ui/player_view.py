@@ -90,6 +90,14 @@ def build_table_model(entry: dict, mode: str = "team", sort: str = "team", bets:
     return {"players": players, "mode": mode, "sort": sort, "live": bool(live), "window": window, "hidden_rows": sum(p["hidden_rows"] for p in players)}
 
 
+def attach_final(model: dict, final: dict | None) -> dict:
+    """Erzielte Punkte und Spielminuten eines BEENDETEN Spiels in ein fertiges Tabellenmodell eintragen (nur Anzeige in den Karten): p['final'] = {'points', 'minutes', 'played', 'reason'}.
+    final: {person_id: {...}} aus ui/player_tab.final_table_data; leer = Spiel nicht beendet oder Boxscore nicht komplett (dann steht nichts)."""
+    for p in model["players"]:
+        p["final"] = (final or {}).get(int(p["person_id"]))
+    return model
+
+
 def shown_milestones(model: dict) -> dict:
     """{person_id: {Meilensteine}} der angezeigten Zeilen (damit die Live-Chancen nur dafuer gerechnet werden)."""
     return {p["person_id"]: {r["n"] for r in p["rows"]} for p in model["players"]}
@@ -314,7 +322,7 @@ def absence_box_html(cur: dict | None) -> str:
             f"<div class='pl-c-abs-o'>{' · '.join(origin)}</div></div>")
 
 
-def _card_row(r: dict, lv: dict | None, who: tuple | None = None) -> str:
+def _card_row(r: dict, lv: dict | None, who: tuple | None = None, fin: dict | None = None) -> str:
     odds = "" if r.get("odds") is None else f"<span class='pl-c-odds'>@ {fmt_num(r['odds'], 2)}</span>"
     safe = r.get("safe_odds")                                            # nur Starter mit genug Spielen und Roh-Chance ab PLAYER_SAFE_MIN_PROB (engine/safety_levels.player_safe_odds)
     tick = "" if safe is None else (f" <span class='pl-c-ok' title='Starter mit mindestens {settings.PLAYER_MIN_GAMES} Spielen, Roh-Chance mindestens "
@@ -331,11 +339,15 @@ def _card_row(r: dict, lv: dict | None, who: tuple | None = None) -> str:
         ch = (lv.get("chances") or {}).get(r["n"])
         live_txt = "<span class='pl-c-live'>" + ("erreicht" if lv["points"] >= r["n"] else "Live –" if ch is None else f"Live {pct_int(ch)} %") + "</span>"
     hi = " pl-c-hi" if model is not None and model >= CARD_HIGHLIGHT_MIN_PCT else ""
+    res = ""                                                             # beendetes Spiel: hervorgehobene Zeile (Modell ab 60 %) mit Ergebnis - gruenes Haekchen erreicht, rotes X verfehlt (nicht gespielt: nichts)
+    if hi and fin is not None and fin.get("played"):
+        got = fin["points"] >= r["n"]
+        res = (f"<span class='pl-c-res {'pl-c-res-ok' if got else 'pl-c-res-no'}' title='{r['n']}+ {'erreicht' if got else 'verfehlt'}: {fin['points']} Punkte'>{'✓' if got else '✗'}</span>")
     attrs = "" if who is None else (f" data-pid='{int(who[0])}' data-name='{escape(str(who[1]), quote=True)}' data-n='{int(r['n'])}' data-odds='{'' if r.get('odds') is None else r['odds']}'"
                                      f" data-buch='{buch}' data-model='{'' if model is None else model}'")      # fuer die anklickbare Karten-Komponente (ui/components/bet_cards)
     return (f"<div class='pl-c-row{hi}'{attrs}><div class='pl-c-n'><b>{r['n']}+{tick}</b>{odds}{min_odds}</div>"
             f"<div class='pl-c-mid'><div class='pl-c-bars'><span class='pl-c-bar pl-c-bar-b'><i style='width:{buch}%'></i></span>{model_bar}</div><span class='pl-c-txt'><span class='pl-c-wb'>Betano</span> <b>{buch} %</b> · {model_txt}</span></div>"
-            f"<div class='pl-c-d'><span class='{diff_class(r['diff'])}'>{diff}</span>{mark}{live_txt}</div></div>")
+            f"<div class='pl-c-d'>{res}<span class='{diff_class(r['diff'])}'>{diff}</span>{mark}{live_txt}</div></div>")
 
 
 def render_cards_html(model: dict, absences: dict | None = None) -> str:
@@ -350,11 +362,15 @@ def render_cards_html(model: dict, absences: dict | None = None) -> str:
         few = f" <span class='pl-c-few'>{escape(p['few_games'])}</span>" if p.get("few_games") else ""
         lv = p.get("live")
         meta = (f"<b>{fmt_min(p['points'])}</b> Punkte erwartet · <b>{fmt_min(p['minutes'])}</b> Min" if p["ok"] else "keine Prognose")
+        fin = p.get("final")                                             # beendetes Spiel: was der Spieler wirklich gemacht hat (Boxscore)
+        if fin is not None:
+            meta += " · <span class='pl-c-final'>" + (f"Erzielt <b>{fin['points']}</b> Pkt · <b>{fmt_num(fin['minutes'], 1)}</b> Min" if fin["played"]
+                                                       else "Nicht gespielt" + (f" ({escape(fin['reason'])})" if fin.get("reason") else "")) + "</span>"
         now = ""
         if model.get("live"):
             now = ("<div class='pl-c-now'>Jetzt: " + (f"<b>{lv['points']}</b> Pkt · <b>{fmt_num(lv['minutes'], 1)}</b> Min · <b>{lv['fouls']}</b> Fouls"
                                                        + (f" <span class='pl-q' title='{escape('; '.join(lv.get('notes') or []), quote=True)}'>⚠</span>" if lv.get("notes") else "") if lv else "–") + "</div>")
-        rows = "".join(_card_row(r, lv, (p["person_id"], p["name"])) for r in p["rows"]) or "<div class='pl-none'>keine Meilensteine eingelesen</div>"
+        rows = "".join(_card_row(r, lv, (p["person_id"], p["name"]), p.get("final")) for r in p["rows"]) or "<div class='pl-none'>keine Meilensteine eingelesen</div>"
         cards.append(f"<div class='pl-card'><div class='pl-c-head'><span class='pl-c-name'>{escape(p['name'])}{few}{sym}</span><span class='pl-c-team'>{escape(p['abbr'] or p.get('team') or '')}</span></div>"
                      f"<div class='pl-c-meta'>{meta}</div>{now}{rows}</div>")
     legend = (f"<div class='pl-c-legend'><span class='pl-c-key' style='background:{BLUE}'></span>Betano inkl. Marge · <span class='pl-c-key' style='background:{ORANGE}'></span>Modell roh ({UNVERIFIED.lower()}) · "
@@ -376,10 +392,12 @@ def _cards_css() -> str:
 .pl-c-name {{ font-size:20px; font-weight:700; color:{P['text']}; }}
 .pl-c-team {{ font-size:15px; color:{P['label']}; }}
 .pl-c-meta {{ font-size:15px; color:{P['label']}; margin:3px 0 8px; }}
+.pl-c-final {{ display:inline-block; padding:0 8px; border-radius:6px; background:{P['chip_gray_bg']}; border:1px solid {P['chip_gray_border']}; color:{P['chip_gray_text']}; white-space:nowrap; }}
+.pl-c-final b {{ color:{P['text']}; }}
 .pl-c-now {{ font-size:14px; color:{P['label']}; margin:0 0 8px; }}
 .pl-c-head .pl-bet-mark, .pl-c-head .pl-q {{ font-size:14px; }}
 .pl-c-meta b, .pl-c-now b {{ color:{P['text']}; }}
-.pl-c-row {{ display:grid; grid-template-columns:84px 1fr 96px; gap:12px; align-items:center; padding:7px 6px; margin:0 -6px; border-radius:8px; }}
+.pl-c-row {{ display:grid; grid-template-columns:84px 1fr 112px; gap:12px; align-items:center; padding:7px 6px; margin:0 -6px; border-radius:8px; }}
 .pl-c-abs {{ box-sizing:border-box; max-width:1400px; margin:0 0 12px; padding:10px 14px; border-radius:12px; background:rgba(232,182,49,.12); border:1px solid #8f7220; color:#f3d36b; font-size:15px; }}
 .pl-c-abs-t {{ font-weight:700; margin-bottom:3px; }} .pl-c-abs-o {{ font-size:12px; color:{P['label']}; margin-top:3px; }}
 .pl-c-hi {{ background:rgba(139,92,246,.16); }}
@@ -400,6 +418,8 @@ def _cards_css() -> str:
 .pl-c-d {{ text-align:right; font-size:20px; font-weight:700; white-space:nowrap; font-variant-numeric:tabular-nums; }}
 .pl-c-mark {{ font-size:15px; margin-left:3px; color:{P['label']}; font-weight:400; }}
 .pl-c-live {{ display:block; font-size:14px; font-weight:400; color:{P['label']}; }}
+.pl-c-res {{ font-size:22px; font-weight:800; margin-right:8px; vertical-align:middle; }}
+.pl-c-res-ok {{ color:{S['gruen']['text']}; }} .pl-c-res-no {{ color:{S['rot']['text']}; }}
 .pl-cd-gruen {{ color:{S['gruen']['text']}; }} .pl-cd-rot {{ color:{S['rot']['text']}; }} .pl-cd-grau {{ color:{P['text_soft']}; }}
 .pl-c-legend {{ font-size:12px; color:{P['label']}; margin:8px 0 2px; }}
 .pl-c-key {{ display:inline-block; width:10px; height:5px; border-radius:2px; margin-right:4px; vertical-align:middle; }}

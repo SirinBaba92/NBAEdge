@@ -1,0 +1,23 @@
+Garbage Time 2025-26: 1230 Spiele ausgewertet, 0 Dateien uebersprungen (unlesbar).
+
+=== 2025-26 ===
+
+G1: dauerhaft >= 20 Punkte ab Periode 3
+  Spiele mit Garbage Time: 281 von 1230 (22.8 %); mittlere Dauer in diesen Spielen: 11.4 Min
+  Anteil der Starter-Minuten, die in der Garbage Time anfallen (in Spielen mit Garbage Time; Minuten der Starter des fuehrenden bzw. zurueckliegenden Teams): fuehrend 13.5 %, zurueckliegend 14.8 %
+  Mittlere Minuten eines Starters: mit Garbage Time 27.0 (n = 2810), ohne 30.5 (n = 9489)
+  Mittlere Minuten eines Nicht-Starters (nur Spieler mit Einsatz): mit Garbage Time 15.1 (n = 3915), ohne 16.3 (n = 10354)
+  Punkte pro Minute der Starter (nur G1; Punkte aus Wurf- und Freiwurf-Ereignissen): in der Garbage Time 0.555 (5940 Pkt in 10697 Starter-Min), ausserhalb in denselben Spielen 0.520 (33801 Pkt in 65021 Min), in Spielen ohne Garbage Time 0.524 (151675 Pkt in 289709 Min)
+
+G2: dauerhaft >= 15 Punkte ab Periode 3
+  Spiele mit Garbage Time: 457 von 1230 (37.2 %); mittlere Dauer in diesen Spielen: 12.9 Min
+  Anteil der Starter-Minuten, die in der Garbage Time anfallen (in Spielen mit Garbage Time; Minuten der Starter des fuehrenden bzw. zurueckliegenden Teams): fuehrend 18.6 %, zurueckliegend 18.9 %
+  Mittlere Minuten eines Starters: mit Garbage Time 27.7 (n = 4570), ohne 30.9 (n = 7729)
+  Mittlere Minuten eines Nicht-Starters (nur Spieler mit Einsatz): mit Garbage Time 14.9 (n = 6212), ohne 16.8 (n = 8057)
+
+G3: >= 20 Punkte in den letzten 6 Minuten von Viertel 4 (unabhaengig vom Verlauf)
+  Spiele mit Garbage Time: 429 von 1230 (34.9 %); mittlere Dauer in diesen Spielen: 4.2 Min
+  Anteil der Starter-Minuten, die in der Garbage Time anfallen (in Spielen mit Garbage Time; Minuten der Starter des fuehrenden bzw. zurueckliegenden Teams): fuehrend 2.6 %, zurueckliegend 3.3 %
+  Mittlere Minuten eines Starters: mit Garbage Time 27.4 (n = 4289), ohne 31.0 (n = 8010)
+  Mittlere Minuten eines Nicht-Starters (nur Spieler mit Einsatz): mit Garbage Time 15.0 (n = 5897), ohne 16.7 (n = 8372)
+
