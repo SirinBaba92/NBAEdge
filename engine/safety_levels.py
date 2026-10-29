@@ -58,6 +58,37 @@ def winner_sign(p_fav: float | None) -> dict:
     return {"level": "ok", "min_odds": odds, "text": f"Sieger ab {pct(lo)}: erfüllt · Mindestquote {odds}"}
 
 
+def games_total(games_used: dict | None) -> int | None:
+    """Zahl der Spiele im Verlauf eines Spielers (Summe von games_used im Prognose-Snapshot, alle Saisons); None, wenn die Angabe fehlt."""
+    if not games_used:
+        return None
+    return int(sum(int(v) for v in games_used.values()))
+
+
+def is_player_starter(base_minutes: float | None) -> bool:
+    """Starter wie in analysis/backtest_thresholds.py (Rolle 'Stamm'): Basis-Minuten ueber ROLE_STARTER_MIN (28), gleiche Funktion wie die Prognose."""
+    if base_minutes is None:
+        return False
+    from engine.player_forecast import role_for_minutes
+    return role_for_minutes(float(base_minutes)) == "Stamm"
+
+
+def few_games_text(n_games: int | None) -> str | None:
+    """Hinweis neben dem Spielernamen bei weniger als PLAYER_MIN_GAMES Spielen im Verlauf; None sonst (auch ohne Angabe)."""
+    if n_games is None or n_games >= settings.PLAYER_MIN_GAMES:
+        return None
+    return f"nur {n_games} {'Spiel' if n_games == 1 else 'Spiele'}, Chance vermutlich zu hoch"
+
+
+def player_safe_odds(starter: bool, n_games: int | None, raw_chance: float | None) -> float | None:
+    """Mindestquote einer Meilenstein-Zeile, aber nur fuer Starter mit mindestens PLAYER_MIN_GAMES Spielen und ungerundeter Roh-Chance ab PLAYER_SAFE_MIN_PROB; sonst None (nichts anzeigen)."""
+    if not starter or n_games is None or n_games < settings.PLAYER_MIN_GAMES or raw_chance is None:
+        return None
+    if float(raw_chance) < settings.PLAYER_SAFE_MIN_PROB - EPS:
+        return None
+    return min_odds(raw_chance)
+
+
 def note_text() -> str:
     """Erklaerzeile unter den Expandern."""
     pp = round(settings.SAFETY_DISCOUNT * 100)

@@ -61,7 +61,7 @@ check("Balken: oben Betano blau, darunter Modell orange; Text 'Betano 71 % · Mo
 check("ohne Quote: keine '@'-Zeile, Karte vollstaendig", "pl-c-odds" not in by["Ohne Quote"] and "<b>5+</b>" in by["Ohne Quote"] and "@ None" not in by["Ohne Quote"])
 check("ohne Prognose: 'keine Prognose', Modell '–', Differenz '–', kein Modellbalken", "keine Prognose" in by["Ohne Prognose"] and "Modell</span> <b>–</b>" in by["Ohne Prognose"] and "pl-c-bar-m" not in by["Ohne Prognose"] and ">–<" in by["Ohne Prognose"])
 check("ohne Meilensteine: Hinweis statt Zeilen", "keine Meilensteine eingelesen" in by["Ohne Meilensteine"] and "pl-c-row" not in by["Ohne Meilensteine"])
-check("Legende: Betano blau, Modell orange (ungeprüft), Differenz in PP", "Betano inkl. Marge" in H and "Modell (ungeprüft)" in H and "Prozentpunkten" in H)
+check("Legende: Betano blau, Modell roh orange (ungeprüft), Differenz in PP", "Betano inkl. Marge" in H and "Modell roh (ungeprüft)" in H and "Prozentpunkten" in H)
 def _pe(model_p, book_p):
     return {"game_key": "k", "players": [player(9, "Schwelle", "HEI", pts=20.0, quotes=[(20, 2.0, book_p)], model={20: model_p})]}
 hi = lambda mp, bp: "pl-c-hi" in pv.render_cards_html(pv.build_table_model(_pe(mp, bp), "team", "team"))
@@ -86,64 +86,17 @@ hl = pv.render_cards_html(ml)
 c1 = cards_of(hl)[[q["name"] for q in ml["players"]].index("Plus Plus")]
 check("laufendes Spiel: 'Jetzt', Live-Chance je Zeile, 'erreicht' fuer erreichte Linie", "Jetzt: <b>21</b> Pkt" in c1 and "Live 40 %" in c1 and "erreicht" in c1 and "Foulprobleme" in c1)
 
-# ----------------------------------------------------------------------------- Stufe 2: Karten mit Ausfaellen (Variante)
-import copy, inspect
-BASE = ENTRY
-VAR = copy.deepcopy(ENTRY)
-for q in VAR["players"]:
-    if q["person_id"] == 1:                                    # betroffen: Minuten 30 -> 35, Punkte 22 -> 24,4; Modell 15+: 90 -> 95, 20+: 60 -> 60, 25+: 30 -> 64, 30+: 12 -> 12
-        q["minutes"] = {"base": 35.0, "mean": 35.0, "role": "Stamm"}; q["minutes_adjusted"] = 35.0; q["expected_points_raw"] = q["expected_points_adjusted"] = 24.4
-        q["p_ge_raw"] = q["p_ge_adjusted"] = {"15": 0.95, "20": 0.60, "25": 0.64, "30": 0.12}
-    if q["person_id"] == 2:                                    # nicht betroffen (Minuten/Punkte gleich), Modell 10+: 52 -> 52, 15+: 40 -> 30
-        q["p_ge_raw"] = q["p_ge_adjusted"] = {"10": 0.52, "15": 0.30}
-vm = pv.attach_variant(pv.build_table_model(VAR, "team", "team"), BASE, "team")
-HV = pv.render_cards_html(vm)
-bv = {c.split("pl-c-name'>")[1].split("<")[0].strip(): c for c in cards_of(HV)}
-rowv = lambda name, n: next(x for x in bv[name].split("<div class='pl-c-row") if f"<b>{n}+</b>" in x)
-check("ohne Ausfaelle: Karten unveraendert (kein Variant-Zusatz, kein Kasten)", "pl-c-aff" not in H.replace("pl-c-aff {", "") and "vorher" not in H and "pl-c-abs'" not in H and "nicht betroffen" not in H)
-check("betroffener Spieler: gelber Rand + Box 'Ausfaelle wirken: Minuten 30,0 -> 35,0 · Punkte 22,0 -> 24,4 (+2,4)', alt durchgestrichen",
-      "pl-card pl-card-aff" in HV and "<div class='pl-card pl-card-aff'><div class='pl-c-head'><span class='pl-c-name'>Plus Plus" in HV and "Ausfälle wirken: Minuten <s>30,0</s> → <b>35,0</b> · Punkte <s>22,0</s> → <b>24,4</b> (+2,4)" in bv["Plus Plus"] and "pl-c-meta" not in bv["Plus Plus"], bv["Plus Plus"][:260])
-check("nicht betroffener Spieler: normale Metazeile mit 'nicht betroffen', kein gelber Rand", "· nicht betroffen" in bv["Minus Minus"] and "pl-card-aff" not in bv["Minus Minus"] and "Ausfälle wirken" not in bv["Minus Minus"])
-check("Modell neu in Balken/Text und Differenz (15+: Modell 95 %, Betano 80 % -> +15,0)", "<b>95 %</b>" in rowv("Plus Plus", 15) and "+15,0" in rowv("Plus Plus", 15))
-check("'vorher' nur bei Aenderung ab 1 PP: 15+ (90->95) und 25+ (30->64) ja, 20+ (60->60) und 10+ (52->52) nein",
-      "vorher 90 %" in rowv("Plus Plus", 15) and "vorher 30 %" in rowv("Plus Plus", 25) and "vorher" not in rowv("Plus Plus", 20) and "vorher" not in rowv("Minus Minus", 10) and "vorher 40 %" in rowv("Minus Minus", 15))
-check("Violett nach neuem Wert: 25+ jetzt 64 % hinterlegt (vorher 30 %), 15+ 30 % bei Minus nicht", "pl-c-hi" in rowv("Plus Plus", 25) and "pl-c-hi" not in rowv("Minus Minus", 15))
-vs = pv.build_table_model(VAR, "team", "diff")
-check("Sortierung 'groesste Differenz' gilt fuer den angezeigten Wert", [c.split("pl-c-name'>")[1].split("<")[0].strip() for c in cards_of(pv.render_cards_html(pv.attach_variant(vs, BASE)))] == [p["name"] for p in vs["players"]])
+# ----------------------------------------------------------------------------- Ausfall-Kasten (zeigt die Auswahl; seit 29.10.2026 keine Neuberechnung mehr in den Karten)
 cur = {"out": {1: {"name": "Plus Plus", "team": "Heim Falken", "source": "espn", "fetched_at": "2026-10-26T04:44:00+01:00"}}, "doubtful": {2: {"name": "Minus Minus", "team": "Heim Falken"}},
        "auto": {"source": "espn", "fetched_at": "2026-10-26T04:44:00+01:00", "unmatched": []}}
 box = pv.absence_box_html(cur)
 check("Ausfall-Kasten: Fehlt/Fraglich mit Team, Herkunft 'automatisch (ESPN), Stand 04:44' und 'von Hand'", "Ausfälle für dieses Spiel" in box and "Fehlt: Plus Plus (Heim Falken)" in box and "Fraglich: Minus Minus (Heim Falken)" in box and "automatisch (ESPN), Stand 04:44" in box and "von Hand" in box, box[:200])
-check("Kasten nur mit Ausfaellen, steht vor den Karten", pv.absence_box_html({"out": {}, "doubtful": {}}) == "" and pv.render_cards_html(vm, cur).startswith("<div class='pl-c-abs'>") and "pl-c-abs'" not in pv.render_cards_html(vm))
+check("Kasten nur mit Ausfaellen, steht vor den Karten", pv.absence_box_html({"out": {}, "doubtful": {}}) == "" and pv.render_cards_html(model, cur).startswith("<div class='pl-c-abs'>") and "pl-c-abs'" not in pv.render_cards_html(model))
 check("nur von Hand: Herkunft 'von Hand' ohne ESPN", "von Hand" in pv.absence_box_html({"out": {1: {"name": "A", "team": "T"}}, "doubtful": {}}) and "ESPN" not in pv.absence_box_html({"out": {1: {"name": "A", "team": "T"}}, "doubtful": {}}))
-from ui import player_absence as pa
-src = Path(ROOT / "ui" / "player_tab.py").read_text(encoding="utf-8")
-check("Vergleichstabelle nur in der Tabellenansicht (show_compare, Standard True; Tab reicht table_view durch)", inspect.signature(pa.render_absences).parameters["show_compare"].default is True and "show_compare=table_view" in src)
-
-# ----------------------------------------------------------------------------- dritter Balken: der jeweils andere Modellwert
-OT = {"game_key": "k", "players": [
-    {**player(21, "Zwei Werte", "HEI", pts=20.0, quotes=[(20, 1.8, 0.55), (25, 3.0, 0.30)], model={}), "p_ge_raw": {"20": 0.56, "25": 0.31}, "p_ge_adjusted": {"20": 0.44, "25": 0.22}},
-    {**player(22, "Fehlender Wert", "HEI", pts=18.0, quotes=[(20, 1.8, 0.55), (25, 3.0, 0.30)], model={}), "p_ge_raw": {"20": 0.50}, "p_ge_adjusted": {"20": 0.40, "25": 0.20}},
-    {**player(23, "Keine Prognose", "HEI", ok=False, quotes=[(20, 2.0, 0.5)], model={})}]}
-ht = pv.render_cards_html(pv.build_table_model(OT, "team", "team"))
-hr = pv.render_cards_html(pv.build_table_model(OT, "raw", "team"))
-cards_t = {c.split("pl-c-name'>")[1].split("<")[0].strip(): c for c in cards_of(ht)}
-cards_r = {c.split("pl-c-name'>")[1].split("<")[0].strip(): c for c in cards_of(hr)}
-row_of = lambda cards, name, n: next(x for x in cards[name].split("<div class='pl-c-row") if f"<b>{n}+</b>" in x)
-rt, rr = row_of(cards_t, "Zwei Werte", 20), row_of(cards_r, "Zwei Werte", 20)
-check("Modus Teamabgleich: Hauptwert 44 %, dritter Balken und Text = Roh 56 % (in der dritten Farbe)", "<b>44 %</b>" in rt and "pl-c-bar pl-c-bar-o'><i style='width:56%'>" in rt and "<span class='pl-c-wo'>Roh <b>56 %</b></span>" in rt, rt[:420])
-check("Modus roh: Hauptwert 56 %, dritter Balken und Text = Teamabgleich 44 %", "<b>56 %</b>" in rr and "pl-c-bar pl-c-bar-o'><i style='width:44%'>" in rr and "<span class='pl-c-wo'>Teamabgleich <b>44 %</b></span>" in rr)
-check("dritter Balken steht unter Betano und Modell, gleich dick wie die anderen beiden (10 px), Farbe gedaempft", rt.index("pl-c-bar-b") < rt.index("pl-c-bar-m") < rt.index("pl-c-bar-o") and ".pl-c-bar-o i {" in pv.CARDS_CSS.replace("{{", "{") and "height:6px" not in pv.CARDS_CSS and pv.OTHER == "#9fb8ad" and "#9fb8ad" in pv.CARDS_CSS)
-check("Differenz, Pfeil und Hervorhebung bleiben beim gewaehlten Modus (Team: 44 % - 55 % = -11 PP mit Pfeil; roh: 56 % >= 60 nicht, 1,0 PP)", "▼" in rt and "pl-cd-rot'>−11,0" in rt and "pl-c-hi" not in rt and "pl-cd-grau'>+1,0" in rr and "▼" not in rr)
-rm = row_of(cards_t, "Fehlender Wert", 25)
-check("fehlender anderer Wert (roh fehlt bei 25+): kein dritter Balken, kein Text, kein 'None', Zeile vollstaendig", "pl-c-bar-o" not in rm and "pl-c-wo" not in rm and "None" not in ht and "None" not in hr and "<b>25+</b>" in rm and "Modell</span> <b>20 %</b>" in rm, rm[:300])
-rn = cards_t["Keine Prognose"]
-check("Spieler ohne Prognose: kein dritter Balken, kein Fehler", "pl-c-bar-o" not in rn and "keine Prognose" in rn)
-check("Rotation/gleiche Werte: dritter Balken zeigt denselben Wert (nichts Falsches)", "<span class='pl-c-wo'>Roh <b>70 %</b></span>" in pv.render_cards_html(pv.build_table_model(_pe(0.7, 0.5), "team", "team")))
-check("Datenattribute der klickbaren Zeilen unveraendert (Modell = angezeigter Wert, Quote, Betano)", "data-model='44'" in rt and "data-model='56'" in rr and "data-buch='55'" in rt and "data-odds='1.8'" in rt)
-check("60-%-Linie: Balken in einem Rahmen mit Linie bei CARD_HIGHLIGHT_MIN_PCT, Legendenhinweis, Zeilen unveraendert klickbar", "<div class='pl-c-bars'>" in rt and ".pl-c-bars::after" in pv.CARDS_CSS.replace("{{", "{") and f"left:{pv.CARD_HIGHLIGHT_MIN_PCT}%" in pv.CARDS_CSS and "weiße Linie im Balken = 60 %" in ht and "pointer-events:none" in pv.CARDS_CSS and "data-pid='21'" in rt)
-mv = pv.attach_variant(pv.build_table_model(OT, "team", "team"), OT, "team")
-check("Variante mit Ausfaellen: dritter Balken und 'vorher' nebeneinander ohne Fehler", "pl-c-bar-o" in pv.render_cards_html(mv))
-tab = pv.render_table_html(pv.build_table_model(OT, "team", "team"))
-check("Tabellenansicht unveraendert (kein dritter Balken, keine neue Spalte)", "pl-c-bar-o" not in tab and "pl-c-wo" not in tab and "<th>Differenz" in tab)
+# Datenattribute der klickbaren Zeilen, 60-%-Linie, Tabellenansicht
+r20 = rowhtml("Plus Plus", 20)
+check("Datenattribute der klickbaren Zeilen (Modell = angezeigter Wert, Quote, Betano)", "data-pid='1'" in r20 and "data-n='20'" in r20 and "data-model='60'" in r20 and "data-buch='54'" in r20 and "data-odds='1.85'" in r20, r20[:200])
+check("60-%-Linie: Balken in einem Rahmen mit Linie bei CARD_HIGHLIGHT_MIN_PCT, Legendenhinweis", "<div class='pl-c-bars'>" in r20 and ".pl-c-bars::after" in pv.CARDS_CSS.replace("{{", "{") and f"left:{pv.CARD_HIGHLIGHT_MIN_PCT}%" in pv.CARDS_CSS and "weiße Linie im Balken = 60 %" in H and "pointer-events:none" in pv.CARDS_CSS)
+tab = pv.render_table_html(pv.build_table_model({"players": [p for p in ENTRY["players"] if p["person_id"] in (1, 2)]}, "team", "team"))      # (die Tabelle kennt Zeilen ohne Quote nicht)
+check("Tabellenansicht unveraendert (kein Hinweis, kein Haekchen, keine Mindestquote, Spalte Differenz)", "pl-c-few" not in tab and "pl-c-ok" not in tab and "Mindestquote" not in tab and "<th>Differenz" in tab)
 print("\nALLES OK" if ok else "\nFEHLER"); sys.exit(0 if ok else 1)

@@ -70,3 +70,6 @@ LIVE_STATUS_HOPELESS = 0.10
 SAFETY_DISCOUNT = 0.03          # Mindestquote = 1 / (Chance - SAFETY_DISCOUNT): drei Prozentpunkte Sicherheitsabschlag
 WINNER_MIN_PROB = 0.65          # Sieger-Zeichen "erfuellt" ab dieser Siegchance des Favoriten
 WINNER_STRONG_PROB = 0.70       # zusaetzlich "(stark)" ab dieser Siegchance
+# Spielerkarten (Tab Spieler, nur Anzeige; Grundlage: analysis/reports/threshold_test.txt, Spielerpunkte "Starter mit >= 10 bisherigen Spielen ab 80 %")
+PLAYER_MIN_GAMES = 10           # weniger bisherige Spiele im Verlauf: Hinweis "Chance vermutlich zu hoch"; Starter-Zeichen erst ab so vielen Spielen
+PLAYER_SAFE_MIN_PROB = 0.80     # Starter-Zeichen und Mindestquote erst ab dieser (ungerundeten) Roh-Chance

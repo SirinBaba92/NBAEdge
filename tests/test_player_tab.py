@@ -153,7 +153,10 @@ check("Standardansicht verkleinert: Meilensteine weit von der erwarteten Punktza
 at.toggle(key="pl_all").set_value(True).run()
 check("Schalter an: alle Meilensteine (15+ und 25+) sichtbar", "15+" in page_text(at))
 at.toggle(key="pl_all").set_value(False).run()
-check("Umschalter Modell (Teamabgleich/roh) und Sortierung vorhanden", at.radio(key="pl_mode").options == ["Teamabgleich", "roh"] and at.radio(key="pl_sort").options == ["Team, dann Minuten", "Minuten", "größte Differenz"])
+check("Kartenansicht: Sortierung da, Umschalter Modell nicht (Karten zeigen das Modell roh, Regel 94)", at.radio(key="pl_sort").options == ["Team, dann Minuten", "Minuten", "größte Differenz"] and "pl_mode" not in [r.key for r in at.radio]
+      and any("Karten: Modell roh" in c.value for c in at.caption))
+at.toggle(key="pl_table_view").set_value(True).run()
+check("Tabellenansicht: Umschalter Modell (Teamabgleich/roh) vorhanden", at.radio(key="pl_mode").options == ["Teamabgleich", "roh"])
 at.radio(key="pl_mode").set_value("raw").run(); at.radio(key="pl_sort").set_value("diff").run()
 check("Umschalten und Sortieren: keine Exception, Tabelle bleibt", not at.exception and "Anton Alt" in page_text(at), " | ".join(problems(at))[:200])
 check("zweites Erstellen schreibt nicht ueber den vorhandenen Snapshot", psn.create_for_game(K1, entries)[0] == "vorhanden")

@@ -234,10 +234,6 @@ def _render_table(key: str, entry: dict, mode: str, sort: str, state, show_all: 
     window = None if show_all else TABLE_WINDOW
     absences = ab.get(key)
     model = pv.build_table_model(entry, mode, sort, ds.get_player_bets_by_key(key), None, absences, window)
-    if not table_view and (absences["out"] or absences["doubtful"]):                  # Kartenansicht: Werte der Variante mit Ausfaellen, falls sie zur Auswahl passt (nur Darstellung)
-        variant = psn.latest_variant(key, set(absences["out"]), set(absences["doubtful"]))
-        if variant is not None:
-            model = pv.attach_variant(pv.build_table_model(variant["entry"], mode, sort, ds.get_player_bets_by_key(key), None, None, window), entry, mode)
     shown = pv.shown_milestones(model)
     live = memo("live_table", (key, id(entry), mode, window, game_signature(game), repr(sorted((k, tuple(sorted(v))) for k, v in shown.items()))), lambda: live_table_data(game, entry, shown))
     pv.attach_live(model, live)
@@ -300,7 +296,11 @@ def _forecast_view() -> None:
             table_view = st.toggle("Tabellenansicht", value=False, key="pl_table_view", help="Aus: Spieler-Karten (Standard). An: die bisherige Tabelle.")
             show_all = st.toggle("Alle Meilensteine anzeigen", value=False, key="pl_all", help=f"Aus: nur Meilensteine um die erwartete Punktzahl (±{TABLE_WINDOW:g}) und eigene Wetten (kleinere, schnellere Tabelle).")
         with o1:
-            mode = st.radio("Modell", list(pv.MODES), format_func=pv.MODES.get, horizontal=True, key="pl_mode", help="Teamabgleich: Summe der Spieler an den Teampunkten des Spielmodells ausgerichtet. roh: Einzelprognose ohne Abgleich.")
+            if table_view:
+                mode = st.radio("Modell", list(pv.MODES), format_func=pv.MODES.get, horizontal=True, key="pl_mode", help="Teamabgleich: Summe der Spieler an den Teampunkten des Spielmodells ausgerichtet. roh: Einzelprognose ohne Abgleich.")
+            else:
+                mode = "raw"                                                  # Karten zeigen immer das Modell roh (Regel 94)
+                st.caption("Karten: Modell roh (Einzelprognose ohne Teamabgleich). Der Umschalter „Modell“ gilt in der Tabellenansicht.")
         with o2:
             sort = st.radio("Sortierung", list(pv.SORTS), format_func=pv.SORTS.get, horizontal=True, key="pl_sort")
         game = game_for_key(lf.get_feed().state(), key)
@@ -314,7 +314,7 @@ def _forecast_view() -> None:
         st.caption(f"◀ Modell mindestens {pv.fmt_num(pv.MARK_PP, 0)} Prozentpunkte über dem Buchmacher, ▼ darunter. Differenz = Modell minus Buchmacher-Chance (inkl. Marge), aus ungerundeten Werten. "
                    "⚠ bewegt man die Maus darüber: Datenqualität und Hinweise. 🎯 = meine Wette.")
     render_player_bet_entry(key, entries)
-    render_absences(key, entries, entry, mode, show_compare=table_view)
+    render_absences(key)
 
 
 def render_player_tab() -> None:

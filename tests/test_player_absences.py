@@ -148,16 +148,6 @@ except ValueError as e:
     check("ohne Schnappschuss des Spielmodells: verstaendlicher Fehler, nichts geschrieben", "Schnappschuss des Spielmodells" in str(e) and len(psn.load_variants(KEY)) == 2)
 write_model()
 
-# ---------------------------------------------------------------- D) Vergleich (View)
-m = pv.build_compare_model(orig, v1["entry"], "team")
-P = {p["person_id"]: p for p in m["players"]}
-check("Vergleich: Eins 'fehlt' ohne Minuten/Punkte neu, Zwei 'fraglich', Zwei mit Aenderung (neu - alt) in Prozentpunkten", P[11]["flag"] == "fehlt" and P[11]["minutes"] is None and P[11]["minutes_old"] is not None and P[12]["flag"] == "fraglich"
-      and all(r["delta"] is not None for r in P[13]["rows"]) and P[13]["rows"][0]["delta"] == P[13]["rows"][0]["model_pct"] - P[13]["rows"][0]["model_old_pct"], "")
-html = pv.render_compare_html(m)
-check("Vergleich-HTML: Spalten alt/neu, Aenderung, Differenz neu, Markierungen 'fehlt'/'fraglich', ungeprueft", "Modell alt" in html and "Modell neu" in html and "Änderung" in html and "<span class='pl-m'>fehlt</span>" in html and "<span class='pl-m'>fraglich</span>" in html and "ungeprüft" in html and " → " in html)
-check("Vergleich ohne Original-Snapshot: nur neue Werte, alte mit Strich", all(p["minutes_old"] is None for p in pv.build_compare_model(None, v1["entry"])["players"]))
-check("Farben: kein Gruen/Rot im Vergleich", not any(c in html for c in ("#22c55e", "#ef4444")))
-
 # ---------------------------------------------------------------- E) Bereich im Tab (AppTest)
 ab.set_absences(KEY, [], [], now=NOW + 10)
 for f in (psn.variants_path(D),): f.unlink()
@@ -168,28 +158,19 @@ def run():
     return at.selectbox(key=f"pl_game_{D}").set_value(KEY).run()
 at = run()
 ms = [x for x in at.multiselect if x.label in ("Fehlt", "Fraglich")]      # (der Wettschein hat ein eigenes Mehrfachfeld "Meilensteine")
-check("Bereich 'Ausfaelle': Mehrfachauswahl 'Fehlt' und 'Fraglich' aus dem Kader beider Teams (17 Spieler), Knoepfe", [x.label for x in ms] == ["Fehlt", "Fraglich"] and len(ms[0].options) == 17 and [b.label for b in at.button if "Auswahl speichern" in b.label or "neu rechnen" in b.label] == ["Auswahl speichern", "Prognose mit Ausfällen neu rechnen"]
-      and not at.exception, " | ".join(problems(at))[:200])
+check("Bereich 'Ausfaelle': Mehrfachauswahl 'Fehlt' und 'Fraglich' aus dem Kader beider Teams (17 Spieler), nur der Knopf 'Auswahl speichern' (kein 'neu rechnen')", [x.label for x in ms] == ["Fehlt", "Fraglich"] and len(ms[0].options) == 17
+      and [b.label for b in at.button if "Auswahl speichern" in b.label or "neu rechnen" in b.label] == ["Auswahl speichern"] and not at.exception, " | ".join(problems(at))[:200])
 check("Spieler der Auswahl mit Team-Kuerzel beschriftet", any("Eins (HEI)" in o for o in ms[0].options))
 out_ms = next(x for x in at.multiselect if x.label == "Fehlt"); out_ms.set_value([11]).run()
 next(b for b in at.button if b.label == "Auswahl speichern").click().run()
-check("Auswahl speichern: in absences.json gespeichert (pro Tag), Meldung, keine Neuberechnung", set(ab.get(KEY)["out"]) == {11} and any("Auswahl gespeichert" in x.value for x in at.success) and not psn.variants_path(D).exists() and not at.exception)
-check("nach dem Speichern: Hinweis 'noch keine Neuberechnung'", any("Noch keine Neuberechnung" in x.value for x in at.info))
-next(b for b in at.button if "neu rechnen" in b.label).click().run()
+check("Auswahl speichern: in absences.json gespeichert (pro Tag), Meldung, keine Ausfall-Variante in die Snapshots geschrieben", set(ab.get(KEY)["out"]) == {11} and any("Auswahl gespeichert" in x.value for x in at.success) and not psn.variants_path(D).exists() and not at.exception)
+check("kein Hinweis auf eine Neuberechnung mehr", not any("Neuberechnung" in x.value or "neu rechnen" in x.value for x in list(at.info) + list(at.caption)))
 Hc = " ".join(x.value for x in at.markdown)
-check("Kartenansicht (Standard) nach der Neuberechnung: Kasten 'Ausfaelle fuer dieses Spiel', Karten mit Werten der Variante, keine Vergleichstabelle", "Ausfälle für dieses Spiel" in Hc and "pl-cards" in Hc and "Modell alt" not in Hc and "Neuberechnung vom" in Hc and not at.exception, " | ".join(problems(at))[:200])
-msg_ok = any("Neuberechnet und als eigener Stand gespeichert" in x.value for x in at.success)
-at.toggle(key="pl_table_view").set_value(True).run()                 # Tabellenansicht: Vergleichstabelle "alt / neu / Aenderung" wie bisher
-H = " ".join(x.value for x in at.markdown)
-check("Neuberechnung: eigener Eintrag gespeichert, Original-Snapshot bytegleich, Vergleichstabelle mit 'Modell alt'/'Modell neu' und Zeile 'Neuberechnung vom'", psn.variants_path(D).exists() and hashlib.sha1(orig_file.read_bytes()).hexdigest() == orig_hash
-      and "Modell alt" in H and "Modell neu" in H and "Neuberechnung vom" in H and "<span class='pl-m'>fehlt</span>" in H and not at.exception, " | ".join(problems(at))[:200])
-check("Meldung nach der Neuberechnung", msg_ok)
+check("Kartenansicht nach dem Speichern: Kasten 'Ausfaelle fuer dieses Spiel', aber kein 'Ausfaelle wirken' und kein 'vorher'; Original-Snapshot bytegleich", "Ausfälle für dieses Spiel" in Hc and "pl-cards" in Hc and "Ausfälle wirken" not in Hc and "vorher" not in Hc
+      and not psn.variants_path(D).exists() and hashlib.sha1(orig_file.read_bytes()).hexdigest() == orig_hash and not at.exception, " | ".join(problems(at))[:200])
+at.toggle(key="pl_table_view").set_value(True).run()
 H2 = " ".join(x.value for x in at.markdown)
-check("Haupttabelle zeigt weiter den ursprünglichen Snapshot (Eins mit Prognose), Tooltip nennt die Ausfall-Auswahl", "Ausfall-Auswahl: fehlt" in H2 and "Eins" in H2)
-# Aenderung der Auswahl -> alter Vergleich gehoert nicht mehr dazu
-out_ms = next(x for x in at.multiselect if x.label == "Fehlt"); out_ms.set_value([11, 13]).run()
-next(b for b in at.button if b.label == "Auswahl speichern").click().run()
-check("geaenderte Auswahl ohne Neuberechnung: Hinweis statt Vergleich", any("gehört zu einer anderen Auswahl" in x.value for x in at.info) and "Neuberechnung vom" not in " ".join(x.value for x in at.markdown))
+check("Tabellenansicht: keine Vergleichstabelle, Tooltip nennt die Ausfall-Auswahl, Eins weiter mit Prognose (urspruenglicher Snapshot)", "Modell alt" not in H2 and "Modell neu" not in H2 and "Ausfall-Auswahl: fehlt" in H2 and "Eins" in H2 and not at.exception)
 dbt = next(x for x in at.multiselect if x.label == "Fraglich"); dbt.set_value([11]).run()
 check("Spieler bei Fehlt und Fraglich: Warnung (Streamlit-Warnung wird ausdruecklich erlaubt)", any("nur eins wählen" in w.value for w in at.warning))
 page_checks.bad.clear()
