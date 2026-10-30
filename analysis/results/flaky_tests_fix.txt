@@ -1,0 +1,65 @@
+FLAKY-TESTS: REPARATUR UND MESSUNG (30.10.2026, nur Dateien in tests/ geaendert)
+Grundlage: analysis/results/flaky_tests.txt
+
+GEAENDERTE DATEIEN
+  tests/test_player_live.py     (3 Zeilen, siehe 1.)
+  tests/test_spieltag_tab.py    (Fehlerausgabe der Dateipruefung, siehe 2.)
+  tests/test_player_absences.py (Fehlerausgabe der Dateipruefung, siehe 2.)
+  tests/test_us_day_app.py      (nur Beschriftung, siehe 3.)
+  neu: analysis/results/flaky_tests_fix.txt
+Nicht angefasst: app.py, engine, data, Recorder, NBAEdge_pbp, tests/browser_score_check.py.
+
+1. tests/test_player_live.py
+  Aenderungen (alle vom Datum verursacht):
+  - Zeile 82: D = lf.current_us_day(T0)   (vorher time.time()). Behebt den IndexError in Zeile 105.
+  - Zeile ~168: set_player_bet(..., now=T0 - 3 * 3600) statt now=time.time() - 3 * 3600.
+    Die feste Anpfiffzeit 23.10. 01:30 UTC lag sonst in der Vergangenheit -> GameStartedError ("Spiel hat bereits begonnen").
+  - Zeile 160 (neu): D = lf.current_us_day(time.time()) vor dem Tab-Abschnitt. Der Tab-Harness benutzt die echte Uhr;
+    mit dem festen Spieltag vom 22.10. zeigte er "kein Spiel / NBA.com zeigt noch ...".
+  Ergebnis: 3 Laeufe, jeder Lauf identisch: 38 PASS, 2 FAIL, kein Absturz mehr (vorher 20 PASS, dann Absturz).
+  Die 2 FAIL (NICHT geaendert, nicht datumsbedingt, nur gemeldet):
+   a) "'Meine Spieler-Wetten': Karte 'Läuft: 12 von 20 Punkten', Live-Chance in Prozent (ungeprüft)"
+      Die Karte zeigt jetzt "Punkte 12 von 20, noch 8 ..." und "75 %" + "ungeprüft" in einem anderen Aufbau;
+      der Test sucht den alten Text "Läuft: 12 von 20 Punkten, noch 8" und das Muster "Live-Chance N % (ungeprüft)".
+      Beide fehlen im Markdown des Tabs.
+   b) "Prognose-Tabelle des laufenden Spiels: Live-Spalten und Hinweiszeile ..."
+      "Version live-1" und "Q3 10:00" sind da; es fehlen "Jetzt<small>" und "pl-live'>" (alte Tabelle).
+      Der Tab zeigt die Prognose jetzt als Karten (pl-c-now "Jetzt: 12 Pkt ...", pl-c-live "Live 75 %").
+  Einschaetzung (Sicherheit: mittel): Der Test ist an diesen zwei Stellen hinter einem Umbau des Spieler-Tabs
+  (Tabelle -> Karten) zurueckgeblieben. Reparatur waere, die erwarteten Texte an die neuen Klassen anzupassen
+  (Entscheidung offen, nicht umgesetzt). Die Engine-, Feed- und Wetten-Pruefungen davor sind gruen.
+
+2. Dateipruefung "unveraendert" (beide Tests)
+  Die Pruefung bleibt streng (Hash vorher == nachher). Neu: im Fehlerfall steht in der FAIL-Zeile je abweichender
+  Datei: Name, Groesse vorher -> nachher ("fehlt" fuer neu/weg) und Aenderungszeit vorher -> nachher.
+  (Groesse und Zeit werden direkt beim Hash-Schnappschuss mit erfasst.)
+  Messung: test_spieltag_tab.py 2 Laeufe: je 73 PASS, 0 FAIL.
+           test_player_absences.py 2 Laeufe: je 34 PASS, 0 FAIL.
+  Die neue Fehlerausgabe selbst wurde nicht im Fehlerfall gesehen (kein Fehler aufgetreten).
+
+3. tests/test_us_day_app.py
+  "alt (HEAD)" -> "alt (62b3091)" an 5 Stellen (inkl. Vergleich in Zeile 62).
+  1 Lauf: 13 PASS, 0 FAIL, "ENDE". Keine Fehlschlaege.
+
+4. tests/browser_score_check.py: nichts geaendert, nicht gelaufen.
+5. Keine anderen Tests gelaufen.
+
+NICHT GEPRUEFT
+  - ob die Hash-Fehler (Fremdschreiber) wirklich auftreten; in 2 Laeufen je Test kein Rot.
+  - die neue Fehlerausgabe im echten Fehlerfall.
+  - die 2 verbleibenden FAIL in test_player_live.py ueber eine Anpassung (nur gemeldet).
+  - Verhalten der drei Tests um 17:00 Uhr Berliner Zeit (Spieltag-Wechsel) und ueber Mitternacht.
+  - git status zeigt auch die frueher angelegte Datei flaky_tests.txt als neu (ungetrackt).
+
+S2: tests/test_player_live.py an den neuen Spieler-Tab angepasst (nur diese Datei geaendert)
+  Beide Informationen kommen im neuen Tab noch vor, nur in anderer Form. Keine Pruefung gestrichen oder aufgeweicht.
+  a) Wettkarte (laufend): vorher "Läuft: 12 von 20 Punkten, noch 8" + "Live-Chance N % (ungeprüft)".
+     Jetzt: "Punkte 12 von 20, noch 8" UND Live-Chance als pl-prob-val "N %" + pl-prob-sub "noch 8 Pkt." + pl-prob-tiny "ungeprüft"
+     (zusammenhaengend per Regex, gleiche Aussage: Stand, Rest, Prozent, ungeprueft).
+  b) Prognose (laufendes Spiel): vorher Marker "Jetzt<small>" und "pl-live'>" der alten Tabelle.
+     Jetzt: Zeile "pl-c-now'>Jetzt: <b>12</b> Pkt · <b>16,0</b> Min · <b>1</b> Fouls" (genauer als vorher, mit den Werten)
+     und genau 2 Live-Chancen "pl-c-live'>Live N %" (20+ und 25+), plus unveraendert "Version live-1" und "Q3 10:00".
+     Pruefname angepasst ("Prognose-Karten ...").
+  Ergebnis, 3 Einzellaeufe: Lauf 1: 40 PASS / 0 FAIL; Lauf 2: 40 PASS / 0 FAIL; Lauf 3: 40 PASS / 0 FAIL ("ALLES OK").
+  Nicht geprueft: ob die angezeigten Live-Prozentwerte (75 % / 38 %) inhaltlich stimmen (Test prueft nur Form und Anzahl;
+  die Rechnung prueft die Engine-Gruppe weiter oben); keine anderen Tests gelaufen; kein Fehler im Tab gefunden.

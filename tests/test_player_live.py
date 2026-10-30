@@ -79,7 +79,7 @@ check("pure Funktion: gleiche Eingabe, gleiche Ausgabe (kein Zufall)", lc(22, P(
 
 # ------------------------------------------------------------- Live-Feed: idle_s aus dem Verlauf der Boxscores
 T0 = datetime(2026, 10, 23, 3, 0, 0, tzinfo=ZoneInfo("Europe/Berlin")).timestamp()
-D = lf.current_us_day(time.time())
+D = lf.current_us_day(T0)
 class R:
     def __init__(self, payload): self.status_code, self._p, self.text = 200, payload, ""
     def json(self): return self._p
@@ -157,7 +157,8 @@ ld2 = {1: {**ld[1], "points": 21}}
 check("Meilenstein bereits erreicht: 'erreicht'", "erreicht" in pv.render_table_html(pv.build_table_model(entry, "team", "team", None, ld2)))
 
 # ------------------------------------------------------------- Tab im Harness (laufendes Spiel, 30-s-Fragment)
-K = ps.game_key(D, "2026-10-23T01:30:00Z", "Heim Falken", "Gast Baeren")
+D = lf.current_us_day(time.time())      # der Tab laeuft mit der echten Uhr (LiveFeed ohne now=): Spieltag von heute, nicht der feste von T0
+K = ps.game_key(D,"2026-10-23T01:30:00Z", "Heim Falken", "Gast Baeren")
 def line(th, odds): return {"id": f"x{th}", "threshold": th, "odds": odds, "bookmaker": "Betano", "active": True, "updated_at": "2026-10-22T20:00:00+02:00", "entered_at": "2026-10-22T20:00:00+02:00"}
 (T / "tracking").mkdir(parents=True, exist_ok=True)
 (T / "tracking" / "pre_match_entries.json").write_text(json.dumps({"version": 5, "format": "nbaedge-pre-match", "markets": {}, "last_bookmaker": {}, "updated_at": None, "entries": {
@@ -165,15 +166,15 @@ def line(th, odds): return {"id": f"x{th}", "threshold": th, "odds": odds, "book
 snap_entry = {**entry, "game_key": K, "created_at": "2026-10-23T00:19:41+02:00", "created_after_start": False, "note": "vor Anpfiff erstellt", "history": "x", "teams": {}}
 (T / "snaps").mkdir(parents=True, exist_ok=True)
 (T / "snaps" / f"{D}.json").write_text(json.dumps({"version": 1, "day": D, "games": {K: snap_entry}}))
-ds.set_player_bet(D, "2026-10-23T01:30:00Z", "Heim Falken", "Gast Baeren", 1, "Star", "Heim Falken", 20, odds=2.2, stake=10, now=time.time() - 3 * 3600 - 86400 * 0)
+ds.set_player_bet(D, "2026-10-23T01:30:00Z", "Heim Falken", "Gast Baeren", 1, "Star", "Heim Falken", 20, odds=2.2, stake=10, now=T0 - 3 * 3600)
 tn = Net(); tn.row = srow(3, "PT10M00.00S", 62, 57); tn.box = bgame(3, "PT10M00.00S", 62, 57, [bplayer(1, "Star", 12, 16.0, "1")])
 lf._feed = lf.LiveFeed(http_get=tn.get)
 at = AppTest.from_file(str(ROOT / "tests" / "_harness_player_tab.py"), default_timeout=60).run()
 at.selectbox(key="pl_day").set_value(D).run()
 md = " ".join(x.value for x in at.markdown)
 check("Tab bei laufendem Spiel: keine Exception/Warnung", not at.exception and not problems(at), " | ".join(problems(at))[:200])
-check("'Meine Spieler-Wetten': Karte 'Läuft: 12 von 20 Punkten', Live-Chance in Prozent (ungeprüft)", "Läuft: 12 von 20 Punkten, noch 8" in md and re.search(r"Live-Chance \d+ % \(ungeprüft\)", md) is not None)
-check("Prognose-Tabelle des laufenden Spiels: Live-Spalten und Hinweiszeile 'Spiel läuft ... UNGEPRÜFT (Version live-1)'", "Jetzt<small>" in md and "pl-live'>" in md and "Version live-1" in md and "Q3 10:00" in md, "")
+check("'Meine Spieler-Wetten': Karte 'Punkte 12 von 20, noch 8' (laufend), Live-Chance in Prozent (ungeprüft)", "Punkte 12 von 20, noch 8" in md and re.search(r"pl-prob-val'>\d+ %</span><span class='pl-prob-sub'>noch 8 Pkt\.</span><span class='pl-prob-tiny'>ungeprüft</span>", md) is not None)
+check("Prognose-Karten des laufenden Spiels: Zeile 'Jetzt', Live-Chance je Meilenstein (2) und Hinweiszeile 'Spiel läuft ... UNGEPRÜFT (Version live-1)'", "pl-c-now'>Jetzt: <b>12</b> Pkt · <b>16,0</b> Min · <b>1</b> Fouls" in md and len(re.findall(r"pl-c-live'>Live \d+ %<", md)) == 2 and "Version live-1" in md and "Q3 10:00" in md, "")
 
 check("echte Dateien (Tracking, Snapshots) unveraendert", real_files() == real_before)
 print("\nALLES OK" if ok else "\nFEHLER")

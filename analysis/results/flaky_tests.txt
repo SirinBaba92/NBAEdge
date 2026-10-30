@@ -1,0 +1,123 @@
+FLAKY-TESTS: BEFUNDE (nur lesen und messen, nichts geaendert)
+Stand: 30.10.2026, ca. 10:15 Uhr Berliner Zeit (US-Spieltag laut current_us_day: 29.10.)
+Aufruf je Lauf: venv/bin/python tests/<name>.py (Lauf einzeln, nacheinander, sonst nichts)
+
+====================================================================
+1. MESSUNG (3 Laeufe je Test)
+====================================================================
+tests/test_player_absences.py   Lauf 1/2/3: 0 / 0 / 0 Fehlschlaege, "ALLES OK"
+tests/test_spieltag_tab.py      Lauf 1/2/3: 0 / 0 / 0 Fehlschlaege, "ALLE TESTS BESTANDEN"
+tests/test_player_live.py       Lauf 1/2/3: ABSTURZ (nicht "wechselnd") - jedes Mal identisch, Exit 1:
+                                IndexError: tuple index out of range, tests/test_player_live.py:105
+                                (p1 = {... feed.state(T0).games[0].players}); die Pruefungen ab Zeile 105
+                                (Live-Feed, Wetten-Status, Tabelle, Tab-Harness) wurden dadurch gar nicht erreicht.
+                                Die 20 Pruefungen davor (Engine, Zeilen 40-76) waren alle PASS, 0 FAIL.
+git status nach den Laeufen: sauber, keine Datei veraendert.
+
+====================================================================
+2. BEFUND JE TEST
+====================================================================
+
+--- test_player_live.py -------------------------------------------------
+Ursache (Sicherheit: hoch, per Lauf und Code belegt):
+  Zeile 81: T0 = datetime(2026, 10, 23, 3, 0, ...Berlin) ist fest auf den 23.10. gesetzt,
+  Zeile 82: D = lf.current_us_day(time.time()) ist dagegen der HEUTIGE US-Spieltag.
+  Die Attrappen-Spiele tragen D im Feld gameEt (Zeile 91/gameDate in Zeile 100), aber
+  feed.state(T0) (Zeile 105) filtert in data/live_feed.py:748/754 auf current_us_day(T0) = 22.10.
+  Gilt D != 22.10., ist games leer -> IndexError. Der Test war nur am 23.10. vor 17:00 Uhr
+  Berliner Zeit (= US-Spieltag 22.10.) gruen und ist seither jeden Tag rot. Das ist keine echte
+  Zufaelligkeit, sondern "Uhr gegen fest eingebautes Datum".
+  Weitere Zeitabhaengigkeit weiter unten, erst nach der Reparatur sichtbar: Zeile 148 (K mit D),
+  Zeile 168 (now=time.time() - 3h) und Zeile 170 (LiveFeed ohne now=, echte Uhr) - die sind
+  mit "heute" konsistent und sollten halten; nicht gemessen, weil der Test vorher abbricht.
+Reparaturvorschlag (nur beschrieben): Zeile 82 auf D = lf.current_us_day(T0) aendern, damit
+  Spieltag und fester Zeitpunkt zusammenpassen. Danach den Test erneut laufen lassen und
+  pruefen, ob Zeilen 125-180 ebenfalls gruen sind (dort steht der feste String
+  "2026-10-23T01:30:00Z" als Anpfiffzeit, harmlos, solange game_day_us auf gameEt/D schaut).
+Noch gebraucht? Ja. Prueft Live-Chance fuer Spieler-Wetten (engine/player_live.py), die zum
+  neuen Spieltag-/Spieler-Tab gehoeren, nicht zum alten Live-Tab.
+
+--- test_spieltag_tab.py ------------------------------------------------
+Messung: 3 von 3 gruen. Das "mal rot" liess sich nicht herstellen. Wahrscheinlichste Ursachen
+fuer gelegentliches Rot (Sicherheit: mittel bis niedrig, nur gelesen, nicht belegt):
+  a) Zeile 33-35 / Zeile 281 (Hash-Pruefung "nichts ins Projekt geschrieben"): vergleicht
+     data/tracking/*.json und data/pregame_lines.json vor und nach dem Lauf (ca. 16-23 s).
+     Schreibt in dieser Zeit ein anderer Prozess in diese Dateien (laufender Recorder, geoeffnete
+     App, nbabackup, fetch_odds_daily), wird die Pruefung rot, ohne dass der Test etwas
+     falsch gemacht hat. Das passt zu "einzeln meist gruen". Das Gleiche gilt fuer
+     test_player_absences.py Zeile 30-32/178 und test_player_live.py Zeile 30-32/178.
+  b) Zeile 37-38: real_now / DAY werden einmal beim Start gelesen, app.py im AppTest liest die
+     Uhr selbst. Laeuft der Test ueber 17:00 Uhr Berliner Zeit (US-Tageswechsel) oder knapp
+     davor, passen DAY und die App nicht mehr zusammen -> Karten fehlen/andere Reihenfolge
+     (Pruefung Zeile 203 "G3, G1, ..."). Nur in einem Fenster von etwa 1 Minute um 17:00.
+  c) Reihenfolge der Karten (Zeile 203) haengt an start_utc, das aus real_now + n Stunden
+     in ganzen Sekunden gebaut wird (FUT, Zeile 41). Die Abstaende sind 1 h, also stabil.
+     Kein Risiko.
+  Kein Zufall, kein Netz (fake_net), kein Test-zu-Test-Zustand gefunden (eigene Temp-Ordner).
+Reparaturvorschlag: (a) Hash-Pruefung nur gegen die Dateien, die der Test selbst beruehren
+  koennte, oder bei Abweichung zuerst pruefen, ob der Aenderungszeitpunkt ausserhalb des
+  Testlaufs liegt; alternativ Test nur laufen lassen, wenn Recorder/App aus sind. (b) Uhr im
+  Test festhalten (Zeitpunkt mit einem fest gewaehlten Uhrzeit-Wert, z. B. 12:00 Berlin, und
+  die App ueber eine Einspeisung davon abhaengig machen), oder den Test vor dem Start
+  abbrechen, wenn weniger als 2 Minuten bis 17:00 Uhr Berliner Zeit sind.
+Noch gebraucht? Ja, er prueft den aktuellen Spieltag-Tab (Tab "Spieltag" neben "Live (alt)").
+
+--- test_player_absences.py ---------------------------------------------
+Messung: 3 von 3 gruen. Wahrscheinlichste Ursachen fuer gelegentliches Rot
+(Sicherheit: niedrig, nicht belegt):
+  a) Zeile 30-32 / 178: Hash-Pruefung der echten Dateien (data/tracking, forecast_snapshots,
+     data/rosters.json) - gleiches Muster wie oben: Fremdschreiber (Recorder, App,
+     fetch_rosters.py) im Zeitfenster der Laeufe macht die Pruefung rot.
+  b) Zeile 42-45: NOW = time.time(), D = current_us_day(NOW) fest zu Beginn; Spieler-Historie
+     (Zeile 51-56) hat feste Daten ab 01.01.2026, 30 Spiele im Abstand 2 Tage (bis 01.03.2026).
+     Wenn engine/player_forecast.py ein "letzte N Tage"-Fenster oder eine Erholungs-/Ausfallzeit
+     relativ zu heute rechnet, kippen Werte mit der Zeit. Das habe ich NICHT gelesen, daher offen.
+Reparaturvorschlag: wie oben (a); (b) Historiendaten relativ zu NOW erzeugen (NOW - 2*i Tage)
+  statt fest ab 01.01.2026, falls die Prognose die Uhr verwendet.
+Noch gebraucht? Ja (Stufe 4, Ausfaelle, ui/player_absence.py).
+
+====================================================================
+3. NUR GELESEN, NICHT AUSGEFUEHRT
+====================================================================
+
+--- tests/test_us_day_app.py --------------------------------------------
+Die Frage "4 Fehlschlaege wegen git HEAD" ist veraltet: Zeile 31 holt den alten Quelltext
+nicht mehr aus HEAD, sondern ueber `git show 62b3091:app.py` (fester Commit). Der Commit
+existiert (git cat-file: commit, 2420 Zeilen, 7 mal date.today()). Die Bezeichnung "alt (HEAD)"
+in den Pruefnamen ist nur noch ein Name. Vermutung (Sicherheit: mittel): die 4 Fehlschlaege
+traten auf, als noch gegen HEAD verglichen wurde; jetzt sollte der Test stabil sein.
+Restrisiken: (1) Zeile 94-103: AppTest-Lauf der echten app.py mit dt.date.today() der echten
+Uhr: an der Mitternachtsgrenze (Berlin) kann us_day kippen (Fenster nur Sekunden).
+(2) Der Commit 62b3091 muss im Repo bleiben (kein Neuaufbau/Squash der Historie).
+Reparatur: nur der Name "alt (HEAD)" -> "alt (62b3091)"; sonst keine. Nicht gelaufen, daher
+unbestaetigt.
+
+--- tests/browser_score_check.py ----------------------------------------------
+Nicht Teil der normalen Suite (Chrome noetig). Wahrscheinliche Wackler (Sicherheit: mittel,
+nicht gelaufen):
+  a) Feste Wartezeiten: Zeile 69 (sleep 18 s), 1.5-8 s danach, Zeile ~215 "R" druecken +
+     sleep 8 s. Auf einem langsamen Rechner/Chrome noch nicht fertig -> Pruefungen rot.
+  b) Kartenreihenfolge (Reihenfolge-Test, ~Zeile 208-228): app.py:849 sortiert nach
+     -abs(exp_spread); bei gleichen Werten entscheidet die Eingangsreihenfolge der Spiele.
+     Die Test-Eigenlinie (+/-30, abhaengig von `knicks_first`) soll die Reihenfolge erzwingen,
+     haengt aber an der Annahme, wo die Knicks-Karte vorher steht.
+  c) Die Spiele im Harness (tests/_harness_score_app.py:15-20) werden mit time.time() gebaut
+     (Knicks +3 h, Pistons -10 min): Stunde/Tag bestimmt, welche Spiele als "heute" gelten
+     (US-Tageswechsel 17:00 Berlin).
+  d) Feste Ports 8769 und 9336, fester Chrome-Pfad (Zeile 8): bleibt ein alter Lauf haengen,
+     schlaegt der naechste fehl.
+Reparatur: Wartezeiten durch Warten auf ein sichtbares Element ersetzen; Reihenfolge ueber
+  eine Zeile mit eindeutigem |Spread| erzwingen und die Sortierung am Ende ueber den
+  zweiten Schluessel (game_id) eindeutig machen; Ports aus freien Ports waehlen.
+
+====================================================================
+4. NICHT GEPRUEFT
+====================================================================
+- Warum die Roadmap "mal gruen, mal rot" sagt: Rot nur bei test_player_live belegt (und dort
+  jedes Mal, nicht wechselnd). Bei den anderen beiden in 3 Laeufen nicht reproduziert.
+- Ob ein Fremdschreiber (Recorder u. a.) waehrend der Laeufe lief: nicht festgestellt.
+- Gemeinsame Nutzung durch Parallelaufruf (z. B. mehrere Tests gleichzeitig): nicht gemessen;
+  die Tests nutzen eigene Temp-Ordner, aber alle gleichzeitig dieselben echten Dateien zum Vergleich.
+- engine/player_forecast.py auf Uhr-Abhaengigkeit (Punkt b bei test_player_absences): nicht gelesen.
+- Teil von test_player_live.py ab Zeile 105 (nach der Reparatur): nie gelaufen.
+- test_us_day_app.py und browser_score_check.py: nicht gelaufen (Vorgabe).

@@ -43,7 +43,7 @@ def ns(**extra):
     d.update(extra); return d
 
 # ---------------------------------------------------------------- Zeile 301/304: Mock-Projektionen
-for label, src in (("alt (HEAD)", old_src), ("neu", new_src)):
+for label, src in (("alt (62b3091)", old_src), ("neu", new_src)):
     n = ns(); exec(func(src, "build_mock_projections"), n)
     p = n["build_mock_projections"]()[0]
     want = BERLIN_DATE if label.startswith("alt") else US_DATE
@@ -53,17 +53,17 @@ for label, src in (("alt (HEAD)", old_src), ("neu", new_src)):
 from engine import projection as pj
 sd = dt.date(2026, *pj.PLAYOFF_START_MONTH_DAY)
 PO = dt.datetime(sd.year, sd.month, sd.day, 0, 30, tzinfo=ZoneInfo("Europe/Berlin"))
-for label, src in (("alt (HEAD)", old_src), ("neu", new_src)):
+for label, src in (("alt (62b3091)", old_src), ("neu", new_src)):
     class FD:
         @staticmethod
         def today(): return PO.date()
     n = ns(date=FD, us_today=lambda: gu.us_today(PO)); exec(func(src, "build_mock_projections"), n)
     p = n["build_mock_projections"]()[0]
-    want = label == "alt (HEAD)"                          # alt: Berliner Datum = Playoff-Start -> True (falsch); neu: Vortag in New York -> False
+    want = label == "alt (62b3091)"                          # alt: Berliner Datum = Playoff-Start -> True (falsch); neu: Vortag in New York -> False
     check(f"Mock-Projektion {label}: am Playoff-Starttag 00:30 Berlin is_playoff = {want}", p["is_playoff"] is want, str(p["is_playoff"]))
 
 # ---------------------------------------------------------------- Zeile 478/496: fetch_completed_games
-for label, src in (("alt (HEAD)", old_src), ("neu", new_src)):
+for label, src in (("alt (62b3091)", old_src), ("neu", new_src)):
     n = ns(); exec(func(src, "fetch_completed_games"), n)
     g = n["fetch_completed_games"](2)
     want = BERLIN_DATE if label.startswith("alt") else US_DATE
@@ -72,7 +72,7 @@ asked = {"old": [], "new": []}
 class Resp:
     status_code = 200
     def json(self): return {"data": []}
-for label, src in (("alt (HEAD)", old_src), ("neu", new_src)):
+for label, src in (("alt (62b3091)", old_src), ("neu", new_src)):
     key = "old" if label.startswith("alt") else "new"
     req = types.SimpleNamespace(get=lambda url, headers=None, params=None, timeout=None, k=key: (asked[k].append(params["dates[]"]), Resp())[1])
     n = ns(OFFLINE_AUDIT_MODE=False, requests=req); exec(func(src, "fetch_completed_games"), n)

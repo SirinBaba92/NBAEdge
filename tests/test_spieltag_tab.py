@@ -33,7 +33,15 @@ def real_snapshot():
     """Hash aller echten Dateien, die der Test nie beschreiben darf (data/tracking/*.json inkl. day_bets.json, pregame_lines.json); fehlende Datei = fehlt im Ergebnis."""
     files = list((ROOT / "data" / "tracking").glob("*.json")) + [ROOT / "data" / "pregame_lines.json"]
     return {p.name: hashlib.sha1(p.read_bytes()).hexdigest() for p in files if p.exists()}
-real_tracking = real_snapshot()                       # direkt vor dem Testlauf
+def real_meta():
+    files = list((ROOT / "data" / "tracking").glob("*.json")) + [ROOT / "data" / "pregame_lines.json"]
+    return {p.name: (p.stat().st_size, p.stat().st_mtime) for p in files if p.exists()}
+def real_diff(before, after, meta_before, meta_after):
+    """Im Fehlerfall: welche echte Datei neu, weg oder anders ist (Name, Groesse vorher/nachher, Aenderungszeit)."""
+    f = lambda m, k: f"{m[k][0]} B" if k in m else "fehlt"
+    t = lambda m, k: time.strftime("%H:%M:%S", time.localtime(m[k][1])) if k in m else "-"
+    return "; ".join(f"{k}: {f(meta_before, k)} -> {f(meta_after, k)}, Aenderungszeit {t(meta_before, k)} -> {t(meta_after, k)}" for k in sorted(set(before) | set(after)) if before.get(k) != after.get(k))
+real_tracking = real_snapshot(); real_meta_before = real_meta()                       # direkt vor dem Testlauf
 real_now = time.time()
 DAY = lf.current_us_day(real_now)                               # Spieltag laut Uhr: unabhaengig von der echten Uhrzeit des Testlaufs
 iso = lambda ts: time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(ts))
@@ -279,7 +287,7 @@ check("Kontrast: Gewinn (gruen) und Verlust (rot) Zahlen gegen die Kartenflaeche
 check("Balkenfarben der Wett-Zeilen sind unterscheidbar vom neutralen Balkenrest (Kontrast >= 1,6 : 1 gegen #3b4560)", all(ratio(v["bar"], PALETTE["bar_other"]) >= 1.6 for k, v in lc.STATUS.items() if k in ("gruen", "gelb", "orange", "rot")))
 check("Stylesheet: Status-Klassen fuer alle sechs Farben", all(f".lv-st-{k}" in lc.LIVE_CSS for k in ("gruen", "gelb", "orange", "rot", "grau", "blau")))
 check("Namen werden maskiert (kein HTML aus Teamnamen)", "&lt;b&gt;" in lc.render_status_html(type("S", (), {"error": None, "stale": False, "status_line": "<b>x</b>", "notice": None, "fallback_note": None, "other_day_games": ()})()))
-check("nichts ins Projekt geschrieben: keine echte Datei veraendert oder neu angelegt (Tracking-Dateien inkl. day_bets.json, pregame_lines.json: Hash vorher = nachher)", real_snapshot() == real_tracking)
+check("nichts ins Projekt geschrieben: keine echte Datei veraendert oder neu angelegt (Tracking-Dateien inkl. day_bets.json, pregame_lines.json: Hash vorher = nachher)", real_snapshot() == real_tracking, real_diff(real_tracking, real_snapshot(), real_meta_before, real_meta()))
 check("in KEINEM AppTest-Lauf dieser Datei: Streamlit-Exception oder der Satz 'was created with a default value ... Session State API'", not page_checks.bad, "; ".join(page_checks.bad[:2]))
 print("\nErgebnis:", "ALLE TESTS BESTANDEN" if ok else "FEHLER")
 sys.exit(0 if ok else 1)

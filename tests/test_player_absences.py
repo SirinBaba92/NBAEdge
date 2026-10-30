@@ -29,7 +29,14 @@ def check(name, cond, info=""):
 def real_files():
     files = list((ROOT / "data" / "tracking").glob("*")) + list((ROOT / "analysis" / "results" / "forecast_snapshots").glob("*")) + [ROOT / "data" / "rosters.json"]
     return {str(p): hashlib.sha1(p.read_bytes()).hexdigest() for p in files if p.is_file()}
-real_before = real_files()
+def real_meta():
+    return {k: (Path(k).stat().st_size, Path(k).stat().st_mtime) for k in real_files()}
+def real_diff(before, after, meta_before, meta_after):
+    """Im Fehlerfall: welche echte Datei neu, weg oder anders ist (Name, Groesse vorher/nachher, Aenderungszeit)."""
+    f = lambda m, k: f"{m[k][0]} B" if k in m else "fehlt"
+    t = lambda m, k: time.strftime("%H:%M:%S", time.localtime(m[k][1])) if k in m else "-"
+    return "; ".join(f"{k}: {f(meta_before, k)} -> {f(meta_after, k)}, Aenderungszeit {t(meta_before, k)} -> {t(meta_after, k)}" for k in sorted(set(before) | set(after)) if before.get(k) != after.get(k))
+real_before = real_files(); real_meta_before = real_meta()
 
 class _NoNet:
     class R:
@@ -175,6 +182,6 @@ dbt = next(x for x in at.multiselect if x.label == "Fraglich"); dbt.set_value([1
 check("Spieler bei Fehlt und Fraglich: Warnung (Streamlit-Warnung wird ausdruecklich erlaubt)", any("nur eins wählen" in w.value for w in at.warning))
 page_checks.bad.clear()
 
-check("echte Dateien (Tracking, Snapshots, Kader) unveraendert", real_files() == real_before)
+check("echte Dateien (Tracking, Snapshots, Kader) unveraendert", real_files() == real_before, real_diff(real_before, real_files(), real_meta_before, real_meta()))
 print("\nALLES OK" if ok else "\nFEHLER")
 sys.exit(0 if ok else 1)
