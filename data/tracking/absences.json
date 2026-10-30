@@ -1,7 +1,7 @@
 {
   "version": 1,
   "format": "nbaedge-absences",
-  "updated_at": "2026-10-29T18:59:59+01:00",
+  "updated_at": "2026-10-30T00:59:42+01:00",
   "days": {
     "2026-10-22": {
       "2026-10-22|2026-10-23T01:30:00Z|Oklahoma City Thunder|Denver Nuggets": {
@@ -3338,33 +3338,25 @@
             "team": "Atlanta Hawks",
             "set_at": "2026-10-29T14:59:37+01:00",
             "source": "espn",
-            "fetched_at": "2026-10-29T18:59:59+01:00"
+            "fetched_at": "2026-10-30T00:59:42+01:00"
           },
           "1643539": {
             "name": "Henri Veesaar",
             "team": "Atlanta Hawks",
             "set_at": "2026-10-29T14:59:37+01:00",
             "source": "espn",
-            "fetched_at": "2026-10-29T18:59:59+01:00"
-          }
-        },
-        "doubtful": {
+            "fetched_at": "2026-10-30T00:59:42+01:00"
+          },
           "1643509": {
             "name": "Meleek Thomas",
             "team": "Cleveland Cavaliers",
-            "set_at": "2026-10-29T18:59:59+01:00",
+            "set_at": "2026-10-30T00:59:42+01:00",
             "source": "espn",
-            "fetched_at": "2026-10-29T18:59:59+01:00"
-          },
-          "1642281": {
-            "name": "Jaylon Tyson",
-            "team": "Cleveland Cavaliers",
-            "set_at": "2026-10-29T18:59:59+01:00",
-            "source": "espn",
-            "fetched_at": "2026-10-29T18:59:59+01:00"
+            "fetched_at": "2026-10-30T00:59:42+01:00"
           }
         },
-        "updated_at": "2026-10-29T18:59:59+01:00",
+        "doubtful": {},
+        "updated_at": "2026-10-30T00:59:42+01:00",
         "history": [
           {
             "at": "2026-10-29T14:59:37+01:00",
@@ -3386,62 +3378,78 @@
               1643509
             ],
             "source": "espn"
+          },
+          {
+            "at": "2026-10-30T00:59:42+01:00",
+            "out": [
+              1631243,
+              1643509,
+              1643539
+            ],
+            "doubtful": [],
+            "source": "espn"
           }
         ],
         "auto": {
           "source": "espn",
-          "fetched_at": "2026-10-29T18:59:59+01:00",
+          "fetched_at": "2026-10-30T00:59:42+01:00",
           "unmatched": []
         }
       },
       "2026-10-29|2026-10-30T00:00:00Z|New Orleans Pelicans|Sacramento Kings": {
         "out": {
+          "1627749": {
+            "name": "Dejounte Murray",
+            "team": "New Orleans Pelicans",
+            "set_at": "2026-10-30T00:59:42+01:00",
+            "source": "espn",
+            "fetched_at": "2026-10-30T00:59:42+01:00"
+          },
+          "1629673": {
+            "name": "Jordan Poole",
+            "team": "New Orleans Pelicans",
+            "set_at": "2026-10-30T00:59:42+01:00",
+            "source": "espn",
+            "fetched_at": "2026-10-30T00:59:42+01:00"
+          },
           "1642274": {
             "name": "Yves Missi",
             "team": "New Orleans Pelicans",
             "set_at": "2026-10-29T14:59:37+01:00",
             "source": "espn",
-            "fetched_at": "2026-10-29T18:59:59+01:00"
+            "fetched_at": "2026-10-30T00:59:42+01:00"
           },
           "1642928": {
             "name": "Dylan Cardwell",
             "team": "Sacramento Kings",
             "set_at": "2026-10-29T14:59:37+01:00",
             "source": "espn",
-            "fetched_at": "2026-10-29T18:59:59+01:00"
+            "fetched_at": "2026-10-30T00:59:42+01:00"
           },
           "1642875": {
             "name": "Maxime Raynaud",
             "team": "Sacramento Kings",
             "set_at": "2026-10-29T14:59:37+01:00",
             "source": "espn",
-            "fetched_at": "2026-10-29T18:59:59+01:00"
+            "fetched_at": "2026-10-30T00:59:42+01:00"
           },
           "1631099": {
             "name": "Keegan Murray",
             "team": "Sacramento Kings",
             "set_at": "2026-10-29T14:59:37+01:00",
             "source": "espn",
-            "fetched_at": "2026-10-29T18:59:59+01:00"
+            "fetched_at": "2026-10-30T00:59:42+01:00"
           },
           "1627732": {
             "name": "Ben Simmons",
             "team": "Sacramento Kings",
             "set_at": "2026-10-29T14:59:37+01:00",
             "source": "espn",
-            "fetched_at": "2026-10-29T18:59:59+01:00"
+            "fetched_at": "2026-10-30T00:59:42+01:00"
           }
         },
-        "doubtful": {
-          "1629673": {
-            "name": "Jordan Poole",
-            "team": "New Orleans Pelicans",
-            "set_at": "2026-10-29T14:59:37+01:00",
-            "source": "espn",
-            "fetched_at": "2026-10-29T18:59:59+01:00"
-          }
-        },
-        "updated_at": "2026-10-29T14:59:37+01:00",
+        "doubtful": {},
+        "updated_at": "2026-10-30T00:59:42+01:00",
         "history": [
           {
             "at": "2026-10-29T14:59:37+01:00",
@@ -3456,11 +3464,25 @@
               1629673
             ],
             "source": "espn"
+          },
+          {
+            "at": "2026-10-30T00:59:42+01:00",
+            "out": [
+              1627732,
+              1627749,
+              1629673,
+              1631099,
+              1642274,
+              1642875,
+              1642928
+            ],
+            "doubtful": [],
+            "source": "espn"
           }
         ],
         "auto": {
           "source": "espn",
-          "fetched_at": "2026-10-29T18:59:59+01:00",
+          "fetched_at": "2026-10-30T00:59:42+01:00",
           "unmatched": []
         }
       },
@@ -3471,18 +3493,26 @@
             "team": "Portland Trail Blazers",
             "set_at": "2026-10-29T14:59:37+01:00",
             "source": "espn",
-            "fetched_at": "2026-10-29T18:59:59+01:00"
+            "fetched_at": "2026-10-30T01:00:55+01:00"
           },
           "1631101": {
             "name": "Shaedon Sharpe",
             "team": "Portland Trail Blazers",
             "set_at": "2026-10-29T14:59:37+01:00",
             "source": "espn",
-            "fetched_at": "2026-10-29T18:59:59+01:00"
+            "fetched_at": "2026-10-30T01:00:55+01:00"
           }
         },
-        "doubtful": {},
-        "updated_at": "2026-10-29T14:59:37+01:00",
+        "doubtful": {
+          "1629057": {
+            "name": "Robert Williams III",
+            "team": "Portland Trail Blazers",
+            "set_at": "2026-10-30T00:59:42+01:00",
+            "source": "espn",
+            "fetched_at": "2026-10-30T01:00:55+01:00"
+          }
+        },
+        "updated_at": "2026-10-30T00:59:42+01:00",
         "history": [
           {
             "at": "2026-10-29T14:59:37+01:00",
@@ -3492,11 +3522,22 @@
             ],
             "doubtful": [],
             "source": "espn"
+          },
+          {
+            "at": "2026-10-30T00:59:42+01:00",
+            "out": [
+              1631101,
+              1642959
+            ],
+            "doubtful": [
+              1629057
+            ],
+            "source": "espn"
           }
         ],
         "auto": {
           "source": "espn",
-          "fetched_at": "2026-10-29T18:59:59+01:00",
+          "fetched_at": "2026-10-30T01:00:55+01:00",
           "unmatched": []
         }
       }
