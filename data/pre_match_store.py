@@ -42,6 +42,9 @@ Version 5 fuegt den Markt "player_points" hinzu (Spielerbloecke):
                   "odds", "bookmaker", "active", "entered_at", "updated_at", ["removed_at"], "revisions": [...]}]}]}
   Der Modus und der Spieler eines gespeicherten Blocks aendern sich nicht (Wechsel nur durch Entfernen und neuen Block); Entfernen ist immer eine Revision.
 Version 1 bis 4 bleiben lesbar; beim ersten Schreiben wird die alte Datei byte-genau als history/pre_match_entries.v<alt>_vor_Upgrade_*.json gesichert.
+Quelle einer Revision: optionales Feld "source". Fehlt es (alle Handeingaben, auch alle aelteren Revisionen), gilt "hand"; die Automatik (save_auto)
+schreibt "source": "auto". Eine auto-Revision beruehrt nie einen Markt/eine Linie/einen Spielerblock, der eine Hand-Revision hat (Vorrang der Hand).
+Sperre: flock auf pre_match_entries.json.lock um jedes Lesen-Aendern-Schreiben (wirkt auch zwischen Prozessen).
 Alle Zeitstempel tragen den UTC-Versatz. Gespeichert wird nur, solange das Spiel noch nicht begonnen hat (hier
 geprueft, nicht nur in der Oberflaeche), damit "entered_at" belegt, dass die Quote vor dem Anpfiff erfasst wurde.
 
@@ -51,6 +54,7 @@ unveraendert. Nach jedem erfolgreichen Speichern entsteht eine Tageskopie in dat
 from __future__ import annotations
 
 import copy
+import fcntl
 import json
 import math
 import os
@@ -87,7 +91,8 @@ MAX_SPREAD_EXTRA = 4              # weitere Spread-Linien (plus Hauptlinie = 5 L
 MAX_LINE = 60.0
 MAX_BOOKMAKER_LEN = 60
 ROOT = Path(__file__).resolve().parent.parent
-_lock = threading.RLock()
+LOCK_TIMEOUT_SECONDS = 10.0
+SOURCE_HAND, SOURCE_AUTO = "hand", "auto"
 
 
 class OddsInputError(ValueError):
@@ -100,6 +105,55 @@ class GameStartedError(Exception):
 
 class StoreError(Exception):
     """Datei konnte nicht gelesen/geschrieben werden; die bestehende Datei bleibt unveraendert."""
+
+
+class _StoreLock:
+    """Thread-Sperre (wiedereintrittsfaehig) plus flock auf pre_match_entries.json.lock (wirkt auch zwischen Prozessen, Muster wie day_bets_store).
+    Der flock wird nur beim aeussersten Betreten genommen; wartet hoechstens LOCK_TIMEOUT_SECONDS, dann StoreError (nichts geaendert)."""
+
+    def __init__(self):
+        self._rlock = threading.RLock()
+        self._depth = 0
+        self._fh = None
+
+    def __enter__(self):
+        self._rlock.acquire()
+        try:
+            if self._depth == 0:
+                lock_path = store_path().with_name(store_path().name + ".lock")
+                lock_path.parent.mkdir(parents=True, exist_ok=True)
+                fh = open(lock_path, "a+")
+                deadline = time.monotonic() + LOCK_TIMEOUT_SECONDS
+                while True:
+                    try:
+                        fcntl.flock(fh, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                        break
+                    except OSError:
+                        if time.monotonic() > deadline:
+                            fh.close()
+                            raise StoreError("Die Eingabe-Datei wird gerade von einem anderen Vorgang geschrieben. Bitte gleich noch einmal versuchen.") from None
+                        time.sleep(0.01)
+                self._fh = fh
+            self._depth += 1
+        except BaseException:
+            self._rlock.release()
+            raise
+        return self
+
+    def __exit__(self, *exc):
+        try:
+            self._depth -= 1
+            if self._depth == 0:
+                try:
+                    fcntl.flock(self._fh, fcntl.LOCK_UN)
+                finally:
+                    self._fh.close()
+                    self._fh = None
+        finally:
+            self._rlock.release()
+
+
+_lock = _StoreLock()
 
 
 def tracking_dir() -> Path:
@@ -1056,7 +1110,7 @@ def save_card(game_date: str, start_utc: str, home: str, away: str, winner: dict
               suggestion: dict | None = None, total_rows: list[dict] | None = None, total_suggestion: dict | None = None,
               team_rows: dict | None = None, team_suggestion: dict | None = None, team_names: dict | None = None,
               player_blocks: list[dict] | None = None, roster_fetched_at: str | None = None, now: float | None = None,
-              assume_removed: list[tuple] | None = None, dry_run: bool = False) -> dict:
+              assume_removed: list[tuple] | None = None, dry_run: bool = False, source: str = SOURCE_HAND) -> dict:
     """Speichert alle ausgefuellten Maerkte eines Spiels in EINEM Schreibvorgang (alles oder nichts).
 
     winner:      {'home_odds', 'away_odds', 'bookmaker'} (Texte wie eingegeben) oder None
@@ -1070,6 +1124,7 @@ def save_card(game_date: str, start_utc: str, home: str, away: str, winner: dict
                  roster_fetched_at: Stand der Kaderdatei, mit der gewaehlt wurde
     assume_removed: Linien/Bloecke, die beim Pruefen als entfernt gelten (Formate siehe _entry_without); dry_run=True: nur pruefen, nie schreiben
                  (Rueckgabe {'status': 'checked'}). So kann man erst pruefen und danach erst entfernen.
+    source:      'hand' (Standard, Revisionen bleiben ohne Feld "source") | 'auto' (neue Revisionen tragen "source": "auto"); Aufrufer der Automatik: save_auto
     Unvollstaendig/ungueltig -> CardInputError (mit Marktnamen), es wird nichts geschrieben.
     Rueckgabe: {'status': 'saved'|'unchanged', 'markets': {'winner_incl_ot'|'spread'|'total'|'team_totals'|'player_points': 'saved'|'unchanged'|'skipped'}, ...}"""
     now = now if now is not None else time.time()
@@ -1124,6 +1179,7 @@ def save_card(game_date: str, start_utc: str, home: str, away: str, winner: dict
         stamp = iso_now(now)
         result = {"winner_incl_ot": "skipped", "spread": "skipped", "total": "skipped", "team_totals": "skipped", "player_points": "skipped"}
         changed = False
+        before = {id(r) for r in _all_revisions(entry)} if source == SOURCE_AUTO else None
         if w_vals is not None:
             c = _apply_winner(entry, *w_vals, stamp)
             result[WINNER] = "saved" if c else "unchanged"
@@ -1181,6 +1237,10 @@ def save_card(game_date: str, start_utc: str, home: str, away: str, winner: dict
                 data.setdefault("last_bookmaker", {})[PLAYER_POINTS] = book
         if not changed:
             return {"status": "unchanged", "key": key, "markets": result, "entry": copy.deepcopy(entry)}
+        if before is not None:
+            for r in _all_revisions(entry):
+                if id(r) not in before:
+                    r["source"] = SOURCE_AUTO
         data["updated_at"] = stamp
         data["version"] = STORE_VERSION
         data["markets"] = {**data.get("markets", {}), **MARKETS}
@@ -1190,3 +1250,100 @@ def save_card(game_date: str, start_utc: str, home: str, away: str, winner: dict
             raise StoreError("Speichern fehlgeschlagen; die bestehende Datei wurde nicht verändert.") from e
         _daily_copy(now)
         return {"status": "saved", "key": key, "markets": result, "entry": copy.deepcopy(entry), "recovered": data.get("recovered_from_corrupt")}
+
+
+# ------------------------------------------------------------------------------ Automatik (noch nirgends eingebunden)
+SKIP_HAND_PRIORITY = "übersprungen: Handeingabe hat Vorrang"
+
+
+def _all_revisions(node) -> list[dict]:
+    """Alle Revisions-Eintraege (Dicts in Listen namens 'revisions') beliebig tief im Eintrag."""
+    out = []
+    if isinstance(node, dict):
+        for k, v in node.items():
+            if k == "revisions" and isinstance(v, list):
+                out.extend(r for r in v if isinstance(r, dict))
+            else:
+                out.extend(_all_revisions(v))
+    elif isinstance(node, list):
+        for v in node:
+            out.extend(_all_revisions(v))
+    return out
+
+
+def revision_source(rev: dict) -> str:
+    """'auto' nur bei ausdruecklichem Feld; Revisionen ohne Feld (alle bisherigen) gelten als Handeingabe."""
+    return SOURCE_AUTO if (rev or {}).get("source") == SOURCE_AUTO else SOURCE_HAND
+
+
+def has_hand_revision(unit: dict | None) -> bool:
+    """Hat dieser Markt/diese Linie/dieser Block (auch entfernt) mindestens eine Handeingabe in seinen Revisionen?"""
+    return any(revision_source(r) == SOURCE_HAND for r in _all_revisions(unit or {}))
+
+
+def _lines_of(market: dict | None) -> list[dict]:
+    return list((market or {}).get("lines") or [])
+
+
+def _filter_rows(rows, lines: list[dict], value_key: str, parse) -> tuple[list | None, int]:
+    """Entfernt Zeilen, die eine Linie mit Handeingabe treffen (ueber die ID oder den gleichen Linienwert). Rueckgabe (Zeilen oder None, Zahl uebersprungen)."""
+    if not rows:
+        return rows, 0
+    hand_ids = {l["id"] for l in lines if has_hand_revision(l)}
+    hand_vals = {l.get(value_key) for l in lines if has_hand_revision(l)}
+    keep, skipped = [], 0
+    for row in rows:
+        try:
+            val = parse(row.get("line"))
+        except OddsInputError:
+            val = None
+        if row.get("id") in hand_ids or (val is not None and val in hand_vals):
+            skipped += 1
+        else:
+            keep.append(row)
+    if any(l["id"] == "main" for l in lines if has_hand_revision(l)) and keep:
+        return None, skipped + len(keep)         # Hand-Hauptlinie: die ganze Leiter des Marktes bleibt Hand (Zeilen ohne Hauptlinie waeren auch nicht speicherbar)
+    return (keep or None), skipped
+
+
+def save_auto(game_date: str, start_utc: str, home: str, away: str, winner: dict | None = None, spread_rows: list[dict] | None = None,
+              suggestion: dict | None = None, total_rows: list[dict] | None = None, total_suggestion: dict | None = None,
+              team_rows: dict | None = None, team_suggestion: dict | None = None, team_names: dict | None = None,
+              player_blocks: list[dict] | None = None, roster_fetched_at: str | None = None, now: float | None = None) -> dict:
+    """Speicherpfad der Automatik (noch nirgends aufgerufen). Gleiche Eingaben wie save_card, neue Revisionen tragen "source": "auto".
+    Vorrang der Hand: Teile (Sieger-Markt, Spread-/Total-/Team-Total-Linie, Spielerblock) mit mindestens einer Handeingabe-Revision werden NICHT angefasst
+    (auch nicht entfernt); sie werden uebersprungen. Alles unter derselben Sperre wie das Speichern. Entfernen gibt es fuer die Automatik nicht.
+    Rueckgabe wie save_card plus 'skipped_hand': Zahl uebersprungener Teile; Status 'skipped' (Grund SKIP_HAND_PRIORITY), wenn nichts uebrig bleibt."""
+    now = now if now is not None else time.time()
+    start_norm = _prepare_game(game_date, start_utc, now)
+    key = game_key(game_date, start_norm, home, away)
+    with _lock:
+        entry = (load().get("entries") or {}).get(key) or {}
+        mk = entry.get("markets") or {}
+        skipped = 0
+        if winner is not None and has_hand_revision(mk.get(WINNER)):
+            winner, skipped = None, skipped + 1
+        spread_rows, n = _filter_rows(spread_rows, _lines_of(mk.get(SPREAD)), "line_home", parse_line_input)
+        skipped += n
+        total_rows, n = _filter_rows(total_rows, _lines_of(mk.get(TOTAL)), "line", parse_total_input)
+        skipped += n
+        if team_rows:
+            new_team = {}
+            for side in TEAMS:
+                new_team[side], n = _filter_rows((team_rows or {}).get(side), _lines_of((mk.get(TEAM_TOTALS) or {}).get(side)), "line", parse_team_total_input)
+                skipped += n
+            team_rows = new_team if any(new_team.values()) else None
+        if player_blocks:
+            hand_pids = {b.get("person_id") for b in (mk.get(PLAYER_POINTS) or {}).get("players", []) if has_hand_revision(b)}
+            keep = [b for b in player_blocks if not (b.get("person_id") in hand_pids and b.get("person_id") not in (None, ""))]
+            skipped += len(player_blocks) - len(keep)
+            player_blocks = keep or None
+        if all(x is None for x in (winner, spread_rows, total_rows, team_rows, player_blocks)):
+            if skipped:
+                return {"status": "skipped", "reason": SKIP_HAND_PRIORITY, "key": key, "skipped_hand": skipped}
+            raise OddsInputError("Nichts eingetragen.")
+        res = save_card(game_date, start_norm, home, away, winner=winner, spread_rows=spread_rows, suggestion=suggestion, total_rows=total_rows,
+                        total_suggestion=total_suggestion, team_rows=team_rows, team_suggestion=team_suggestion, team_names=team_names,
+                        player_blocks=player_blocks, roster_fetched_at=roster_fetched_at, now=now, source=SOURCE_AUTO)
+        res["skipped_hand"] = skipped
+        return res

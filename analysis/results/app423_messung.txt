@@ -1,0 +1,33 @@
+Messung zu app.py:423 – engine.predict(home, away, us_today()) statt Spieltag – 2026-10-31
+Nur gelesen/gerechnet, nichts gespeichert, kein Netz. Skript: analysis/messung_app423.py (Rohausgabe: app423_messung_teil2.txt).
+
+TEIL 1 (lesen)
+- Durch app.py:423 laufen ALLE Spiele aus fetch_upcoming_games() (data/fetcher.py:116ff): Fenster [UTC-heute-1, UTC-heute] als BallDontLie-Datum. Also nicht nur der heutige US-Tag:
+  ab ca. 02:00 Berlin (20:00 ET) kommen Spiele des Folgetags dazu, am Vormittag noch Vortagsspiele. Die App zeigt später nur den aktiven Tag, gespeichert (Snapshots) wird aber alles.
+- Spieltag wird weitergereicht: app.py:422 game_date = game["date"] -> inp["game_date"] (433), game_key (435), compute_projection(game_date=...) (442, steuert is_playoff_date), proj["game_date"] (445).
+  NICHT weitergereicht: app.py:423 predict() bekommt us_today().
+- predict() (models/elo.py:240ff) nutzt das Datum NUR in _rest_factor (Z.69-77, Aufruf Z.244/245): 1 Tag Pause = -0,015*100 = -1,5 Elo (B2B), 2 Tage = 0, >=3 Tage = +0,45 Elo, <=0 = 0.
+  Dazu die Anzeige home_/away_rest_days (Z.279/280). Form (Z.246, letzte 10 Spiele), Ratings/Elo-Stand, Total (Off/Def-Ratings) und Saison hängen NICHT am Datum.
+  Elo-Effekt auf den Spread: Elo-Differenz / ELO_TO_SPREAD_FACTOR 50 -> eine B2B-Stufe = 0,03 Punkte je Team. (PointsRating mit Saisonübergang ist im App-Pfad nicht aktiv: engine ist EloEngine.)
+
+TEIL 2 (messen)
+a) Häufigkeit (488 gespeicherte Versionen, 85 Spiele, 21.-31.10.):
+   78 von 488 Versionen (16,0 %) wurden an einem anderen US-Tag erstellt als der Spieltag; 59 von 85 Spielen haben mindestens eine solche Version. Immer Abstand +1 (Spiel am Folgetag).
+   Beispiele: Philadelphia-Cleveland / Oklahoma City-Denver, Spieltag 22.10., gespeichert 22.10. 03:44 Berlin (= 21.10. US); Boston-New York / San Antonio-Houston, Spieltag 23.10., gespeichert 23.10. 02:14 und 02:24 Berlin (= 22.10. US).
+   Näherung: US-Tag aus saved_at; Prognose und Speichern können Minuten auseinanderliegen.
+b) Größe des Effekts (Spieltag -1 und +1, exp_spread/exp_total/Siegchance wie in compute_projection, mit den Marktlinien der letzten Version):
+   Variante 1 (Auftrag, heutiges Modell, Stand 30.10.): problematisch, weil last_game vieler Teams nach dem Spieltag liegt -> Ruhetage 0 -> Effekt zu klein gemessen.
+   Variante 2 (genauer, Modellstand vom Vortag aus data/model_history):
+     Spieltag-1: |Δ exp_spread| Mittel 0,006, Streuung 0,024, Max 0,1 | exp_total Δ 0 | Siegchance Mittel 0,016, Streuung 0,066, Max 0,3 Prozentpunkte
+     Spieltag+1: |Δ exp_spread| Mittel 0,004, Streuung 0,018, Max 0,1 | exp_total Δ 0 | Siegchance Mittel 0,011, Streuung 0,055, Max 0,3 Prozentpunkte
+   Variante 1: Mittel 0,001-0,002, Max 0,1 (exp_spread), Max 0,3 Prozentpunkte (Siegchance); exp_total 0.
+c) Was wirkt: nur _rest_factor (Ruhetage/B2B). Spiele mit |Δ exp_spread| > 0,5: 0 von 85 (beide Varianten, beide Richtungen). Größte Änderung 0,1 Punkte (Rundungsschritt), nur wenn die Rundung kippt.
+   exp_total ändert sich nie (hängt nicht am Datum). Folge: höchstens anders gerundete Anzeigewerte.
+   Nebenbefund: home_rest_days/away_rest_days in pred (Anzeige) sind bei Folgetagsspielen um 1 Tag zu klein (wo angezeigt, ist das sichtbarer als der Elo-Effekt).
+
+TEIL 3 (Einschätzung)
+HARMLOS in der Wirkung (max. 0,1 Punkte Spread, 0,3 Prozentpunkte Siegchance, 0 von 85 Spielen > 0,5); aber in 16 % der gespeicherten Versionen formal falsches Datum – Korrektur lohnt sich nur als Sauberkeit.
+Vorschlag:
+ 1. app.py:423: engine.predict(home, away, date.fromisoformat(game_date[:10])) statt us_today() (game_date steht in Z.422 davor; Fallback us_today() bleibt dort enthalten).
+ 2. Danach ändern sich einzelne Prognosen um höchstens 0,1 Spread -> neuer Snapshot-Hash für betroffene Spiele; vorher mit Nutzer abstimmen.
+ 3. Tests betroffen: tests/test_winner_path_fixes.py (Check "2 App: Elo-Engine bekommt den US-Spieltag", ~Z.104, erwartet us_today() an predict; würde rot) und evtl. tests/test_us_day_app.py (nicht geprüft); neu: Test, dass predict das Spieltag-Datum bekommt (Folgetagsspiel nach 02:00 Berlin).

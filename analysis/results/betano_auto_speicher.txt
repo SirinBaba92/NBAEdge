@@ -1,0 +1,28 @@
+Betano-Automatik, Vorbereitung Speicher (Roadmap 3.2) – 2026-10-31
+Geändert: data/pre_match_store.py. Neu: tests/test_pre_match_auto.py. Kein Abruf, keine Automatik, keine Aufrufer geändert, keine Anzeige geändert.
+
+TEIL 1 (gelesen)
+- pre_match_entries.json: {version 5, entries{<Tag>|<Anpfiff UTC>|<Heim>|<Gast> -> markets{winner_incl_ot, spread, total, team_totals, player_points}}, last_bookmaker, updated_at}.
+  Revisionen: Sieger = Liste am Markt; Spread/Total/Team Total/Spieler = Liste je Linie (revisions[] mit saved_at, action saved|removed). Tageskopie history/pre_match_entries_<Tag>.json (_daily_copy), Sicherung bei Upgrade/defekter Datei (_load_for_write),
+  Anpfiff-Sperre in _prepare_game / save_market (GameStartedError). Atomar: _atomic_write (tmp, fsync, replace).
+- Schreibstellen im Speicher: save_market, save_spread, remove_spread_line, _remove_ou_line (Total/Team Total), _remove_player_part, save_card (alle Märkte in einem Schreibvorgang). Alle liefen bisher nur unter einer Thread-Sperre (RLock).
+  Aufrufer: eingabe.py (execute_plan -> save_card, beim Entfernen remove_*), betano_import.py (über eingabe.run_game, kein eigener Schreibaufruf), Oberfläche ui/pre_match_tab.py / ui/bet_entry.py (save_card / remove_*).
+- day_bets_store._WriteLock: RLock + flock auf day_bets.json.lock (LOCK_EX|LOCK_NB, Wiederholung alle 10 ms, Timeout 10 s -> Fehler "gerade von einem anderen Vorgang geschrieben"). Dasselbe Muster übernommen.
+
+TEIL 2 (gebaut)
+1. Sperre: _lock ist jetzt _StoreLock (RLock + flock auf pre_match_entries.json.lock im Tracking-Ordner, Timeout 10 s -> StoreError, nichts geändert). Der flock wird nur beim äußersten Betreten genommen (wiedereintrittsfähig, save_card -> intern weitere with _lock). Alle bisherigen "with _lock:" bleiben unverändert, keine Aufrufer berührt. Lesen (load) bleibt ohne Sperre (atomares Ersetzen). Die .lock-Datei ist per .gitignore (data/tracking/*.lock) schon ausgenommen.
+2. Quelle: optionales Feld "source" IN JEDER REVISION (revisions[]-Eintrag; Sieger, Linien, Spielerzeilen). Fehlt es -> "hand". Handeingaben schreiben kein Feld (Dateiformat und Version 5 bleiben unverändert, alte Revisionen gelten als hand, kein Upgrade nötig). Die Automatik schreibt "source": "auto".
+3. Vorrang der Hand, so gelöst:
+   - save_auto prüft unter der Sperre, welche Teile (Sieger-Markt, einzelne Spread-/Total-/Team-Total-Linie per ID oder gleichem Linienwert, Spielerblock per person_id) mindestens eine Hand-Revision haben (auch entfernte); diese Zeilen werden vor dem Speichern entfernt, also nie geändert.
+   - Hat die Hand die Hauptlinie eines Marktes, bleibt die ganze Leiter dieses Marktes Hand (Zeilen ohne Hauptlinie wären ohnehin nicht speicherbar). Entfernen gibt es für auto nicht.
+   - Bleibt nichts übrig: {"status": "skipped", "reason": "übersprungen: Handeingabe hat Vorrang", "skipped_hand": n}, die Datei bleibt unberührt. Sonst läuft save_card(source="auto"): neue Revisionen werden als "source": "auto" gekennzeichnet; Rückgabe wie save_card plus "skipped_hand".
+   - Hand überschreibt auto weiterhin normal (die Revision ohne Feld zählt danach als hand, auto ist für diesen Teil gesperrt).
+4. save_auto(game_date, start_utc, home, away, winner=, spread_rows=, total_rows=, team_rows=, player_blocks=, ..., now=) – gleiche Eingaben wie save_card, nirgends aufgerufen. Anpfiff-Sperre und Prüfungen wie bei Hand.
+   Hinweis für später: auto-Zeilen derselben Linie müssen beim nächsten Lauf mit ihrer ID gesendet werden (sonst meldet die Prüfung "Linie kommt mehrfach vor").
+
+TEIL 3 (Tests, alle offline, Temp-Ordner)
+- Neu tests/test_pre_match_auto.py: 17 Prüfungen, alle PASS: 6 Prozesse x 5 Spiele gleichzeitig -> 30 von 30 Spielen vorhanden; Wiedereintritt; alte Revisionen ohne Feld = hand; auto ohne Hand gespeichert und markiert; auto aktualisiert eigene Werte;
+  Hand überschreibt auto; auto nach Hand übersprungen und Datei unverändert; Mischfall; Spielerblock; Anpfiff-Sperre.
+- Vorhanden, alle grün (0 FAIL): test_pre_match 52, _spread 104, _total 66, _team 73, _players 117, _clicks 83, test_eingabe 73, test_eingabe_wiederholen 24, test_spieltag_tab 73, test_betano_import 27, _quotes 41, _replace_lines 10, _replace_team_totals 10, test_player_odds 24, test_day_bets_store 97, test_market_lines 48.
+- Nicht ausgeführt: übrige Tests (z. B. Browser-/Player-Tests). Die echte Tracking-Datei wurde nicht angefasst (git status: nur projection_snapshots.json, die ändert die laufende Automatik/App, nicht diese Arbeit).
+- Offen/Grenze: Der flock schützt Schreibvorgänge. save_card prüft vorab (ohne Sperre) gegen den damals gelesenen Stand – das war schon so; save_auto liest und schreibt dagegen vollständig unter der Sperre.

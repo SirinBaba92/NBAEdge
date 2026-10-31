@@ -1,0 +1,32 @@
+a) Versionen gesamt 488, an anderem US-Tag als Spieltag gespeichert: 78 (16.0 %); betroffene Spiele 59 von 85
+   Abstand Spieltag minus Speicher-US-Tag (Tage): {1: 78}  (+1 = Spiel am Folgetag, Prognose mit 'heute' = Spieltag-1)
+   Bsp: Spieltag 2026-10-22, gespeichert 2026-10-22T03:44:45+02:00 (US 2026-10-21), Diff +1, Philadelphia 76ers - Cleveland Cavaliers
+   Bsp: Spieltag 2026-10-22, gespeichert 2026-10-22T03:44:45+02:00 (US 2026-10-21), Diff +1, Oklahoma City Thunder - Denver Nuggets
+   Bsp: Spieltag 2026-10-23, gespeichert 2026-10-23T02:14:16+02:00 (US 2026-10-22), Diff +1, Boston Celtics - New York Knicks
+   Bsp: Spieltag 2026-10-23, gespeichert 2026-10-23T02:24:08+02:00 (US 2026-10-22), Diff +1, Boston Celtics - New York Knicks
+   Bsp: Spieltag 2026-10-23, gespeichert 2026-10-23T02:14:16+02:00 (US 2026-10-22), Diff +1, San Antonio Spurs - Houston Rockets
+   Bsp: Spieltag 2026-10-23, gespeichert 2026-10-23T02:24:08+02:00 (US 2026-10-22), Diff +1, San Antonio Spurs - Houston Rockets
+   Hinweis: US-Tag = saved_at nach New York; Prognose und Speicherung liegen ggf. Minuten auseinander (Näherung).
+Heutiges Modell: Stand 2026-10-30
+
+b) Variante 1 (Auftrag): heutiges Modell für alle Spiele. ACHTUNG: last_game liegt bei vielen Teams NACH dem Spieltag -> Ruhetage dort 0, Effekt unterschätzt.
+   Datum Spieltag-1: |Δ exp_spread| Mittel 0.001, Streuung 0.011, Max 0.100, n=85
+                     |Δ exp_total|  Mittel 0.000, Streuung 0.000, Max 0.000, n=85
+                     |Δ Siegchance| (Prozentpunkte) Mittel 0.004, Streuung 0.032, Max 0.300, n=85
+     Spiele mit |Δ exp_spread| > 0,5: 0 von 85
+   Datum Spieltag+1: |Δ exp_spread| Mittel 0.002, Streuung 0.015, Max 0.100, n=85
+                     |Δ exp_total|  Mittel 0.000, Streuung 0.000, Max 0.000, n=85
+                     |Δ Siegchance| (Prozentpunkte) Mittel 0.006, Streuung 0.041, Max 0.300, n=85
+     Spiele mit |Δ exp_spread| > 0,5: 0 von 85
+
+b) Variante 2 (realistischer): Modellstand vom Vortag des Spieltags (data/model_history), also mit richtigem last_game/Form
+   Datum Spieltag-1: |Δ exp_spread| Mittel 0.006, Streuung 0.024, Max 0.100, n=85
+                     |Δ exp_total|  Mittel 0.000, Streuung 0.000, Max 0.000, n=85
+                     |Δ Siegchance| (Prozentpunkte) Mittel 0.016, Streuung 0.066, Max 0.300, n=85
+     Spiele mit |Δ exp_spread| > 0,5: 0 von 85
+   Datum Spieltag+1: |Δ exp_spread| Mittel 0.004, Streuung 0.018, Max 0.100, n=85
+                     |Δ exp_total|  Mittel 0.000, Streuung 0.000, Max 0.000, n=85
+                     |Δ Siegchance| (Prozentpunkte) Mittel 0.011, Streuung 0.055, Max 0.300, n=85
+     Spiele mit |Δ exp_spread| > 0,5: 0 von 85
+
+c) Im Elo-predict() wirkt das Datum nur über _rest_factor (models/elo.py:69): days=1 -> -1,5 Elo (B2B), 2 -> 0, >=3 -> +0,45, <=0 -> 0; rest_days-Anzeige. Form, Ratings, Total, Saison hängen nicht am Datum (Saison/Playoff: is_playoff_date(game_date) nutzt bereits den Spieltag).
