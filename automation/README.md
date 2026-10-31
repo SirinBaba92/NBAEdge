@@ -63,3 +63,41 @@ Was du selbst einstellen könntest (von mir nicht geändert, kein sudo, kein `pm
    Das macht dasselbe wie `pmset repeat wakeorpoweron` und braucht Administratorrechte.
 3. 22:00 Berlin entspricht 16:00 Ostküste, also vor den Spielen (Anpfiff ab ca. 19:00 ET): die Linien sind Vorab-Quoten.
    08:00 liegt nach dem Ende der letzten Spiele (ca. 05–06 Uhr).
+
+## Betano-Automatik (vorbereitet, NICHT aktiviert)
+
+`automation/de.nbaedge.betano-auto.plist`: ruft stündlich (`StartInterval` 3600, kein `RunAtLoad`) `venv/bin/python betano_auto.py` auf. Das Skript entscheidet selbst:
+kein Spiel in den nächsten 12 Stunden = übersprungen (kein Abruf bei Betano). Speichert nur als „auto“ und nie über Handeingaben (siehe `betano_auto.py`).
+Der Mac wird nicht geweckt (Amphetamine bleibt an Spieltagen an). Die Plist ist von `install_schedule.sh` NICHT erfasst und nirgends geladen.
+
+**Erst nach einem Beobachtungslauf von Hand aktivieren:**
+
+```bash
+cd ~/Desktop/NBAEdge
+venv/bin/python betano_auto.py ; tail -3 data/automation.log     # ein Lauf von Hand (macht echte Abrufe bei BallDontLie/Betano), Ergebnis prüfen
+```
+
+Aktivieren (danach läuft er stündlich), Deaktivieren, sofortiger Testlauf:
+
+```bash
+cp automation/de.nbaedge.betano-auto.plist ~/Library/LaunchAgents/
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/de.nbaedge.betano-auto.plist
+launchctl enable gui/$(id -u)/de.nbaedge.betano-auto
+launchctl kickstart gui/$(id -u)/de.nbaedge.betano-auto          # optional: sofort ein Lauf
+
+launchctl bootout gui/$(id -u)/de.nbaedge.betano-auto            # Deaktivieren
+rm ~/Library/LaunchAgents/de.nbaedge.betano-auto.plist
+```
+
+**Nach Pause (HTTP 429, 6 Stunden) oder AUS (HTTP 403/401):** die Pause endet von selbst. Bei AUS (oder zum vorzeitigen Aufheben der Pause):
+
+```bash
+venv/bin/python betano_auto.py --reset
+```
+
+**Wo liegt was:** Protokoll `data/automation.log` (Zeilen `job=betano_auto`, jede beginnt mit „Spielplan: Cache / neu geholt“), Zustand `data/betano_auto_state.json`
+(state ok / pause / aus, pause_until, letzter Lauf, letzter Fehler), Sperre `data/betano_auto.lock`, Ausgabe `data/automation_betano_auto.{out,err}.log`.
+Sidebar: eigene Zeile „Betano-Automatik“ unter „Automatik: letzter Lauf …“ (grün ok, gelb Pause / Spielplan nicht verfügbar / Warnung / seit über 3 Std. kein Lauf bei einem Spiel in Sicht, rot AUS oder Fehler, „nicht aktiv“ solange nie gelaufen).
+
+**Recorder:** `betano_auto.run_once` überspringt standardmäßig, wenn der Recorder läuft (`respect_recorder=True`). Im Betrieb ist das AUS:
+`main()` ruft `run_once(respect_recorder=False)` auf: im Betrieb blockiert der Recorder die Automatik nicht.

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>de.nbaedge.betano-auto</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/baranalturk/Desktop/NBAEdge/venv/bin/python</string>
+        <string>/Users/baranalturk/Desktop/NBAEdge/betano_auto.py</string>
+    </array>
+
+    <!-- die App und die Skripte nutzen relative Pfade (data/..., .env) -->
+    <key>WorkingDirectory</key>
+    <string>/Users/baranalturk/Desktop/NBAEdge</string>
+
+    <!-- stündlich (alle 3600 Sekunden); das Skript entscheidet selbst, ob etwas zu tun ist (kein Spiel in Sicht = übersprungen) -->
+    <key>StartInterval</key>
+    <integer>3600</integer>
+
+    <key>RunAtLoad</key>
+    <false/>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PYTHONUNBUFFERED</key>
+        <string>1</string>
+        <key>TZ</key>
+        <string>Europe/Berlin</string>
+    </dict>
+
+    <key>StandardOutPath</key>
+    <string>/Users/baranalturk/Desktop/NBAEdge/data/automation_betano_auto.out.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/baranalturk/Desktop/NBAEdge/data/automation_betano_auto.err.log</string>
+</dict>
+</plist>

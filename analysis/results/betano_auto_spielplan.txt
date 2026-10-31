@@ -1,0 +1,22 @@
+Betano-Automatik, Schritt d: Spielplan selbst holen – 2026-10-31
+Geändert: data/fetcher.py (fetch_upcoming_games(now=None)), betano_auto.py (get_schedule, ScheduleError, run_once), tests/test_betano_auto.py. Kein Abruf, kein Plist, nichts gestartet.
+
+TEIL 1 (gelesen)
+- Heute: betano_auto.run_once -> games_in_sight -> ei.list_games(now, games) liest data/upcoming_cache.json (eingabe.py Z.261ff). Gefüllt wird die Datei NUR von fetcher.fetch_upcoming_games (Z.~107ff), Aufrufer app.py (Z.~411); ohne App wird sie nie aktualisiert.
+- fetch_upcoming_games: Fenster [UTC-heute-1, UTC-heute] (BallDontLie-US-Datum), TTL 10 Min., Cache gilt nur bei gleichem params (ändert sich zum UTC-Datumswechsel); bei Abruffehler wird ein alter Cache stillschweigend genutzt (upcoming_status().stale). _get wirft bei 429 nach Wiederholungen "Max retries exceeded (429)", 403/401 als HTTPError-Text.
+- save_card-Felder: list_games macht aus BDL-Spiel {home, away, date (US-Spieltag aus "date"), start (normalize_start(datetime))} = genau game_date/start_utc/Heim/Gast.
+- Betano-Spielliste allein reicht NICHT: list_events liefert Teams + Anpfiff, aber kein US-Spieldatum (game_date steckt im Schlüssel der Einträge und müsste aus der Anpfiffzeit abgeleitet werden, plus Namensabgleich "LA Clippers"), und die Spiele würden dann anders benannt als in der App.
+- Ergebnis: einfachster sicherer Weg = BallDontLie über die bestehende fetch_upcoming_games (gleiche Spiele, gleiche Schlüssel wie App/Handeingabe, Cache wird nur über diese Funktion geschrieben).
+
+TEIL 2 (gebaut)
+1. fetch_upcoming_games(now=None): now (Epoch) bestimmt UTC-Datum des Fensters und Cache-Alter; ohne Angabe exakt wie vorher, Aufrufer unverändert.
+2. run_once(games=None): get_schedule(now): upcoming_cache.json mit gleichem Fenster und jünger als 6 h -> "Cache" (kein Abruf); sonst genau ein Aufruf von fetch_upcoming_games(now) -> "neu geholt". Fehler oder ersatzweise genutzter alter Cache (stale) -> ScheduleError -> Lauf SKIP "Spielplan nicht verfügbar (...)" (kein Weiterarbeiten auf altem Stand). 429 -> Pause 6 h, 403/401 -> AUS bis reset, wie bei Betano (gleiches Zustandsfile). Spielplan wird vor dem Betano-Abruf geholt, nach Sperre/Recorder/Zustand.
+3. Zeiten (Test, MEZ): im 30-Minuten-Schritt über 3 Tage geht kein Spiel verloren, das in den nächsten 12 h beginnt (Fenster UTC-heute-1..heute deckt das ab, weil BDL-Datum = US-Datum). 23:59 UTC / 00:01 UTC: Fensterwechsel, Spiele des Folgetags noch >12 h entfernt; 17:00 Berlin: 2 Spiele; 02:00 Berlin: begonnenes Spiel nicht, nächstes ja; Folgetag-Spiele ab Nachmittag. Zwei Läufe nacheinander: Spielplan nur einmal geholt, zweites Mal unchanged (nicht doppelt).
+4. Protokoll: jede Zeile von job=betano_auto beginnt mit "Spielplan: Cache" | "Spielplan: neu geholt" | "Spielplan: übergeben" (Test-Schalter games=).
+Hinweis: Das Protokoll "Spielplan nicht verfügbar" ist SKIP (Sidebar gelb erst nach 36 h ohne OK/SKIP, nicht sofort). Wegen "Cache 6 h" kann eine Spielverschiebung bis zu 6 h unbemerkt bleiben (Spiel verschoben -> Anpfiff prüft save_auto weiter; Betano-Zuordnung ±18 h).
+
+TEIL 3 (Tests, offline)
+- tests/test_betano_auto.py: 44 PASS, 0 FAIL (16 neu: Cache alt/frisch, Fehlerfälle, 429/403 bei BallDontLie über fake_net, c1-c7 Zeiten). BDL-Spielplan über eine Ersatzfunktion für fetcher._get (filtert nach Datum wie die API).
+- Mitgelaufen, 0 FAIL: test_pre_match_auto 18, test_us_day_app 13, test_odds_cache 70, test_eingabe 73, test_betano_import 27, _replace_lines 10, _replace_team_totals 10, test_score_day 48, test_live_feed_pre_start 28, test_snapshots 81, test_score_history 78, test_winner_path_fixes 26, test_value_bets_switch 15, test_automation 51.
+- Echte Dateien (tracking, automation.log, upcoming_cache.json, Zustand, Sperre, Kader) per Hash vorher/nachher unverändert.
+- Ein Zwischenfehler im Test (c7: Betano-Testliste hatte den Anpfiff vom 21.10., Zuordnung ±18 h schlug fehl, Spiel "skipped") war Testaufbau, nicht Code; Liste im Test auf den Anpfiff angepasst.

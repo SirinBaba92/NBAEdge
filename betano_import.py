@@ -476,6 +476,21 @@ def main(argv=None, real=input, write=print, now_fn=time.time, after=None, befor
         except Exception:
             write("Kader konnte nicht aktualisiert werden")
     payloads = [] if live else load_payloads(src)
+    hand_lock = None
+    if live:                                                 # Handabruf haelt die Betano-Sperre, solange er laeuft (die Automatik startet dann nicht); frei nach Ende
+        from data import job_lock
+        hand_lock = job_lock.FileLock(timeout=120.0)
+        if not hand_lock.acquire():
+            write("Die Betano-Automatik läuft gerade (Sperrdatei belegt). Bitte in ein bis zwei Minuten noch einmal starten.")
+            return 1
+    try:
+        return _run_games(games, payloads, live=live, real=real, write=write, now_fn=now_fn, after=after)
+    finally:
+        if hand_lock:
+            hand_lock.release()
+
+
+def _run_games(games, payloads, live, real, write, now_fn, after) -> int:
     if live:
         payloads = [fetch_json(LIST_PATH)["data"]]
     events = list_events(payloads)

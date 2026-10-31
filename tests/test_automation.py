@@ -130,7 +130,7 @@ os.environ.pop("BALLDONTLIE_API_KEY", None)
 
 # ============================================================ D) plist- und Shell-Dateien
 lint = subprocess.run(["plutil", "-lint"] + [str(p) for p in sorted((ROOT / "automation").glob("*.plist"))], capture_output=True, text=True)
-check("plutil -lint fuer beide plist-Dateien", lint.returncode == 0 and lint.stdout.count(": OK") == 2, lint.stdout.strip().replace("\n", " | "))
+check("plutil -lint fuer alle plist-Dateien (update-model, fetch-odds, betano-auto)", lint.returncode == 0 and lint.stdout.count(": OK") == 3, lint.stdout.strip().replace("\n", " | "))
 exp = {"de.nbaedge.update-model": ("update_model.py", 8, "automation_update_model"), "de.nbaedge.fetch-odds": ("fetch_odds_daily.py", 22, "automation_fetch_odds")}
 for label, (script, hour, out) in exp.items():
     d = plistlib.loads((ROOT / "automation" / f"{label}.plist").read_bytes())
@@ -183,7 +183,7 @@ def entry(job, result, detail, hours_ago):
     return f"{(datetime.now().astimezone() - timedelta(hours=hours_ago)).isoformat(timespec='seconds')} | job={job} | result={result} | detail={detail}\n"
 elo_mod.MODEL_PATH = MODEL_PATH
 Path(os.environ["NBAEDGE_AUTOMATION_LOG"]).unlink(missing_ok=True)
-a0 = app().run(); check("ohne automation.log: keine Automatik-Zeile", "Automatik" not in side(a0))
+a0 = app().run(); check("ohne automation.log: keine Zeile \"Automatik: letzter Lauf\" (die Betano-Zeile zeigt dezent \"nicht aktiv\")", "Automatik: letzter Lauf" not in side(a0) and "Betano-Automatik: nicht aktiv" in side(a0))
 with_log([entry("fetch_odds_daily", "OK", "3 Spiele, noch 444 Credits", 5), entry("update_model", "OK", "5 neue Spiele, Ratings bis 2026-10-20", 3)])
 a1 = app().run(); t = side(a1)
 check("OK-Lauf: 'Automatik: letzter Lauf Ratings dd.mm. HH:MM, OK', nicht gelb", "Automatik: letzter Lauf Ratings" in t and ", OK" in t and "facc15" not in t.split("Automatik")[1][:60], t.split("Automatik")[1][:90])

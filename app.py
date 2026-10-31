@@ -212,28 +212,45 @@ def is_game_running(game: dict) -> bool:
 
 def render_automation_status(slot) -> None:
     """Sidebar: 'Automatik: letzter Lauf <Auftrag> <Zeit>, <Ergebnis>' aus data/automation.log (gelb bei Fehler oder
-    wenn ein Auftrag laenger als 36 Std. ohne erfolgreichen Lauf ist). Ohne Protokoll: keine Zeile."""
+    wenn ein Auftrag laenger als 36 Std. ohne erfolgreichen Lauf ist). Ohne Protokoll: keine Zeile.
+    Darunter die eigene Zeile 'Betano-Automatik' (_render_betano_status)."""
     from data import automation_log
 
     status = automation_log.sidebar_status()
-    if status is None:
-        return
-    names = {"update_model": "Ratings", "fetch_odds_daily": "Quoten"}
-    result = {"OK": "OK", "SKIP": "übersprungen", "WARN": "Warnung", "ERROR": "Fehler"}[status["result"]]
-    text = (
-        f"Automatik: letzter Lauf {names.get(status['job'], status['job'])} "
-        f"{status['time'].strftime('%d.%m. %H:%M')}, {result}"
-        + (f" ({status['detail']})" if status["detail"] else "")
-    )
-    with slot.container():
-        if status["warn"]:
-            st.markdown(
-                f'<div style="font-size:0.8rem;color:#facc15;font-weight:600">{html_escape(text)}<br>'
-                f"⚠ {html_escape(status['hint'])}</div>",
-                unsafe_allow_html=True,
+    with slot.container():       # slot ist ein st.empty(): beide Zeilen in EINEN Container
+        if status is not None:
+            names = {"update_model": "Ratings", "fetch_odds_daily": "Quoten"}
+            result = {"OK": "OK", "SKIP": "übersprungen", "WARN": "Warnung", "ERROR": "Fehler"}[status["result"]]
+            text = (
+                f"Automatik: letzter Lauf {names.get(status['job'], status['job'])} "
+                f"{status['time'].strftime('%d.%m. %H:%M')}, {result}"
+                + (f" ({status['detail']})" if status["detail"] else "")
             )
-        else:
-            st.caption(text)
+            if status["warn"]:
+                st.markdown(
+                    f'<div style="font-size:0.8rem;color:#facc15;font-weight:600">{html_escape(text)}<br>'
+                    f"⚠ {html_escape(status['hint'])}</div>",
+                    unsafe_allow_html=True,
+                )
+            else:
+                st.caption(text)
+        _render_betano_status()
+
+
+def _render_betano_status() -> None:
+    """Sidebar: eigene Zeile 'Betano-Automatik' (data/automation_log.betano_status): gruen / gelb / rot, nie gelaufen = dezent 'nicht aktiv'. Nur Lesen, kein Netz."""
+    from data import automation_log
+
+    b = automation_log.betano_status()
+    color = {"green": "#4ade80", "yellow": "#facc15", "red": "#f87171"}.get(b["level"])
+    if color is None:
+        st.caption(b["text"])
+    else:
+        st.markdown(
+            f'<div style="font-size:0.8rem;color:{color};font-weight:600">{html_escape(b["text"])}'
+            + (f'<br>⚠ {html_escape(b["hint"])}' if b["hint"] else "") + "</div>",
+            unsafe_allow_html=True,
+        )
 
 
 def render_odds_status(slot) -> None:

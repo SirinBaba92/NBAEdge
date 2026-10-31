@@ -1,0 +1,27 @@
+Betano-Automatik, Schritt e: Plist, README, Sidebar-Zeile + Gegenprobe "erst auto, dann Hand" – 2026-10-31
+Neu: automation/de.nbaedge.betano-auto.plist, tests/test_betano_auto_sidebar.py, tests/test_betano_auto_then_hand.py. Geändert: automation/README.md, app.py (Sidebar), data/automation_log.py, betano_auto.py (main: respect_recorder=False), tests/test_automation.py.
+Nichts geladen, nichts nach ~/Library/LaunchAgents kopiert, kein launchctl, kein Abruf.
+
+TEIL 1: vorhandene Plists = Label, venv/bin/python + Skript (absolute Pfade), WorkingDirectory, StartCalendarInterval, RunAtLoad false, Env (PYTHONUNBUFFERED, TZ), Ausgabe data/automation_<job>.{out,err}.log.
+Sidebar: automation_log.sidebar_status liest die letzten Zeilen von data/automation.log; gelb bei ERROR/WARN im letzten Lauf oder >36 Std. ohne OK/SKIP/WARN eines Auftrags; sonst Caption. Es gibt kein Rot in der bestehenden Zeile.
+
+TEIL 2
+1. Plist: StartInterval 3600, kein RunAtLoad, venv/bin/python betano_auto.py, Ausgabe data/automation_betano_auto.{out,err}.log (nicht in tracking). install_schedule.sh/uninstall_schedule.sh bewusst unverändert (kennen nur die zwei alten Aufträge).
+2. README: Abschnitt "Betano-Automatik" (Beobachtungslauf von Hand zuerst, cp + launchctl bootstrap/enable/kickstart, bootout + rm, --reset, Ablageorte, Recorder-Hinweis).
+3. Sidebar: eigene Zeile darunter (betano_status, nur Lesen, kein Netz): nie gelaufen = "Betano-Automatik: nicht aktiv" (Caption, keine Farbe); grün = ok (auch "kein Spiel in Sicht"); gelb = Pause (mit Ende), Spielplan nicht verfügbar, Warnung, oder Spiel in Sicht (upcoming_cache.json, 12 h) und letzter Lauf >3 Std.; rot = AUS (Hinweis --reset) oder letzter Lauf ERROR. Zustandsfile hat Vorrang (AUS/aktive Pause); abgelaufene Pause wird nicht mehr gezeigt.
+   WICHTIG – Nebenwirkung vermieden: betano_auto schreibt stündlich ins gleiche Protokoll. Die bestehende Zeile "Automatik: letzter Lauf …" hätte sonst immer betano_auto gezeigt und nach Pausen fälschlich "seit über 36 Std." gemeldet. sidebar_status ignoriert deshalb betano_auto (SEPARATE_JOBS) und liest 2000 statt 400 Zeilen. Die Zeile ist sonst unverändert.
+   Erweitert: Die Zeile wird jetzt in EINEM Container mit der bestehenden Zeile gerendert (der Platz ist ein st.empty()).
+   Zwei Annahmen: "WARN" zeige ich gelb (in der Vorgabe nicht genannt); "Spieltag" = Spiel in den nächsten 12 h laut Cache (kein eigener Spielplanabruf in der App).
+
+TEIL 3 – Tests (offline, Temp-Ordner), alle grün
+- test_betano_auto_sidebar 26 PASS (Logik, App, Plist: plutil, Label, StartInterval 3600, kein RunAtLoad, Pfade auf venv/betano_auto.py, ~/Library/LaunchAgents unverändert, README-Abschnitt).
+- test_betano_auto_then_hand 21 PASS (umgekehrter Fall, siehe unten); test_betano_auto 44, test_pre_match_auto 18, test_spieltag_tab 73, test_pre_match 52, test_pre_match_clicks 83, test_eingabe 73, test_betano_import 27.
+- test_automation: 2 Anpassungen, beide erwartbar und nicht still: (a) "ohne automation.log: keine Automatik-Zeile" prüfte das Wort "Automatik"; jetzt zeigt die neue Zeile dezent "Betano-Automatik: nicht aktiv" -> Prüfung auf "Automatik: letzter Lauf" (die bestehende Zeile) + neue Zeile; (b) "plutil -lint für beide plist" zählte 2 Dateien -> jetzt 3.
+- Echte Dateien (automation.log, Zustand, tracking, upcoming_cache, Kader, ~/Library/LaunchAgents) per Hash/ls unverändert.
+- Ein Test war zunächst rot wegen falscher Erwartung im Test (Sidebar-Reihenfolge: Markdown vor Caption in der Abfrage; Revisionszahl 3 statt 6), nicht wegen des Codes.
+
+UMGEKEHRTER FALL (erst auto, dann Hand) – Ergebnis: unauffällig, am Speicher nichts geändert
+- Handimport (eingabe.execute_plan, Enter bei "Speichern?") mit geänderten Quoten über volle Karte (Sieger, Spread, Total, Team Totals, Spieler): "Gespeichert.", keine doppelten/verwaisten Linien, Spieler nur einmal; Revisionen auto…, dann hand (ohne source); der Teil gilt danach als hand; spätere Automatik -> skipped, Eintrag byte-gleich.
+- save_card ohne source (App-Weg) nur für den Sieger: normal gespeichert, andere Märkte bleiben auto und werden von der Automatik weiter aktualisiert; save_card auf einer auto-Spread-Linie mit ihrer ID: gleiche Linie, danach Hand, Automatik fasst die Spread-Leiter nie mehr an.
+- Anzeige: Tab Pre-Match mit auto-Eintrag: keine Exception/Warnung, Felder (Sieger, Spread, Total) mit den auto-Quoten vorbelegt, Anzeige schreibt nichts. "schon gespeichert, unverändert"-Hinweis (eingabe-Zusammenfassung) stimmt auch für auto-Werte; Handimport mit gleichen Quoten -> "Nichts geändert.".
+- Auffällig (nur beschrieben): (1) Bestätigt jemand von Hand unveränderte auto-Quoten ("Nichts geändert."), entsteht KEINE Hand-Revision: der Teil bleibt "auto" und die Automatik darf ihn später mit neuen Betano-Quoten überschreiben. Wer sie festhalten will, muss eine Zahl ändern. (2) Nichts in der Oberfläche zeigt die Quelle (auto/hand) an. (3) Revisionen mit "source" werden von keinem UI-Code gelesen (geprüft per grep), daher keine Anzeigeprobleme.

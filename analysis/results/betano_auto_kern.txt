@@ -1,0 +1,26 @@
+Betano-Automatik, Kern (Roadmap 3.2) – 2026-10-31
+Neu: betano_auto.py, data/job_lock.py, tests/test_betano_auto.py. Kleine Änderungen: eingabe.py (execute_plan: optionaler Parameter save_fn), betano_import.py (main: Sperre bei Live-Abruf), .gitignore (data/*.lock).
+Kein echter Abruf, kein Plist, nichts gestartet, nicht eingebunden.
+
+TEIL 1 (wiederverwendet aus betano_import.py / eingabe.py)
+- Spielliste/Spiel holen: fetch_json (Z.~441), LIST_PATH, EVENT_REQ, PAUSE_SECONDS; Adresse des Spiels wie in main: ev["url"] + EVENT_REQ, "/quoten/" -> "/api/quoten/".
+- Lesen: list_events, match_event (Zuordnung Spiel <-> Betano-Spiel über Teams + Anpfiff ±18 h), parse_event, AutoAnswers (beantwortet die Fragen von eingabe.build_plan ohne Prompt; "Speichern?" wird nie erreicht, weil ich build_plan direkt aufrufe).
+- Aufbau der Eingaben für den Speicher: eingabe.build_plan + execute_plan (baut die save_card-Argumente). Dafür einzige Änderung: execute_plan(..., save_fn=None). Mit save_fn=store.save_auto wird save_auto statt save_card gerufen und NIE entfernt (plan["remove"] ignoriert). Ohne save_fn exakt das alte Verhalten.
+- Interaktiver Teil (Prompts, Speichern?, run_game) unverändert.
+- betano_import.main: bei Live-Abruf (ohne --datei) wird die Betano-Sperre gehalten (wartet bis 120 s, sonst Meldung + Rückgabe 1); --datei und Tests unberührt.
+
+TEIL 2 (gebaut) – betano_auto.run_once(now, fetch, sleep, pause_seconds, games, respect_recorder)
+1. Ablauf: Sperre -> Recorder-Sperre -> Zustand -> Spiele aus ei.list_games (Cache, vor Anpfiff) mit Anpfiff in den nächsten 12 h -> keines: SKIP "kein Spiel in Sicht" (ohne Betano-Abruf) -> 1 Listenabruf -> je Spiel 1 Abruf (3 s Pause) -> parsen -> save_auto. Ergebnis je Spiel: saved / unchanged / skipped (Hand hat Vorrang, Spiel begonnen oder nicht in Betano-Liste) / error.
+2. Fehler: Timeout/Format/Prüfung -> nur dieses Spiel (error, WARN). 429 -> sofort stoppen, state=pause, pause_until=jetzt+6 h. 403 -> sofort stoppen, state=aus bis "python betano_auto.py --reset" (oder betano_auto.reset()). 3 Fehler im Lauf -> Abbruch (ERROR). Gilt auch für 403/429 auf der Spielliste. Spielliste unlesbar -> ERROR.
+3. Zustandsfile data/betano_auto_state.json (folgt automation.log, nicht in tracking): state ok|pause|aus, pause_until, last_run, last_error. Atomar geschrieben.
+4. Sperre data/betano_auto.lock (flock, nicht blockierend): belegt -> SKIP. Zusätzlich SKIP, wenn die Recorder-Sperre (~/NBAEdge_live_history/.recorder.lock bzw. NBAEDGE_LIVE_DIR) belegt ist (Schalter respect_recorder=False).
+5. Protokoll job=betano_auto in data/automation.log (OK/SKIP/WARN/ERROR, ohne URLs/Keys, Zeitstempel = now).
+6. python betano_auto.py = ein Lauf (Exit 1 nur bei ERROR); --reset = Freigabe.
+ACHTUNG (Entscheidung nötig): Der Recorder läuft an Spieltagen von ca. 17 Uhr bis zum Morgen. Mit "Recorder belegt -> überspringen" liefe die Automatik genau in den Stunden vor dem Anpfiff (US-Abend = Berliner Nacht) nie, sobald der Recorder läuft. Ich habe es wie bestellt eingebaut, aber als Schalter (respect_recorder); empfehle, es für den echten Betrieb auszuschalten (der Recorder liest nur cdn.nba.com und schreibt andere Dateien).
+Weitere Grenzen: Die Spiele kommen aus data/upcoming_cache.json (nur von der App befüllt, kann alt sein, dann "kein Spiel in Sicht"). Der Cache-Aufbau im Hintergrund gehört noch zur nächsten Stufe.
+
+TEIL 3 (Tests, offline, alles in Temp-Ordnern)
+- Neu tests/test_betano_auto.py: 28 PASS, 0 FAIL: kein Spiel in Sicht / begonnen / erst in 15 h -> SKIP ohne Abruf; Speichern als auto (alle Revisionen source=auto, 2 Abrufe); zweiter Lauf unchanged; nach Handimport skipped und Eintrag byte-gleich; Timeout nur das Spiel (WARN); 429 stoppt + 6 h Pause, Lauf in der Pause tut nichts, danach läuft es; 403 -> aus, bleibt aus, reset; 3 Fehler brechen ab (4. und 5. Spiel nicht abgerufen); Betano-Sperre belegt / Recorder belegt -> SKIP; Handabruf bei belegter Sperre -> Meldung; echte Dateien (tracking, automation.log, Zustand, Sperre, Kader) per Hash vorher/nachher unverändert.
+- Mitgelaufen, alle 0 FAIL: test_pre_match_auto 18, test_pre_match 52, test_betano_import 27, _quotes 41, _replace_lines 10, _replace_team_totals 10, zusätzlich weil eingabe.py geändert: test_eingabe 73, _wiederholen 24, test_pre_match_players 117 / _total 66 / _team 73 / _spread 104, test_spieltag_tab 73, test_automation 51.
+- Nicht ausgeführt: die übrigen Tests.
+- Beim ersten Testlauf waren 5 Prüfungen rot, Ursachen: (a) im Lauf-Ergebnis fehlte nach 403/429 das Ergebnis ERROR (Fehler in betano_auto.py, behoben), (b) Testaufbau: Spiele-Cache fehlte für den Handimport, Spielbeginn lag nach der Pause schon in der Vergangenheit. Beides korrigiert, nichts anderes geändert.

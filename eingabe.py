@@ -677,10 +677,11 @@ def _remove_all(g: dict, plan: dict, now: float | None) -> list:
     return removed
 
 
-def execute_plan(g: dict, plan: dict, entry: dict | None, roster: dict, ref: dict, now: float | None = None) -> dict:
+def execute_plan(g: dict, plan: dict, entry: dict | None, roster: dict, ref: dict, now: float | None = None, save_fn=None) -> dict:
     """Schreibt den Plan. Vor dem Schreiben wird der Eintrag frisch von der Platte gelesen; unveraenderte Zeilen werden nicht erneut
     geschrieben (nur wenn der Store die Hauptlinie als erste Zeile verlangt, mit dem aktuellen Plattenwert). Rueckgabe: das Ergebnis von save_card
-    (oder {'status': 'unchanged'}). Wirft CardInputError/OddsInputError/GameStartedError/StoreError."""
+    (oder {'status': 'unchanged'}). Wirft CardInputError/OddsInputError/GameStartedError/StoreError.
+    save_fn (Automatik: store.save_auto): ersetzt save_card; dann werden NIE Linien/Bloecke entfernt (plan['remove'] wird ignoriert)."""
     key = store.game_key(g["date"], g["start"], g["home"], g["away"])
     fresh = (store.load().get("entries") or {}).get(key)
 
@@ -724,7 +725,7 @@ def execute_plan(g: dict, plan: dict, entry: dict | None, roster: dict, ref: dic
         if not (sw and _same(sw["home_odds"], plan["winner"]["home_odds"]) and _same(sw["away_odds"], plan["winner"]["away_odds"])):
             winner = {"home_odds": _str(plan["winner"]["home_odds"]), "away_odds": _str(plan["winner"]["away_odds"]), "bookmaker": BOOKMAKER}
     if winner is None and spread_rows is None and total_rows is None and not blocks and all(v is None for v in team_rows.values()):
-        return {"status": "unchanged", "removed": _remove_all(g, plan, now)}
+        return {"status": "unchanged", "removed": [] if save_fn else _remove_all(g, plan, now)}
     main_total = next((r["line"] for r in plan["total"] if r["id"] == "main"), None)
     main_spread = next((r["line"] for r in plan["spread"] if r["id"] == "main"), None)
     sugg = tsugg = None
@@ -737,10 +738,10 @@ def execute_plan(g: dict, plan: dict, entry: dict | None, roster: dict, ref: dic
               team_suggestion=team_sugg, team_names={"away": nick(g["away"]), "home": nick(g["home"])}, player_blocks=blocks or None,
               roster_fetched_at=roster.get("fetched_at"), now=now)
     # Erst pruefen (mit den geplanten Entfernungen als erledigt), dann entfernen, dann speichern: wird das Speichern abgelehnt, bleibt alles wie es war.
-    if plan["remove"]:
+    if plan["remove"] and save_fn is None:
         store.save_card(g["date"], g["start"], g["home"], g["away"], assume_removed=list(plan["remove"]), dry_run=True, **kw)
-    removed = _remove_all(g, plan, now)
-    res = store.save_card(g["date"], g["start"], g["home"], g["away"], **kw)
+    removed = [] if save_fn else _remove_all(g, plan, now)
+    res = (save_fn or store.save_card)(g["date"], g["start"], g["home"], g["away"], **kw)
     res["removed"] = removed
     return res
 

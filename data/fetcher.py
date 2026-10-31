@@ -104,16 +104,16 @@ def upcoming_status() -> dict:
     return dict(_upcoming_status)
 
 
-def fetch_upcoming_games() -> list[dict]:
+def fetch_upcoming_games(now: float | None = None) -> list[dict]:
     """Fetch today's upcoming games (not yet started).
 
     Die Roh-Antwort wird UPCOMING_GAMES_TTL_SECONDS (10 Min.) auf der Festplatte zwischengespeichert
     (data/upcoming_cache.json), damit Neuladen und neue Sitzungen das BallDontLie-Rate-Limit nicht ausloesen.
     Schlaegt der Abruf fehl und es gibt einen Cache fuer dieselben Daten, wird dieser (auch abgelaufen) genutzt.
-    Gefiltert wird bei jedem Aufruf neu (Zeitfenster relativ zu jetzt)."""
+    Gefiltert wird bei jedem Aufruf neu (Zeitfenster relativ zu jetzt). now (Epoch-Sekunden) nur fuer Tests und die Automatik; ohne Angabe die aktuelle Zeit."""
     from datetime import datetime, timezone, timedelta
     from config.settings import UPCOMING_GAMES_TTL_SECONDS
-    today = datetime.now(timezone.utc).date()
+    today = (datetime.fromtimestamp(now, timezone.utc) if now is not None else datetime.now(timezone.utc)).date()
     params = {
         "start_date": (today - timedelta(days=1)).isoformat(),
         "end_date": today.isoformat(),
@@ -129,7 +129,7 @@ def fetch_upcoming_games() -> list[dict]:
     except Exception:
         cached = None
 
-    now_ts = time.time()
+    now_ts = now if now is not None else time.time()
     if cached and now_ts - cached.get("fetched_at", 0) < UPCOMING_GAMES_TTL_SECONDS:
         games = cached["games"]
     else:

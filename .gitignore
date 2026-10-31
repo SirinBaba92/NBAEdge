@@ -44,3 +44,4 @@ analysis/results/eval_player_forecasts_*.txt
 
 # Eigener Cache beendeter Boxscores (data/live_feed.py)
 data/final_boxes/
+data/*.lock
