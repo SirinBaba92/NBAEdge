@@ -34,8 +34,8 @@ def real_files():
 real_before = real_files()
 
 # ------------------------------------------------------------- Engine
-PRE = {"ok": True, "minutes": {"base": 34.0, "mean": 33.0, "role": "Stamm"}, "minutes_adjusted": 33.0, "expected_points_adjusted": 22.0}
-BENCH = {"ok": True, "minutes": {"base": 14.0, "mean": 14.0, "role": "Bank"}, "minutes_adjusted": 14.0, "expected_points_adjusted": 5.0}
+PRE = {"ok": True, "minutes": {"base": 34.0, "mean": 33.0, "role": "Stamm"}, "minutes_adjusted": 33.0, "expected_points_adjusted": 22.0, "expected_points_raw": 24.0}
+BENCH = {"ok": True, "minutes": {"base": 14.0, "mean": 14.0, "role": "Bank"}, "minutes_adjusted": 14.0, "expected_points_adjusted": 5.0, "expected_points_raw": 5.5}
 def P(points=10, minutes=15.0, fouls=1, status="spielt", idle=0.0): return NS(points=points, minutes=minutes, fouls=fouls, status=status, idle_s=idle)
 CK = lambda period, left, status=2, text="": gc.build_game_clock(status, text, period, left)
 def lc(n, player, clock, hs=60, as_=58, pre=PRE): return pl.live_chance(n, player, clock, hs, as_, pre)
@@ -175,6 +175,17 @@ md = " ".join(x.value for x in at.markdown)
 check("Tab bei laufendem Spiel: keine Exception/Warnung", not at.exception and not problems(at), " | ".join(problems(at))[:200])
 check("'Meine Spieler-Wetten': Karte 'Punkte 12 von 20, noch 8' (laufend), Live-Chance in Prozent (ungeprüft)", "Punkte 12 von 20, noch 8" in md and re.search(r"pl-prob-val'>\d+ %</span><span class='pl-prob-sub'>noch 8 Pkt\.</span><span class='pl-prob-tiny'>ungeprüft</span>", md) is not None)
 check("Prognose-Karten des laufenden Spiels: Zeile 'Jetzt', Live-Chance je Meilenstein (2) und Hinweiszeile 'Spiel läuft ... UNGEPRÜFT (Version live-1)'", "pl-c-now'>Jetzt: <b>12</b> Pkt · <b>16,0</b> Min · <b>1</b> Fouls" in md and len(re.findall(r"pl-c-live'>Live \d+ %<", md)) == 2 and "Version live-1" in md and "Q3 10:00" in md, "")
+
+# Live-Start mit Roh-Werten (Modell A); Rueckfall auf Teamabgleich-Werte nur mit Hinweis. Handrechnung (Spieler 10 Pkt. in 15 Min., Prior K = 12 Min.):
+#   roh:  ppm_pre = 24 / 33 = 0,72727; ppm = (10 + 12 * 0,72727) / (15 + 12) = 18,7273 / 27 = 0,69360
+#   alt:  ppm_pre = 22 / 33 = 0,66667; ppm = (10 + 12 * 0,66667) / 27 = 18 / 27 = 0,66667   (Restminuten rem gleich; erwartete Restpunkte = ppm * rem)
+r_raw = lc(20, P(points=10, minutes=15.0), CK(2, "PT06M00.00S"))
+PRE_OLD = {k: v for k, v in PRE.items() if k != "expected_points_raw"}
+r_old = lc(20, P(points=10, minutes=15.0), CK(2, "PT06M00.00S"), pre=PRE_OLD)
+check("Live-Start nimmt Roh: Restpunkte/Restminuten = (10 + 12*24/33)/27 = 0,6936", abs(r_raw.expected_remaining_points / r_raw.remaining_minutes - 18.7273 / 27) < 1e-4 and not any("Roh-Werte" in n for n in r_raw.notes),
+      f"{r_raw.expected_remaining_points / r_raw.remaining_minutes:.4f}")
+check("Rueckfall ohne Roh-Werte im Snapshot: bisheriger Wert (10 + 12*22/33)/27 = 0,6667, Hinweis in den Notizen, keine Exception, gleiche Restminuten",
+      abs(r_old.expected_remaining_points / r_old.remaining_minutes - 18.0 / 27) < 1e-4 and any("Snapshot ohne Roh-Werte" in n for n in r_old.notes) and abs(r_old.remaining_minutes - r_raw.remaining_minutes) < 1e-9)
 
 check("echte Dateien (Tracking, Snapshots) unveraendert", real_files() == real_before)
 print("\nALLES OK" if ok else "\nFEHLER")

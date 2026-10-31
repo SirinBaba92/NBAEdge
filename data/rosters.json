@@ -1,7 +1,7 @@
 {
  "version": 1,
  "format": "nbaedge-rosters",
- "fetched_at": "2026-10-28T21:39:10+01:00",
+ "fetched_at": "2026-10-30T23:07:27+01:00",
  "source": "nba_api.PlayerIndex",
  "season": "2026-27",
  "abrufe": 1,
@@ -1720,6 +1720,14 @@
     "team_abbreviation": "LAC"
    },
    {
+    "person_id": 1631104,
+    "name": "Blake Wesley",
+    "position": "G",
+    "jersey": "20",
+    "team_id": 1610612746,
+    "team_abbreviation": "LAC"
+   },
+   {
     "person_id": 203078,
     "name": "Bradley Beal",
     "position": "G",
@@ -1787,7 +1795,7 @@
     "person_id": 1629618,
     "name": "Jalen Pickett",
     "position": "G",
-    "jersey": "24",
+    "jersey": "21",
     "team_id": 1610612746,
     "team_abbreviation": "LAC"
    },
@@ -1862,14 +1870,6 @@
     "name": "Adou Thiero",
     "position": "G",
     "jersey": "1",
-    "team_id": 1610612747,
-    "team_abbreviation": "LAL"
-   },
-   {
-    "person_id": 1643758,
-    "name": "AK Okereke",
-    "position": "F",
-    "jersey": "31",
     "team_id": 1610612747,
     "team_abbreviation": "LAL"
    },
@@ -1950,6 +1950,14 @@
     "name": "Kevon Looney",
     "position": "F",
     "jersey": "55",
+    "team_id": 1610612747,
+    "team_abbreviation": "LAL"
+   },
+   {
+    "person_id": 1643133,
+    "name": "Lawson Lovering",
+    "position": "C",
+    "jersey": "",
     "team_id": 1610612747,
     "team_abbreviation": "LAL"
    },
@@ -3669,7 +3677,7 @@
     "person_id": 1642951,
     "name": "Sean Pedulla",
     "position": "G",
-    "jersey": "",
+    "jersey": "3",
     "team_id": 1610612758,
     "team_abbreviation": "SAC"
    },

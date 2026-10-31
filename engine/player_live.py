@@ -98,7 +98,7 @@ def points_distribution_tail(lam: float, var: float, k: int) -> float:
 
 def live_chance(milestone: int, player, clock: gc.GameClock, home_score: int, away_score: int, pre: dict | None = None) -> LiveChance:
     """Live-Chance, dass der Spieler mindestens `milestone` Punkte erreicht. player: PlayerLive (points, minutes, fouls, status, idle_s ...), clock: GameClock des Spiels,
-    pre: Spieler aus dem Prognose-Snapshot (minutes{base, role}, minutes_adjusted, expected_points_adjusted) oder None."""
+    pre: Spieler aus dem Prognose-Snapshot (minutes{base, mean, role}, expected_points_raw; Rückfall: minutes_adjusted, expected_points_adjusted) oder None."""
     notes = []
     pts, played, fouls = int(player.points), float(player.minutes), int(player.fouls)
     need = int(milestone) - pts
@@ -111,8 +111,14 @@ def live_chance(milestone: int, player, clock: gc.GameClock, home_score: int, aw
     # Vorab-Werte
     if pre and pre.get("ok", True) and pre.get("minutes"):
         mu0 = float(pre["minutes"].get("base") or pre["minutes"].get("mean") or C["default_mu0"])
-        m_adj = float(pre.get("minutes_adjusted") or pre["minutes"].get("mean") or mu0)
-        ppm_pre = float(pre.get("expected_points_adjusted") or pre.get("expected_points_raw") or 0.0) / m_adj if m_adj > 0 else C["default_ppm"]
+        # Start mit den Roh-Werten (Modell A: erwartete Punkte roh / Minuten roh); der Teamabgleich (Modell B) ist ausgeblendet. mu0 = minutes.base ist bereits roh.
+        if pre.get("expected_points_raw") is not None and pre["minutes"].get("mean"):
+            m_raw = float(pre["minutes"]["mean"])
+            ppm_pre = float(pre["expected_points_raw"]) / m_raw if m_raw > 0 else C["default_ppm"]
+        else:   # alter Snapshot ohne Roh-Werte: bisherige (Teamabgleich-)Werte, sichtbar im Hinweis
+            m_adj = float(pre.get("minutes_adjusted") or pre["minutes"].get("mean") or mu0)
+            ppm_pre = float(pre.get("expected_points_adjusted") or 0.0) / m_adj if m_adj > 0 else C["default_ppm"]
+            notes.append("Snapshot ohne Roh-Werte: Live-Start mit Teamabgleich-Werten (Rückfall)")
         role = pre["minutes"].get("role") or pf.role_for_minutes(mu0)
     else:
         mu0, ppm_pre, role = C["default_mu0"], C["default_ppm"], pf.role_for_minutes(C["default_mu0"])

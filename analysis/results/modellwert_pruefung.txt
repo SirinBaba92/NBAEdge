@@ -1,0 +1,50 @@
+MODELLWERT VOR DER MARKTMISCHUNG: PRUEFUNG (30.10.2026, nur gelesen, keine Datei ausser diesem Bericht geaendert)
+
+1. WO WIRD GEMISCHT
+  Spread + Total (und daraus Team Total, Siegchance): engine/projection.py, Funktion der Projektion (Zeilen 71-91)
+    exp_total  = model_total  * (1 - w) + market_total  * w      (w = 0,32 / 0,40 / 0,48 / 0,55 nach Abstand Modell-Markt)
+    exp_spread = model_spread * 0,75     + market_spread * 0,25
+    danach Playoff-Abzug und Team-Bias (Zeilen 94-110). Siegchance home_win_prob = Normalverteilung um den GEMISCHTEN exp_spread (Zeile ~133).
+  Moneyline: zwei Dinge. (a) Die angezeigte Siegchance haengt am gemischten exp_spread (s. o.); die reine Elo-Siegchance bleibt als
+    home_win_prob_elo erhalten (engine/projection.py:138). (b) engine/ev.py blend_probabilities (Zeile 12): 0,3 Modell + 0,7 Sharp-Quote,
+    nur fuer den Value-Bets-Tab; der ist ausgeschaltet (config/settings.py:11 SHOW_VALUE_BETS = False, app.py:467), es wird nichts gespeichert.
+  Team Total: keine eigene Mischung, wird aus gemischtem exp_total und exp_spread abgeleitet ((Total +- Spread) / 2, projection.py:107-108).
+  Spielerpunkte: keine Marktmischung. engine/player_forecast.py rechnet aus dem Spielerverlauf (roh, p_ge_raw); "adjusted" ist ein Teamabgleich auf die
+    Teampunkte des Spielmodells (also auf den gemischten Wert), nicht auf eine Quote. Betano-Quoten stehen nur daneben ("quotes"), fliessen nicht ein.
+
+2./3. WAS WIRD GESPEICHERT (echte Datei data/tracking/projection_snapshots.json, 78 Spiele, 21.10. bis 30.10.2026)
+  Feld "versions[].projection" (jede Version): exp_spread, exp_total, home_score, away_score, home_win_prob (alle GEMISCHT) plus
+    market_total, market_spread (Marktlinie) und home_win_prob_elo / away_win_prob_elo (reines Elo-Modell, ab sigmas_version "2").
+    Das reine Modell ist in "versions" NICHT als Zahl abgelegt.
+  Feld "card" (je Spiel, nur der Stand der LETZTEN Version, wird bei jeder neuen Version ueberschrieben): model_total, model_spread, market_weight,
+    spread_market_weight, market_total_used, market_spread_used, blended_total_before_rounding. Vorhanden bei allen 78 Spielen (ab 21.10.2026).
+  Beispiele (Karte vs. Version, andere Zahl, nicht gleicher Wert unter anderem Namen):
+    21.10. Miami Heat - Minnesota: model_total 241,2 | exp_total 241,0 (Markt 240,5, w 0,32); model_spread -1,1 | exp_spread -0,5 (Markt 1,5); home_win_prob_elo fehlt (null)
+    24.10. Charlotte - Miami:      model_total 233,8 | exp_total 232,0 (Markt 228,5); model_spread 3,8 | exp_spread 2,0 (Markt -3,5);
+                                   Siegchance gemischt 0,5602 | Elo 0,606
+    30.10. Washington - Charlotte: model_total 227,4 | exp_total 226,0 (Markt 222,9); model_spread -7,3 | exp_spread -5,4 (Markt 0,4);
+                                   Siegchance gemischt 0,3412 | Elo 0,2545
+  Spielerpunkte: analysis/results/forecast_snapshots/<Tag>.json, je Spieler expected_points_raw und p_ge_raw (roh) neben expected_points_adjusted und
+    p_ge_adjusted (Teamabgleich). Vorhanden ab 2026-10-21. Beispiel 21.10. Dort: 7,74 roh | 5,62 adjusted; 29.10. Daniels: 12,50 roh | 12,40 adjusted
+    (Zahlen weichen ab, also echte zweite Werte). Der Abgleich, nicht die Quote, ist hier der Unterschied.
+
+4. ERGEBNIS JE MARKT
+  Moneyline:    gespeichert (Elo-Wert home_win_prob_elo in projection_snapshots.json, versions[].projection, ab Spieltag 22.10.2026; am 21.10. bei 0 von 11 Spielen)
+                Einschraenkung: reines Elo-Modell, nicht der "Spread-Wert ohne Markt". Gemischte Siegchance ist ebenfalls gespeichert.
+  Spread:       teilweise gespeichert: model_spread nur in "card" (projection_snapshots.json, games[].card.model_spread), nur letzter Stand je Spiel, ab 21.10.2026.
+  Total:        teilweise gespeichert: model_total nur in "card" (games[].card.model_total), nur letzter Stand je Spiel, ab 21.10.2026.
+  Team Total:   nicht gespeichert (nur gemischt); rechnerisch aus card.model_total und card.model_spread ableitbar: (Total +- Spread) / 2, ohne Playoff-Abzug und Bias.
+  Spielerpunkte: gespeichert (forecast_snapshots/<Tag>.json: expected_points_raw, p_ge_raw), ab 21.10.2026; keine Marktmischung vorhanden.
+  Unklar: ob "card" bei beendeten Spielen nach Ablauf von FINAL_CARD_HOURS (24 h) je entfernt wird; im heutigen Bestand sind alle 78 Karten da.
+
+5. WAS FEHLT UND WO MAN ES MITSPEICHERN MUESSTE (nicht umgesetzt)
+  - model_total und model_spread in jede Version von projection_snapshots.json (versions[].projection, data/projection_snapshots.py Zeile ~228), nicht nur in "card":
+    sonst geht der reine Wert frueherer Versionen verloren, wenn sich die Version aendert (Markt-Linie wechselt, Modell bleibt).
+  - zusaetzlich model_home_score / model_away_score ((model_total +- model_spread) / 2) als "Team Total ohne Markt"; und market_weight / spread_market_weight in die Version.
+  - Hash der Version beachten: neue Felder aendern den Hash und erzeugen eine neue Version (Aenderung in _hash-Berechnung abwaegen).
+  - Fuer Spieltage vor dem Einbau bleiben die Werte aus "card" (nur letzter Stand) die beste Quelle.
+
+NICHT GEPRUEFT
+  - ob "card" fuer alle aelteren, beendeten Spiele bestehen bleibt (nur bis 30.10. im aktuellen Bestand gesehen).
+  - ob die Elo-Siegchance wirklich unbeeinflusst vom Markt ist: gelesen (engine/projection.py:138, pred["home_win_prob"] aus dem Elo-Modell), nicht nachgerechnet.
+  - die Sicherungskopien (data/tracking/history) und data/model_history/market_history wurden nicht untersucht.

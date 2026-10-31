@@ -1,0 +1,64 @@
+Befund: date.today() / datetime.now() / time.time() im Produktivcode – 2026-10-30
+Gesucht in allen *.py außer tests/, analysis/, venv/. Rund 200 Treffer; die Mehrheit sind Epoch-Vergleiche (time.time() gegen Anpfiff/Cache-Alter) oder Zeitstempel und
+zeitzonenunabhängig. Unten: alle Stellen, an denen ein Spieltag, eine Saison oder ein Stichtag aus der Uhr bestimmt wird, dann die Sammelgruppen.
+Gelesen, nicht gelaufen, nichts geändert. Zeilen per grep geprüft (Stand heute).
+
+Vorhandene richtige Funktionen (drei Definitionen von "heute", nicht gleich):
+ - data/live_feed.current_us_day(t) (Z.55) und record_live.current_us_day(t) (Z.83): gleiche Regel, Berliner Zeit explizit, Wechsel 17:00 Berlin. Benutzt in live_feed, ui/player_tab (Z.56, mit now),
+   Recorder. Rechner-Zeitzone egal (BERLIN fest).
+ - data/game_updates.us_today(now=None) (Z.15): Kalenderdatum in New York (Wechsel 06:00 Berlin). Benutzt in app.py (Z.304, 422, 423). Bewusst anders (Kommentar im Modulkopf: "nicht date.today()").
+   Zwischen 06:00 und 17:00 Berlin liefern die beiden verschiedene Tage (us_today = Berliner Datum, current_us_day = Vortag). Das ist gewollt (Zweck: Spieldatum vs. "laufender Spieltag"), aber
+   zwei Begriffe für "US-Tag" sind eine Stolperfalle.
+ - Saison: data/fetcher.current_season(today=None) (int), data/rosters.season_string(today=None) ('2026-27'), models/points_rating.season_for_date(d) (aus US-Datum), data/player_history.current_season
+   (ruft rosters.season_string). Alle: ab 1. Oktober neue Saison. Defaults rufen date.today() = Systemdatum des Rechners.
+
+A. Die vier genannten Stellen
+ 1. models/elo.py:242 predict(home, away, game_date=None) -> date.today(). Zweck: Ruhetage (_rest_factor) für den Spieltag. Nur Rückfall: die einzige Produktivstelle, app.py:423, übergibt us_today().
+    Falsch werden kann es nur bei Aufruf ohne Datum (Mitternacht/17:00/andere Zeitzone: Systemdatum <> US-Datum um bis zu 1 Tag; Ruhetage dann ±1). Parameter vorhanden (game_date). Einstufung: unsauber (nicht erreichbar).
+    models/elo.py:300 save(): Dateiname-Stempel ratings_as_of() or date.today(): harmlos.
+ 2. models/points_rating.py:154 predict(..., game_date=None) -> date.today(); Docstring sagt selbst "US-Datum!". Zweck: Saisonwahl (ensure_season(season_for_date)) und Modell-Übernahme bei neuer Saison, die danach
+    im Modell GESPEICHERT wird (self.season). Falsch am 1. Oktober, wenn jemand ohne Datum aufruft (Rechner in Europa früher als US). Produktiv ruft app.py:423 über engine.predict mit us_today(): nicht erreichbar.
+    Parameter vorhanden. Einstufung: unsauber (Seiteneffekt macht es heikler als bei elo). Z.269 save-Stempel: harmlos.
+ 3. data/fetcher.py:29 current_season(today=None): Saison-Startjahr nach Systemdatum. Einziger Aufrufer im Produktivcode: fetch_all_games (Z.54, Training/Modellupdate: bestimmt, ob ein Saison-Cache gelesen wird).
+    Falsch am 1. Oktober bis zu 6 h früher/später je nach Rechner; Folge: laufende Saison wird einmal aus dem Cache gelesen oder unnötig neu geladen. Einstufung: unsauber (Ergebnis hängt an Rechnerzeit, im Alltag richtig). Parameter vorhanden.
+    data/fetcher.py:116 fetch_upcoming_games: today = datetime.now(timezone.utc).date(), Fenster [heute-1, heute] als BallDontLie-US-Datum, Cache-Schlüssel = params, Alter per time.time() (Z.132).
+    Prüfung: das Fenster enthält den laufenden US-Tag D zu jeder Berliner Uhrzeit (UTC-Datum ist D oder D+1, Fenster reicht einen Tag zurück); ab ca. 02:00 Berlin (20:00 ET) enthält es zusätzlich D+1-Spiele; der Cache wird
+    zum UTC-Datumswechsel ungültig (params ändern sich) -> ein zusätzlicher Abruf. Kein Datenverlust. Einstufung: unsauber (UTC statt US-Tag). KEIN Parameter now (2 Änderungen: now= und Nutzung in Z.116/132).
+    Ob nachgelagert D+1-Spiele zuverlässig herausgefiltert werden: nicht geprüft (app.py zeigt nur den aktiven Tag, score_day).
+ 4. data/rosters.py:41 season_string(today=None): Saison nach Systemdatum. Aufrufer: player_history.current_season() (ohne Argument aus engine/team_injury.py:149 und get_player_summary Z.283 ohne Stichtag),
+    rosters.refresh Z.230 (aus now: datetime.fromtimestamp(now).date() = LOKALES Datum des Rechners). Zweck: Saisonwahl für Kader-Abruf, Verletzungsberechnung, Spielerschnitt. Falsch wird es nur am 1. Oktober
+    (Rechner in anderer Zeitzone: bis zu einem halben Tag Abweichung). Strukturell wichtiger: ab 1.10. gilt die NEUE Saison, obwohl die ersten Spiele erst ~21.10. sind -> current_season hat 3 Wochen lang keine
+    Zeilen (Verhalten von team_injury dann: Rückgriff auf Vorjahr, nicht geprüft). Das ist Designfrage, nicht Uhrfrage. Einstufung: unsauber. Parameter vorhanden (today=, now=).
+
+B. Weitere Stellen mit Tag/Saison/Stichtag
+ 5. app.py:1775 "Player Props" (alter Tab): Saison = date.today().year/ .month >= 10. Kein Parameter. Einstufung: unsauber (gleiche Regel, 4. Kopie). 1 Änderung (fetcher.current_season() oder rosters.season_string()).
+ 6. app.py:423 engine.predict(home, away, us_today()) – korrekte Funktion, aber der Tag ist der HEUTIGE ET-Tag, nicht game_date (Z.422 = Spieltag aus BallDontLie). Für Spiele eines anderen US-Tags (Fenster
+    enthält D+1 ab ca. 02:00 Berlin; D-1 am Vormittag) werden Ruhetage/Form mit "heute" statt dem Spieltag berechnet. Sichtbar wird es kaum (App zeigt nur den aktiven Tag), aber der gespeicherte Snapshot
+    kann solche Spiele betreffen. Einstufung: Fehlerrisiko, gering (kleine Abweichung, Auswirkung nicht gemessen). Ein-Zeilen-Änderung (game_date statt us_today()), aber das ändert Prognosewerte -> nur mit Absprache/Test.
+ 7. data/player_history.py:346/369 refresh_current_season/…: Saison aus datetime.fromtimestamp(now).date() (lokal), now= vorhanden: unsauber/harmlos, testbar.
+ 8. data/injuries.py:21: NewsAPI-Fenster 4 Tage ab UTC-Datum; optional (nur mit NEWS_API_KEY): harmlos.
+ 9. data/rosters.py:136/214/229 load/ensure_fresh/refresh: Cache-Alter per Epoch: harmlos, now= vorhanden.
+10. Tageskopien/Backup-Dateinamen mit lokalem Kalendertag: data/day_bets_store.py:190, pre_match_store.py:290, projection_snapshots.py:101 (now= vorhanden), engine/player_snapshots.py:76; espn_injuries.py:62 (Berlin fest):
+    der "Tag" ist hier nur ein Dateiname. Rechner in anderer Zeitzone -> Kopien um den Tageswechsel anders geschnitten. Harmlos.
+11. Zeitstempel/Anzeige: app.py:329 (Mock-Quoten, Entwicklerfunktion), 563/617 last_refresh, 660/664 Anzeige; data/live_market.py:44/62; data/odds_client.py:100/121/138/199 (Cache-Alter, Log; Z.199 ohne now);
+    automation_log.py; betano_*; player_snapshots.py:93/132 (now= als datetime, Standard UTC); data/player_history.py:65: harmlos.
+12. Epoch-Vergleiche gegen Anpfiff (is_bet_editable, game_state, pregame_lines, day_bets_store, bet_entry.py:280, player_bet_entry.py:127, bet_slip.py:215, bet_cards_component.py:27, pre_match_tab.py:49, score_cards.py:126,
+    score_day.py:54): Zeitzone spielt keine Rolle (Epoch/UTC) bzw. Berlin ist explizit gesetzt. Harmlos. Die UI-Stellen ohne now= (bet_entry:280, player_bet_entry:127, bet_slip:215) sind nur schwer testbar,
+    aber ihre Logik liegt in Funktionen mit now= (ds.is_bet_editable, ...).
+13. record_live.py:85/93/105/345: Berlin bzw. ET explizit, Rechner-unabhängig. Einziges Problem: current_us_day existiert zweimal (record_live und live_feed) – gleiche Regel heute, könnte auseinanderlaufen. Unsauber, aber gewollt
+    (Recorder soll ohne App-Import laufen; nicht geprüft, ob er live_feed importieren dürfte).
+
+C. Testbarkeit mit fester Zeit
+ - Mit Parameter: elo.predict(game_date), points_rating.predict(game_date), fetcher.current_season(today), rosters.season_string(today), rosters.refresh/load/ensure_fresh(now), player_history.*(now), pre_match_store/
+   projection_snapshots/day_bets_store/pregame_lines/espn_injuries (now), game_updates.us_today(now), current_us_day(t), player_snapshots (now datetime).
+ - Ohne Parameter: fetch_upcoming_games (2 Änderungen: now= einführen, in Z.116 und 132 nutzen), app.py:1775 (1 Änderung, Ersatz durch bestehende Funktion), app.py:423 (1 Zeile, mit Wirkung auf Prognosen),
+   odds_client.py:199, ui-Zeilen bet_entry:280/player_bet_entry:127/bet_slip:215 (je 1 Änderung, nur für UI-Tests relevant), elo.save/points_rating.save (Fallback-Stempel, nicht nötig).
+
+D. Empfehlung
+ Ändern (in dieser Reihenfolge):
+ 1. app.py:423: game_date statt us_today() prüfen – zuerst messen, ob sich Prognosen/Snapshots ändern (einziger Punkt mit möglicher Wirkung auf Daten). Mit Absprache, da sie Modellwerte verändert.
+ 2. data/fetcher.fetch_upcoming_games: now= einführen (Testbarkeit des Fensters/Cache-Schlüssels), Verhalten gleich lassen; später prüfen, ob statt UTC das US-Datum genommen werden soll.
+ 3. app.py:1775: durch rosters.season_string() ersetzen (4. Kopie der Saisonregel).
+ 4. models/points_rating.predict und models/elo.predict: Rückfall date.today() durch game_date-Pflicht oder game_updates.us_today() ersetzen (Absicherung, keine Wirkung im Alltag).
+ Besser lassen: alle Epoch-Vergleiche, Zeitstempel, Dateinamen-Stempel, Tageskopien, Anzeige, NewsAPI-Fenster, odds_client, record_live (Duplikat current_us_day dokumentieren statt verschieben),
+ Saison-Default-Funktionen mit vorhandenem today=/now= (nur an den Aufrufstellen darauf achten, dass ein Datum übergeben wird). Offen als Designfrage: Saisonbeginn am 1. Oktober (3 Wochen ohne Zeilen in current_season).

@@ -1,0 +1,32 @@
+MODELLWERT MITSPEICHERN: PROTOKOLL (30.10.2026)
+
+TEIL 1: BLEIBT "card" NACH SPIELENDE ERHALTEN? JA.
+  data/projection_snapshots.py:310 setzt card nur beim Anlegen einer neuen Version; Zeile ~307 ueberspringt Spiele mit result oder nach Anpfiff.
+  Nirgends wird card geloescht oder auf None gesetzt (nur Zeile 303 beim Anlegen eines Spiels). Nach Spielende friert card also ein.
+  Belege (echte Datei, 21.10., beendet, 11 von 11 mit Ergebnis, 0 beendete Spiele ohne card):
+    Miami Heat - Minnesota (106:131): card model_total 241,2, model_spread -1,1, market_weight 0,32
+    Los Angeles Lakers - Golden State (127:105): card model_total 228,1, model_spread 8,3, market_weight 0,32
+
+TEIL 2: GEBAUT (nur data/projection_snapshots.py, build_snapshot, Block "projection", plus Doku-Kopf)
+  Neue Felder in versions[].projection: model_total, model_spread, market_weight, spread_market_weight, model_home_score, model_away_score.
+  Nur gesetzt, wenn die Projektion model_total und model_spread hat (Mock/aeltere Aufrufer: Felder fehlen, kein Fehler).
+  engine/projection.py ist NICHT geaendert. Alte Versionen sind nicht angefasst.
+  ABWEICHUNG VON DER VORGABE "nichts neu berechnen": model_home_score / model_away_score gibt es in projection.py nicht. Sie sind
+    (model_total +/- model_spread) / 2 (positiv = Heim staerker), also vor Mischung, Playoff-Abzug und Bias. Nur diese eine Rechnung ist neu.
+    Alternative waere, die zwei Werte in engine/projection.py zusaetzlich auszugeben. Das wollte ich nicht ohne Freigabe aendern.
+  FOLGE: Der Hash einer Version enthaelt die neuen Felder. Beim naechsten Lauf bekommt daher jedes noch nicht begonnene Spiel einmalig eine
+    zusaetzliche Version (gleiche Zahlen, nur mit den neuen Feldern). Danach gilt wieder: ohne Aenderung keine neue Version.
+
+TEIL 3: TESTS
+  tests/test_snapshots.py             81 PASS, 0 FAIL
+  tests/test_spieltag_tab.py          73 PASS, 0 FAIL
+  tests/test_snapshots_modellwert.py  (NEU) 10 PASS, 0 FAIL: Version hat alle 6 Felder; Werte = Projektion; Modellwert weicht vom gemischten Wert ab
+    (Total 240,5 Markt); Teampunkte-Summe/Differenz stimmen; zweiter Abruf ohne Aenderung = keine zusaetzliche Version, Datei unveraendert;
+    Aenderung der Total-Linie = genau eine neue Version, alte unveraendert, model_total gleich, exp_total anders; Projektion ohne Modellwerte
+    laesst die Felder weg; echte Datei unveraendert.
+  Beim ersten Lauf war 1 Pruefung rot: Fehler im neuen Test selbst (market_total steht nicht in der Test-Projektion), im Test korrigiert.
+  Kein bestehender Test wurde geaendert, keiner wurde wegen der neuen Felder rot.
+
+NICHT GEPRUEFT
+  - echter App-Lauf mit der echten Datei (die einmalige Zusatzversion je Spiel ist aus dem Code abgeleitet, nicht gesehen).
+  - andere Tests, die Versionen/Hashes aus projection_snapshots.json lesen (test_history_view, test_player_forecast, test_eingabe u. a.): nicht gelaufen.

@@ -22,7 +22,8 @@ DEFAULT_STAKE = 10.0
 # ----------------------------------------------------------------------------------------------- Hilfsfunktionen (ohne Streamlit)
 def option_label(o: dict, mode: str = "team") -> str:
     """'20+ · Quote 1,85 · Betano 71 % · Modell 72 %' (Modell nur mit Snapshot; Modus Teamabgleich oder roh wie bei den Karten)."""
-    m = o.get("model_team") if mode != "raw" else o.get("model_raw")
+    from config import settings
+    m = o.get("model_team") if mode != "raw" and settings.SHOW_TEAM_ADJUSTED else o.get("model_raw")
     model = "" if m is None else f" · Modell {int(m * 100 + 0.5)} %"
     return f"{o['milestone']}+ · Quote {fmt_num(o['odds'], 2)} · Betano {o['bookmaker_percent']} %{model}"
 

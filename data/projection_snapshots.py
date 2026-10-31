@@ -7,7 +7,8 @@ Datei: data/tracking/projection_snapshots.json  (Ordner ueber NBAEDGE_TRACKING_D
        "game_date", "start_utc", "home", "away",
        "versions": [{"saved_at", "hash",
                      "model": {"file_mtime", "file_size", "sha1", "ratings_as_of"},
-                     "projection": {"exp_spread", "exp_total", "home_score", "away_score", "home_win_prob", "away_win_prob", "home_win_prob_elo", "away_win_prob_elo" (nur ab sigmas_version "2"), "market_total", "market_spread"},
+                     "projection": {"exp_spread", "exp_total", "home_score", "away_score", "home_win_prob", "away_win_prob", "home_win_prob_elo", "away_win_prob_elo" (nur ab sigmas_version "2"), "market_total", "market_spread",
+                                    ab 30.10.2026 zusaetzlich "model_total", "model_spread", "market_weight", "spread_market_weight", "model_home_score", "model_away_score" = Modellwerte VOR der Marktmischung; aeltere Versionen haben sie nicht},
                      "markets": {"spread"|"total"|"team_total_away"|"team_total_home": {"line", "source", "bookmaker", "line_at", "cache_line", "warn"}},
                      "tables": {"spread"|"total"|"team_away"|"team_home": {"kind", "source", "favorite", "derived", "note",
                                   "rows": [{"line", "p_left", "p_right", "predicted", "is_main"}]}},
@@ -234,6 +235,10 @@ def build_snapshot(proj: dict, entry: dict | None, model: dict) -> dict | None:
         "sigmas_version": lp.SIGMAS_VERSION,
         "pre_match_ref": ref,
     }
+    if proj.get("model_total") is not None and proj.get("model_spread") is not None:      # reiner Modellwert VOR der Marktmischung (engine/projection.py); fehlt er (Mock, aeltere Aufrufer), bleiben die Felder weg
+        mt, ms = float(proj["model_total"]), float(proj["model_spread"])
+        out["projection"].update({"model_total": _num(mt), "model_spread": _num(ms), "market_weight": _num(proj.get("market_weight")), "spread_market_weight": _num(proj.get("spread_market_weight")),
+                                  "model_home_score": _num((mt + ms) / 2), "model_away_score": _num((mt - ms) / 2)})      # Team-Punkte aus model_total/model_spread (positiv = Heim staerker), vor Mischung, Playoff-Abzug und Bias
     if team2:                      # Verletzungs-Variante "team-2" (engine/team_injury.py): nur mit Block, damit Projektionen ohne ihn denselben Inhalt/Hash wie bisher haben
         out["team2"] = {"version": team2.get("version"), "base": team2.get("base"), "measure_home": _num(team2.get("measure_home")), "measure_away": _num(team2.get("measure_away")),
                         "missing_home": team2.get("missing_home") or [], "missing_away": team2.get("missing_away") or [], "delta_spread": _num(team2.get("delta_spread")),

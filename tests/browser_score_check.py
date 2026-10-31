@@ -1,8 +1,9 @@
 """Echter Browsertest (headless Chrome) fuer die Score-Projections-Karten: Expander SPREAD/TOTAL/TEAM TOTAL mit Wahrscheinlichkeits-Balken, Herkunftszeile, eigene Linie
 aus der Pre-Match Eingabe. Startet die ECHTE app.py (tests/_harness_score_app.py, simulierte Netzantworten, Temp-Ordner, kein echtes Netz).
 NICHT Teil der normalen Testsuite (braucht Google Chrome). Aufruf aus dem Projektordner: venv/bin/python tests/browser_score_check.py"""
-import asyncio, base64, datetime as dt, json, os, subprocess, sys, tempfile, time, urllib.request
+import asyncio, base64, datetime as dt, json, os, re, signal, socket, subprocess, sys, tempfile, time, urllib.request
 from pathlib import Path
+from zoneinfo import ZoneInfo
 ROOT = Path(__file__).resolve().parent.parent
 os.chdir(ROOT); sys.path.insert(0, str(ROOT)); sys.path.insert(0, str(ROOT / "tests"))
 CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
@@ -13,7 +14,17 @@ os.environ["NBAEDGE_ROSTERS"] = str(tmp / "rosters.json")
 ro.write(ro.build(fake_index(), dt.datetime.now().astimezone().isoformat(timespec="seconds"), "2026-27"))
 os.environ["NBAEDGE_TRACKING_DIR"] = str(tmp / "tracking")                 # Temp-Ordner: beendetes Spiel (Schnappschuss + Ergebnis) fuer die Chips
 import snapshot_fixture
-snapshot_fixture.finished_game()
+from data import live_feed as lf
+# Feste Uhr (wie tests/test_player_live.py): T0 = 22.10.2026 21:00 Berliner Zeit = mitten im US-Spieltag D (22.10.), 4 h nach dem Wechsel um 17:00 und 3 h vor Mitternacht (das Datum, das fake_net per date.today() vergibt, ist so gleich D). Alle Harness-Spiele liegen relativ zu T0
+# (Knicks/Spurs +3 h, Pistons -10 min, Beendetes -5 h) und damit in D - zu jeder echten Uhrzeit.
+T0 = dt.datetime(2026, 10, 22, 21, 0, 0, tzinfo=ZoneInfo("Europe/Berlin")).timestamp()
+D = lf.current_us_day(T0)
+CLOCK_OFFSET = T0 - time.time()                 # die App sieht real + CLOCK_OFFSET (Uhr laeuft weiter, beginnt bei T0)
+app_now = lambda: time.time() + CLOCK_OFFSET
+_real_time = time.time
+time.time = lambda: T0                          # nur fuer die Fixture des beendeten Spiels (Anpfiff T0 - 5 h)
+try: snapshot_fixture.finished_game(date=D)
+finally: time.time = _real_time
 real_snap_existed = (ROOT / "data" / "tracking" / "projection_snapshots.json").exists()
 real_file = ROOT / "data" / "tracking" / "pre_match_entries.json"; real_bytes = real_file.read_bytes() if real_file.exists() else None
 real_roster = ROOT / "data" / "rosters.json"; real_roster_bytes = real_roster.read_bytes() if real_roster.exists() else None
@@ -24,16 +35,87 @@ def check(name, cond, info=""):
     ok &= bool(cond)
     print(("PASS " if cond else "FAIL ") + name + (f"  [{info}]" if info else ""))
 
-server = subprocess.Popen([sys.executable, "-m", "streamlit", "run", str(ROOT / "tests" / "_harness_score_app.py"), "--server.port", "8769", "--server.headless", "true", "--browser.gatherUsageStats", "false"],
-                          env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-chrome = subprocess.Popen([CHROME, "--headless=new", "--disable-gpu", "--remote-debugging-port=9336", f"--user-data-dir={tmp / 'profile'}", "--no-first-run", "about:blank"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+def free_port():
+    with socket.socket() as so:
+        so.bind(("127.0.0.1", 0)); return so.getsockname()[1]
+PORT, CPORT = free_port(), free_port()
+while CPORT == PORT: CPORT = free_port()
+
+# Starter fuer den App-Prozess: setzt die Uhr (time.time, datetime.now) auf real + CLOCK_OFFSET und startet dann den unveraenderten Harness. Streamlit fuehrt das Skript bei jedem Rerun neu aus -> nur einmal patchen.
+LAUNCHER = tmp / "launch_harness.py"
+LAUNCHER.write_text(f'''import datetime as _dt, runpy, time
+if not getattr(time, "_nbaedge_clock", False):
+    _off, _real, _RD = float(__import__("os").environ["CLOCK_OFFSET"]), time.time, _dt.datetime
+    time.time = lambda: _real() + _off
+    class _Meta(type(_RD)):
+        def __instancecheck__(cls, obj): return isinstance(obj, _RD)
+    class _FakeDT(_RD, metaclass=_Meta):
+        @classmethod
+        def now(cls, tz=None): return _RD.fromtimestamp(_real() + _off, tz)
+        @classmethod
+        def today(cls): return cls.now()
+        @classmethod
+        def utcnow(cls): return _RD.fromtimestamp(_real() + _off, _dt.timezone.utc).replace(tzinfo=None)
+    class _MetaD(type(_RD.__mro__[1])):
+        def __instancecheck__(cls, obj): return isinstance(obj, _RD.__mro__[1])
+    class _FakeDate(_RD.__mro__[1], metaclass=_MetaD):
+        @classmethod
+        def today(cls): return _RD.fromtimestamp(_real() + _off).date()
+    _dt.datetime = _FakeDT
+    _dt.date = _FakeDate
+    time._nbaedge_clock = True
+runpy.run_path({str(ROOT / "tests" / "_harness_score_app.py")!r}, run_name="__main__")
+''')
+env["CLOCK_OFFSET"] = repr(CLOCK_OFFSET)
+
+def listener_pids(port):
+    r = subprocess.run(["lsof", "-nP", f"-iTCP:{port}", "-sTCP:LISTEN", "-t"], capture_output=True, text=True)
+    return {int(x) for x in r.stdout.split()}
+def descends_from(pid, root):
+    """True, wenn pid der Prozess root ist oder von ihm abstammt (ps ppid-Kette)."""
+    for _ in range(20):
+        if pid == root: return True
+        r = subprocess.run(["ps", "-o", "ppid=", "-p", str(pid)], capture_output=True, text=True)
+        if not r.stdout.strip(): return False
+        pid = int(r.stdout.strip())
+    return False
+def stop(proc):
+    """Prozess samt Kindern beenden (eigene Prozessgruppe): erst SIGTERM, nach 5 s SIGKILL."""
+    if proc is None: return
+    for sig in (signal.SIGTERM, signal.SIGKILL):
+        try: os.killpg(proc.pid, sig)
+        except (ProcessLookupError, PermissionError): pass
+        try: proc.wait(timeout=5); break
+        except subprocess.TimeoutExpired: continue
+    try: os.killpg(proc.pid, signal.SIGKILL)       # Reste (Chrome-Helfer) auch nach dem Hauptprozess
+    except (ProcessLookupError, PermissionError): pass
+
+server_log = tmp / "server.log"; chrome_log = tmp / "chrome.log"
+server = chrome = None
+failed = True
 try:
-    for _ in range(60):
-        try: urllib.request.urlopen("http://localhost:8769/healthz", timeout=1); break
+    with open(server_log, "wb") as sl, open(chrome_log, "wb") as cl:
+        server = subprocess.Popen([sys.executable, "-m", "streamlit", "run", str(LAUNCHER), "--server.port", str(PORT), "--server.address", "127.0.0.1", "--server.headless", "true", "--browser.gatherUsageStats", "false"],
+                                  env=env, stdout=sl, stderr=subprocess.STDOUT, start_new_session=True)
+        chrome = subprocess.Popen([CHROME, "--headless=new", "--disable-gpu", f"--remote-debugging-port={CPORT}", f"--user-data-dir={tmp / 'profile'}", "--no-first-run", "about:blank"],
+                                  stdout=cl, stderr=subprocess.STDOUT, start_new_session=True)
+    for _ in range(120):
+        if server.poll() is not None: raise RuntimeError(f"Streamlit-Prozess vorzeitig beendet (Code {server.returncode})")
+        try: urllib.request.urlopen(f"http://127.0.0.1:{PORT}/healthz", timeout=1); break
         except Exception: time.sleep(0.5)
-    for _ in range(60):
-        try: pages = json.load(urllib.request.urlopen("http://localhost:9336/json/list")); break
+    else: raise RuntimeError("Streamlit antwortet nicht auf /healthz")
+    own = listener_pids(PORT)
+    if server.poll() is not None or not own or not all(descends_from(x, server.pid) for x in own):
+        raise RuntimeError(f"Port {PORT} gehoert nicht dem eigenen Serverprozess (Listener {sorted(own)}, eigener {server.pid})")
+    for _ in range(120):
+        if chrome.poll() is not None: raise RuntimeError(f"Chrome vorzeitig beendet (Code {chrome.returncode})")
+        try: pages = json.load(urllib.request.urlopen(f"http://127.0.0.1:{CPORT}/json/list", timeout=1)); break
         except Exception: time.sleep(0.5)
+    else: raise RuntimeError("Chrome-DevTools antworten nicht")
+    own_c = listener_pids(CPORT)
+    if not own_c or not all(descends_from(x, chrome.pid) for x in own_c):
+        raise RuntimeError(f"Chrome-Port {CPORT} gehoert nicht dem eigenen Chrome (Listener {sorted(own_c)}, eigener {chrome.pid})")
+    check(f"eigene Prozesse belegen die freien Ports (Streamlit {PORT}, Chrome {CPORT}); T0 = {dt.datetime.fromtimestamp(T0, ZoneInfo('Europe/Berlin')):%d.%m.%Y %H:%M} Berlin, Spieltag D = {D}", True)
     ws_url = [p for p in pages if p["type"] == "page"][0]["webSocketDebuggerUrl"]
     from tornado.websocket import websocket_connect
 
@@ -60,7 +142,7 @@ try:
             await call("Input.dispatchKeyEvent", type="keyDown", key="Tab", code="Tab", windowsVirtualKeyCode=9); await call("Input.dispatchKeyEvent", type="keyUp", key="Tab", code="Tab", windowsVirtualKeyCode=9)
             await asyncio.sleep(1.5)
         await call("Emulation.setDeviceMetricsOverride", width=1440, height=2600, deviceScaleFactor=1, mobile=False)
-        await call("Page.navigate", url="http://localhost:8769/")
+        await call("Page.navigate", url=f"http://127.0.0.1:{PORT}/")
         await asyncio.sleep(18)
         body = await js("document.body.innerText") or ""
         check("echte Seite geladen ohne Traceback/Exception", "Traceback" not in body and "StreamlitAPIException" not in body and len(body) > 200, body[:100].replace("\n", " "))
@@ -223,15 +305,40 @@ try:
         os.environ["NBAEDGE_TRACKING_DIR"] = str(tmp / "tracking")
         import data.pre_match_store as psx
         ent = [v for v in psx.load()["entries"].values() if v["home"] == "New York Knicks"][0]
-        knicks_first = "New York Knicks" in "".join(g[2] for g in gA[:1]) or gA[0][2].split("/")[1] == "Knicks"
-        newline = 30.0 if knicks_first else -30.0       # Vorzeichen: Eingabe-Zeile "line" = line_home (negativ = Heim-Favorit); Knicks zuerst -> Gegenrichtung (Spread schrumpft), sonst Heim-Favorit
-        psx.save_card(ent["game_date"], ent["start_utc"], ent["home"], ent["away"], spread_rows=[{"id": "main", "line": newline, "home_odds": "1,9", "away_odds": "1,9", "bookmaker": "Betano"}], now=time.time())
+        # Ausgangslage aus der App lesen (nicht raten): sichtbare Reihenfolge der Karten mit Namen (Gast/Heim) und dem angezeigten Modell-Spread (|Spread| der Karte).
+        async def card_info():
+            return json.loads(await js("""JSON.stringify([...document.querySelectorAll('[class*="st-key-sc_game_"]')].sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top).map(g => {
+                const names = [...g.querySelectorAll('.pc-name')].map(n => n.innerText);
+                const m = g.querySelector('.pc-model'); const t = m ? m.innerText : '';
+                return [names.join('/'), t]; }))"""))
+        # feste Schluessel der App (ui/score_order.py + app.py): Statusgruppe (nicht begonnen 0, laeuft 1, beendet 2), Anpfiff, -|exp_spread|, Eingabereihenfolge.
+        # Im Harness bekannt: Knicks und Spurs beginnen gleichzeitig (T0 + 3 h, Gruppe 0), Pistons laeuft (Gruppe 1), das Spiel Heat/Bulls ist beendet (Gruppe 2).
+        GROUP = {"Knicks": 0, "Spurs": 0, "Pistons": 1, "Heat": 2}
+        HOME = {"Knicks": ("New York Knicks", "Philadelphia 76ers"), "Spurs": ("San Antonio Spurs", "Oklahoma City Thunder")}
+        def spread_of(model_text):
+            mm = re.search(r"Modell\s+\S+\s+[\u2212-](\d+(?:[.,]\d)?)", model_text)       # "SPREAD Modell Knicks −6,1 Markt ..." (Minuszeichen U+2212); "PK" hat kein Minus -> 0
+            return float(mm.group(1).replace(",", ".")) if mm else 0.0     # "PK" (Spread 0) hat kein Minus
+        def key_view(info):
+            return [(GROUP.get(n.split("/")[1], 9), spread_of(t), n.split("/")[1]) for n, t in info]
+        def order_ok(info):
+            kv = key_view(info)
+            return len(kv) >= 4 and all(v_[1] > 0 for v_ in kv if v_[0] == 0) and all(a_[0] <= b_[0] for a_, b_ in zip(kv, kv[1:])) and all(a_[1] >= b_[1] for a_, b_ in zip(kv, kv[1:]) if a_[0] == b_[0] == 0)
+        infoA = await card_info()
+        print("   Ausgangslage (Karte: Modell-Text):", [(n, t.replace("\n", " ")[:50]) for n, t in infoA])
+        check("Reihenfolge-Test: Ausgangslage folgt dem Schluessel der App (Gruppe: nicht begonnen vor laufend vor beendet; bei gleichem Anpfiff absteigend nach |Spread|)", order_ok(infoA), str(key_view(infoA)))
+        second = key_view(infoA)[1][2]                     # zweite Karte der Gruppe 0: bekommt den groessten |Spread| und muss dadurch nach oben wandern
+        assert second in HOME, f"zweite Karte ist kein Spiel der Gruppe 0: {second}"
+        sg_home, sg_away = HOME[second]
+        psx.save_card(ent["game_date"], ent["start_utc"], sg_home, sg_away, spread_rows=[{"id": "main", "line": -30.0, "home_odds": "1,9", "away_odds": "1,9", "bookmaker": "Betano"}], now=app_now())    # Eingabe-Zeile "line" = line_home, negativ = Heim-Favorit
         await js("document.body.click()"); await call("Input.dispatchKeyEvent", type="keyDown", key="r", code="KeyR", text="r", windowsVirtualKeyCode=82); await call("Input.dispatchKeyEvent", type="keyUp", key="r", code="KeyR", windowsVirtualKeyCode=82)
         await asyncio.sleep(8.0)
         gB = await games()
         print("   Herkunft Knicks nach der Aenderung:", await js(f"{SC}.querySelector('.pc-origin').innerText"))
         print("   Reihenfolge vorher:", [g[2] for g in gA], " nachher:", [g[2] for g in gB])
-        check("Reihenfolge-Test: die Kartenreihenfolge hat sich wirklich geaendert", [g[0] for g in gA] != [g[0] for g in gB], str([g[0] for g in gB]))
+        infoB = await card_info()
+        print("   Nachher (Karte: Modell-Text):", [(n, t.replace("\n", " ")[:50]) for n, t in infoB])
+        check("Reihenfolge-Test: die Kartenreihenfolge hat sich wirklich geaendert, folgt weiter dem Schluessel der App, und die Karte mit dem groessten |Spread| steht jetzt in Gruppe 0 vorn",
+              [g[0] for g in gA] != [g[0] for g in gB] and order_ok(infoB) and key_view(infoB)[0][2] == second, str(key_view(infoB)))
         check("Reihenfolge-Test: Der Zustand folgt dem SPIEL, nicht der Position (SPREAD offen beim selben Spiel wie vorher, TOTAL beim selben Spiel, alle anderen zu)",
               {g[0]: g[3] for g in gB if g[3]} == want and all(g[0].split("|")[0].endswith(g[2].split("/")[0]) for g in gB), str([(g[2], g[3]) for g in gB]))
         await shoot_both("score_nach_umsortierung")
@@ -242,8 +349,13 @@ try:
     check("echte data/tracking/pre_match_entries.json unveraendert", (real_file.read_bytes() if real_file.exists() else None) == real_bytes)
     check("echte projection_snapshots.json nicht angelegt/geaendert durch den Test", (ROOT / "data" / "tracking" / "projection_snapshots.json").exists() == real_snap_existed)
     check("echte data/rosters.json unveraendert", (real_roster.read_bytes() if real_roster.exists() else None) == real_roster_bytes)
+    failed = False
 finally:
-    chrome.terminate(); server.terminate()
-    import shutil, time as _t; _t.sleep(1.0); shutil.rmtree(tmp / "profile", ignore_errors=True)       # Chrome-Profil (ca. 200 MB) nicht liegen lassen; Screenshots und Zaehler bleiben
+    stop(chrome); stop(server)
+    import shutil
+    shutil.rmtree(tmp / "profile", ignore_errors=True)       # Chrome-Profil (ca. 200 MB) nicht liegen lassen; Screenshots und Zaehler bleiben
+    if failed or not ok:
+        print("--- Serverausgabe (Streamlit) ---"); print(server_log.read_text(errors="replace")[-4000:] if server_log.exists() else "(keine)")
+        print("--- Chrome-Ausgabe ---"); print(chrome_log.read_text(errors="replace")[-1500:] if chrome_log.exists() else "(keine)")
 print("\nErgebnis:", "ALLE BROWSER-PRUEFUNGEN BESTANDEN" if ok else "FEHLER")
 sys.exit(0 if ok else 1)

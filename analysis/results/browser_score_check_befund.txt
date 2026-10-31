@@ -1,0 +1,79 @@
+Befund tests/browser_score_check.py (nur gelesen, nicht ausgeführt) – 2026-10-30
+Gelesen: tests/browser_score_check.py (249 Z.), tests/_harness_score_app.py, tests/fake_net.py (Ausschnitte), tests/snapshot_fixture.py, ui/score_order.py, app.py:847-851,
+data/live_feed.current_us_day, analysis/results/flaky_tests.txt (frühere Einschätzung, hier gegen den Code geprüft).
+
+1. WAS PRÜFT ER / WIRD ER AUFGERUFEN
+ - Echter Browsertest (headless Chrome über DevTools-Protokoll) der echten app.py im Harness mit simulierten Netzantworten (Spiele Knicks/76ers, Spurs/Thunder,
+   Pistons/Celtics, dazu ein beendetes Heat/Bulls aus snapshot_fixture) für den Tab Score Projections:
+   (a) vier Expander je Karte (SPREAD/TOTAL/TEAM TOTAL x2), zu, direkt unter der Karte; Herkunftszeile; (b) Plaketten-CSS, Balken, Zeilenhöhen und keine Überlappung bei 1440/900/700 px;
+   (c) Chips „eingetreten“ nur bei beendetem Spiel, nie grün/rot; (d) Pre-Match-Eingabe (Total 240,5 Betano) speichern -> Herkunftszeile, gelber Hinweis, Expander-Zustand bleibt;
+   (e) Kartenreihenfolge: Expander-Zustand folgt dem Spiel, nicht der Position.
+ - Aufgerufen wird er nirgends: Treffer nur in README.md (Änderungsprotokoll), DESIGN_REGELN.md, analysis/results/flaky_tests*.txt und im Harness-Docstring. Kein Skript, kein Gesamtlauf.
+ - Gesamtlauf `for t in tests/test_*.py`: NICHT enthalten (Name beginnt mit browser_, Docstring sagt es auch: „NICHT Teil der normalen Testsuite“). Ebenso fehlt er
+   dadurch in jedem Rückfall-Lauf; Fehler darin fallen nie auf. _harness_score_app.py ebenfalls nicht (gewollt).
+
+2. „Kartenreihenfolge“ (Z.226-227 `knicks_first`/newline, Z.234-235 Prüfungen „die Kartenreihenfolge hat sich wirklich geändert“ und „Zustand folgt dem SPIEL“)
+ - Erwartet: nach Speichern einer Eigenlinie (Spread +30 bzw. -30 je nach `knicks_first`, Z.226-227) + Taste „r“ (Rerun) ist die sichtbare Kartenreihenfolge anders.
+ - Sortierung (ui/score_order.py:order, aufgerufen app.py:848-851): Schlüssel (Statusgruppe, Anpfiff). Gleicher Anpfiff -> stabil, Reihenfolge der Eingabe;
+   die ist `sorted(projections, key=-abs(exp_spread))` (app.py:849), also bei exakt gleichem |exp_spread| die Reihenfolge der Spielliste. Es gibt KEINEN zweiten Schlüssel (kein game_id).
+ - Im Harness: Knicks und Spurs haben denselben Anpfiff (beide +3 h), Pistons läuft (-10 min, andere Gruppe). Nur Knicks<->Spurs können überhaupt tauschen.
+   Ein Tausch gelingt nur, wenn die Eigenlinie |exp_spread| der Knicks (Modell mischt Markt mit Gewicht ~0,25 ein) unter bzw. über den der Spurs (Marktspread 0,2) bringt.
+   `knicks_first` rät, wo Knicks stehen, und wählt das Vorzeichen +-30; stimmt die Annahme nicht (oder wirkt +-30 nach dem Mischen nicht stark genug), bleibt die Reihenfolge -> rot.
+   Zusätzlich: Tests, die vom Zustand „eine Karte offen“ ausgehen, hängen an der Sichtbarkeitsreihenfolge (getBoundingClientRect), nicht an Schlüsseln.
+ - Ursache: im Test (Annahme über die Ausgangsreihenfolge, Erzwingen über indirekte Wirkung der Eigenlinie auf das gemischte Modell). Die App verhält sich korrekt und
+   deterministisch; ein fehlender zweiter Sortierschlüssel (game_id) ist ein kleiner Schönheitsfehler der App, aber kein Fehler.
+   Ein Testlauf zur Bestätigung wurde nicht gemacht (Vorgabe), das Urteil ist aus dem Code abgeleitet.
+
+3. FESTE WARTEZEITEN (Zeilennummern in tests/browser_score_check.py, per grep geprüft)
+ Z.32-36: Schleifen 60 x 0,5 s auf healthz bzw. Chrome-Port (bedingungsbasiert, aber ohne Fehler bei Ablauf: `pages` fehlt dann -> NameError, bzw. alter Server wird getroffen).
+ Z.61: 1,5 s nach jeder Texteingabe (typein, 4 Aufrufe) – Warten auf Rerun des Feldes.
+ Z.64: 18 s nach Seitenstart – Warten bis die App gerendert ist (größte Wartezeit).
+ Z.68, 165, 168, 188: je 2,0-2,5 s nach Tabwechsel; Z.200: 1,5 s.
+ Z.75 (toggle), Z.105: 1,0 s je Expander-Klick (viele Aufrufe); Z.119: 0,8 s.
+ Z.139: 2,0 s nach Fensterbreiten-Wechsel (3x) – Warten auf Umbruch; Z.158: 1,0 s.
+ Z.170: 1,2 s nach Expander-Klick im Pre-Match.
+ Z.177: 6,0 s nach „Speichern“ – Warten auf vollen Rerun. Z.230: 8,0 s nach Taste „r“ – Warten auf Rerun.
+ Z.247: time.sleep(1,0) im finally – unkritisch.
+ (Zusätzlich Z.211: 1,0 s in toggle_in.)
+ Ersatz: eine Hilfsfunktion `wait_for(js_bedingung, timeout=30)`, die alle 0,2 s eine JS-Bedingung prüft und bei Ablauf klar abbricht. Bedingungen:
+   Seitenstart: Streamlit meldet `[data-testid="stApp"][data-test-script-state="notRunning"]` (Attribut `data-test-script-state` des App-Containers) UND `.pc-card` vorhanden;
+   Tabwechsel: `tab.getAttribute('aria-selected')=='true'` und Tabpanel sichtbar; Expander: `details.open` hat den erwarteten Wert;
+   Speichern/Rerun: Skriptstatus `running` gesehen und wieder `notRunning` (oder die erwartete Datei/Herkunftszeile); Taste „r“: gleiches; Breite: `innerWidth==w` und `.pc-lrow` neu vermessen.
+   typein: nach dem Tab-Tastendruck auf `notRunning` warten.
+
+4. FESTE PORTS
+ - Streamlit-Server: 8769 (Z.27, `--server.port 8769`), vom Test selbst per subprocess gestartet (Harness-App). Chrome-DevTools: 9336 (Z.29 `--remote-debugging-port=9336`), ebenfalls vom Test gestartet.
+ - Die echte App läuft normalerweise auf Streamlit-Standard 8501 (kein Konflikt mit 8769). Ist 8769 belegt (z. B. hängengebliebener früherer Lauf, `server.terminate()` greift
+   nur beim eigenen Prozess): Streamlit weicht NICHT aus bei explizitem Port, startet nicht; stdout/stderr gehen nach DEVNULL, der Test wartet 30 s auf healthz – und trifft dabei
+   womöglich einen ALTEN Server (der dann die falsche App/alte Temp-Pfade bedient!). Ähnlich 9336: ein alter Chrome auf dem Port liefert dessen `pages` (anderes Profil).
+ - Vorschlag: freie Ports per `socket.bind(("127.0.0.1", 0))` ermitteln (Hilfsfunktion `free_port()`), in URLs/Argumenten einsetzen; zusätzlich Prozess prüfen (`server.poll() is None`)
+   und beim Start abbrechen, wenn der Prozess schon beendet ist. CHROME-Pfad (Z.8) fest auf macOS: bei fehlendem Chrome klare Meldung statt FileNotFoundError.
+
+5. UHRZEIT IM HARNESS
+ - Echte Zeit. Harness baut Spiele mit `time.time()` (_harness_score_app.py: Knicks/Spurs +3 h, Pistons -600 s) und snapshot_fixture.finished_game mit `time.time()-5h` (Anpfiff vor
+   5 h, Ergebnis 118:100) und festem date="2026-10-21". Die App selbst liest `time.time()` (app.py:785). Kein Zeit-Einfrieren.
+ - Datum kippt: (a) US-Tageswechsel 17:00 Berlin – die Spiele „heute“ (+3 h) und das beendete (-5 h) fallen je nach Uhrzeit in verschiedene Spieltage (Läufe zwischen ca. 14:00 und 17:00
+   und kurz nach 17:00 sind kritisch: +3 h liegt dann bereits im nächsten US-Tag, -5 h im vorigen); score_day/score_history zeigen dann nur einen Tag, und Prüfungen wie
+   „4 Karten, davon Heat mit Chips, `len(others)==3`“ (Z.108) werden rot. (b) Beendetes Spiel mit festem Datum 2026-10-21 passt nur, solange die App es als „vergangen“ einordnet.
+ - Vorschlag wie in test_player_live: `T0 = datetime(2026,10,23,3,0,tzinfo=ZoneInfo("Europe/Berlin")).timestamp()`, `D = lf.current_us_day(T0)`; Harness und Fixture bauen Zeiten aus T0
+   (Spiele T0+3h usw.) und das Datum aus D. Weil die App `time.time()` benutzt, muss der Harness die Uhr im App-Prozess patchen (`time.time = lambda: T0 + (echte Laufzeit seit Start)`,
+   vor `runpy.run_path`; nur im Harness-Prozess). Alternative ohne Patch: T0 = „jetzt“, aber auf 03:00-Berliner Zeit desselben Tags gerundet, wenn Stunde in 14-18 liegt.
+
+6. DATEIEN UND NETZ
+ - Temp-Ordner: Ja für Tracking, Rosters, Odds-Cache u. a. (tempfile.mkdtemp; NBAEDGE_TRACKING_DIR/NBAEDGE_ROSTERS im Test; im Harness fake_net.fresh_env setzt Odds-, Upcoming-,
+   Pregame-Lines-, Automation-Log-Pfade auf Temp). Die finished_game-Fixture schreibt in den Temp-Tracking-Ordner (Umgebungsvariable vor dem Import gesetzt, Z.14-16).
+ - Absicherung: am Ende vergleicht der Test echte pre_match_entries.json, rosters.json und ob projection_snapshots.json neu angelegt wurde (nicht: geändert, nur Existenz; Hash der echten
+   projection_snapshots.json fehlt – kleine Lücke). Nicht geprüft: tracking-Dateien insgesamt (live_*, espn_raw, absences …). Nur die Dateien, die der Harness kennt, sind umgeleitet:
+   neue Schreiber, die wir nicht auf Temp umlenken (z. B. data/tracking/espn_raw/), würden echt schreiben – der Test würde es nicht bemerken.
+ - Netz: kein echtes Netz – fake_net.install() ersetzt requests. Chrome lädt nur localhost; Streamlit-Seiten ziehen keine externen Ressourcen (Schriften: nicht geprüft).
+   Nicht ausgeschlossen: ESPN-Injury/andere neue Datenquellen, die nach fake_net dazukamen; ob alle von fake_net abgedeckt sind, wurde nicht geprüft.
+
+7. AUFWAND UND REIHENFOLGE
+ - Ports: klein (30-45 min, 10 Zeilen). – Uhrzeit: mittel (Harness + Fixture + Zeit-Patch im App-Prozess, ca. 2 h inkl. Lauf). – Wartezeiten: mittel bis groß (~20 Stellen, Hilfsfunktion
+   + Zustandsattribute; ca. 3-4 h, weil jeder Ersatz am echten Streamlit getestet werden muss). – Kartenreihenfolge: klein bis mittel (Test: Spiele im Harness mit eindeutig verschiedenen Anpfiffen
+   oder eindeutigen |Spread|, und Erzwingen über Eigenlinie mit fest berechnetem Ergebnis statt `knicks_first`; optional App: zweiter Schlüssel game_id; ca. 1-2 h).
+ - Reihenfolge: 1) Ports (billig, verhindert Falschbefund durch alten Server), 2) Uhrzeit (sonst rot je nach Tageszeit, verfälscht alle weiteren Läufe), 3) Kartenreihenfolge,
+   4) Wartezeiten (zuletzt, weil mit stabilem Datum/Port am sichersten testbar). Danach in den Gesamtlauf aufnehmen (z. B. eigenes Skript mit Chrome-Prüfung „überspringen, wenn Chrome fehlt“).
+ - Ersatz durch AppTest: Teilweise. AppTest (streamlit.testing, wie in test_player_live) deckt Inhalt/Logik ab (Expander-Zustand, Herkunftszeile, Hinweis, gespeicherte Datei, Kartenreihenfolge,
+   Chips, Zeilenanzahl) schnell, ohne Ports/Chrome/Wartezeiten. Nicht abdeckbar: echtes Layout (Pixelabstände, Breiten 700/900/1440, Überlappung, CSS-Farben, hscroll) und Verhalten der echten
+   Tab-Navigation im Browser. Empfehlung: Logik-Teile (d), (e), (c-Zählung) nach AppTest verschieben (Test im Gesamtlauf), den Browsertest auf Layout/CSS (b) und die Platzierung verkleinern.

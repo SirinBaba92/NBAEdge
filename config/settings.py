@@ -10,6 +10,11 @@ FORM_WINDOW = 10
 # der Code (engine/ev.py, Parser, Tab) bleibt erhalten. Totals/Spreads sind davon unabhaengig.
 SHOW_VALUE_BETS = False
 
+# Teamabgleich der Spielerprognosen (Modell B, "adjusted"): False = nur Modell roh in der App (Hinweiszeile "Teamabgleich", Umschalter Modell, Modell-%
+# im Wettschein ausgeblendet, Vorbelegung Kategorie Roh). Berechnung, Speicherung (forecast_snapshots, day_bets) und Auswertungen bleiben unveraendert;
+# True = Anzeige wie vor der Umstellung.
+SHOW_TEAM_ADJUSTED = False
+
 MIN_EV_THRESHOLD = 0.03  # 3% minimum EV to show
 MIN_KELLY = 0.01  # 1% minimum Kelly fraction
 MAX_KELLY = 0.03  # cap at 3% of bankroll

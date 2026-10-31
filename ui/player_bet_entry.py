@@ -11,6 +11,7 @@ import time
 
 import streamlit as st
 
+from config import settings as _settings
 from data import bet_categories as bc
 from data import day_bets_store as ds
 from ui.score_cards import fmt_num
@@ -27,7 +28,9 @@ def game_parts(key: str) -> dict:
 
 def option_label(o: dict) -> str:
     """'20+ · Quote 2,18 · Buchmacher 46 % · Modell 50 % (ungeprüft)' (Modell nur mit Snapshot)."""
-    model = "" if o.get("model_team") is None else f" · Modell {int(o['model_team'] * 100 + 0.5)} % (ungeprüft)"
+    from config import settings
+    m = o.get("model_team") if settings.SHOW_TEAM_ADJUSTED else o.get("model_raw")      # Teamabgleich ausgeblendet: Modell roh
+    model = "" if m is None else f" · Modell {int(m * 100 + 0.5)} % (ungeprüft)"
     return f"{o['milestone']}+ · Quote {fmt_num(o['odds'], 2)} · Buchmacher {o['bookmaker_percent']} %{model}"
 
 
@@ -159,7 +162,7 @@ def render_player_bet_entry(key: str, entries: dict) -> None:
         c2.text_input("Quote (optional)", value=start_text, key=f"{p}_odds_{m}", help="Vorbelegt aus der Betano-Eingabe; überschreibbar oder leer lassen.")
         c3.number_input("Einsatz (optional)", min_value=0.0, value=(cur or {}).get("stake"), step=1.0, format="%.2f", key=f"{p}_stake")
         names = bc.names()
-        mode_default = bc.default_player_category(st.session_state.get("pl_mode", "team"))
+        mode_default = bc.default_player_category(st.session_state.get("pl_mode", "team") if _settings.SHOW_TEAM_ADJUSTED else "raw")
         start_cat = [c for c in bc.normalize((cur or {}).get("categories", (cur or {}).get("category"))) if c in bc.PLAYER_IDS] or [mode_default]
         c4.multiselect("Kategorien", list(bc.PLAYER_IDS), default=start_cat, format_func=lambda c: names[c], key=f"{p}_cat",
                        help="Mehrfachauswahl, mindestens eine. Vorbelegt aus dem angezeigten Modus (Teamabgleich oder roh); die andere Kategorie kann zusätzlich gewählt werden.")

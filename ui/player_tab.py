@@ -16,6 +16,7 @@ from zoneinfo import ZoneInfo
 
 import streamlit as st
 
+from config import settings
 from config.runtime import OFFLINE_AUDIT_MODE
 from data import day_bets_store as ds
 from data import betano_skipped
@@ -297,7 +298,7 @@ def _snapshot_notes(entry: dict) -> None:
     else:
         st.markdown(f"<div class='pl-info'>Snapshot vom {created} (vor dem Anpfiff erstellt). {pv.escape(entry.get('history') or '')}</div>", unsafe_allow_html=True)
     lines = pv.team_lines(entry)
-    if lines:
+    if lines and settings.SHOW_TEAM_ADJUSTED:
         st.markdown("<div class='pl-info'>Teamabgleich: " + " &nbsp;|&nbsp; ".join(pv.escape(x) for x in lines) + "</div>", unsafe_allow_html=True)
 
 
@@ -370,10 +371,10 @@ def _forecast_view() -> None:
             show_all = st.toggle("Alle Meilensteine anzeigen", value=False, key="pl_all", help=f"Aus: nur Meilensteine um die erwartete Punktzahl (±{TABLE_WINDOW:g}) und eigene Wetten (kleinere, schnellere Tabelle).")
         with o1:
             if table_view:
-                mode = st.radio("Modell", list(pv.MODES), format_func=pv.MODES.get, horizontal=True, key="pl_mode", help="Teamabgleich: Summe der Spieler an den Teampunkten des Spielmodells ausgerichtet. roh: Einzelprognose ohne Abgleich.")
+                mode = st.radio("Modell", list(pv.MODES), format_func=pv.MODES.get, horizontal=True, key="pl_mode", help="Teamabgleich: Summe der Spieler an den Teampunkten des Spielmodells ausgerichtet. roh: Einzelprognose ohne Abgleich.") if settings.SHOW_TEAM_ADJUSTED else "raw"      # Teamabgleich ausgeblendet (config/settings.SHOW_TEAM_ADJUSTED): nur roh
             else:
                 mode = "raw"                                                  # Karten zeigen immer das Modell roh (Regel 94)
-                st.caption("Karten: Modell roh (Einzelprognose ohne Teamabgleich). Der Umschalter „Modell“ gilt in der Tabellenansicht.")
+                st.caption("Karten: Modell roh (Einzelprognose ohne Teamabgleich). Der Umschalter „Modell“ gilt in der Tabellenansicht." if settings.SHOW_TEAM_ADJUSTED else "Modell roh (Einzelprognose).")
         with o2:
             sort = st.radio("Sortierung", list(pv.SORTS), format_func=pv.SORTS.get, horizontal=True, key="pl_sort")
         game = game_for_key(lf.get_feed().state(), key)

@@ -7,6 +7,7 @@ ROOT = Path(__file__).resolve().parent.parent
 os.chdir(ROOT); sys.path.insert(0, str(ROOT))
 TMP = tempfile.TemporaryDirectory(); T = Path(TMP.name)
 os.environ["NBAEDGE_TRACKING_DIR"] = str(T / "tracking")
+from config import settings
 from data import day_bets_store as ds
 from ui import bet_slip as bs
 from ui import player_bet_entry as pe
@@ -31,8 +32,17 @@ D = pl(4, "Dora Delta", [opt(10, 1.40, 70, 0.75), opt(15, 2.40, 40, 0.42)], cur=
 options = {"players": [A, B, C, D], "snapshot": True}
 
 # --- Anzeige-Text
-check("Meilenstein-Text: '20+ · Quote 1,85 · Betano 54 % · Modell 72 %' (Teamabgleich), roh = 60 %, ohne Snapshot ohne Modell", bs.option_label(A["options"][1]) == "20+ · Quote 1,85 · Betano 54 % · Modell 72 %"
-      and bs.option_label(A["options"][1], "raw").endswith("Modell 60 %") and "Modell" not in bs.option_label(C["options"][0]))
+_prev = settings.SHOW_TEAM_ADJUSTED
+settings.SHOW_TEAM_ADJUSTED = False                     # Standard in config/settings.py; hier explizit gesetzt (unabhaengig vom Standardwert), am Ende zurueck
+try:
+    check("Meilenstein-Text (Schalter False, Standard): Teamabgleich ausgeblendet, '20+ · Quote 1,85 · Betano 54 % · Modell 60 %' (roh), auch im Modus team; ohne Snapshot ohne Modell",
+          bs.option_label(A["options"][1]) == "20+ · Quote 1,85 · Betano 54 % · Modell 60 %" and bs.option_label(A["options"][1], "raw").endswith("Modell 60 %") and "Modell" not in bs.option_label(C["options"][0]))
+    settings.SHOW_TEAM_ADJUSTED = True
+    check("Meilenstein-Text (Schalter True): '20+ · Quote 1,85 · Betano 54 % · Modell 72 %' (Teamabgleich), roh = 60 %, ohne Snapshot ohne Modell", bs.option_label(A["options"][1]) == "20+ · Quote 1,85 · Betano 54 % · Modell 72 %"
+          and bs.option_label(A["options"][1], "raw").endswith("Modell 60 %") and "Modell" not in bs.option_label(C["options"][0]))
+finally:
+    settings.SHOW_TEAM_ADJUSTED = _prev
+check("Schalter nach der Pruefung wieder auf dem Wert von vorher", settings.SHOW_TEAM_ADJUSTED is _prev)
 # --- Schein bauen
 slip, msgs = [], []
 for p, n in ((A, 20), (B, 10), (C, 25)):

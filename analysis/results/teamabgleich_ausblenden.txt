@@ -1,0 +1,64 @@
+TEAMABGLEICH AUSBLENDEN: PROTOKOLL (30.10.2026)
+
+TEIL 1: WO WIRD DER TEAMABGLEICH (Modell B, "adjusted") GEBRAUCHT
+ANZEIGE
+  ui/player_tab.py  _snapshot_notes (Zeile ~299-301)   Hinweiszeile "Teamabgleich: <Team>: Spieler-Summe ... Faktor ..." ueber jeder Prognose
+  ui/player_tab.py  Tab-Funktion (Zeile ~373-377)       Tabellenansicht: Umschalter "Modell" (Teamabgleich / roh), Standard "Teamabgleich"; Karten: Hinweis "Karten: Modell roh ..."
+  ui/player_view.py build_table_model (Zeile 52-73)     bei Modus team: Minuten, Punkte, Modell-% und Differenz aus *_adjusted (Tabelle); Karten bauen immer mit "raw"
+  ui/player_view.py team_lines (Zeile 114)              Text der Hinweiszeile
+  ui/player_bet_entry.py option_label (Zeile 28-31)     Auswahl "Meilenstein ... Modell NN % (ungeprueft)" zeigt model_team
+  ui/bet_slip.py   option_label (Zeile 23-27)           Wettschein-Text "... Modell NN %" zeigt model_team (Modus team) bzw. model_raw
+  ui/player_bet_entry.py (Zeile ~162), ui/bet_cards_component.py:31-36  Vorbelegung der Kategorie: Modus team -> player_ta ("Teamabgleich"), raw -> player_raw
+  Karten, Mindestquote, Haken (✓): rechnen mit Modell roh (ui/player_view.py:63, :330, :379) - schon bisher ohne Teamabgleich.
+  History/Berichte: in ui/history_view und ui/ gibt es keine Anzeige des Teamabgleichs; Vergleich roh gegen Teamabgleich steht nur in analysis/ (Auswertung).
+BERECHNUNG (unveraendert gelassen)
+  engine/player_forecast.py  team_match (Zeile ~293-364), game_forecast/forecast_players (Zeile ~368-402): erzeugt expected_points_adjusted, p_ge_adjusted, minutes_adjusted
+  engine/player_live.py (Zeile 101-115): Live-Chance startet von minutes_adjusted / expected_points_adjusted. Das ist eine BERECHNUNG, die der Nutzer als
+    Live-Chance sieht; sie ist NICHT ausgeblendet (sonst haette ich die Rechnung geaendert). Ob die Live-Chance auf roh umgestellt werden soll, ist eine eigene Entscheidung.
+SPEICHERUNG (unveraendert)
+  engine/player_snapshots.py (Zeile 56-57): forecast_snapshots mit *_raw und *_adjusted;  data/day_bets_store.py (Zeile 607-736): model_p_roh, model_p_team, display_mode
+  der Wette; data/bet_categories.py: Kategorien player_ta / player_raw (vom Nutzer benannt, bleiben auswaehlbar).
+
+TEIL 2: GEBAUT (Anzeige ist sauber trennbar)
+  config/settings.py: SHOW_TEAM_ADJUSTED = False (neu, kommentiert).
+  False blendet aus: Hinweiszeile "Teamabgleich: ...", Umschalter "Modell" in der Tabellenansicht (dort nur roh), Modell-% in den Auswahltexten des Wettscheins
+    (zeigt model_raw), Vorbelegung der Kategorie (immer Roh). Karten-Hinweis lautet dann "Modell roh (Einzelprognose)."
+  True: Anzeige wie vorher (Quelltext der True-Pfade unveraendert).
+  Geaendert: config/settings.py, ui/player_tab.py, ui/player_bet_entry.py, ui/bet_slip.py. Engine, data, Auswertungen, gespeicherte Dateien unberuehrt.
+  Hinweis: Die Namen der Kategorien "Teamabgleich" (player_ta) sieht man weiterhin in den Kategorie-Auswahlfeldern (Nutzer-Einstellung, Speicherung).
+
+TEIL 3: TESTS (Schalter False = neuer Standard | Schalter True per Testlauf mit gesetztem Schalter)
+  tests/test_team_adjusted_switch.py (NEU)  14 PASS / 0 FAIL (beide Schalterstellungen im selben Lauf): False = keine Hinweiszeile, kein Umschalter, Tabelle zeigt roh,
+     Wettschein-Texte roh; True = Hinweiszeile "Faktor 0,85", Umschalter, Tabelle Teamabgleich, Wettschein 72 %; Tabellenmodell im Modus team und alle Dateien in
+     Snapshot-/Tracking-Ordner in beiden Faellen identisch (Anzeige schreibt nichts); echte Dateien unveraendert.
+  Unveraendert gruen mit False UND True: test_player_live 40, test_player_forecast 66, test_player_bets_ui 35, test_bet_cards_action 18, test_player_card_final 18,
+     test_player_cards_pregame 18, test_bet_categories 83, test_lazy_tabs 25, test_player_model_version 17, test_player_bets 66, test_player_card_rules 37.
+  ROT mit False (gruen mit True, weil Anzeige absichtlich weg; Tests NICHT geaendert):
+   1. tests/test_bet_slip.py: "Meilenstein-Text: '20+ · Quote 1,85 · Betano 54 % · Modell 72 %' (Teamabgleich) ..." (19 PASS / 1 FAIL):
+      der Test erwartet im Modus team den Teamabgleich-Wert 72 %, mit False kommt der Roh-Wert 60 %.
+   2. tests/test_player_tab.py (26 PASS / 1 FAIL, danach Abbruch):
+      a) "Kartenansicht: Sortierung da, Umschalter Modell nicht ...": der Test sucht den Hinweistext "Karten: Modell roh", der lautet mit False "Modell roh (Einzelprognose)."
+      b) danach KeyError 'pl_mode' in der Tabellenansicht (Test erwartet den Umschalter "Teamabgleich/roh"): die restlichen Pruefungen ab dort liefen nicht
+         (mit True: 35 PASS / 0 FAIL). Diese Datei muss fuer False angepasst werden (Entscheidung beim Nutzer).
+  Zwischenstand: test_player_card_rules pruefte den Quelltext ("if table_view:\n mode = st.radio"); ich habe den Code so geschrieben, dass der Text erhalten bleibt (37 PASS).
+
+NICHT GEPRUEFT
+  - alle anderen Tests ausser den oben genannten; kein Gesamtlauf.
+  - die App im echten Browser; Aussehen der Tabellenansicht mit False nur im AppTest-Text geprueft.
+  - ob Spieler-Wetten, die frueher im Modus Teamabgleich gespeichert wurden, anders dargestellt werden (Anzeigemodus der Altdaten, day_bets_store display_mode unveraendert).
+  - Live-Chance (engine/player_live.py) rechnet weiter mit dem Teamabgleich, s. o.
+
+3.7b TESTS AN DEN NEUEN STANDARD ANGEPASST (30.10.2026; nur tests/test_bet_slip.py und tests/test_player_tab.py geaendert)
+  Der Schalter wird im Test selbst gesetzt (False bzw. True, jeweils in try/finally auf den vorherigen Wert zurueck); config/settings.py bleibt auf False.
+  test_bet_slip: Prueffall Meilenstein-Text aufgeteilt: Schalter False = "... Modell 60 %" (roh, auch im Modus team); Schalter True = "... Modell 72 %" (Teamabgleich, Original-Pruefung
+    unveraendert streng), roh = 60 %, ohne Snapshot ohne Modell; dazu Pruefung "Schalter wieder zurueck".
+  test_player_tab: Kartenansicht False: Hinweis "Modell roh (Einzelprognose)." und kein Umschalter; Tabellenansicht False: KEIN pl_mode, Tabelle zeigt Modell roh (Minuten/Punkte des
+    Spielers), keine Hinweiszeile "Teamabgleich:", danach Sortieren; Block mit Schalter True: alte Pruefungen unveraendert (Hinweis "Karten: Modell roh ...", pl_mode mit Teamabgleich/roh,
+    Umschalten, Sortieren) plus Hinweiszeile "Teamabgleich: ..." vorhanden. Die Pruefungen nach dem frueheren KeyError laufen wieder (Anpfiff-Snapshot, app.py-Einbindung, echte Dateien).
+  Hinweis: Der Snapshot, den der Test selbst erstellt, hat keinen Teamabgleich (Roh = angepasst); Roh-gegen-Teamabgleich-Werte werden daher in den reinen Tabellenmodell-Pruefungen
+    (Zeilen 92-113 des Tests) geprueft, nicht in der Anzeige.
+  Ergebnis Standard (False): test_bet_slip 22 PASS / 0 FAIL; test_player_tab 40 PASS / 0 FAIL.
+  Ergebnis mit Schalter global True (Lauf ueber Hilfsskript): test_bet_slip 22 PASS / 0 FAIL; test_player_tab 40 PASS / 0 FAIL.
+  Standard-Lauf: test_team_adjusted_switch 14 PASS / 0 FAIL; test_player_live 40 PASS / 0 FAIL; test_player_forecast 66 PASS / 0 FAIL.
+  Beobachtung: Ein Lauf von test_player_tab war einmal rot bei "echte Dateien unveraendert", weil gleichzeitig ein anderer Prozess in data/tracking schrieb (espn_raw/, projection_snapshots.json
+    waren in dem Moment geaendert); der Wiederholungslauf war gruen. Das ist der bekannte Fremdschreiber, nicht der Test.

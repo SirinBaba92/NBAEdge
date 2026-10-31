@@ -153,12 +153,36 @@ check("Standardansicht verkleinert: Meilensteine weit von der erwarteten Punktza
 at.toggle(key="pl_all").set_value(True).run()
 check("Schalter an: alle Meilensteine (15+ und 25+) sichtbar", "15+" in page_text(at))
 at.toggle(key="pl_all").set_value(False).run()
-check("Kartenansicht: Sortierung da, Umschalter Modell nicht (Karten zeigen das Modell roh, Regel 94)", at.radio(key="pl_sort").options == ["Team, dann Minuten", "Minuten", "größte Differenz"] and "pl_mode" not in [r.key for r in at.radio]
-      and any("Karten: Modell roh" in c.value for c in at.caption))
+# Schalter False (Standard in config/settings.py; hier explizit gesetzt, damit die Pruefung unabhaengig vom Standardwert ist): Teamabgleich in der Anzeige ausgeblendet
+from config import settings as _settings
+_prev = _settings.SHOW_TEAM_ADJUSTED
+_settings.SHOW_TEAM_ADJUSTED = False
+_anton = next(p for p in json.loads(snap_file.read_text())["games"][K1]["players"] if p["name"] == "Anton Alt")
+_mins, _pts = pv.fmt_num(_anton["minutes"]["mean"]), pv.fmt_num(_anton["expected_points_raw"])      # Anzeigewerte roh (im Snapshot ohne Teamabgleich gleich den angepassten)
+at = run(); at.selectbox(key=f"pl_game_{D}").set_value(K1).run()
+check("Kartenansicht (Schalter False): Sortierung da, Umschalter Modell nicht (Karten zeigen das Modell roh, Regel 94), Hinweis 'Modell roh (Einzelprognose).'", at.radio(key="pl_sort").options == ["Team, dann Minuten", "Minuten", "größte Differenz"] and "pl_mode" not in [r.key for r in at.radio]
+      and any(c.value == "Modell roh (Einzelprognose)." for c in at.caption))
 at.toggle(key="pl_table_view").set_value(True).run()
-check("Tabellenansicht: Umschalter Modell (Teamabgleich/roh) vorhanden", at.radio(key="pl_mode").options == ["Teamabgleich", "roh"])
-at.radio(key="pl_mode").set_value("raw").run(); at.radio(key="pl_sort").set_value("diff").run()
-check("Umschalten und Sortieren: keine Exception, Tabelle bleibt", not at.exception and "Anton Alt" in page_text(at), " | ".join(problems(at))[:200])
+check("Tabellenansicht (Schalter False): KEIN Umschalter Modell, Tabelle zeigt Modell roh (Minuten und Punkte des Spielers), keine Hinweiszeile 'Teamabgleich:'",
+      "pl_mode" not in [r.key for r in at.radio] and _mins in page_text(at) and _pts in page_text(at) and "Teamabgleich:" not in page_text(at) and "Anton Alt" in page_text(at) and not at.exception, " | ".join(problems(at))[:200])
+at.radio(key="pl_sort").set_value("diff").run()
+check("Sortieren (Schalter False): keine Exception, Tabelle bleibt", not at.exception and "Anton Alt" in page_text(at), " | ".join(problems(at))[:200])
+# Schalter True: Anzeige wie vor der Umstellung (Schalter nur hier gesetzt, danach zurueck auf den vorherigen Wert)
+from config import settings as _settings
+_settings.SHOW_TEAM_ADJUSTED = True
+try:
+    at = run()
+    at.selectbox(key=f"pl_game_{D}").set_value(K1).run()
+    check("Kartenansicht (Schalter True): Sortierung da, Umschalter Modell nicht (Karten zeigen das Modell roh, Regel 94)", at.radio(key="pl_sort").options == ["Team, dann Minuten", "Minuten", "größte Differenz"] and "pl_mode" not in [r.key for r in at.radio]
+          and any("Karten: Modell roh" in c.value for c in at.caption))
+    at.toggle(key="pl_table_view").set_value(True).run()
+    check("Tabellenansicht (Schalter True): Umschalter Modell (Teamabgleich/roh) vorhanden", at.radio(key="pl_mode").options == ["Teamabgleich", "roh"])
+    check("Schalter True: Hinweiszeile 'Teamabgleich: ...' wird angezeigt (Snapshot ohne Teamabgleich: 'kein Teamabgleich')", "Teamabgleich: " in page_text(at))
+    at.radio(key="pl_mode").set_value("raw").run(); at.radio(key="pl_sort").set_value("diff").run()
+    check("Umschalten und Sortieren (Schalter True): keine Exception, Tabelle bleibt", not at.exception and "Anton Alt" in page_text(at), " | ".join(problems(at))[:200])
+finally:
+    _settings.SHOW_TEAM_ADJUSTED = _prev
+check("Schalter nach dem Block wieder auf dem Wert von vorher", _settings.SHOW_TEAM_ADJUSTED is _prev)
 check("zweites Erstellen schreibt nicht ueber den vorhandenen Snapshot", psn.create_for_game(K1, entries)[0] == "vorhanden")
 # begonnenes Spiel: Snapshot nach Anpfiff
 at = run()

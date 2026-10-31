@@ -11,9 +11,15 @@ Einzeln starten: venv/bin/python -m data.espn_injuries
 """
 from __future__ import annotations
 
+import hashlib
+import json
+import os
 import re
 import sys
 import time
+from datetime import datetime
+from pathlib import Path
+from zoneinfo import ZoneInfo
 
 from data import absences_store as ab
 from data import pre_match_store as store
@@ -26,6 +32,51 @@ OUT_STATUS = {"out", "out for season"}
 DOUBTFUL_STATUS = {"questionable", "doubtful", "day to day", "probable"}
 TEAM_ALIASES = {"los angeles clippers": "la clippers"}
 UNREACHABLE = "ESPN-Verletzungen: nicht erreichbar"
+RAW_VOLATILE_KEYS = ("timestamp",)      # aendert sich bei jedem Abruf, zaehlt nicht fuer den Vergleich "Antwort geaendert"
+
+
+def raw_dir() -> Path:
+    return store.tracking_dir() / "espn_raw"
+
+
+def _raw_hash(data: dict) -> str:
+    stable = {k: v for k, v in data.items() if k not in RAW_VOLATILE_KEYS}
+    return hashlib.sha256(json.dumps(stable, sort_keys=True, ensure_ascii=False).encode("utf-8")).hexdigest()
+
+
+def save_raw(raw: bytes, now: float | None = None) -> Path | None:
+    """Rohantwort unveraendert (Bytes) nach data/tracking/espn_raw/<YYYY-MM-DD>/<HHMMSS>.json (Berliner Zeit), atomar (Temp-Datei, dann umbenennen).
+    Nur, wenn sich die Antwort (ohne das Abrufzeit-Feld 'timestamp') gegenueber der zuletzt gespeicherten geaendert hat. Rueckgabe Pfad oder None (unveraendert).
+    Wirft nie: Fehler kommen als eine Zeile ins Protokoll (data/automation.log, job=espn_raw), der Abruf laeuft weiter."""
+    try:
+        data = json.loads(raw)
+        h = _raw_hash(data)
+        root = raw_dir()
+        last = next((f for d in sorted((x for x in root.glob("*") if x.is_dir()), reverse=True) for f in sorted(d.glob("*.json"), reverse=True)), None) if root.exists() else None
+        if last is not None:
+            try:
+                if _raw_hash(json.loads(last.read_bytes())) == h:
+                    return None
+            except Exception:
+                pass                                    # letzte Datei unlesbar: neu speichern
+        t = datetime.fromtimestamp(now if now is not None else time.time(), ZoneInfo("Europe/Berlin"))
+        folder = root / t.strftime("%Y-%m-%d")
+        folder.mkdir(parents=True, exist_ok=True)
+        path = folder / (t.strftime("%H%M%S") + ".json")
+        tmp = folder / (path.name + ".tmp")
+        with open(tmp, "wb") as f:
+            f.write(raw)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp, path)
+        return path
+    except Exception as e:
+        try:
+            from data import automation_log
+            automation_log.log_event("espn_raw", "WARN", f"Rohantwort nicht gespeichert ({type(e).__name__}: {str(e)[:100]})")
+        except Exception:
+            pass
+        return None
 
 
 def fetch() -> dict:
@@ -34,6 +85,7 @@ def fetch() -> dict:
     from data.live_feed import TIMEOUT_SECONDS
     r = requests.get(ESPN_INJURIES_URL, headers={"User-Agent": USER_AGENT}, timeout=TIMEOUT_SECONDS)
     r.raise_for_status()
+    save_raw(r.content)                 # Rohantwort aufbewahren (ESPN liefert alte Kommentare nicht nach); wirft nie, stoert den Abruf nicht
     data = r.json()
     if not isinstance(data, dict) or not isinstance(data.get("injuries"), list):
         raise ValueError("Format")

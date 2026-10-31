@@ -1,0 +1,29 @@
+tests/browser_score_check.py – Reparatur (Ports, Uhrzeit, Kartenreihenfolge) – 2026-10-30
+Geändert: nur tests/browser_score_check.py. NICHT geändert: App, fake_net.py, _harness_score_app.py, andere Tests, feste Wartezeiten (kommen später).
+
+1. Ports: freie Ports per bind(("127.0.0.1", 0)) für Streamlit und Chrome. Nach dem Start: Serverprozess läuft (poll), /healthz antwortet, und der Listener des Ports (lsof)
+   stammt vom eigenen Prozess (ps-Ahnenkette); gleiches für den Chrome-Port. Sonst Abbruch mit klarer Meldung. Beide Prozesse laufen in eigener Prozessgruppe und werden im finally
+   per killpg beendet (SIGTERM, nach 5 s SIGKILL, danach Rest-Kill der Gruppe). Serverausgabe geht in eine Temp-Datei (server.log), bei Fehler/FAIL wird sie (und die Chrome-Ausgabe) ausgegeben.
+   Die Schleifen brechen bei vorzeitig beendetem Prozess ab, statt 30 s zu warten; kein NameError mehr bei fehlendem Chrome-Port.
+2. Uhrzeit: T0 = 22.10.2026 21:00 Berliner Zeit, D = lf.current_us_day(T0) = 2026-10-22. Begründung: 4 h nach dem 17:00-Wechsel, 3 h vor Mitternacht – fake_net vergibt das Spieldatum
+   per date.today(), das ist so gleich D. (Mein erster Versuch mit 01:00 Berlin scheiterte genau daran: Datum 23.10. <> US-Tag 22.10. -> das beendete Spiel erschien nicht.)
+   Mechanismus: In den anderen Harness-Tests gibt es KEINEN Uhr-Patch für einen App-Prozess (test_player_live übergibt now=; test_us_day_app patcht gu.us_today). Deshalb ein kleiner Starter
+   (Temp-Datei launch_harness.py, vom Test geschrieben), der einmalig time.time, datetime.datetime und datetime.date auf "echt + Versatz" setzt (Uhr läuft weiter, beginnt bei T0) und dann den
+   unveränderten Harness startet; Harness und Fixture bauen ihre Zeiten also relativ zu T0. Die Fixture des beendeten Spiels läuft im Testprozess mit time.time = T0 und date=D.
+   Die Zählprüfung (Z.102, 4 Karten, Heat mit Chips, 3 ohne) ist damit unabhängig von der echten Uhrzeit.
+3. Kartenreihenfolge: kein Raten mehr. Der Test liest die sichtbare Reihenfolge und den angezeigten Modell-Spread je Karte aus der App und prüft den Schlüssel der App:
+   Statusgruppe (Knicks/Spurs nicht begonnen < Pistons läuft < Heat beendet, aus dem Harness bekannt), bei gleichem Anpfiff absteigend nach |Spread|, alle Spreads der Gruppe 0 > 0.
+   Erzwingen: die zweite Karte der Gruppe 0 bekommt (über die Pre-Match-Datei der Test-App) eine Heim-Spreadlinie -30; danach muss sie vorn stehen (Modell-Spread Spurs -2,1 -> -9,1 gegen Knicks -6,1),
+   Reihenfolge wieder schlüsselkonform und der Expander-Zustand folgt dem Spiel. Alle bisherigen Prüfungen blieben gleich streng; eine neue Prüfung (Ausgangslage) und eine verschärfte wurden ergänzt.
+   Zwischenstand-Fehler, den ich dabei fand und behob: meine erste Spread-Erkennung las wegen des Unicode-Minuszeichens überall 0 und hätte die Reihenfolgeprüfung leer laufen lassen (Läufe wiederholt).
+   Grenze: |Spread| wird gerundet (0,1) angezeigt; bei Rundungsgleichheit prüft der Test nur "nicht aufsteigend".
+
+Tests (nach der letzten Änderung; nacheinander, nicht gleichzeitig):
+  Lauf 1: PASS (33 PASS, 0 FAIL), 87 s
+  Lauf 2: PASS (33/0), 84 s
+  Lauf 3: PASS (33/0), 85 s
+  Lauf 4 mit absichtlich belegtem Port 8769 (Python-Socket, per lsof belegt bestätigt): PASS (33/0), 86 s. Hinweis: der Test nutzt 8769 gar nicht mehr (zufällige Ports),
+         der Lauf zeigt also vor allem, dass die Ports unabhängig sind.
+  Reste danach: ps/lsof ohne Streamlit-Harness (launch_harness) und ohne Chrome-Scorebrowser-Profil; offen blieb nur die eigene App des Nutzers (streamlit run app.py auf Port 8501, schon vorher gestartet) – nicht angefasst.
+  Echte Dateien: Hash aller 42 Dateien in data/tracking vor und nach den 4 Läufen identisch (letzter Vergleich nach Lauf 4). Kein anderer Schreiber in data/tracking beobachtet.
+Nicht geprüft: Verhalten bei fehlendem Chrome (nur im Code behandelt); Lauf zu verschiedenen echten Tageszeiten (alle Läufe am Abend; die Uhr ist aber fest).

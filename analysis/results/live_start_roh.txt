@@ -1,0 +1,17 @@
+Live-Start auf Roh-Werte (Modell A) – Protokoll 2026-10-30
+
+Teil 1 (Lesen)
+- engine/player_live.live_chance nahm aus dem Snapshot: minutes.base (mu0, Rate/Restminuten), minutes.mean, minutes_adjusted, expected_points_adjusted (Fallback expected_points_raw), minutes.role. p_ge wird nicht verwendet.
+- Roh-Gegenstücke: minutes.base und minutes.mean sind schon roh (Teamabgleich schreibt nur in minutes_adjusted); expected_points_raw. Alle vorhanden (Stichprobe 2026-10-29: 32/32 Spieler mit expected_points_raw). Nichts fehlt.
+
+Teil 2 (Änderung)
+- ppm_pre = expected_points_raw / minutes.mean (vorher expected_points_adjusted / minutes_adjusted). mu0 unverändert (war schon roh).
+- Fallback: fehlt expected_points_raw (alter Snapshot) -> bisherige Werte + Hinweis "Snapshot ohne Roh-Werte: ... (Rückfall)" in LiveChance.notes, keine Exception.
+- Teamabgleich-Berechnung/-Speicherung unverändert, sonst keine Live-Logik angefasst (live-1).
+
+Teil 3 (Tests)
+- test_player_live: Test-Snapshots PRE/BENCH um expected_points_raw (24,0 / 5,5) ergänzt, sonst hätten alle Tests den Rückfall-Hinweis. Alte Zahlen (75 %/38 %) stehen nicht als Literale im Test, alle Prüfungen unverändert und grün.
+- Neu (Handrechnung, Spieler 10 Pkt. in 15 Min., Prior K=12):
+  roh: ppm_pre = 24/33 = 0,72727; ppm = (10 + 12*0,72727)/27 = 18,7273/27 = 0,6936
+  Rückfall: ppm_pre = 22/33 = 0,66667; ppm = 18/27 = 0,6667; Restminuten gleich.
+- Grün: test_player_live, test_player_forecast, test_player_cards_pregame, test_player_card_final, test_bet_categories.

@@ -1,0 +1,35 @@
+ESPN-ROHANTWORT SPEICHERN: PROTOKOLL (30.10.2026)
+
+TEIL 1: WO KOMMT DIE ANTWORT AN
+  data/espn_injuries.py, Funktion fetch(), Zeile 35-40 vorher (requests.get ... r.json()). Aufruf aus run() (fetch_fn()), das betano_import.espn_after
+  (betano_import.py:510-513) am Ende des Laufs ausfuehrt.
+
+TEIL 2: GEBAUT (nur data/espn_injuries.py; parse/assign/run und absences.json unveraendert)
+  - save_raw(raw_bytes, now): speichert die Bytes der Antwort UNVERAENDERT nach data/tracking/espn_raw/<YYYY-MM-DD>/<HHMMSS>.json (Zeit Europe/Berlin),
+    legt Ordner an, schreibt atomar (Temp-Datei + fsync + os.replace).
+  - fetch() ruft save_raw(r.content) direkt nach raise_for_status() auf. Speichern also nur beim echten Abruf, nicht bei den Test-Attrappen (fetch_fn).
+  - Nur bei Aenderung: Vergleich mit der zuletzt gespeicherten Datei per SHA-256 des JSON OHNE das Feld "timestamp".
+    GRUND (an der echten ESPN-Antwort gesehen, ein einziger Abruf): ESPN schreibt die Abrufzeit in "timestamp" der Antwort. Ein Hash der
+    kompletten Antwort waere bei jedem Abruf anders und der Ordner wuerde trotzdem wachsen. Gespeichert wird die komplette Antwort inkl. timestamp.
+  - Fehler (nicht beschreibbar, kaputtes JSON usw.): try/except, eine Zeile in data/automation.log (job=espn_raw, result=WARN), Abruf laeuft weiter.
+  - Struktur der Antwort laut Stichprobe: injuries[].injuries[] mit status, date, longComment, shortComment, athlete. Kommentare sind enthalten.
+
+TESTS UEBER data/tracking-HASHES
+  Geprueft: Tests, die data/tracking mit glob("*") hashen, lesen nur Dateien (is_file) bzw. *.json; der Unterordner espn_raw faellt wie der bestehende
+  Ordner "history" nicht hinein. tests/test_pre_match_spread.py:358 vergleicht rglob("*") mit Zeitstempeln, aber nur, wenn waehrend des Tests in der echten
+  Tracking-Ordner geschrieben wird (kein Abruf im Test). Keine Anpassung noetig, kein bestehender Test geaendert.
+
+TEIL 3: TESTS (kein Netz, nur Temp-Ordner)
+  tests/test_espn_raw.py (NEU)   11 PASS, 0 FAIL: 1 Datei beim ersten Abruf, Inhalt Byte fuer Byte, keine zweite bei gleicher Antwort (nur timestamp anders),
+                                 neue Datei bei geaendertem Kommentar, nicht beschreibbarer Ordner = kein Fehler nach aussen + 1 Protokollzeile + fetch() liefert weiter,
+                                 kaputte Antwort wirft nicht, echtes data/tracking unveraendert.
+  tests/test_espn_injuries.py    26 PASS, 0 FAIL
+  tests/test_player_absences.py  34 PASS, 0 FAIL
+  tests/test_spieltag_tab.py     73 PASS, 0 FAIL
+  Nach den Tests existiert data/tracking/espn_raw nicht (nichts in echte Daten geschrieben).
+
+NICHT GEPRUEFT
+  - ein echter Lauf von betano_import.py / ein echter Abruf mit Speichern (nur ein Lese-Abruf per curl zur Ansicht des Aufbaus; nichts gespeichert).
+  - ob ESPN weitere Felder ausser "timestamp" bei jedem Abruf aendert (dann entstuende mehr Dateien als noetig; nach den ersten Tagen die Dateizahl pruefen).
+  - Speicherbedarf (Antwort ca. mehrere hundert KB pro Datei, nicht gemessen).
+  - Windows/andere Rechte; der Rechte-Test geht davon aus, dass der Test nicht als root laeuft.
