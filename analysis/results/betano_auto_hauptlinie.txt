@@ -1,0 +1,20 @@
+Betano-Automatik: wandernde Hauptlinie – 2026-10-31
+Geändert: data/pre_match_store.py (save_auto + Hilfsfunktionen), betano_auto.py (process_game, Protokoll). Neu: tests/test_betano_auto_hauptlinie.py. Kein Abruf, kein Lauf, Job unberührt, kein Commit.
+
+TEIL 1 – gewählte Lösung (Variante 2, "auto-Zeilen entfernen")
+- Entfernen = Linie active=False + Revision action "removed" (kein Löschen). Die Revisionen source=auto bleiben unverändert erhalten; die neue "removed"-Revision trägt ebenfalls source=auto.
+- save_auto bekommt remove=[('spread',id)|('total',id)|('team',side,id)] aus plan["remove"] (process_game reicht es durch, Spieler ausgeschlossen). Erlaubt nur für aktive Zusatzlinien OHNE Hand-Revision und nur wenn die Hauptlinie des Marktes nicht Hand ist. Ablauf unter der Sperre: Trockenlauf (save_card dry_run, assume_removed) -> entfernen (ein Schreibvorgang) -> speichern; scheitert die Prüfung, wird nichts entfernt.
+- Zusatz: Linien, über die die Hauptlinie hinweggewandert ist (Richtungswechsel), werden entfernt und mit neuer Richtung neu angelegt – auch wenn der Plan sie als "unverändert" gar nicht mitsendet (Fehler "höchstens 3 höhere Linien", im Test (f) gefunden). Umschreiben der Zeile mit der id wäre unsicherer (Richtung/Revisionen).
+
+TEIL 2 – Verhalten
+1. Hauptlinie auf auto-Zusatzlinie: Hauptzeile bekommt die neue Linie/Quoten, die alte Zusatzlinie ist als auto entfernt, Spiel wird gespeichert.
+2. Nicht mehr zur Leiter gehörende auto-Zusatzlinien werden entfernt (auch wenn es der einzige Unterschied ist). Folgelauf: unverändert.
+3. Hand: nie entfernt/überschrieben. Hand-Hauptlinie = ganze Leiter Hand (wie bisher). Kollidiert eine neue Linie mit einer Hand-Linie, wird nur sie übersprungen (ist es die Hauptzeile, bleibt die gespeicherte Hauptzeile unverändert), Protokoll: "Rockets-Thunder gespeichert (Linie 108,5 gehört der Hand (Team Totals Gast))".
+4. Spread, Total, Team Totals Heim/Gast; Spieler und Sieger unverändert. eingabe.py, App, Import, Handeingabe unverändert (save_card/remove_* nicht angefasst).
+5. Fehlergrund vollständig im Protokoll (nicht mehr auf 60 Zeichen gekürzt); passt er nicht in 200 Zeichen, steht er ganz in Folgezeilen "Details: ..." (gleicher Zeitstempel/Ergebnis).
+
+TEIL 3 – Tests (alle 0 FAIL)
+- Neu test_betano_auto_hauptlinie (Rohantwort Rockets–Thunder, Temp-Ordner): Ausgangslage lehnt Doppelung ohne Entfernen weiter ab; (a)+(g) Thunder 107,5->108,5 mit Spread -3,5->-2,5, Total 217,5->218,5, Rockets 109,5->110,5 alle gespeichert; (b) 105,5->108,5 mit Richtungswechsel; (c) 6 Linien aus dem Fenster + nur-Entfernen-Fall + Hand-Linie bleibt; (d) Hand-Zeile 108,5 byte-gleich, Protokoll nennt sie; (e) Folgelauf unverändert; (f) Hauptlinie 109,5/107,5/111,5/111,5 ohne Fehler; Grund >200 Zeichen vollständig.
+- Mitgelaufen, 0 FAIL: test_betano_auto, _then_hand, test_pre_match_auto, test_pre_match, _total, _spread, _team, test_eingabe, test_automation. test_betano_auto_sidebar nicht gelaufen (bekannter roter Plist-Test, nicht Teil der Aufgabe).
+- Echte Dateien: Hash von betano_auto_state.json und automation.log vor/nach den Tests gleich; pre_match_entries.json nur im Temp-Ordner genutzt.
+Hinweis: Der laufende Job nutzt die neuen Dateien ab dem nächsten Lauf (23:03). Die Dateien wurden je in einem Schritt ersetzt.

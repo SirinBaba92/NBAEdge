@@ -17,6 +17,7 @@ from __future__ import annotations
 import copy
 import json
 import os
+import socket
 import sys
 import time
 import urllib.error
@@ -36,6 +37,11 @@ JOB = "betano_auto"
 WINDOW_SECONDS = 12 * 3600          # nur Spiele, die in den naechsten 12 Stunden beginnen
 PAUSE_429_SECONDS = 6 * 3600
 MAX_ERRORS = 3
+SOON_SECONDS = 10 * 60               # so kurz vor dem Anpfiff gilt "nicht mehr in der Betano-Liste" als "Betano ohne Vorabquoten" (kein Fehler)
+LOG_LIMIT = 200                      # Zeilenlaenge in automation_log.sanitize
+REASON_STARTED = "läuft/Betano ohne Vorabquoten"
+REASON_HAND = "Handeingabe hat Vorrang"
+REASON_UNMATCHED = "Zuordnung fehlgeschlagen"
 STATES = ("ok", "pause", "aus")
 SCHEDULE_MAX_AGE_SECONDS = 6 * 3600   # upcoming_cache.json juenger als 6 Stunden (und gleiches Fenster) gilt als aktuell, sonst einmal neu holen
 
@@ -153,19 +159,48 @@ def _noop(*_a, **_k):
     return None
 
 
-def process_game(g: dict, ev: dict, data: dict, now: float) -> str:
-    """Parsen und mit save_auto speichern. Rueckgabe 'saved' | 'unchanged' | 'skipped' (Hand hat Vorrang oder Spiel begonnen). Wirft bei Fehlern."""
+def _no_prematch_odds(parsed: dict) -> bool:
+    """Betano liefert fuer das Spiel gar keine Maerkte mehr (Vorabquoten weg, Spiel laeuft oder gleich)."""
+    return (not parsed["winner"] and not parsed["spread"]["lines"] and not parsed["total"]["lines"] and not parsed["players"]
+            and not any(parsed["team"][side]["lines"] for side in ("home", "away")))
+
+
+def _error_reason(e: BaseException) -> str:
+    """Kurzer Grund fuer das Protokoll (keine URLs/Keys)."""
+    if isinstance(e, urllib.error.HTTPError):
+        return f"HTTP {e.code}"
+    if isinstance(e, (TimeoutError, socket.timeout)):
+        return "Timeout"
+    if isinstance(e, store.OddsInputError):
+        return "Prüfung abgelehnt: " + " ".join(getattr(e, "errors", None) or [str(e)])      # vollstaendig; zu lang fuer die Zeile -> Detail-Zeilen
+    if isinstance(e, (ValueError, KeyError, TypeError, IndexError, AttributeError)):
+        return f"Formatfehler ({type(e).__name__})"
+    return type(e).__name__
+
+
+def process_game(g: dict, ev: dict, data: dict, now: float, info: dict | None = None) -> str:
+    """Parsen und mit save_auto speichern. Rueckgabe 'saved' | 'unchanged' | 'skipped' (Hand hat Vorrang) | 'started' (Spiel begonnen)
+    | 'noodds' (Betano ohne Vorabquoten). Wirft bei Fehlern.
+    Alte Zusatzlinien, die nicht mehr zur Betano-Leiter gehoeren (auch die, auf die die Hauptlinie gewandert ist), entfernt store.save_auto (nie Hand-Linien).
+    info (optional): bekommt ['lines'] = einzeln uebersprungene Linien ("Linie 108,5 gehört der Hand (...)")."""
     parsed = bi.parse_event(data, g["home"], g["away"])
+    if _no_prematch_odds(parsed):
+        return "noodds"
     roster = rosters.load()
     key = store.game_key(g["date"], g["start"], g["home"], g["away"])
     entry = copy.deepcopy((store.load().get("entries") or {}).get(key))
     auto = bi.AutoAnswers(g, parsed, roster, real=lambda p: (_ for _ in ()).throw(bi.ImportAbort("Eingabe nicht erlaubt")), write=_noop)
     con = ei.Console(read=auto, write=_noop)
     plan = ei.build_plan(ei.Session(con), g, entry, roster, ei.cache_reference(g), False)     # False: keine Entfernungen (Automatik entfernt nie)
+    rem = [tuple(r) for r in plan["remove"] if r[0] in ("spread", "total", "team")]      # Spieler-Entfernungen bleiben ausgeschlossen
     try:
-        res = ei.execute_plan(g, plan, entry, roster, ei.cache_reference(g), now=now, save_fn=store.save_auto)
+        res = ei.execute_plan(g, plan, entry, roster, ei.cache_reference(g), now=now, save_fn=lambda *a, **k: store.save_auto(*a, remove=rem, **k))
+        if res.get("status") == "unchanged" and rem:                  # nur veraltete Linien zu entfernen
+            res = store.save_auto(g["date"], g["start"], g["home"], g["away"], remove=rem, now=now)
     except store.GameStartedError:
-        return "skipped"
+        return "started"
+    if info is not None:
+        info["lines"] = list(res.get("skipped_lines") or [])
     if res.get("status") == "skipped":
         return "skipped"
     return "saved" if res.get("status") == "saved" else "unchanged"
@@ -176,13 +211,31 @@ def run_once(now: float | None = None, fetch=bi.fetch_json, sleep=time.sleep, pa
     """Ein Lauf. Rueckgabe {'result': 'OK'|'SKIP'|'WARN'|'ERROR', 'detail': str, 'games': {"Heim - Gast": 'saved'|'unchanged'|'skipped'|'error'}}.
     fetch(pfad) -> dict (wie betano_import.fetch_json; im Test ersetzbar), games = Spieleliste statt Cache (Test)."""
     now = time.time() if now is None else now
-    out = {"result": "SKIP", "detail": "", "games": {}}
+    out = {"result": "SKIP", "detail": "", "games": {}, "notes": []}       # notes: ["Heim-Gast Fehler (Grund)", ...] je Spiel mit Fehler/Uebersprungen
     src = {"note": ""}
 
     def done(result, detail):
         detail = src["note"] + detail
+        rest = list(out["notes"])
+        if rest:                                                      # Details in dieselbe Zeile, was nicht passt in Folgezeilen (gleicher Zeitstempel/Ergebnis)
+            room = LOG_LIMIT - len(detail) - 3
+            first = ""
+            while rest and len(first) + len(rest[0]) + (2 if first else 0) <= room:
+                first += ("; " if first else "") + rest.pop(0)
+            if first:
+                detail += " – " + first
         out.update(result=result, detail=detail)
         _log(result, detail, now)
+        while rest:
+            chunk = ""
+            while rest and len(chunk) + len(rest[0]) + (2 if chunk else 0) <= LOG_LIMIT - 9:
+                chunk += ("; " if chunk else "") + rest.pop(0)
+            if not chunk:                                             # einzelner Eintrag zu lang: vollstaendig auf mehrere Detail-Zeilen verteilt
+                big = rest.pop(0)
+                for i in range(0, len(big), LOG_LIMIT - 9):
+                    _log(result, "Details: " + big[i:i + LOG_LIMIT - 9], now)
+                continue
+            _log(result, "Details: " + chunk, now)
         return out
 
     lock = job_lock.FileLock(timeout=0.0)
@@ -233,30 +286,48 @@ def run_once(now: float | None = None, fetch=bi.fetch_json, sleep=time.sleep, pa
                 return done("WARN", "Betano-Spielliste leer")
             for i, g in enumerate(todo):
                 name = f"{ei.nick(g['home'])} - {ei.nick(g['away'])}"
+                short = f"{ei.nick(g['home'])}-{ei.nick(g['away'])}"
                 if errors >= MAX_ERRORS:
                     break
+                reason, info = "", {}
                 try:
+                    ts = store.parse_utc(g["start"])
                     ev = bi.match_event(g, events)
                     if ev is None:
-                        out["games"][name] = "skipped"
+                        r, reason = "skipped", (REASON_STARTED if ts is not None and ts <= now + SOON_SECONDS else REASON_UNMATCHED)
+                        out["games"][name] = r
                         counts["skipped"] += 1
+                        out["notes"].append(f"{short} übersprungen ({reason})")
                         continue
                     if i:
                         sleep(pause_seconds)
                     data = fetch(f"{ev['url']}{bi.EVENT_REQ}".replace("/quoten/", "/api/quoten/", 1))["data"]
-                    r = process_game(g, ev, data, now)
+                    r = process_game(g, ev, data, now, info)
+                    if r in ("started", "noodds"):
+                        r, reason = "skipped", REASON_STARTED
+                    elif r == "skipped":
+                        reason = REASON_HAND
                 except urllib.error.HTTPError as e:
                     if e.code in (403, 429):
                         _http_stop(e, st, now, name)
-                    errors += 1
-                    r = "error"
-                    st["last_error"] = f"HTTP {e.code} ({name})"
+                    if e.code in (404, 410):                            # Seite des Spiels weg: Betano bietet es nicht mehr an
+                        r, reason = "skipped", REASON_STARTED
+                    else:
+                        errors += 1
+                        r, reason = "error", _error_reason(e)
+                        st["last_error"] = f"HTTP {e.code} ({name})"
                 except Exception as e:                                  # Timeout, Netz, Formatfehler, Pruefung: nur dieses Spiel
                     errors += 1
-                    r = "error"
+                    r, reason = "error", _error_reason(e)
                     st["last_error"] = f"{type(e).__name__} ({name})"
                 out["games"][name] = r
                 counts[r] += 1
+                if r == "error":
+                    out["notes"].append(f"{short} Fehler ({reason})")
+                elif r == "skipped":
+                    out["notes"].append(f"{short} übersprungen ({reason})")
+                if r in ("saved", "unchanged") and info.get("lines"):
+                    out["notes"].append(f"{short} gespeichert ({'; '.join(info['lines'])})")
         except StopRun:                                           # 429/403: Zustand und Protokoll sind in _http_stop schon geschrieben
             out.update(result="ERROR", detail=st.get("last_error") or "gestoppt")
             return out

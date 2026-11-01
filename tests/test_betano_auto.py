@@ -310,6 +310,76 @@ finally:
 check("c7 zwei Laeufe nacheinander: Spielplan nur einmal geholt, Magic-Spiel beim zweiten Mal unchanged (nicht doppelt)", len(plan.calls) == 1 and r1["games"].get("Magic - Hawks") == "saved"
       and r2["games"].get("Magic - Hawks") in ("unchanged",), f"{r1['games']} {r2['games']}")
 
+# ===== Protokoll nennt Spiel und Grund (Schritt g)
+def lines_of(): return [l for l in logtext().splitlines() if "job=betano_auto" in l]
+nm = lambda ev: "-".join(__import__("eingabe").nick(p["name"]) for p in ev["participants"][:2])
+# g1) Timeout: Spiel + Grund im Protokoll, WARN, eine Zeile, Sidebar gelb
+setup(); g2 = bdl(EVENTS[1])
+r = run(Net(fail={EVENTS[1]["url"].split("/")[2]: TimeoutError("timed out")}), [g2, G1])
+ln = lines_of()[-1]
+check("g1 Timeout: Lauf WARN, Zeile nennt Spiel und Grund", r["result"] == "WARN" and "result=WARN" in ln and f"{nm(EVENTS[1])} Fehler (Timeout)" in ln, ln)
+check("g1 Protokoll ohne URL/Key, Zeile <= 200 Zeichen, vom Parser lesbar", "http" not in ln and "/quoten/" not in ln and len(ln.split("detail=", 1)[1]) <= 200 and alog.read_events(5)[-1]["job"] == "betano_auto")
+check("g1 Sidebar gelb bei echtem Fehler", alog.betano_status(game_in_sight=False)["level"] == "yellow")
+# g2) Betano ohne Vorabquoten: kein Fehler, OK, gruen
+setup()
+dtl_leer = json.loads(json.dumps(dtl)); dtl_leer["data"]["event"]["markets"] = []; dtl_leer["data"]["event"]["sixPackLayout"] = {"columns": []}
+class NetLeer(Net):
+    def __call__(self, path):
+        self.calls.append(path)
+        return lst if "/api/sport/" in path else dtl_leer
+r = run(NetLeer(), [G1]); ln = lines_of()[-1]
+check("g2 Betano ohne Vorabquoten: skipped, kein Fehler, Lauf OK (nicht WARN)", list(r["games"].values()) == ["skipped"] and r["result"] == "OK" and "result=OK" in ln and "0 Fehler" in ln and entry() is None, str(r))
+check("g2 Zeile nennt Spiel und Grund", f"{nm(EVENTS[0])} übersprungen (läuft/Betano ohne Vorabquoten)" in ln, ln)
+check("g2 Sidebar gruen, last_error leer", alog.betano_status(game_in_sight=False)["level"] == "green" and ba.load_state()["last_error"] is None)
+# g3) HTTP 404 auf der Spielseite = Betano bietet es nicht mehr an (kein Fehler); 500 bleibt Fehler
+setup()
+r = run(Net(fail={EVENTS[0]["url"].split("/")[2]: http(404)}), [G1])
+check("g3 HTTP 404 auf der Spielseite: skipped, OK", list(r["games"].values()) == ["skipped"] and r["result"] == "OK", str(r))
+setup()
+r = run(Net(fail={EVENTS[0]["url"].split("/")[2]: http(500)}), [G1])
+check("g3 HTTP 500: Fehler, WARN, Grund HTTP 500 im Protokoll", list(r["games"].values()) == ["error"] and r["result"] == "WARN" and "Fehler (HTTP 500)" in lines_of()[-1], str(r))
+# g4) Formatfehler bleibt Fehler
+setup()
+class NetKaputt(Net):
+    def __call__(self, path):
+        self.calls.append(path)
+        return lst if "/api/sport/" in path else {"data": {"event": None}}
+r = run(NetKaputt(), [G1])
+check("g4 Formatfehler: Fehler, WARN, Grund im Protokoll", r["result"] == "WARN" and "Fehler (Formatfehler" in lines_of()[-1], lines_of()[-1])
+# g5) Handeingabe: Grund genannt, kein Fehler
+setup()
+bi.main(["--datei", str(FIX)], real=lambda p: "", write=lambda x: None, now_fn=lambda: NOW)
+for col in dtl_alt["data"]["event"]["sixPackLayout"]["columns"]:
+    pass
+r = run(Net2(), [G1]); ln = lines_of()[-1]
+check("g5 Handeingabe: skipped, OK, Zeile nennt 'Handeingabe hat Vorrang' mit Spiel", r["result"] == "OK" and f"{nm(EVENTS[0])} übersprungen (Handeingabe hat Vorrang)" in ln, ln)
+# g6) Spiel nicht in der Betano-Liste: skipped mit Grund, Anpfiff in wenigen Minuten: "laeuft/ohne Vorabquoten"
+setup()
+g_fremd = {"home_team": {"full_name": "Utah Jazz"}, "visitor_team": {"full_name": "Portland Trail Blazers"}, "date": "2026-10-21", "datetime": START, "status": "scheduled"}
+r = run(Net(), [g_fremd]); ln = lines_of()[-1]
+check("g6 nicht in der Betano-Liste (6 h vor Anpfiff): skipped, Grund Zuordnung fehlgeschlagen, OK", r["result"] == "OK" and "Jazz-Trail Blazers übersprungen (Zuordnung fehlgeschlagen)" in ln, ln)
+r = run(Net(), [g_fremd], now=START_MS / 1000 - 120); ln = lines_of()[-1]
+check("g6 2 Min. vor Anpfiff nicht mehr in der Liste: skipped (laeuft/Betano ohne Vorabquoten), OK", r["result"] == "OK" and "Jazz-Trail Blazers übersprungen (läuft/Betano ohne Vorabquoten)" in ln, ln)
+# g7) drei echte Fehler: Abbruch, alle drei Spiele im Protokoll; Spiele ohne Vorabquoten zaehlen nicht mit
+setup()
+gs = [bdl(EVENTS[i]) for i in (1, 2, 3, 4)] + [G1]
+net = Net(fail={EVENTS[i]["url"].split("/")[2]: TimeoutError("t") for i in (1, 2, 3)})
+r = run(net, gs)
+allog = "\n".join(lines_of()[-3:])
+check("g7 drei Fehler: ERROR, alle drei Spiele mit Grund im Protokoll (Folgezeilen erlaubt)", r["result"] == "ERROR" and all(f"{nm(EVENTS[i])} Fehler (Timeout)" in allog for i in (1, 2, 3)) and "3 Fehlern" in allog, allog)
+check("g7 jede Protokollzeile <= 200 Zeichen, vom Parser gelesen, gleicher Zeitstempel", all(len(l.split("detail=", 1)[1]) <= 200 for l in lines_of()) and len({l.split(" | ")[0] for l in lines_of()[-len(lines_of()):]}) >= 1)
+setup()
+dtl_leer2 = NetLeer()
+r = run(dtl_leer2, [bdl(EVENTS[i]) for i in (1, 2, 3, 4)] + [G1])
+check("g7 vier Spiele ohne Vorabquoten brechen nicht ab (kein Fehler, alle abgerufen)", r["result"] in ("OK",) and sum(v == "skipped" for v in r["games"].values()) >= 4 and "error" not in r["games"].values(), str(r))
+# g8) Grundtexte
+check("g8 Grund bei CardInputError und Timeout", ba._error_reason(ps.CardInputError(["Spread: Quote Over fehlt."])).startswith("Prüfung abgelehnt: Spread") and ba._error_reason(TimeoutError()) == "Timeout")
+# g9) Stoppregeln unveraendert: 429/403 auf Spielseite weiter Stopp
+setup()
+r = run(Net(fail={EVENTS[0]["url"].split("/")[2]: http(429)}), [G1])
+check("g9 429 auf der Spielseite: weiter Stopp mit Pause", r["result"] == "ERROR" and ba.load_state()["state"] == "pause")
+ba.reset()
+
 # 11) echte Dateien unberuehrt
 real_after = {str(p): sha(p) for p in REAL}
 check("11 echte Dateien unveraendert (tracking, automation.log, Zustand, Sperre, Kader)", real_before == real_after, str({k: (real_before[k], real_after[k]) for k in real_before if real_before[k] != real_after[k]}))

@@ -1,0 +1,18 @@
+Betano-Automatik, Schritt g: Protokoll mit Spiel und Grund – 2026-10-31
+Geändert: betano_auto.py, tests/test_betano_auto.py. Kein Abruf, kein Job angefasst, kein Commit.
+
+TEIL 1
+a) Fehler zählt run_once (Schleife je Spiel): HTTPError (403/429 -> Stopp; sonst Fehler), jede andere Ausnahme aus Abruf/parse_event/Plan/save_auto (Timeout, Format, CardInputError/OddsInputError) = Fehler. Nicht-Treffer in der Betano-Liste = "skipped", nie Fehler. Erfasst nur als Zähler (errors, counts), out["games"][Name]=Ergebnis und st["last_error"]="Typname (Spiel)" – der Grund selbst ging verloren.
+b) Nur teilweise. Zustandsfile (last_run 21:03): last_error = "CardInputError (Rockets - Thunder)" -> das ist der 21:03-Fehler: Prüfung des Speichers lehnte Rockets–Thunder ab (Meldungstext wurde nie gespeichert, Grund unbekannt). Das Spiel beginnt laut Cache erst 01:30 Uhr, war also NICHT begonnen. 20:02 (2 Fehler): nicht rekonstruierbar (Zustand überschrieben, err.log leer, out.log nur Summenzeilen).
+c) "Begonnen" wird vorab ausgefiltert (games_in_sight: nur Anpfiff > jetzt) oder per GameStartedError im Speichern -> skipped. "Betano liefert nichts mehr" gab es nicht als eigenen Fall: nicht in der Liste = skipped, leere Märkte = unchanged, Seite weg (HTTP 404) = Fehler. Die Vermutung trifft für 21:03 nicht zu.
+
+TEIL 2
+- Protokollzeile: Summe + " – Heim-Gast Fehler (Grund); Heim-Gast übersprungen (Grund)". Passt es nicht in 200 Zeichen (sanitize), kommen Folgezeilen "Details: ..." mit gleichem Zeitstempel und Ergebnis. Sidebar liest nur Ergebnis/Text, unverändert funktionsfähig.
+- Gründe: Timeout, HTTP nnn, Formatfehler (Typ), Prüfung abgelehnt: <erste Meldung>, Zuordnung fehlgeschlagen (nicht in Betano-Liste), läuft/Betano ohne Vorabquoten, Handeingabe hat Vorrang.
+- Kein Fehler mehr (skipped, Lauf OK): GameStartedError, Betano-Antwort ohne jeden Markt, HTTP 404/410 auf der Spielseite, nicht in der Liste <= 10 Min. vor Anpfiff. Zählen nicht zu den 3 Fehlern. Stoppregeln 429/403/3 Fehler unverändert.
+- Annahme: HTTP 404/410 = Betano bietet das Spiel nicht mehr an (nicht am echten Betano geprüft).
+
+TEIL 3
+- test_betano_auto 61 PASS, 0 FAIL (neu g1–g9); test_betano_auto_then_hand, test_pre_match_auto, test_automation: alle bestanden.
+- test_betano_auto_sidebar: 1 FAIL "Plist nicht installiert" – nicht durch die Änderung: der Job de.nbaedge.betano-auto.plist ist inzwischen installiert, der Test erwartet das Gegenteil (Test veraltet, nicht geändert).
+- Echte Dateien: Hash von data/betano_auto_state.json und data/automation.log vor/nachher gleich.

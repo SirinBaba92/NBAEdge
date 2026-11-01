@@ -1,0 +1,21 @@
+Rockets–Thunder: Diagnose Fehler der Betano-Automatik – 2026-10-31 (nur Lesen; kein Lauf, keine Änderung außer dieser Datei und der Rohantwort)
+
+TEIL 1
+a) Eintrag 2026-10-31|2026-11-01T00:30:00Z|Houston Rockets|Oklahoma City Thunder (nur source=auto, saved_at 18:55:41, jeweils 1 Revision):
+ Team Totals Thunder: main 107,5 | x1 104,5 lower | x2 105,5 lower | x3 106,5 lower | x4 108,5 higher (Quoten 1,91/1,80) | x5 109,5 | x6 110,5 higher.
+ Team Totals Rockets: main 110,5 | x1 107,5, x2 108,5, x3 109,5 lower | x4 111,5, x5 112,5, x6 113,5 higher (x2, x6 haben um 19:24:04 eine zweite Revision ohne source = Handeingabe).
+ Ja: gespeichert ist Thunder x4 = 108,5, source=auto. Seit 18:55 keine Änderung bei Spread/Total/Thunder: alle späteren Läufe scheiterten, und der Speicher lehnt dann das ganze Spiel ab.
+ Gespeicherter Spread: main -3,5 | x1 -5,5 | x2 -4,5 | x3 -2,5 | x4 -1,5. Total: main 218,5, Leiter 215,5–221,5.
+b) eingabe.build_plan (Z. 310ff, Aufruf in betano_auto.process_game mit replace_player_lines=False): gespeicherte Zusatzlinien werden mit ihrer id und ihrer Linie erneut gefragt (Spread Z. 350–361, Total Z. ~384–403, Team Totals Z. ~447ff: rid = sv["id"]). AutoAnswers (betano_import.py Z. 355–364) antwortet auf "Weitere Team-Total-Linie" mit der gespeicherten Linie nur, wenn sie noch in team_want steht (die nächsten 3 Linien über/unter Betanos Hauptlinie), sonst mit "x" = entfernen. Das Entfernen gibt es für die Automatik nicht: execute_plan(save_fn=save_auto) ignoriert plan["remove"]. Ändert sich nur die Quote, werden id und Linie korrekt mitgeschickt (Hypothese 2 trifft also nicht zu). Gilt für Spread, Total und Team Totals; Spieler laufen über eigene Blöcke (block_id), nicht über dieses Muster.
+c) URSACHE: Betanos Hauptlinie ist für Thunder von 107,5 auf 108,5 gewandert (Rohabruf unten). Die bisherige Zusatzlinie x4 = 108,5 liegt jetzt auf der Hauptlinie, fällt aus team_want, wird mit "x" beantwortet; das Entfernen wird ignoriert. Die gespeicherte Zeile bleibt, die Hauptzeile bekommt ebenfalls 108,5 -> store._validate (pre_match_store.py Z. 825–832): "Die Linie 108,5 kommt mehrfach vor". Betano selbst liefert die Linie nur einmal (Hypothese 1 trifft nicht zu). Rockets-Hauptlinie ist unverändert (110,5), daher fehlerfrei; andere Spiele: Hauptlinien nicht gewandert.
+ Gleiches Muster beim Spread: gespeichert main -3,5, Betano jetzt -2,5 = gespeichertes x3 -2,5 -> sehr wahrscheinlich ebenfalls Fehler (im Protokoll abgeschnitten, nicht einzeln belegt). Total unverändert (218,5).
+
+TEIL 2 (durchgeführt, weil die Datenlage allein nicht zeigt, was Betano aktuell liefert)
+ Zwei Abrufe, je einer: Spieleliste (nötig für die Adresse des Spiels) und die Spielseite Rockets–Thunder, 3 s Pause, keine Schleife, kein 403/429. Rohantwort: analysis/results/betano_rockets_thunder_roh.json.
+ Befund: Hauptlinie Thunder 108,5 (Rockets 110,5), Spread-Hauptlinie -2,5, Total 218,5. Thunder-Team-Total: 24 Linien (96,5–120,5), keine Linie doppelt (Gesamtpunkte Thunder, 48 Auswahlen = 24 x Über/Unter).
+
+TEIL 3 (Einschätzung, nichts gebaut)
+ Ursache: Verschiebt Betano die Hauptlinie auf eine gespeicherte Zusatzlinie, kann die Automatik die alte Zeile nicht entfernen -> doppelte Linie, das ganze Spiel scheitert.
+ Korrektur: in betano_auto.process_game / ei.execute_plan (save_fn-Pfad) die Zeile "Zusatzlinie, die zur neuen Hauptlinie wird" nicht entfernen, sondern auf der Zeile mit der id ausführen: nur die Linie dieser auto-Zeile umschreiben bzw. Richtung ändern (id behalten) – oder die Hauptlinie auf die bestehende Zeile legen. Dasselbe für Spread und Total und für die Richtungswechsel der übrigen Zusatzlinien (Team Totals: Z. ~447 Wechsel nur bei replace_player_lines).
+ Tests: Hauptlinie wandert auf eine gespeicherte auto-Zusatzlinie (Team Total, Spread, Total) -> Lauf OK, keine Doppelung, Quoten aktuell; wandert um mehr als 1 und wechselt Richtung; Hand-Zeile auf der betroffenen Linie bleibt unberührt (Handvorrang); Folgelauf unchanged.
+ Betroffen: Jeder Markt mit Leiter (Spread, Total, Team Totals) und jedes Spiel, dessen Hauptlinie nach dem ersten Lauf wandert; bei Handeingabe tritt es nicht auf, weil dort Entfernen/Ersetzen erlaubt ist (replace_player_lines, plan["remove"]). Spielerblöcke nicht betroffen.

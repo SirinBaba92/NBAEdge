@@ -1285,8 +1285,13 @@ def _lines_of(market: dict | None) -> list[dict]:
     return list((market or {}).get("lines") or [])
 
 
-def _filter_rows(rows, lines: list[dict], value_key: str, parse) -> tuple[list | None, int]:
-    """Entfernt Zeilen, die eine Linie mit Handeingabe treffen (ueber die ID oder den gleichen Linienwert). Rueckgabe (Zeilen oder None, Zahl uebersprungen)."""
+def _fmt_line(v) -> str:
+    return str(v).rstrip("0").rstrip(".").replace(".", ",") if isinstance(v, float) and "." in str(v) else str(v)
+
+
+def _filter_rows(rows, lines: list[dict], value_key: str, parse, hits: list | None = None) -> tuple[list | None, int]:
+    """Entfernt Zeilen, die eine Linie mit Handeingabe treffen (ueber die ID oder den gleichen Linienwert). Rueckgabe (Zeilen oder None, Zahl uebersprungen).
+    hits (optional): bekommt die Linienwerte der einzeln uebersprungenen Zeilen."""
     if not rows:
         return rows, 0
     hand_ids = {l["id"] for l in lines if has_hand_revision(l)}
@@ -1299,6 +1304,8 @@ def _filter_rows(rows, lines: list[dict], value_key: str, parse) -> tuple[list |
             val = None
         if row.get("id") in hand_ids or (val is not None and val in hand_vals):
             skipped += 1
+            if hits is not None and val is not None:
+                hits.append(val)
         else:
             keep.append(row)
     if any(l["id"] == "main" for l in lines if has_hand_revision(l)) and keep:
@@ -1306,44 +1313,185 @@ def _filter_rows(rows, lines: list[dict], value_key: str, parse) -> tuple[list |
     return (keep or None), skipped
 
 
+def _with_saved_main(rows, lines: list[dict], spread: bool) -> list | None:
+    """Wurde die Hauptzeile uebersprungen (ihre neue Linie gehoert der Hand), verlangt der Speicher sie trotzdem vorn: unveraendert mit dem gespeicherten Stand.
+    Gibt es keine gespeicherte Hauptlinie, kann der Rest nicht gespeichert werden."""
+    if not rows or rows[0].get("id") == "main":
+        return rows
+    sv = next((l for l in lines if l.get("id") == "main" and l.get("active", True)), None)
+    if sv is None:
+        return None
+    if spread:
+        main = {"id": "main", "line": repr(float(sv["line_home"])), "home_odds": repr(float(sv["home_odds"])), "away_odds": repr(float(sv["away_odds"])), "bookmaker": sv.get("bookmaker")}
+    else:
+        main = {"id": "main", "direction": None, "line": repr(float(sv["line"])), "over_odds": repr(float(sv["over_odds"])), "under_odds": repr(float(sv["under_odds"])),
+                "bookmaker": sv.get("bookmaker")}
+    def same(row):                                                  # eine andere Zeile auf der Linie der unveraenderten Hauptzeile waere doppelt
+        try:
+            return abs(float(str(row.get("line")).replace(",", ".")) - float(main["line"])) < 1e-9
+        except ValueError:
+            return False
+    return [main] + [r for r in rows if not same(r)]
+
+
+def _flip_rows(rows, lines: list[dict], removed_ids: set) -> tuple[list | None, list[str]]:
+    """Over/Under-Zeilen, deren Richtung sich mit der neuen Hauptlinie geaendert hat (die Hauptlinie ist ueber sie hinweggewandert): der Speicher behielte die alte Richtung.
+    Die alte Zeile wird entfernt (Rueckgabe: ihre IDs) und neu angelegt (id None; auch wenn der Plan sie als unveraendert gar nicht mitschickt, mit dem gespeicherten Stand).
+    Zeilen mit Handrevision und Zeilen, die ohnehin entfernt werden (removed_ids), bleiben aussen vor."""
+    if not rows or rows[0].get("id") != "main":
+        return rows, []
+    try:
+        m = float(str(rows[0].get("line")).replace(",", "."))
+    except ValueError:
+        return rows, []
+    rows, flipped = list(rows), []
+    for sv in lines:
+        if sv["id"] in ("main",) or not sv.get("active", True) or has_hand_revision(sv) or not sv.get("direction"):
+            continue
+        want = "higher" if sv["line"] > m else "lower"
+        if sv["line"] == m or sv["direction"] == want:
+            continue
+        flipped.append(sv["id"])
+        if sv["id"] in removed_ids:
+            continue
+        hit = next((i for i, r in enumerate(rows) if r.get("id") == sv["id"]), None)
+        if hit is not None:
+            rows[hit] = {**rows[hit], "id": None, "direction": want}
+        elif not any(str(r.get("line")).replace(",", ".") == str(sv["line"]) for r in rows):
+            rows.append({"id": None, "direction": want, "line": repr(float(sv["line"])), "over_odds": repr(float(sv["over_odds"])),
+                         "under_odds": repr(float(sv["under_odds"])), "bookmaker": sv.get("bookmaker")})
+    return rows, flipped
+
+
+def _market_lines(mk: dict, kind: str, side: str | None = None) -> list[dict]:
+    if kind == "spread":
+        return _lines_of(mk.get(SPREAD))
+    if kind == "total":
+        return _lines_of(mk.get(TOTAL))
+    return _lines_of((mk.get(TEAM_TOTALS) or {}).get(side))
+
+
+def _auto_removals(mk: dict, remove: list | None) -> list[tuple]:
+    """Entfernungen, die die Automatik ausfuehren darf: aktive Zusatzlinien ohne Handrevision in Maerkten, deren Hauptlinie nicht Hand ist."""
+    out = []
+    for rm in remove or []:
+        if rm[0] in ("spread", "total"):
+            lines, lid = _market_lines(mk, rm[0]), rm[1]
+        elif rm[0] == "team" and rm[1] in TEAMS:
+            lines, lid = _market_lines(mk, "team", rm[1]), rm[2]
+        else:
+            continue
+        if lid == "main" or any(l["id"] == "main" and has_hand_revision(l) for l in lines):
+            continue
+        line = next((l for l in lines if l["id"] == lid and l.get("active", True)), None)
+        if line is None or has_hand_revision(line) or tuple(rm) in out:
+            continue
+        out.append(tuple(rm))
+    return out
+
+
+def _apply_auto_removals(key: str, removals: list[tuple], now: float) -> None:
+    """Markiert die Linien als inaktiv, Revision 'removed' mit source=auto (nichts wird geloescht). Unter der Sperre des Aufrufers, ein Schreibvorgang."""
+    with _lock:
+        data = _load_for_write()
+        entry = data["entries"].get(key)
+        if not entry:
+            return
+        stamp = iso_now(now)
+        mk = entry.get("markets") or {}
+        for rm in removals:
+            if rm[0] in ("spread", "total"):
+                lines, lid, top = _market_lines(mk, rm[0]), rm[1], mk.get(SPREAD if rm[0] == "spread" else TOTAL)
+            else:
+                lines, lid, top = _market_lines(mk, "team", rm[1]), rm[2], mk.get(TEAM_TOTALS)
+            line = next((l for l in lines if l["id"] == lid and l.get("active", True)), None)
+            if line is None:
+                continue
+            keys = ("line_home", "line_away", "home_odds", "away_odds", "bookmaker") if rm[0] == "spread" else ("line", "over_odds", "under_odds", "bookmaker")
+            line["active"] = False
+            line["removed_at"] = stamp
+            line["updated_at"] = stamp
+            line["revisions"].append({"action": "removed", **{k: line.get(k) for k in keys}, "saved_at": stamp, "market_suggestion": None, "source": SOURCE_AUTO})
+            top["updated_at"] = stamp
+        data["updated_at"] = stamp
+        data["version"] = STORE_VERSION
+        data["markets"] = {**data.get("markets", {}), **MARKETS}
+        try:
+            _atomic_write(store_path(), data)
+        except Exception as e:
+            raise StoreError("Speichern fehlgeschlagen; die bestehende Datei wurde nicht verändert.") from e
+        _daily_copy(now)
+
+
 def save_auto(game_date: str, start_utc: str, home: str, away: str, winner: dict | None = None, spread_rows: list[dict] | None = None,
               suggestion: dict | None = None, total_rows: list[dict] | None = None, total_suggestion: dict | None = None,
               team_rows: dict | None = None, team_suggestion: dict | None = None, team_names: dict | None = None,
-              player_blocks: list[dict] | None = None, roster_fetched_at: str | None = None, now: float | None = None) -> dict:
+              player_blocks: list[dict] | None = None, roster_fetched_at: str | None = None, now: float | None = None, remove: list[tuple] | None = None) -> dict:
     """Speicherpfad der Automatik (noch nirgends aufgerufen). Gleiche Eingaben wie save_card, neue Revisionen tragen "source": "auto".
     Vorrang der Hand: Teile (Sieger-Markt, Spread-/Total-/Team-Total-Linie, Spielerblock) mit mindestens einer Handeingabe-Revision werden NICHT angefasst
-    (auch nicht entfernt); sie werden uebersprungen. Alles unter derselben Sperre wie das Speichern. Entfernen gibt es fuer die Automatik nicht.
-    Rueckgabe wie save_card plus 'skipped_hand': Zahl uebersprungener Teile; Status 'skipped' (Grund SKIP_HAND_PRIORITY), wenn nichts uebrig bleibt."""
+    (auch nicht entfernt); sie werden uebersprungen. Alles unter derselben Sperre wie das Speichern.
+    remove: Linien, die nicht mehr zur Betano-Leiter gehoeren (('spread', id) | ('total', id) | ('team', side, id)); nur aktive Zusatzlinien OHNE Handrevision werden
+    entfernt (Revision 'removed', source=auto), vorher wird alles geprueft (Trockenlauf). Dasselbe gilt fuer Linien, deren Richtung sich geaendert hat (neu anlegen).
+    Rueckgabe wie save_card plus 'skipped_hand': Zahl uebersprungener Teile, 'skipped_lines': Meldungen zu einzeln uebersprungenen Linien, 'removed': entfernte Linien;
+    Status 'skipped' (Grund SKIP_HAND_PRIORITY), wenn nichts uebrig bleibt."""
     now = now if now is not None else time.time()
     start_norm = _prepare_game(game_date, start_utc, now)
     key = game_key(game_date, start_norm, home, away)
     with _lock:
         entry = (load().get("entries") or {}).get(key) or {}
         mk = entry.get("markets") or {}
-        skipped = 0
+        skipped, hits = 0, []
+        flips: list[tuple] = []
         if winner is not None and has_hand_revision(mk.get(WINNER)):
             winner, skipped = None, skipped + 1
-        spread_rows, n = _filter_rows(spread_rows, _lines_of(mk.get(SPREAD)), "line_home", parse_line_input)
+        h = []
+        spread_rows, n = _filter_rows(spread_rows, _lines_of(mk.get(SPREAD)), "line_home", parse_line_input, h)
         skipped += n
-        total_rows, n = _filter_rows(total_rows, _lines_of(mk.get(TOTAL)), "line", parse_total_input)
+        spread_rows = _with_saved_main(spread_rows, _lines_of(mk.get(SPREAD)), True)
+        hits += [f"Linie {_fmt_line(v)} gehört der Hand (Spread)" for v in h]
+        h = []
+        total_rows, n = _filter_rows(total_rows, _lines_of(mk.get(TOTAL)), "line", parse_total_input, h)
         skipped += n
+        total_rows = _with_saved_main(total_rows, _lines_of(mk.get(TOTAL)), False)
+        total_rows, fl = _flip_rows(total_rows, _lines_of(mk.get(TOTAL)), {r[1] for r in (remove or []) if r[0] == "total"})
+        flips += [("total", i) for i in fl]
+        hits += [f"Linie {_fmt_line(v)} gehört der Hand (Total)" for v in h]
         if team_rows:
             new_team = {}
             for side in TEAMS:
-                new_team[side], n = _filter_rows((team_rows or {}).get(side), _lines_of((mk.get(TEAM_TOTALS) or {}).get(side)), "line", parse_team_total_input)
+                h = []
+                lines = _market_lines(mk, "team", side)
+                new_team[side], n = _filter_rows((team_rows or {}).get(side), lines, "line", parse_team_total_input, h)
                 skipped += n
+                new_team[side] = _with_saved_main(new_team[side], lines, False)
+                new_team[side], fl = _flip_rows(new_team[side], lines, {r[2] for r in (remove or []) if r[0] == "team" and r[1] == side})
+                flips += [("team", side, i) for i in fl]
+                hits += [f"Linie {_fmt_line(v)} gehört der Hand (Team Totals {'Heim' if side == 'home' else 'Gast'})" for v in h]
             team_rows = new_team if any(new_team.values()) else None
         if player_blocks:
             hand_pids = {b.get("person_id") for b in (mk.get(PLAYER_POINTS) or {}).get("players", []) if has_hand_revision(b)}
             keep = [b for b in player_blocks if not (b.get("person_id") in hand_pids and b.get("person_id") not in (None, ""))]
             skipped += len(player_blocks) - len(keep)
             player_blocks = keep or None
+        removals = _auto_removals(mk, list(remove or []) + flips)
+        kw = dict(winner=winner, spread_rows=spread_rows, suggestion=suggestion, total_rows=total_rows, total_suggestion=total_suggestion, team_rows=team_rows,
+                  team_suggestion=team_suggestion, team_names=team_names, player_blocks=player_blocks, roster_fetched_at=roster_fetched_at, now=now, source=SOURCE_AUTO)
         if all(x is None for x in (winner, spread_rows, total_rows, team_rows, player_blocks)):
+            if removals:
+                _apply_auto_removals(key, removals, now)
+                return {"status": "saved", "key": key, "markets": {}, "removed": removals, "skipped_hand": skipped, "skipped_lines": hits}
             if skipped:
-                return {"status": "skipped", "reason": SKIP_HAND_PRIORITY, "key": key, "skipped_hand": skipped}
+                return {"status": "skipped", "reason": SKIP_HAND_PRIORITY, "key": key, "skipped_hand": skipped, "skipped_lines": hits}
+            if remove:                                          # Entfernungswuensche, aber nichts davon erlaubt/noetig (z. B. nur Hand-Linien oder schon entfernt)
+                return {"status": "unchanged", "key": key, "markets": {}, "removed": [], "skipped_hand": 0, "skipped_lines": []}
             raise OddsInputError("Nichts eingetragen.")
-        res = save_card(game_date, start_norm, home, away, winner=winner, spread_rows=spread_rows, suggestion=suggestion, total_rows=total_rows,
-                        total_suggestion=total_suggestion, team_rows=team_rows, team_suggestion=team_suggestion, team_names=team_names,
-                        player_blocks=player_blocks, roster_fetched_at=roster_fetched_at, now=now, source=SOURCE_AUTO)
+        if removals:
+            save_card(game_date, start_norm, home, away, assume_removed=removals, dry_run=True, **kw)      # erst pruefen, dann entfernen, dann speichern
+            _apply_auto_removals(key, removals, now)
+        res = save_card(game_date, start_norm, home, away, **kw)
+        if removals and res.get("status") == "unchanged":
+            res["status"] = "saved"
         res["skipped_hand"] = skipped
+        res["skipped_lines"] = hits
+        res["removed"] = removals
         return res
