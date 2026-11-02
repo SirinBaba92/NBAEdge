@@ -1,7 +1,7 @@
 {
   "version": 1,
   "format": "nbaedge-absences",
-  "updated_at": "2026-10-31T23:11:19+01:00",
+  "updated_at": "2026-11-01T19:47:33+01:00",
   "days": {
     "2026-10-22": {
       "2026-10-22|2026-10-23T01:30:00Z|Oklahoma City Thunder|Denver Nuggets": {
@@ -4999,6 +4999,334 @@
         "auto": {
           "source": "espn",
           "fetched_at": "2026-10-31T23:11:19+01:00",
+          "unmatched": []
+        }
+      }
+    },
+    "2026-11-01": {
+      "2026-11-01|2026-11-01T20:30:00Z|Orlando Magic|Boston Celtics": {
+        "out": {
+          "1629011": {
+            "name": "Mitchell Robinson",
+            "team": "Boston Celtics",
+            "set_at": "2026-11-01T19:47:33+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-01T19:47:33+01:00"
+          },
+          "1642269": {
+            "name": "Devin Carter",
+            "team": "Boston Celtics",
+            "set_at": "2026-11-01T19:47:33+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-01T19:47:33+01:00"
+          },
+          "1628371": {
+            "name": "Jonathan Isaac",
+            "team": "Orlando Magic",
+            "set_at": "2026-11-01T19:47:33+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-01T19:47:33+01:00"
+          },
+          "1630591": {
+            "name": "Jalen Suggs",
+            "team": "Orlando Magic",
+            "set_at": "2026-11-01T19:47:33+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-01T19:47:33+01:00"
+          },
+          "1631094": {
+            "name": "Paolo Banchero",
+            "team": "Orlando Magic",
+            "set_at": "2026-11-01T19:47:33+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-01T19:47:33+01:00"
+          },
+          "1642869": {
+            "name": "Noah Penda",
+            "team": "Orlando Magic",
+            "set_at": "2026-11-01T19:47:33+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-01T19:47:33+01:00"
+          },
+          "1643593": {
+            "name": "Izaiyah Nelson",
+            "team": "Orlando Magic",
+            "set_at": "2026-11-01T19:47:33+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-01T19:47:33+01:00"
+          }
+        },
+        "doubtful": {},
+        "updated_at": "2026-11-01T19:47:33+01:00",
+        "history": [
+          {
+            "at": "2026-11-01T19:47:33+01:00",
+            "out": [
+              1628371,
+              1629011,
+              1630591,
+              1631094,
+              1642269,
+              1642869,
+              1643593
+            ],
+            "doubtful": [],
+            "source": "espn"
+          }
+        ],
+        "auto": {
+          "source": "espn",
+          "fetched_at": "2026-11-01T19:47:33+01:00",
+          "unmatched": []
+        }
+      },
+      "2026-11-01|2026-11-01T22:00:00Z|Indiana Pacers|Brooklyn Nets": {
+        "out": {
+          "1643414": {
+            "name": "Mikel Brown Jr.",
+            "team": "Brooklyn Nets",
+            "set_at": "2026-11-01T19:47:33+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-01T19:47:33+01:00"
+          },
+          "1642856": {
+            "name": "Egor Dëmin",
+            "team": "Brooklyn Nets",
+            "set_at": "2026-11-01T19:47:33+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-01T19:47:33+01:00"
+          },
+          "1643548": {
+            "name": "Tyler Bilodeau",
+            "team": "Brooklyn Nets",
+            "set_at": "2026-11-01T19:47:33+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-01T19:47:33+01:00"
+          },
+          "204456": {
+            "name": "T.J. McConnell",
+            "team": "Indiana Pacers",
+            "set_at": "2026-11-01T19:47:33+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-01T19:47:33+01:00"
+          },
+          "1627826": {
+            "name": "Ivica Zubac",
+            "team": "Indiana Pacers",
+            "set_at": "2026-11-01T19:47:33+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-01T19:47:33+01:00"
+          },
+          "1642277": {
+            "name": "Johnny Furphy",
+            "team": "Indiana Pacers",
+            "set_at": "2026-11-01T19:47:33+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-01T19:47:33+01:00"
+          },
+          "1641767": {
+            "name": "Ben Sheppard",
+            "team": "Indiana Pacers",
+            "set_at": "2026-11-01T19:47:33+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-01T19:47:33+01:00"
+          },
+          "1630169": {
+            "name": "Tyrese Haliburton",
+            "team": "Indiana Pacers",
+            "set_at": "2026-11-01T19:47:33+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-01T19:47:33+01:00"
+          }
+        },
+        "doubtful": {
+          "1630174": {
+            "name": "Aaron Nesmith",
+            "team": "Indiana Pacers",
+            "set_at": "2026-11-01T19:47:33+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-01T19:47:33+01:00"
+          },
+          "1630167": {
+            "name": "Obi Toppin",
+            "team": "Indiana Pacers",
+            "set_at": "2026-11-01T19:47:33+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-01T19:47:33+01:00"
+          }
+        },
+        "updated_at": "2026-11-01T19:47:33+01:00",
+        "history": [
+          {
+            "at": "2026-11-01T19:47:33+01:00",
+            "out": [
+              204456,
+              1627826,
+              1630169,
+              1641767,
+              1642277,
+              1642856,
+              1643414,
+              1643548
+            ],
+            "doubtful": [
+              1630167,
+              1630174
+            ],
+            "source": "espn"
+          }
+        ],
+        "auto": {
+          "source": "espn",
+          "fetched_at": "2026-11-01T19:47:33+01:00",
+          "unmatched": []
+        }
+      },
+      "2026-11-01|2026-11-02T01:30:00Z|Golden State Warriors|LA Clippers": {
+        "out": {
+          "203110": {
+            "name": "Draymond Green",
+            "team": "Golden State Warriors",
+            "set_at": "2026-11-01T19:47:33+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-01T19:47:33+01:00"
+          },
+          "201939": {
+            "name": "Stephen Curry",
+            "team": "Golden State Warriors",
+            "set_at": "2026-11-01T19:47:33+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-01T19:47:33+01:00"
+          },
+          "204001": {
+            "name": "Kristaps Porziņģis",
+            "team": "Golden State Warriors",
+            "set_at": "2026-11-01T19:47:33+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-01T19:47:33+01:00"
+          },
+          "1630541": {
+            "name": "Moses Moody",
+            "team": "Golden State Warriors",
+            "set_at": "2026-11-01T19:47:33+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-01T19:47:33+01:00"
+          },
+          "202710": {
+            "name": "Jimmy Butler III",
+            "team": "Golden State Warriors",
+            "set_at": "2026-11-01T19:47:33+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-01T19:47:33+01:00"
+          },
+          "1629622": {
+            "name": "Max Strus",
+            "team": "LA Clippers",
+            "set_at": "2026-11-01T19:47:33+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-01T19:47:33+01:00"
+          },
+          "203078": {
+            "name": "Bradley Beal",
+            "team": "LA Clippers",
+            "set_at": "2026-11-01T19:47:33+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-01T19:47:33+01:00"
+          },
+          "1641757": {
+            "name": "Jordan Miller",
+            "team": "LA Clippers",
+            "set_at": "2026-11-01T19:47:33+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-01T19:47:33+01:00"
+          }
+        },
+        "doubtful": {
+          "1630611": {
+            "name": "Gui Santos",
+            "team": "Golden State Warriors",
+            "set_at": "2026-11-01T19:47:33+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-01T19:47:33+01:00"
+          }
+        },
+        "updated_at": "2026-11-01T19:47:33+01:00",
+        "history": [
+          {
+            "at": "2026-11-01T19:47:33+01:00",
+            "out": [
+              201939,
+              202710,
+              203078,
+              203110,
+              204001,
+              1629622,
+              1630541,
+              1641757
+            ],
+            "doubtful": [
+              1630611
+            ],
+            "source": "espn"
+          }
+        ],
+        "auto": {
+          "source": "espn",
+          "fetched_at": "2026-11-01T19:47:33+01:00",
+          "unmatched": []
+        }
+      },
+      "2026-11-01|2026-11-02T02:00:00Z|Los Angeles Lakers|Toronto Raptors": {
+        "out": {
+          "1642876": {
+            "name": "Adou Thiero",
+            "team": "Los Angeles Lakers",
+            "set_at": "2026-11-01T19:47:33+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-01T19:47:33+01:00"
+          },
+          "202695": {
+            "name": "Kawhi Leonard",
+            "team": "Toronto Raptors",
+            "set_at": "2026-11-01T19:47:33+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-01T19:47:33+01:00"
+          },
+          "1642927": {
+            "name": "Nate Bittle",
+            "team": "Toronto Raptors",
+            "set_at": "2026-11-01T19:47:33+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-01T19:47:33+01:00"
+          }
+        },
+        "doubtful": {
+          "1630533": {
+            "name": "Ziaire Williams",
+            "team": "Los Angeles Lakers",
+            "set_at": "2026-11-01T19:47:33+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-01T19:47:33+01:00"
+          }
+        },
+        "updated_at": "2026-11-01T19:47:33+01:00",
+        "history": [
+          {
+            "at": "2026-11-01T19:47:33+01:00",
+            "out": [
+              202695,
+              1642876,
+              1642927
+            ],
+            "doubtful": [
+              1630533
+            ],
+            "source": "espn"
+          }
+        ],
+        "auto": {
+          "source": "espn",
+          "fetched_at": "2026-11-01T19:47:33+01:00",
           "unmatched": []
         }
       }

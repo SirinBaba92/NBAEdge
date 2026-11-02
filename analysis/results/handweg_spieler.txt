@@ -1,0 +1,21 @@
+Handweg repariert: Spieler ersetzen alle Stufen (Roadmap 3.2k) – 2026-11-01
+Geändert: eingabe.py (execute_plan + neue _block_emptied), data/pre_match_store.py (_validate_players, save_auto). Neu: tests/test_eingabe_spieler_ersetzen.py. Kein Abruf, kein Lauf der Automatik, launchd/Plists unberührt, kein Commit. Entwickelt in einer Kopie, je Datei ein Austausch (cp + mv).
+
+TEIL 1 – Ursache bestätigt
+- eingabe.py (build_plan, replace_player_lines) plant alle alten Stufen als player_line-Entfernung; execute_plan schreibt sie zuerst (_remove_all). Die letzte Entfernung macht den Block inaktiv (_remove_player_part).
+- Das Speichern nutzt weiter die alte block_id -> _apply_players wirft "Dieser Spielerblock existiert nicht mehr" NACH dem Schreiben. Der Trockenlauf bestand, weil _validate_players eine block_id ohne aktiven Treffer als "neu" behandelte (kein Fehler).
+- Im alten Code mit dem Test reproduziert: alter Block inaktiv, keine neuen Stufen, und die Eingabe fragte endlos erneut nach "Speichern?".
+- Spread/Total/Team Totals: nicht betroffen. Die Hauptzeile bleibt immer erhalten (wird nie entfernt, nur ersetzt), die Leiter kann nicht leer werden; Test (d) bestätigt. Nur Spielerblöcke können leer werden.
+- save_auto (vorher 3.2j): dort schon gelöst (block_id None bei leerem Block), jetzt nur an die neue Prüfung angepasst.
+
+TEIL 2 – Lösung
+1. execute_plan (nur Handweg, save_fn None): Entfernen die geplanten Entfernungen alle aktiven Stufen eines Blocks (oder ist player_block geplant), geht der neue Block mit block_id None und ids None in Prüfung UND Speichern -> neuer Block, alter bleibt inaktiv mit removed-Revisionen (Hand).
+2. _validate_players: eine block_id, die es nicht (mehr) aktiv gibt, wird schon beim Prüfen gemeldet (gleicher Text, "Spielerpunkte · Name: Dieser Spielerblock existiert nicht mehr."). Der Trockenlauf findet den Fehler also vor dem Entfernen.
+3. save_auto: Block-Reset vor die Einzelprüfung gezogen (gleiches Ergebnis wie 3.2j).
+4. Alles andere unverändert (Teilentfernung, Spread/Total/Team, Sieger, App, Import).
+Grenze: Entfernen und Speichern sind weiter zwei Schreibvorgänge. Alles Prüfbare wird vorher im Trockenlauf geprüft; nur ein Schreibfehler der Platte zwischen beiden könnte noch halb schreiben (wie bisher, ein echter Ein-Schreibvorgang wäre eine größere Änderung am Speicher – bei Bedarf besprechen).
+
+TEIL 3 – Tests (alle 0 FAIL)
+- Neu test_eingabe_spieler_ersetzen (13 PASS, über betano_import.run_one, Rohantwort Rockets–Thunder, Temp-Ordner): (a) Fears-Fall 28-36 -> 37-39 ohne Fehler, neuer Block, alte Stufen removed (Hand); (b) Teilentfernung bleibt im selben Block; (c) Ablehnung -> Datei byte-gleich, alte Stufen aktiv; (c2) veraltete block_id im Trockenlauf gemeldet; (d) wandernde Hauptlinien Spread/Total/Team ohne Fehler; (e) Folgelauf byte-gleich. Gegen den alten Code: (a) rot, wie erwartet.
+- Mitgelaufen: test_eingabe 73, _wiederholen 24, test_betano_import 27, test_pre_match 52, _players 117, _total 66, _spread 104, _team 73, test_pre_match_auto 18, test_betano_auto 61, _hauptlinie 27, _spieler 22, _then_hand 21, test_automation 51 (im echten Ordner).
+- test_betano_auto_sidebar nicht gelaufen. Plist-Hashes vorher = nachher. data/tracking/pre_match_entries.json, data/automation.log und data/betano_auto_state.json ändert der stündliche Job laufend (git status zeigt sie als geändert); die Tests nutzten nur Temp-Ordner, im Test selbst Hash vorher = nachher.

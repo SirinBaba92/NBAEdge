@@ -192,7 +192,11 @@ def process_game(g: dict, ev: dict, data: dict, now: float, info: dict | None = 
     auto = bi.AutoAnswers(g, parsed, roster, real=lambda p: (_ for _ in ()).throw(bi.ImportAbort("Eingabe nicht erlaubt")), write=_noop)
     con = ei.Console(read=auto, write=_noop)
     plan = ei.build_plan(ei.Session(con), g, entry, roster, ei.cache_reference(g), False)     # False: keine Entfernungen (Automatik entfernt nie)
-    rem = [tuple(r) for r in plan["remove"] if r[0] in ("spread", "total", "team")]      # Spieler-Entfernungen bleiben ausgeschlossen
+    rem = [tuple(r) for r in plan["remove"] if r[0] in ("spread", "total", "team")]      # Entfernen aus dem Plan nur fuer Maerkte; ganze Spielerbloecke nie
+    for pb in plan["players"]:                                   # Spieler: gespeicherte Stufen, die Betano fuer diesen Spieler nicht mehr liefert, fallen weg
+        blk = next((b for b in store.active_player_blocks(entry) if b["id"] == pb["block_id"]), None) if pb["block_id"] else None
+        keep = {r["threshold"] for r in pb["rows"]}
+        rem += [("player_line", blk["id"], sv["id"]) for sv in (store.player_lines(blk) if blk else []) if int(sv["threshold"]) not in keep]
     try:
         res = ei.execute_plan(g, plan, entry, roster, ei.cache_reference(g), now=now, save_fn=lambda *a, **k: store.save_auto(*a, remove=rem, **k))
         if res.get("status") == "unchanged" and rem:                  # nur veraltete Linien zu entfernen

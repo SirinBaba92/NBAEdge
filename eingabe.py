@@ -677,6 +677,17 @@ def _remove_all(g: dict, plan: dict, now: float | None) -> list:
     return removed
 
 
+def _block_emptied(entry: dict | None, removals: list, block_id: str | None) -> bool:
+    """True, wenn die geplanten Entfernungen alle aktiven Stufen des gespeicherten Spielerblocks entfernen (oder den ganzen Block): er ist danach inaktiv."""
+    blk = next((x for x in store.active_player_blocks(entry) if x["id"] == block_id), None) if block_id else None
+    if blk is None:
+        return False
+    if ("player_block", block_id) in [tuple(r) for r in removals]:
+        return True
+    gone = {r[2] for r in removals if r[0] == "player_line" and r[1] == block_id}
+    return all(l["id"] in gone for l in store.player_lines(blk))
+
+
 def execute_plan(g: dict, plan: dict, entry: dict | None, roster: dict, ref: dict, now: float | None = None, save_fn=None) -> dict:
     """Schreibt den Plan. Vor dem Schreiben wird der Eintrag frisch von der Platte gelesen; unveraenderte Zeilen werden nicht erneut
     geschrieben (nur wenn der Store die Hauptlinie als erste Zeile verlangt, mit dem aktuellen Plattenwert). Rueckgabe: das Ergebnis von save_card
@@ -717,6 +728,9 @@ def execute_plan(g: dict, plan: dict, entry: dict | None, roster: dict, ref: dic
         saved_blk = next((x for x in store.active_player_blocks(entry) if x["id"] == b["block_id"]), None)
         ch = changed("milestone", b["rows"], store.player_lines(saved_blk) if saved_blk else [])
         if ch:
+            if save_fn is None and _block_emptied(fresh, plan["remove"], b["block_id"]):          # alle alten Stufen entfallen: der Block wird inaktiv, die neuen Stufen kommen in einen neuen Block
+                b = {**b, "block_id": None}
+                ch = [{**r, "id": None} for r in ch]
             blocks.append({"block_id": b["block_id"], "person_id": b["person_id"], "name": b["name"], "team": b["team"], "team_abbreviation": b["team_abbreviation"],
                            "mode": "milestones", "rows": [{"id": r["id"], "value": str(r["threshold"]), "odds": _str(r["odds"]), "bookmaker": BOOKMAKER} for r in ch]})
     winner = None

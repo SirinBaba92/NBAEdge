@@ -283,6 +283,32 @@
         "names": [],
         "at": "2026-10-31T23:11:19+01:00"
       }
+    },
+    "2026-11-01": {
+      "2026-11-01|2026-11-01T20:30:00Z|Orlando Magic|Boston Celtics": {
+        "home": "Orlando Magic",
+        "away": "Boston Celtics",
+        "names": [],
+        "at": "2026-11-01T19:46:52+01:00"
+      },
+      "2026-11-01|2026-11-01T22:00:00Z|Indiana Pacers|Brooklyn Nets": {
+        "home": "Indiana Pacers",
+        "away": "Brooklyn Nets",
+        "names": [],
+        "at": "2026-11-01T19:47:03+01:00"
+      },
+      "2026-11-01|2026-11-02T01:30:00Z|Golden State Warriors|LA Clippers": {
+        "home": "Golden State Warriors",
+        "away": "LA Clippers",
+        "names": [],
+        "at": "2026-11-01T19:47:15+01:00"
+      },
+      "2026-11-01|2026-11-02T02:00:00Z|Los Angeles Lakers|Toronto Raptors": {
+        "home": "Los Angeles Lakers",
+        "away": "Toronto Raptors",
+        "names": [],
+        "at": "2026-11-01T19:47:33+01:00"
+      }
     }
   }
 }

@@ -1,0 +1,25 @@
+Betano-Automatik: wandernde Spielerstufen (Roadmap 3.2j) – 2026-11-01
+Geändert: data/pre_match_store.py (save_auto: Spieler-Entfernen, Einzelprüfung je Spieler), betano_auto.py (process_game: Spielerstufen als Entfernungen). Neu: tests/test_betano_auto_spieler.py.
+Kein Abruf, kein Lauf, Job und launchd unberührt, kein Commit. Entwickelt in einer Kopie (Scratchpad), jede echte Datei in einem Schritt (cp + mv) ersetzt.
+
+TEIL 1 – Ursache bestätigt
+- pre_match_entries.json (Pelicans-Hawks): alle Stufen aller Spieler source=auto (18:55, 20:02, 21:03, 22:03). Fears hatte 9 Stufen (10+ bis 18+), Betano lieferte zuletzt 19+ bis 21+ -> 12 > 10. Meldung im Log 23:04: "Spielerpunkte · Jeremiah Fears: höchstens 10 Meilensteine".
+- Grenze: data/pre_match_store.py:83 MAX_MILESTONES=10, geprüft in _validate_players (Zeile ~917). Auto entfernte bisher nie Spielerstufen (betano_auto.py: rem nur spread/total/team).
+- Kleinste sichere Lösung: (1) Spielerstufen, die Betano für diesen Spieler nicht mehr liefert, als ("player_line", Block, Zeile) an save_auto geben; (2) save_auto: nur aktive Zeilen von Blöcken ohne Hand-Revision, Trockenlauf, Revision removed/source=auto; (3) je Spieler vorab prüfen: scheitert einer, nur er fällt weg und wird im Protokoll genannt.
+- Stand der Datei jetzt: Zion (x2-x10), Fears, Jones, Queen, Flemings (x8) tragen "removed" von der Hand (23:07:33). Fears/Jones/Queen sind inaktive Blöcke, Zion/Flemings haben Hand-Revisionen -> die Automatik fasst diese 5 Blöcke jetzt nicht mehr an (Hand hat Vorrang, auch für entfernte Hand-Zeilen, wie bisher).
+
+TEIL 2 – Verhalten
+1. Aktive auto-Stufen eines gelieferten Spielers, die Betano nicht mehr liefert: inaktiv + Revision "removed" mit source=auto, nichts gelöscht, Trockenlauf (save_card dry_run) vorher; scheitert er, wird nichts entfernt. Fallen ALLE alten Stufen weg, wird der Block inaktiv und die neuen Stufen kommen in einen neuen Block (sonst "Dieser Spielerblock existiert nicht mehr", siehe Teil 3).
+2. Spieler mit Hand-Revision: Block unberührt; Protokoll "Spieler <Name> gehört der Hand".
+3. Scheitert ein Spieler (z. B. Maximum): nur er wird übersprungen, Protokoll "Spieler <Name> übersprungen (<Grund>)", Rest wird gespeichert.
+4. Spread, Total, Team Totals, Sieger, Handeingabe, App, Import unverändert. Spieler, die Betano gar nicht mehr liefert, bleiben unverändert (bewusst vorsichtig).
+
+TEIL 3 – "Dieser Spielerblock existiert nicht mehr" (Handweg, nichts geändert)
+- Meldung: data/pre_match_store.py:943 (_apply_players, wenn block_id gesetzt, der Block aber nicht aktiv ist).
+- Ursache: eingabe.py:552-556 (replace_player_lines, nur Betano-Import) plant das Entfernen ALLER alten Stufen; eingabe.py:743 (_remove_all, ab :660) schreibt die Entfernungen zuerst. Die letzte entfernte Zeile macht den Block inaktiv (pre_match_store.py:~1000), der Plan speichert die neuen Stufen aber mit der alten block_id (eingabe.py:~700 blocks.append) -> :943 wirft, nach bereits geschriebener Entfernung. Der Trockenlauf (:742) besteht, weil _entry_without (store ~1090) den Block nur im Prüfabbild inaktiv setzt und _validate_players einen Block ohne aktiven Treffer als neu behandelt.
+- Betroffen: Fears (alle 10-18 ersetzt), Jones, Queen = 3 Meldungen; Zion/Flemings behielten Stufen. Folge: Entfernen geschrieben, Neuanlage fehlt. Reparatur ähnlich Teil 2: block_id None setzen, wenn der Block durch die Entfernungen leer wird.
+
+TEIL 4 – Tests (alle 0 FAIL)
+- Neu test_betano_auto_spieler: 22 PASS: (a) Fears-Fall 9 Stufen -> 3 neue: gespeichert, alte removed/auto, Ausgangslage lehnt weiter ab; (a2) Teilverschiebung; (b) Folgelauf unverändert, Datei byte-gleich; (c) Hand-Block byte-gleich, im Protokoll genannt, auch nach Hand-Entfernen; (d) ein Spieler scheitert, Rest + Märkte gespeichert, Protokoll nennt Spieler und Grund; (e) 3 Läufe wandernde Stufen ohne Fehler, Folgelauf unverändert.
+- Mitgelaufen: test_betano_auto_hauptlinie 27, test_betano_auto 61, _then_hand 21, test_pre_match_auto 18, test_pre_match 52, _players 117, _total 66, _spread 104, _team 73, test_eingabe 73, _wiederholen 24, test_betano_import 27, test_automation 51.
+- test_betano_auto_sidebar nicht gelaufen. Echte Dateien: Hash von pre_match_entries.json, automation.log, betano_auto_state.json vorher = nachher.

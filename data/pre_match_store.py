@@ -867,6 +867,9 @@ def _validate_players(blocks: list[dict] | None, saved_blocks: list[dict]):
         filled = any(str(r.get(k) or "").strip() for r in rows for k in odds_keys)
         if not filled and saved is None:
             continue
+        if bid and saved is None:                      # Block weg/inaktiv (z. B. alle Stufen entfernt): schon beim Pruefen melden, nicht erst beim Schreiben
+            errors.append(f"{label}: Dieser Spielerblock existiert nicht mehr.")
+            continue
         if mode not in MODES:
             errors.append(f"{label}: Unbekannter Modus.")
             continue
@@ -1375,6 +1378,13 @@ def _auto_removals(mk: dict, remove: list | None) -> list[tuple]:
     """Entfernungen, die die Automatik ausfuehren darf: aktive Zusatzlinien ohne Handrevision in Maerkten, deren Hauptlinie nicht Hand ist."""
     out = []
     for rm in remove or []:
+        if rm[0] == "player_line":                                  # ('player_line', block_id, line_id): aktive auto-Stufe eines Spielerblocks ohne Handrevision
+            blk = next((b for b in (mk.get(PLAYER_POINTS) or {}).get("players", []) if b["id"] == rm[1] and b.get("active", True)), None)
+            line = next((l for l in (blk or {}).get("lines", []) if l["id"] == rm[2] and l.get("active", True)), None)
+            if blk is None or line is None or has_hand_revision(blk) or tuple(rm) in out:
+                continue
+            out.append(tuple(rm))
+            continue
         if rm[0] in ("spread", "total"):
             lines, lid = _market_lines(mk, rm[0]), rm[1]
         elif rm[0] == "team" and rm[1] in TEAMS:
@@ -1400,6 +1410,22 @@ def _apply_auto_removals(key: str, removals: list[tuple], now: float) -> None:
         stamp = iso_now(now)
         mk = entry.get("markets") or {}
         for rm in removals:
+            if rm[0] == "player_line":
+                top = mk.get(PLAYER_POINTS) or {}
+                blk = next((b for b in top.get("players", []) if b["id"] == rm[1] and b.get("active", True)), None)
+                line = next((l for l in (blk or {}).get("lines", []) if l["id"] == rm[2] and l.get("active", True)), None)
+                if line is None:
+                    continue
+                line["active"] = False
+                line["removed_at"] = stamp
+                line["updated_at"] = stamp
+                line["revisions"].append({"action": "removed", **{k: line.get(k) for k in ("threshold", "odds", "bookmaker")}, "saved_at": stamp, "source": SOURCE_AUTO})
+                if not any(l.get("active", True) for l in blk["lines"]):
+                    blk["active"] = False
+                    blk["removed_at"] = stamp
+                blk["updated_at"] = stamp
+                top["updated_at"] = stamp
+                continue
             if rm[0] in ("spread", "total"):
                 lines, lid, top = _market_lines(mk, rm[0]), rm[1], mk.get(SPREAD if rm[0] == "spread" else TOTAL)
             else:
@@ -1468,19 +1494,45 @@ def save_auto(game_date: str, start_utc: str, home: str, away: str, winner: dict
                 flips += [("team", side, i) for i in fl]
                 hits += [f"Linie {_fmt_line(v)} gehört der Hand (Team Totals {'Heim' if side == 'home' else 'Gast'})" for v in h]
             team_rows = new_team if any(new_team.values()) else None
+        failed = 0
         if player_blocks:
             hand_pids = {b.get("person_id") for b in (mk.get(PLAYER_POINTS) or {}).get("players", []) if has_hand_revision(b)}
-            keep = [b for b in player_blocks if not (b.get("person_id") in hand_pids and b.get("person_id") not in (None, ""))]
+            keep = []
+            for b in player_blocks:
+                if b.get("person_id") in hand_pids and b.get("person_id") not in (None, ""):
+                    hits.append(f"Spieler {b.get('name') or b.get('person_id')} gehört der Hand")
+                else:
+                    keep.append(b)
             skipped += len(player_blocks) - len(keep)
             player_blocks = keep or None
         removals = _auto_removals(mk, list(remove or []) + flips)
+        if player_blocks:                                            # je Spieler vorab pruefen (ohne zu schreiben): ein Spieler, der scheitert, faellt allein weg
+            ok_blocks = []
+            for b in player_blocks:
+                rm_b = [r for r in removals if r[0] == "player_line" and r[1] == b.get("block_id")]
+                sv = next((x for x in (mk.get(PLAYER_POINTS) or {}).get("players", []) if x["id"] == b.get("block_id") and x.get("active", True)), None)
+                if sv is not None and not any(l.get("active", True) and ("player_line", sv["id"], l["id"]) not in rm_b for l in sv["lines"]):
+                    b = {**b, "block_id": None}          # alle alten Stufen entfallen: der Block wird inaktiv, die neuen Stufen kommen in einen neuen Block
+                try:
+                    _validate_players([b], active_player_blocks(_entry_without(entry, rm_b)))
+                except OddsInputError as e:
+                    why = " ".join(getattr(e, "errors", None) or [str(e)])
+                    why = why.split(": ", 1)[1] if why.startswith("Spielerpunkte · ") and ": " in why else why
+                    hits.append(f"Spieler {b.get('name')} übersprungen ({why.rstrip('.')})")
+                    removals = [r for r in removals if r not in rm_b]
+                    failed += 1
+                    continue
+                ok_blocks.append(b)
+            player_blocks = ok_blocks or None
         kw = dict(winner=winner, spread_rows=spread_rows, suggestion=suggestion, total_rows=total_rows, total_suggestion=total_suggestion, team_rows=team_rows,
                   team_suggestion=team_suggestion, team_names=team_names, player_blocks=player_blocks, roster_fetched_at=roster_fetched_at, now=now, source=SOURCE_AUTO)
         if all(x is None for x in (winner, spread_rows, total_rows, team_rows, player_blocks)):
             if removals:
                 _apply_auto_removals(key, removals, now)
                 return {"status": "saved", "key": key, "markets": {}, "removed": removals, "skipped_hand": skipped, "skipped_lines": hits}
-            if skipped:
+            if skipped or failed:
+                if failed and not skipped:                      # nur einzelne Spieler gescheitert, sonst nichts zu tun
+                    return {"status": "unchanged", "key": key, "markets": {}, "removed": [], "skipped_hand": 0, "skipped_lines": hits}
                 return {"status": "skipped", "reason": SKIP_HAND_PRIORITY, "key": key, "skipped_hand": skipped, "skipped_lines": hits}
             if remove:                                          # Entfernungswuensche, aber nichts davon erlaubt/noetig (z. B. nur Hand-Linien oder schon entfernt)
                 return {"status": "unchanged", "key": key, "markets": {}, "removed": [], "skipped_hand": 0, "skipped_lines": []}
