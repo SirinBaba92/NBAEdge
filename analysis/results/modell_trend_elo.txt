@@ -1,0 +1,18 @@
+Testmenge: 40 beendete Spiele ab 2026-10-27; Heimsiege 22 (55 %)
+Stand (Sicherung)   Stand bis   Brier   LogLoss  Treffer   mittl. Heimchance
+2026-10-20          2026-10-20   0.2516  0.7355     55 %    0.489
+2026-10-21          2026-10-21   0.2490  0.7216     57 %    0.487
+2026-10-22          2026-10-22   0.2467  0.7169     57 %    0.489
+2026-10-23          2026-10-23   0.2367  0.6709     62 %    0.484
+2026-10-24          2026-10-24   0.2365  0.6712     62 %    0.485
+2026-10-25          2026-10-25   0.2384  0.6764     62 %    0.491
+2026-10-26          2026-10-26   0.2295  0.6464     65 %    0.500
+2026-10-27          2026-10-27   (kennt Testspiele, ausgelassen)
+2026-10-28          2026-10-28   (kennt Testspiele, ausgelassen)
+2026-10-29          2026-10-29   (kennt Testspiele, ausgelassen)
+2026-10-30          2026-10-30   (kennt Testspiele, ausgelassen)
+2026-10-31          2026-10-31   (kennt Testspiele, ausgelassen)
+2026-11-01          2026-11-01   (kennt Testspiele, ausgelassen)
+Snapshot (gezeigt)             0.2082  0.5981     68 %    0.521
+Konstante Heimquote             0.2475  0.6881     55 %    0.550
+Hinweis: kleine Testmenge; Brier-Unterschiede unter ca. 0,01 sind Rauschen.

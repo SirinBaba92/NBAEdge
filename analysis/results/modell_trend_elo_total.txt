@@ -1,0 +1,16 @@
+Testmenge: 40 beendete Spiele ab 2026-10-27; mittlere tatsaechliche Summe 225.1
+Stand (Sicherung)   Stand bis   Verzerrung   MAE   mittl. Prognose
+2026-10-20          2026-10-20     +7.0      17.9    232.1
+2026-10-21          2026-10-21     +6.9      17.9    232.0
+2026-10-22          2026-10-22     +6.5      17.8    231.6
+2026-10-23          2026-10-23     +6.1      17.4    231.2
+2026-10-24          2026-10-24     +6.6      17.6    231.7
+2026-10-25          2026-10-25     +6.3      17.4    231.4
+2026-10-26          2026-10-26     +6.1      17.3    231.2
+Marktlinie                         +3.9      16.8    229.0   (n=40)
+
+Test der Startwert-Vermutung (nur lesend, 2026-11-02)
+- models/elo.py:142-147: off/def-Rating = gleitender Mittelwert der Punkte (alpha 0,1, Startwert aus dem Vorjahr, Playoffs ausgenommen). Erwartete Summe = mittl. off + mittl. def.
+- Sicherung 20.10. (vor dem ersten Spiel): Liga-Mittel off 116,3 + def 116,5 = 232,8. Echte Saison bisher (89 Spiele): 227,7. Abstand rund 5 Punkte = Vorjahresniveau.
+- Das Liga-Mittel sinkt in 12 Tagen von 232,8 auf 230,2; jede Mannschaft hat erst etwa 6 Spiele, Gewicht des Vorjahres 0,9^6 = 0,53: 0,53*232,8 + 0,47*227,7 = 230,5 (gemessen 230,2). Das Modell verhaelt sich wie berechnet.
+- Folge: die Verzerrung schliesst sich mit etwa Faktor 0,9 je Spiel; nach ca. 20 Spielen je Team (Mitte November) bleibt weniger als ein Punkt davon. Kein Fehler im Code, ein Anfangseffekt des Vorjahrniveaus (die Saison startet mit weniger Punkten).
