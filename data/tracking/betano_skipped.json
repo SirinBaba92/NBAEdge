@@ -309,6 +309,98 @@
         "names": [],
         "at": "2026-11-01T19:47:33+01:00"
       }
+    },
+    "2026-11-02": {
+      "2026-11-02|2026-11-03T00:00:00Z|Cleveland Cavaliers|Oklahoma City Thunder": {
+        "home": "Cleveland Cavaliers",
+        "away": "Oklahoma City Thunder",
+        "names": [],
+        "at": "2026-11-02T23:42:23+01:00"
+      },
+      "2026-11-02|2026-11-03T00:30:00Z|Charlotte Hornets|Detroit Pistons": {
+        "home": "Charlotte Hornets",
+        "away": "Detroit Pistons",
+        "names": [],
+        "at": "2026-11-03T00:24:54+01:00"
+      },
+      "2026-11-02|2026-11-03T00:30:00Z|Indiana Pacers|Atlanta Hawks": {
+        "home": "Indiana Pacers",
+        "away": "Atlanta Hawks",
+        "names": [],
+        "at": "2026-11-03T00:26:01+01:00"
+      },
+      "2026-11-02|2026-11-03T00:30:00Z|New York Knicks|Brooklyn Nets": {
+        "home": "New York Knicks",
+        "away": "Brooklyn Nets",
+        "names": [],
+        "at": "2026-11-03T00:26:05+01:00"
+      },
+      "2026-11-02|2026-11-03T00:30:00Z|Orlando Magic|Washington Wizards": {
+        "home": "Orlando Magic",
+        "away": "Washington Wizards",
+        "names": [],
+        "at": "2026-11-03T00:26:22+01:00"
+      },
+      "2026-11-02|2026-11-03T00:30:00Z|Philadelphia 76ers|Chicago Bulls": {
+        "home": "Philadelphia 76ers",
+        "away": "Chicago Bulls",
+        "names": [],
+        "at": "2026-11-03T00:26:44+01:00"
+      },
+      "2026-11-02|2026-11-03T01:00:00Z|Dallas Mavericks|Sacramento Kings": {
+        "home": "Dallas Mavericks",
+        "away": "Sacramento Kings",
+        "names": [],
+        "at": "2026-11-03T00:37:25+01:00"
+      },
+      "2026-11-02|2026-11-03T01:00:00Z|Memphis Grizzlies|New Orleans Pelicans": {
+        "home": "Memphis Grizzlies",
+        "away": "New Orleans Pelicans",
+        "names": [],
+        "at": "2026-11-03T00:40:07+01:00"
+      },
+      "2026-11-02|2026-11-03T01:00:00Z|Minnesota Timberwolves|Milwaukee Bucks": {
+        "home": "Minnesota Timberwolves",
+        "away": "Milwaukee Bucks",
+        "names": [],
+        "at": "2026-11-03T00:41:18+01:00"
+      },
+      "2026-11-02|2026-11-03T01:30:00Z|Houston Rockets|Boston Celtics": {
+        "home": "Houston Rockets",
+        "away": "Boston Celtics",
+        "names": [],
+        "at": "2026-11-03T00:43:36+01:00"
+      },
+      "2026-11-02|2026-11-03T01:30:00Z|San Antonio Spurs|Utah Jazz": {
+        "home": "San Antonio Spurs",
+        "away": "Utah Jazz",
+        "names": [],
+        "at": "2026-11-03T00:44:56+01:00"
+      },
+      "2026-11-02|2026-11-03T02:00:00Z|Denver Nuggets|Portland Trail Blazers": {
+        "home": "Denver Nuggets",
+        "away": "Portland Trail Blazers",
+        "names": [],
+        "at": "2026-11-03T00:45:18+01:00"
+      },
+      "2026-11-02|2026-11-03T03:00:00Z|Golden State Warriors|Phoenix Suns": {
+        "home": "Golden State Warriors",
+        "away": "Phoenix Suns",
+        "names": [],
+        "at": "2026-11-03T00:47:00+01:00"
+      },
+      "2026-11-02|2026-11-03T03:00:00Z|LA Clippers|Toronto Raptors": {
+        "home": "LA Clippers",
+        "away": "Toronto Raptors",
+        "names": [],
+        "at": "2026-11-03T00:47:14+01:00"
+      },
+      "2026-11-02|2026-11-03T03:00:00Z|Los Angeles Lakers|Miami Heat": {
+        "home": "Los Angeles Lakers",
+        "away": "Miami Heat",
+        "names": [],
+        "at": "2026-11-03T00:47:47+01:00"
+      }
     }
   }
 }

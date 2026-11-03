@@ -1,7 +1,7 @@
 {
  "version": 1,
  "format": "nbaedge-rosters",
- "fetched_at": "2026-10-30T23:07:27+01:00",
+ "fetched_at": "2026-11-02T23:42:04+01:00",
  "source": "nba_api.PlayerIndex",
  "season": "2026-27",
  "abrufe": 1,
@@ -189,7 +189,7 @@
     "person_id": 1642269,
     "name": "Devin Carter",
     "position": "G",
-    "jersey": "22",
+    "jersey": "99",
     "team_id": 1610612738,
     "team_abbreviation": "BOS"
    },
@@ -991,7 +991,7 @@
     "person_id": 1642383,
     "name": "Walter Clayton Jr.",
     "position": "G",
-    "jersey": "4",
+    "jersey": "1",
     "team_id": 1610612742,
     "team_abbreviation": "DAL"
    },
@@ -1033,7 +1033,7 @@
     "person_id": 1641715,
     "name": "Cam Whitmore",
     "position": "F",
-    "jersey": "1",
+    "jersey": "00",
     "team_id": 1610612743,
     "team_abbreviation": "DEN"
    },
@@ -2761,7 +2761,7 @@
     "person_id": 1630164,
     "name": "James Wiseman",
     "position": "C",
-    "jersey": "11",
+    "jersey": "35",
     "team_id": 1610612752,
     "team_abbreviation": "NYK"
    },
