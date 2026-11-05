@@ -1,59 +1,59 @@
-ZUSAMMENFASSUNG Informationswert-Test (UNGEPRÜFT; 7859 Zeilen, 966 Spieler-Tage, 77 Spiele, 12 Tage: 10-22, 10-23, 10-24, 10-25, 10-26, 10-27, 10-28, 10-29, 10-30, 10-31, 11-01, 11-02). Spieler sind die unabhängigen Beobachtungen: kleine Stichprobe, nur ein erster Hinweis; Betano = 1/Quote inkl. Marge.
-Betano allein: Brier 0.2211; Trefferquote 40.2 %.
-Mischung mit Modell roh: Brier nach w (0 / 0,2 / 0,5 / 1,0): 0.2211 / 0.2214 / 0.2250 / 0.2394; bestes w = 0.1 (Differenz zu w = 0: -0.0000 [-0.0008; +0.0007], nicht abgesichert (Intervall enthält 0)).
-   feste Werte: w = 0,2: +0.0003 [-0.0011; +0.0018], w = 0,5: +0.0039 [+0.0002; +0.0076]; w nach Tagen kreuzvalidiert: +0.0004 [-0.0002; +0.0010]; Modell allein (w = 1): +0.0183.
-Mischung mit Modell Teamabgleich: Brier nach w (0 / 0,2 / 0,5 / 1,0): 0.2211 / 0.2207 / 0.2253 / 0.2468; bestes w = 0.1 (Differenz zu w = 0: -0.0005 [-0.0014; +0.0005], nicht abgesichert (Intervall enthält 0)).
-   feste Werte: w = 0,2: -0.0004 [-0.0022; +0.0016], w = 0,5: +0.0042 [-0.0003; +0.0091]; w nach Tagen kreuzvalidiert: -0.0005 [-0.0014; +0.0005]; Modell allein (w = 1): +0.0257.
-Regression roh: b2 (Modell) -0.06 [-0.20; +0.10] - Intervall enthält 0: kein belegter Zusatz; b1 (Betano) +1.06 [+0.88; +1.25]; Achsenabschnitt a -0.26 (Marge); Korrelation der Logits 0.65.
-Regression Teamabgleich: b2 (Modell) -0.14 [-0.26; +0.01] - Intervall enthält 0: kein belegter Zusatz; b1 (Betano) +1.15 [+0.96; +1.35]; Achsenabschnitt a -0.34 (Marge); Korrelation der Logits 0.65.
-Richtung je Tag (roh, w = 0,2 gegen w = 0): 10-22 +0.0056, 10-23 +0.0014, 10-24 -0.0016, 10-25 -0.0002, 10-26 +0.0018, 10-27 +0.0046, 10-28 -0.0038, 10-29 -0.0013, 10-30 -0.0019, 10-31 -0.0024, 11-01 +0.0028, 11-02 +0.0021 -> nicht an allen Tagen gleich.
-Richtung je Tag (Teamabgleich, w = 0,2 gegen w = 0): 10-22 -0.0026, 10-23 -0.0004, 10-24 +0.0013, 10-25 +0.0014, 10-26 -0.0001, 10-27 +0.0041, 10-28 -0.0031, 10-29 +0.0007, 10-30 -0.0034, 10-31 -0.0016, 11-01 +0.0018, 11-02 +0.0004 -> nicht an allen Tagen gleich.
+ZUSAMMENFASSUNG Informationswert-Test (UNGEPRÜFT; 9408 Zeilen, 1153 Spieler-Tage, 91 Spiele, 13 Tage: 10-22, 10-23, 10-24, 10-25, 10-26, 10-27, 10-28, 10-29, 10-30, 10-31, 11-01, 11-02, 11-04). Spieler sind die unabhängigen Beobachtungen: kleine Stichprobe, nur ein erster Hinweis; Betano = 1/Quote inkl. Marge.
+Betano allein: Brier 0.2194; Trefferquote 40.0 %.
+Mischung mit Modell roh: Brier nach w (0 / 0,2 / 0,5 / 1,0): 0.2194 / 0.2197 / 0.2231 / 0.2368; bestes w = 0.1 (Differenz zu w = 0: -0.0001 [-0.0007; +0.0006], nicht abgesichert (Intervall enthält 0)).
+   feste Werte: w = 0,2: +0.0003 [-0.0010; +0.0016], w = 0,5: +0.0037 [+0.0004; +0.0071]; w nach Tagen kreuzvalidiert: +0.0003 [-0.0002; +0.0009]; Modell allein (w = 1): +0.0174.
+Mischung mit Modell Teamabgleich: Brier nach w (0 / 0,2 / 0,5 / 1,0): 0.2194 / 0.2187 / 0.2225 / 0.2423; bestes w = 0.2 (Differenz zu w = 0: -0.0008 [-0.0026; +0.0010], nicht abgesichert (Intervall enthält 0)).
+   feste Werte: w = 0,2: -0.0008 [-0.0026; +0.0010], w = 0,5: +0.0031 [-0.0016; +0.0077]; w nach Tagen kreuzvalidiert: -0.0004 [-0.0020; +0.0011]; Modell allein (w = 1): +0.0228.
+Regression roh: b2 (Modell) -0.05 [-0.18; +0.08] - Intervall enthält 0: kein belegter Zusatz; b1 (Betano) +1.09 [+0.92; +1.25]; Achsenabschnitt a -0.26 (Marge); Korrelation der Logits 0.66.
+Regression Teamabgleich: b2 (Modell) -0.10 [-0.22; +0.02] - Intervall enthält 0: kein belegter Zusatz; b1 (Betano) +1.15 [+0.99; +1.30]; Achsenabschnitt a -0.31 (Marge); Korrelation der Logits 0.66.
+Richtung je Tag (roh, w = 0,2 gegen w = 0): 10-22 +0.0056, 10-23 +0.0014, 10-24 -0.0016, 10-25 -0.0002, 10-26 +0.0018, 10-27 +0.0046, 10-28 -0.0038, 10-29 -0.0013, 10-30 -0.0019, 10-31 -0.0024, 11-01 +0.0028, 11-02 +0.0021, 11-04 +0.0000 -> nicht an allen Tagen gleich.
+Richtung je Tag (Teamabgleich, w = 0,2 gegen w = 0): 10-22 -0.0026, 10-23 -0.0004, 10-24 +0.0013, 10-25 +0.0014, 10-26 -0.0001, 10-27 +0.0041, 10-28 -0.0031, 10-29 +0.0007, 10-30 -0.0034, 10-31 -0.0016, 11-01 +0.0018, 11-02 +0.0004, 11-04 -0.0028 -> nicht an allen Tagen gleich.
 Nur Beschreibung; keine Empfehlung zur Änderung der App. Aus den Teilmengen (Rolle, Stars, Leiter) siehe Abschnitt 4.
-Ausgeschlossen: Tage 2026-10-21; nach Anpfiff erstellt: 11 Spiele; ohne Ergebnis: 0 Spiele.
+Ausgeschlossen: Tage 2026-10-21; nach Anpfiff erstellt: 17 Spiele; ohne Ergebnis: 0 Spiele.
 
 ========================================================================================================================
-Informationswert-Test, Laufzeit 9 s. Rechenweg: Kopf von analysis/info_value_test.py (Bootstrap nach Spielern).
+Informationswert-Test, Laufzeit 11 s. Rechenweg: Kopf von analysis/info_value_test.py (Bootstrap nach Spielern).
 ========================================================================================================================
 
 5. UMFANG
-  Zeilen 7859, Spieler-Tage (unabhängige Beobachtungen) 966, Spiele 77, Tage 12 (2026-10-22, 2026-10-23, 2026-10-24, 2026-10-25, 2026-10-26, 2026-10-27, 2026-10-28, 2026-10-29, 2026-10-30, 2026-10-31, 2026-11-01, 2026-11-02); Trefferquote 40.2 %.
-  Snapshots vorhanden für: 2026-10-21, 2026-10-22, 2026-10-23, 2026-10-24, 2026-10-25, 2026-10-26, 2026-10-27, 2026-10-28, 2026-10-29, 2026-10-30, 2026-10-31, 2026-11-01, 2026-11-02. Ausgeschlossene Tage: 2026-10-21; Spiele mit Snapshot nach Anpfiff: 2026-10-21 Atlanta Hawks @ Orlando Magic, 2026-10-21 Milwaukee Bucks @ Washington Wizards, 2026-10-21 Charlotte Hornets @ Brooklyn Nets, 2026-10-24 Miami Heat @ Charlotte Hornets, 2026-10-28 Miami Heat @ Atlanta Hawks, 2026-10-28 Washington Wizards @ Cleveland Cavaliers, 2026-10-28 Charlotte Hornets @ Detroit Pistons, 2026-10-28 Philadelphia 76ers @ Indiana Pacers, 2026-10-31 Portland Trail Blazers @ Utah Jazz, 2026-10-31 Philadelphia 76ers @ Charlotte Hornets, 2026-11-01 Boston Celtics @ Orlando Magic; Spiele ohne Ergebnis: keine.
-  Spieler ohne Einsatz (nicht gewertet): 39; ohne Prognose: 0. Kleine Stichprobe, ungeprüft, nur ein erster Hinweis.
+  Zeilen 9408, Spieler-Tage (unabhängige Beobachtungen) 1153, Spiele 91, Tage 13 (2026-10-22, 2026-10-23, 2026-10-24, 2026-10-25, 2026-10-26, 2026-10-27, 2026-10-28, 2026-10-29, 2026-10-30, 2026-10-31, 2026-11-01, 2026-11-02, 2026-11-04); Trefferquote 40.0 %.
+  Snapshots vorhanden für: 2026-10-21, 2026-10-22, 2026-10-23, 2026-10-24, 2026-10-25, 2026-10-26, 2026-10-27, 2026-10-28, 2026-10-29, 2026-10-30, 2026-10-31, 2026-11-01, 2026-11-02, 2026-11-04. Ausgeschlossene Tage: 2026-10-21; Spiele mit Snapshot nach Anpfiff: 2026-10-21 Atlanta Hawks @ Orlando Magic, 2026-10-21 Milwaukee Bucks @ Washington Wizards, 2026-10-21 Charlotte Hornets @ Brooklyn Nets, 2026-10-24 Miami Heat @ Charlotte Hornets, 2026-10-28 Miami Heat @ Atlanta Hawks, 2026-10-28 Washington Wizards @ Cleveland Cavaliers, 2026-10-28 Charlotte Hornets @ Detroit Pistons, 2026-10-28 Philadelphia 76ers @ Indiana Pacers, 2026-10-31 Portland Trail Blazers @ Utah Jazz, 2026-10-31 Philadelphia 76ers @ Charlotte Hornets, 2026-11-01 Boston Celtics @ Orlando Magic, 2026-11-02 Portland Trail Blazers @ Denver Nuggets, 2026-11-02 Utah Jazz @ San Antonio Spurs, 2026-11-02 Boston Celtics @ Houston Rockets, 2026-11-02 Milwaukee Bucks @ Minnesota Timberwolves, 2026-11-02 New Orleans Pelicans @ Memphis Grizzlies, 2026-11-02 Sacramento Kings @ Dallas Mavericks; Spiele ohne Ergebnis: keine.
+  Spieler ohne Einsatz (nicht gewertet): 45; ohne Prognose: 0. Kleine Stichprobe, ungeprüft, nur ein erster Hinweis.
 
 1. MISCHUNG: Brier nach w (w = Gewicht des Modells; w = 0 ist Betano allein)
     w  Modell roh  Modell Teamabgleich
   ---  ----------  -------------------
-  0.0      0.2211               0.2211
-  0.1      0.2210               0.2205
-  0.2      0.2214               0.2207
-  0.3      0.2222               0.2216
-  0.4      0.2234               0.2231
-  0.5      0.2250               0.2253
-  0.6      0.2271               0.2282
-  0.7      0.2295               0.2318
-  0.8      0.2324               0.2361
-  0.9      0.2357               0.2411
-  1.0      0.2394               0.2468
+  0.0      0.2194               0.2194
+  0.1      0.2194               0.2187
+  0.2      0.2197               0.2187
+  0.3      0.2205               0.2193
+  0.4      0.2216               0.2206
+  0.5      0.2231               0.2225
+  0.6      0.2251               0.2251
+  0.7      0.2274               0.2284
+  0.8      0.2301               0.2324
+  0.9      0.2333               0.2370
+  1.0      0.2368               0.2423
   Modell roh - Brier-Differenz zu w = 0 (negativ = besser als Betano allein; Intervall nach Spielern):
-    bestes w                 w 0.1: Brier 0.2210, Differenz -0.0000 [-0.0008; +0.0007] - nicht abgesichert (Intervall enthält 0)
-    w = 0,2                  w 0.2: Brier 0.2214, Differenz +0.0003 [-0.0011; +0.0018] - nicht abgesichert (Intervall enthält 0)
-    w = 0,5                  w 0.5: Brier 0.2250, Differenz +0.0039 [+0.0002; +0.0076] - abgesichert (Intervall ohne 0)
-    w = 1,0 (Modell allein)  w 1.0: Brier 0.2394, Differenz +0.0183 [+0.0108; +0.0262] - abgesichert (Intervall ohne 0)
-    w nach Tagen kreuzvalidiert (gewählt: 10-22 0.1, 10-23 0.1, 10-24 0.0, 10-25 0.1, 10-26 0.1, 10-27 0.1, 10-28 0.0, 10-29 0.1, 10-30 0.0, 10-31 0.0, 11-01 0.1, 11-02 0.1): Differenz +0.0004 [-0.0002; +0.0010]
-    bestes w in jeder Bootstrap-Ziehung neu gewählt: Differenz Ø -0.0002 [-0.0011; +0.0000] (zeigt den Optimismus der Wahl von w)
+    bestes w                 w 0.1: Brier 0.2194, Differenz -0.0001 [-0.0007; +0.0006] - nicht abgesichert (Intervall enthält 0)
+    w = 0,2                  w 0.2: Brier 0.2197, Differenz +0.0003 [-0.0010; +0.0016] - nicht abgesichert (Intervall enthält 0)
+    w = 0,5                  w 0.5: Brier 0.2231, Differenz +0.0037 [+0.0004; +0.0071] - abgesichert (Intervall ohne 0)
+    w = 1,0 (Modell allein)  w 1.0: Brier 0.2368, Differenz +0.0174 [+0.0106; +0.0246] - abgesichert (Intervall ohne 0)
+    w nach Tagen kreuzvalidiert (gewählt: 10-22 0.1, 10-23 0.1, 10-24 0.0, 10-25 0.1, 10-26 0.1, 10-27 0.1, 10-28 0.0, 10-29 0.1, 10-30 0.0, 10-31 0.0, 11-01 0.1, 11-02 0.1, 11-04 0.1): Differenz +0.0003 [-0.0002; +0.0009]
+    bestes w in jeder Bootstrap-Ziehung neu gewählt: Differenz Ø -0.0002 [-0.0010; +0.0000] (zeigt den Optimismus der Wahl von w)
   Modell Teamabgleich - Brier-Differenz zu w = 0 (negativ = besser als Betano allein; Intervall nach Spielern):
-    bestes w                 w 0.1: Brier 0.2205, Differenz -0.0005 [-0.0014; +0.0005] - nicht abgesichert (Intervall enthält 0)
-    w = 0,2                  w 0.2: Brier 0.2207, Differenz -0.0004 [-0.0022; +0.0016] - nicht abgesichert (Intervall enthält 0)
-    w = 0,5                  w 0.5: Brier 0.2253, Differenz +0.0042 [-0.0003; +0.0091] - nicht abgesichert (Intervall enthält 0)
-    w = 1,0 (Modell allein)  w 1.0: Brier 0.2468, Differenz +0.0257 [+0.0162; +0.0359] - abgesichert (Intervall ohne 0)
-    w nach Tagen kreuzvalidiert (gewählt: 10-22 0.1, 10-23 0.1, 10-24 0.1, 10-25 0.1, 10-26 0.1, 10-27 0.1, 10-28 0.1, 10-29 0.1, 10-30 0.1, 10-31 0.1, 11-01 0.1, 11-02 0.1): Differenz -0.0005 [-0.0014; +0.0005]
-    bestes w in jeder Bootstrap-Ziehung neu gewählt: Differenz Ø -0.0007 [-0.0022; +0.0000] (zeigt den Optimismus der Wahl von w)
+    bestes w                 w 0.2: Brier 0.2187, Differenz -0.0008 [-0.0026; +0.0010] - nicht abgesichert (Intervall enthält 0)
+    w = 0,2                  w 0.2: Brier 0.2187, Differenz -0.0008 [-0.0026; +0.0010] - nicht abgesichert (Intervall enthält 0)
+    w = 0,5                  w 0.5: Brier 0.2225, Differenz +0.0031 [-0.0016; +0.0077] - nicht abgesichert (Intervall enthält 0)
+    w = 1,0 (Modell allein)  w 1.0: Brier 0.2423, Differenz +0.0228 [+0.0135; +0.0323] - abgesichert (Intervall ohne 0)
+    w nach Tagen kreuzvalidiert (gewählt: 10-22 0.2, 10-23 0.2, 10-24 0.2, 10-25 0.2, 10-26 0.2, 10-27 0.2, 10-28 0.1, 10-29 0.2, 10-30 0.1, 10-31 0.2, 11-01 0.2, 11-02 0.2, 11-04 0.1): Differenz -0.0004 [-0.0020; +0.0011]
+    bestes w in jeder Bootstrap-Ziehung neu gewählt: Differenz Ø -0.0010 [-0.0029; +0.0000] (zeigt den Optimismus der Wahl von w)
 
 2. LOGISTISCHE REGRESSION Treffer ~ a + b1 * logit(p_Betano) + b2 * logit(p_Modell) (Intervalle: Bootstrap nach Spielern)
-  nur Betano: a -0.246, b1 +1.003
-  Modell roh: a -0.258 [-0.372; -0.130] (Achsenabschnitt: fängt die Betano-Marge ab), b1 +1.062 [+0.875; +1.253], b2 -0.059 [-0.196; +0.095]; Log-Likelihood-Gewinn gegen nur Betano +1.75; Korrelation der Logits 0.65
+  nur Betano: a -0.245, b1 +1.038
+  Modell roh: a -0.255 [-0.367; -0.157] (Achsenabschnitt: fängt die Betano-Marge ab), b1 +1.091 [+0.918; +1.250], b2 -0.053 [-0.182; +0.079]; Log-Likelihood-Gewinn gegen nur Betano +1.58; Korrelation der Logits 0.66
     Deutung: b2 deutlich über 0 (Intervall ohne 0) = das Modell hat zusätzliche Information; b2 nahe 0 = keine; b1 unter 1 zeigt, dass Betano allein zu extrem ist.
-  Modell Teamabgleich: a -0.338 [-0.475; -0.182] (Achsenabschnitt: fängt die Betano-Marge ab), b1 +1.152 [+0.962; +1.354], b2 -0.136 [-0.263; +0.013]; Log-Likelihood-Gewinn gegen nur Betano +10.97; Korrelation der Logits 0.65
+  Modell Teamabgleich: a -0.312 [-0.437; -0.204] (Achsenabschnitt: fängt die Betano-Marge ab), b1 +1.147 [+0.986; +1.304], b2 -0.100 [-0.215; +0.020]; Log-Likelihood-Gewinn gegen nur Betano +6.61; Korrelation der Logits 0.66
     Deutung: b2 deutlich über 0 (Intervall ohne 0) = das Modell hat zusätzliche Information; b2 nahe 0 = keine; b1 unter 1 zeigt, dass Betano allein zu extrem ist.
 
 3. JE TAG (Brier-Differenz zur Betano-Chance allein; negativ = Mischung besser)
@@ -71,17 +71,18 @@ Informationswert-Test, Laufzeit 9 s. Rechenweg: Kopf von analysis/info_value_tes
   2026-10-31     488       63        0.2323    -0.0024    -0.0035     -0.0016     +0.0013
   2026-11-01     318       38        0.2085    +0.0028    +0.0095     +0.0018     +0.0095
   2026-11-02     957      116        0.2186    +0.0021    +0.0092     +0.0004     +0.0072
-  roh (w = 0,2): Richtung nicht an allen Tagen gleich; Tage mit Verbesserung 6 von 12.
-  Teamabgleich (w = 0,2): Richtung nicht an allen Tagen gleich; Tage mit Verbesserung 6 von 12.
+  2026-11-04    1549      187        0.2111    +0.0000    +0.0024     -0.0028     -0.0028
+  roh (w = 0,2): Richtung nicht an allen Tagen gleich; Tage mit Verbesserung 6 von 13.
+  Teamabgleich (w = 0,2): Richtung nicht an allen Tagen gleich; Tage mit Verbesserung 7 von 13.
 
 4. AUFTEILUNG (Brier bei w = 0 gegen w = 0,2; Differenz = w 0,2 minus w 0, Intervall nach Spielern)
                          Gruppe  Zeilen  Spieler  Brier w=0  roh w=0,2               roh Differenz  Team w=0,2              Team Differenz
   -----------------------------  ------  -------  ---------  ---------  --------------------------  ----------  --------------------------
-             Rolle unter 20 Min     642       85     0.2201     0.2213  +0.0012 [-0.0048; +0.0072]      0.2218  +0.0017 [-0.0051; +0.0085]
-                Rolle 20-28 Min    3087      390     0.2178     0.2183  +0.0005 [-0.0018; +0.0029]      0.2163  -0.0014 [-0.0050; +0.0019]
-             Rolle ueber 28 Min    4130      491     0.2237     0.2237  +0.0000 [-0.0017; +0.0019]      0.2238  +0.0001 [-0.0022; +0.0023]
-  Stars (erw. Punkte roh >= 20)    1744      203     0.2281     0.2274  -0.0007 [-0.0033; +0.0018]      0.2280  -0.0001 [-0.0036; +0.0033]
-                Rest (unter 20)    6115      763     0.2191     0.2197  +0.0006 [-0.0010; +0.0025]      0.2186  -0.0005 [-0.0026; +0.0019]
-        niedrigster Meilenstein     966      966     0.2367     0.2366  -0.0001 [-0.0019; +0.0018]      0.2353  -0.0013 [-0.0039; +0.0012]
-    Hauptlinie (Quote nahe 2,0)     966      966     0.2496     0.2507  +0.0011 [-0.0011; +0.0030]      0.2495  -0.0001 [-0.0026; +0.0024]
-          hoechster Meilenstein     966      966     0.1562     0.1560  -0.0003 [-0.0014; +0.0009]      0.1543  -0.0019 [-0.0033; -0.0005]
+             Rolle unter 20 Min     760      102     0.2186     0.2182  -0.0004 [-0.0063; +0.0055]      0.2196  +0.0010 [-0.0054; +0.0072]
+                Rolle 20-28 Min    3744      472     0.2153     0.2159  +0.0007 [-0.0015; +0.0027]      0.2132  -0.0020 [-0.0052; +0.0011]
+             Rolle ueber 28 Min    4904      579     0.2228     0.2228  +0.0001 [-0.0016; +0.0017]      0.2227  -0.0001 [-0.0022; +0.0021]
+  Stars (erw. Punkte roh >= 20)    2059      238     0.2273     0.2266  -0.0007 [-0.0032; +0.0015]      0.2269  -0.0004 [-0.0037; +0.0029]
+                Rest (unter 20)    7349      915     0.2172     0.2178  +0.0006 [-0.0010; +0.0022]      0.2164  -0.0009 [-0.0030; +0.0012]
+        niedrigster Meilenstein    1153     1153     0.2358     0.2358  +0.0001 [-0.0016; +0.0017]      0.2343  -0.0014 [-0.0039; +0.0008]
+    Hauptlinie (Quote nahe 2,0)    1153     1153     0.2499     0.2509  +0.0010 [-0.0008; +0.0028]      0.2495  -0.0004 [-0.0027; +0.0019]
+          hoechster Meilenstein    1153     1153     0.1537     0.1532  -0.0005 [-0.0016; +0.0005]      0.1515  -0.0022 [-0.0036; -0.0009]

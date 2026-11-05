@@ -1,7 +1,7 @@
 {
  "version": 1,
  "format": "nbaedge-rosters",
- "fetched_at": "2026-11-02T23:42:04+01:00",
+ "fetched_at": "2026-11-04T23:49:43+01:00",
  "source": "nba_api.PlayerIndex",
  "season": "2026-27",
  "abrufe": 1,
@@ -2482,14 +2482,6 @@
     "team_abbreviation": "MIN"
    },
    {
-    "person_id": 1642402,
-    "name": "Enrique Freeman",
-    "position": "F",
-    "jersey": "25",
-    "team_id": 1610612750,
-    "team_abbreviation": "MIN"
-   },
-   {
     "person_id": 1642912,
     "name": "Isaiah Evans",
     "position": "F",
@@ -2916,6 +2908,14 @@
     "name": "Chet Holmgren",
     "position": "C-F",
     "jersey": "7",
+    "team_id": 1610612760,
+    "team_abbreviation": "OKC"
+   },
+   {
+    "person_id": 1631207,
+    "name": "Dalen Terry",
+    "position": "F",
+    "jersey": "21",
     "team_id": 1610612760,
     "team_abbreviation": "OKC"
    },
@@ -4051,7 +4051,7 @@
     "person_id": 1641723,
     "name": "Kobe Bufkin",
     "position": "G",
-    "jersey": "4",
+    "jersey": "0",
     "team_id": 1610612762,
     "team_abbreviation": "UTA"
    },

@@ -1,0 +1,44 @@
+Befund: tests/test_value_bets_switch.py rot (3.11.2026) - nur gelesen, keine Aenderung an App/Tests/Daten
+
+KURZ: Weder Uhr noch App-Code. Ursache: Der Test haengt vom echten Elo-Modell data/elo_model.pkl ab.
+Die Automatik update_model hat es heute 08:00 neu geschrieben (Log: "15 neue Spiele, Ratings bis 2026-11-02").
+Dadurch rutscht die einzige Wette des Tests unter die EV-Schwelle.
+
+1. git log seit 30.10. (17d69a8 -> HEAD)
+   - engine/ev.py, data/odds_client.py, data/market_lines.py, data/pregame_lines.py, tests/fake_net.py,
+     tests/test_value_bets_switch.py: UNVERAENDERT.
+   - config/settings.py: nur SHOW_TEAM_ADJUSTED neu; MIN_EV_THRESHOLD/MIN_KELLY/SOFT_BOOKS/SHOW_VALUE_BETS unveraendert.
+   - app.py: nur Sidebar (Betano-Status); refresh_data unveraendert.
+   - data/fetcher.py: nur optionaler Parameter now= bei fetch_upcoming_games (Standard wie vorher).
+   - data/pre_match_store.py: veraendert (Betano-Automatik), betrifft Value Bets nicht (Test nutzt Temp-Verzeichnisse).
+   => Keine Code-Aenderung beeinflusst die Zahl der Value Bets.
+
+2. Uhr/Datum: nein. Test mit Uhr 22.10.2026 21:00 Berlin (Wrapper im Scratchpad, time/datetime/date gepatcht):
+   identisches Ergebnis, weiterhin 0 Wetten; Modellwahrscheinlichkeiten identisch (beide Teams haben gleiche
+   Ruhetage, daher heben sich Rest-Faktoren auf). fake_net setzt Anpfiff = jetzt + 3 Std, Spiele sind "nicht begonnen".
+   Alle 3 Spiele kommen an (upcoming 3, parse_odds 3, find_value_bets 3 Vorhersagen / 3 Quotenspiele, alle zugeordnet).
+
+3. Zustand: Ja, aber nur eine Datei. odds_cache/upcoming_cache/pregame_lines/tracking liegen im Test in Temp-Verzeichnissen
+   (fake_net.fresh_env). Gelesen wird das echte data/elo_model.pkl (gitignoriert, daher nicht in git sichtbar),
+   geaendert am 3.11. 08:00 (update_model). Sicherungen in data/model_history/.
+
+4. Warum 0 Wetten: engine/ev.py:76-77 ("if ev < MIN_EV_THRESHOLD: continue", Schwelle 0.03 aus config/settings.py:18).
+   Fake-Quoten sind fest: Heim 1.5 / Gast 2.8 bei Pinnacle, DraftKings, FanDuel (tests/fake_net.py:events), Pinnacle fair
+   Heim 0.6512 / Gast 0.3488. Blend = 0.3*Modell + 0.7*Pinnacle (engine/ev.py:blend_probabilities).
+   Einzige Wette frueher: Spurs-Spiel, Gastseite (Oklahoma City) bei Quote 2.8.
+     Modell 30.10. (elo_model_2026-10-30.pkl): Spurs-Heim 0.5726 -> EV Gast +4.3 %  -> Wette (Kelly ~2.4 % > 1 %)
+     Modell 31.10.:                             Spurs-Heim 0.6342 -> EV Gast -0.9 %  -> keine
+     Modell heute (elo_model.pkl):              Spurs-Heim 0.6041 -> EV Gast +1.6 %  -> unter 3 % -> keine
+   Alle anderen Seiten (Knicks, Pistons) liegen bei -0.6 bis -5.6 % EV. Die Rechenlogik des Codes ist unveraendert korrekt.
+
+5. Einordnung: Fehler im TEST (Testentwurf), nicht in App oder fake_net. Der Test nimmt echte, taeglich wechselnde
+   Modellwerte, aber feste Fake-Quoten und erwartet "mindestens eine Wette" - das war am 30.10. nur zufaellig erfuellt.
+   Er ist ausserdem nicht reproduzierbar (haengt vom Tagesstand des Pickles ab). App: kein Hinweis auf falsche oder
+   fehlende Value Bets im Betrieb; Value Bets sind ohnehin ausgeschaltet (SHOW_VALUE_BETS=False).
+
+REPARATURVORSCHLAG (nicht ausgefuehrt): Test vom echten Modell entkoppeln.
+ Variante A (empfohlen): Fake-Quoten der Softbooks (DraftKings/FanDuel) fuer ein Spiel deutlich hoeher als bei Pinnacle
+ setzen (z. B. Gast 3.6 statt 2.8), sodass EV > 3 % fuer jedes plausible Modell gilt. Aenderung in fake_net.events
+ nur fuer diesen Test (Parameter) oder im Test ueber einen eigenen spiele/Quoten-Aufruf.
+ Variante B: engine.predict im Test durch feste Vorhersagen ersetzen. Dann ist bets_t > 0 deterministisch.
+Nebenbefund: test_betano_auto_sidebar ist ebenfalls rot (FAIL=1), hier NICHT untersucht.

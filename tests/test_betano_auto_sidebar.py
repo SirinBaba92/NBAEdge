@@ -21,7 +21,8 @@ def check(name, cond, info=""):
 sha = lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest() if Path(p).exists() else None
 REAL = [ROOT / "data/automation.log", ROOT / "data/betano_auto_state.json", ROOT / "data/tracking/pre_match_entries.json", ROOT / "data/upcoming_cache.json"]
 real_before = {str(p): sha(p) for p in REAL}
-agents = Path.home() / "Library" / "LaunchAgents"
+import tempfile
+agents = Path(tempfile.mkdtemp(prefix="nbaedge_launchagents_"))     # eigener "LaunchAgents"-Ordner: der Test haengt nicht vom echten ~/Library/LaunchAgents ab
 ls_before = sorted(p.name for p in agents.glob("*")) if agents.exists() else []
 
 NOW = datetime.now().astimezone()
@@ -105,7 +106,11 @@ check("Plist: venv/bin/python und betano_auto.py, beide existieren", d["ProgramA
       and all(Path(x).exists() for x in d["ProgramArguments"]), str(d["ProgramArguments"]))
 check("Plist: Arbeitsverzeichnis = Projektordner, existiert", Path(d["WorkingDirectory"]) == ROOT)
 check("Plist: Ausgabe/Fehler unter data/ (nicht data/tracking)", all(str(Path(d[k]).parent) == str(ROOT / "data") for k in ("StandardOutPath", "StandardErrorPath")), f"{d['StandardOutPath']}")
-check("Plist nicht installiert: ~/Library/LaunchAgents unveraendert, kein betano-Eintrag", sorted(p.name for p in agents.glob("*")) == ls_before and not any("betano" in n for n in ls_before))
+check("Plist nicht installiert: LaunchAgents (Temp-Ordner, leer) unveraendert, kein betano-Eintrag", sorted(p.name for p in agents.glob("*")) == ls_before and not any("betano" in n for n in ls_before))
+(agents / plist.name).write_bytes(plist.read_bytes())      # Kopie nur in den Temp-Ordner, nie nach ~/Library/LaunchAgents
+check("Plist installiert (Temp-Ordner): Eintrag vorhanden, plutil -lint OK, Label stimmt", [p.name for p in agents.glob("*")] == [plist.name]
+      and subprocess.run(["plutil", "-lint", str(agents / plist.name)], capture_output=True).returncode == 0
+      and plistlib.loads((agents / plist.name).read_bytes())["Label"] == "de.nbaedge.betano-auto")
 check("README: Abschnitt Betano-Automatik mit launchctl bootstrap/bootout und --reset und dem Beobachtungslauf-Hinweis",
       all(x in (ROOT / "automation/README.md").read_text() for x in ("## Betano-Automatik", "launchctl bootstrap", "launchctl bootout", "betano_auto.py --reset", "Erst nach einem Beobachtungslauf")))
 real_after = {str(p): sha(p) for p in REAL}

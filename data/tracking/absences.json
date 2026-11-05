@@ -1,7 +1,7 @@
 {
   "version": 1,
   "format": "nbaedge-absences",
-  "updated_at": "2026-11-03T00:47:47+01:00",
+  "updated_at": "2026-11-04T23:55:42+01:00",
   "days": {
     "2026-10-22": {
       "2026-10-22|2026-10-23T01:30:00Z|Oklahoma City Thunder|Denver Nuggets": {
@@ -6439,6 +6439,1039 @@
         "auto": {
           "source": "espn",
           "fetched_at": "2026-11-03T00:47:47+01:00",
+          "unmatched": []
+        }
+      }
+    },
+    "2026-11-04": {
+      "2026-11-04|2026-11-05T00:00:00Z|Detroit Pistons|Philadelphia 76ers": {
+        "out": {
+          "1630198": {
+            "name": "Isaiah Joe",
+            "team": "Detroit Pistons",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1631105": {
+            "name": "Jalen Duren",
+            "team": "Detroit Pistons",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1631230": {
+            "name": "Dominick Barlow",
+            "team": "Philadelphia 76ers",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1630574": {
+            "name": "Ariel Hukporti",
+            "team": "Philadelphia 76ers",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          }
+        },
+        "doubtful": {},
+        "updated_at": "2026-11-04T20:41:18+01:00",
+        "history": [
+          {
+            "at": "2026-11-04T20:41:18+01:00",
+            "out": [
+              1630198,
+              1630574,
+              1631105,
+              1631230
+            ],
+            "doubtful": [],
+            "source": "espn"
+          }
+        ],
+        "auto": {
+          "source": "espn",
+          "fetched_at": "2026-11-04T23:55:42+01:00",
+          "unmatched": []
+        }
+      },
+      "2026-11-04|2026-11-05T00:00:00Z|Washington Wizards|Atlanta Hawks": {
+        "out": {
+          "1629111": {
+            "name": "Jock Landale",
+            "team": "Atlanta Hawks",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1631243": {
+            "name": "Mouhamed Gueye",
+            "team": "Atlanta Hawks",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1643539": {
+            "name": "Henri Veesaar",
+            "team": "Atlanta Hawks",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1641736": {
+            "name": "Reece Beekman",
+            "team": "Washington Wizards",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1641774": {
+            "name": "Tristan Vukčević",
+            "team": "Washington Wizards",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1630551": {
+            "name": "Justin Champagnie",
+            "team": "Washington Wizards",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1642364": {
+            "name": "Jamir Watkins",
+            "team": "Washington Wizards",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          }
+        },
+        "doubtful": {
+          "1630552": {
+            "name": "Jalen Johnson",
+            "team": "Atlanta Hawks",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1641731": {
+            "name": "Bilal Coulibaly",
+            "team": "Washington Wizards",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1642259": {
+            "name": "Alex Sarr",
+            "team": "Washington Wizards",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          }
+        },
+        "updated_at": "2026-11-04T23:39:06+01:00",
+        "history": [
+          {
+            "at": "2026-11-04T20:41:18+01:00",
+            "out": [
+              1629111,
+              1630551,
+              1631243,
+              1641736,
+              1641774,
+              1642364,
+              1643539
+            ],
+            "doubtful": [
+              1630264,
+              1630552,
+              1641731,
+              1642259
+            ],
+            "source": "espn"
+          },
+          {
+            "at": "2026-11-04T23:39:06+01:00",
+            "out": [
+              1629111,
+              1630551,
+              1631243,
+              1641736,
+              1641774,
+              1642364,
+              1643539
+            ],
+            "doubtful": [
+              1630552,
+              1641731,
+              1642259
+            ],
+            "source": "espn"
+          }
+        ],
+        "auto": {
+          "source": "espn",
+          "fetched_at": "2026-11-04T23:55:42+01:00",
+          "unmatched": []
+        }
+      },
+      "2026-11-04|2026-11-05T00:30:00Z|Boston Celtics|Milwaukee Bucks": {
+        "out": {
+          "1628369": {
+            "name": "Jayson Tatum",
+            "team": "Boston Celtics",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1642269": {
+            "name": "Devin Carter",
+            "team": "Boston Celtics",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          }
+        },
+        "doubtful": {
+          "1630202": {
+            "name": "Payton Pritchard",
+            "team": "Boston Celtics",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1642880": {
+            "name": "Kam Jones",
+            "team": "Milwaukee Bucks",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          }
+        },
+        "updated_at": "2026-11-04T20:41:18+01:00",
+        "history": [
+          {
+            "at": "2026-11-04T20:41:18+01:00",
+            "out": [
+              1628369,
+              1642269
+            ],
+            "doubtful": [
+              1630202,
+              1642880
+            ],
+            "source": "espn"
+          }
+        ],
+        "auto": {
+          "source": "espn",
+          "fetched_at": "2026-11-04T23:55:42+01:00",
+          "unmatched": []
+        }
+      },
+      "2026-11-04|2026-11-05T00:30:00Z|Brooklyn Nets|Charlotte Hornets": {
+        "out": {
+          "1642856": {
+            "name": "Egor Dëmin",
+            "team": "Brooklyn Nets",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1643548": {
+            "name": "Tyler Bilodeau",
+            "team": "Brooklyn Nets",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1629684": {
+            "name": "Grant Williams",
+            "team": "Charlotte Hornets",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          }
+        },
+        "doubtful": {
+          "1629632": {
+            "name": "Coby White",
+            "team": "Charlotte Hornets",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          }
+        },
+        "updated_at": "2026-11-04T20:41:18+01:00",
+        "history": [
+          {
+            "at": "2026-11-04T20:41:18+01:00",
+            "out": [
+              1629684,
+              1642856,
+              1643548
+            ],
+            "doubtful": [
+              1629632
+            ],
+            "source": "espn"
+          }
+        ],
+        "auto": {
+          "source": "espn",
+          "fetched_at": "2026-11-04T23:55:42+01:00",
+          "unmatched": []
+        }
+      },
+      "2026-11-04|2026-11-05T00:30:00Z|New York Knicks|Chicago Bulls": {
+        "out": {
+          "1629651": {
+            "name": "Nic Claxton",
+            "team": "Chicago Bulls",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1628404": {
+            "name": "Josh Hart",
+            "team": "New York Knicks",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          }
+        },
+        "doubtful": {},
+        "updated_at": "2026-11-04T23:55:42+01:00",
+        "history": [
+          {
+            "at": "2026-11-04T20:41:18+01:00",
+            "out": [
+              1628404,
+              1629651
+            ],
+            "doubtful": [
+              1630188
+            ],
+            "source": "espn"
+          },
+          {
+            "at": "2026-11-04T23:55:42+01:00",
+            "out": [
+              1628404,
+              1629651
+            ],
+            "doubtful": [],
+            "source": "espn"
+          }
+        ],
+        "auto": {
+          "source": "espn",
+          "fetched_at": "2026-11-04T23:55:42+01:00",
+          "unmatched": []
+        }
+      },
+      "2026-11-04|2026-11-05T01:00:00Z|Memphis Grizzlies|Indiana Pacers": {
+        "out": {
+          "1627826": {
+            "name": "Ivica Zubac",
+            "team": "Indiana Pacers",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1630167": {
+            "name": "Obi Toppin",
+            "team": "Indiana Pacers",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "204456": {
+            "name": "T.J. McConnell",
+            "team": "Indiana Pacers",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1642277": {
+            "name": "Johnny Furphy",
+            "team": "Indiana Pacers",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1641767": {
+            "name": "Ben Sheppard",
+            "team": "Indiana Pacers",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1630169": {
+            "name": "Tyrese Haliburton",
+            "team": "Indiana Pacers",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1630590": {
+            "name": "Scotty Pippen Jr.",
+            "team": "Memphis Grizzlies",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          }
+        },
+        "doubtful": {
+          "1626162": {
+            "name": "Kelly Oubre Jr.",
+            "team": "Indiana Pacers",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1642366": {
+            "name": "Quinten Post",
+            "team": "Memphis Grizzlies",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          }
+        },
+        "updated_at": "2026-11-04T20:41:18+01:00",
+        "history": [
+          {
+            "at": "2026-11-04T20:41:18+01:00",
+            "out": [
+              204456,
+              1627826,
+              1630167,
+              1630169,
+              1630590,
+              1641767,
+              1642277
+            ],
+            "doubtful": [
+              1626162,
+              1642366
+            ],
+            "source": "espn"
+          }
+        ],
+        "auto": {
+          "source": "espn",
+          "fetched_at": "2026-11-04T23:55:42+01:00",
+          "unmatched": []
+        }
+      },
+      "2026-11-04|2026-11-05T01:00:00Z|New Orleans Pelicans|Utah Jazz": {
+        "out": {
+          "1629673": {
+            "name": "Jordan Poole",
+            "team": "New Orleans Pelicans",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1642274": {
+            "name": "Yves Missi",
+            "team": "New Orleans Pelicans",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "203994": {
+            "name": "Jusuf Nurkić",
+            "team": "Utah Jazz",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1628991": {
+            "name": "Jaren Jackson Jr.",
+            "team": "Utah Jazz",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1641725": {
+            "name": "Trey Alexander",
+            "team": "Utah Jazz",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          }
+        },
+        "doubtful": {
+          "1630530": {
+            "name": "Trey Murphy III",
+            "team": "New Orleans Pelicans",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1628964": {
+            "name": "Mo Bamba",
+            "team": "Utah Jazz",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          }
+        },
+        "updated_at": "2026-11-04T20:41:18+01:00",
+        "history": [
+          {
+            "at": "2026-11-04T20:41:18+01:00",
+            "out": [
+              203994,
+              1628991,
+              1629673,
+              1641725,
+              1642274
+            ],
+            "doubtful": [
+              1628964,
+              1630530
+            ],
+            "source": "espn"
+          }
+        ],
+        "auto": {
+          "source": "espn",
+          "fetched_at": "2026-11-04T23:55:42+01:00",
+          "unmatched": []
+        }
+      },
+      "2026-11-04|2026-11-05T01:00:00Z|Oklahoma City Thunder|Cleveland Cavaliers": {
+        "out": {
+          "1642281": {
+            "name": "Jaylon Tyson",
+            "team": "Cleveland Cavaliers",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1631212": {
+            "name": "Peyton Watson",
+            "team": "Cleveland Cavaliers",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1642260": {
+            "name": "Nikola Topić",
+            "team": "Oklahoma City Thunder",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1642850": {
+            "name": "Thomas Sorber",
+            "team": "Oklahoma City Thunder",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1641717": {
+            "name": "Cason Wallace",
+            "team": "Oklahoma City Thunder",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1631096": {
+            "name": "Chet Holmgren",
+            "team": "Oklahoma City Thunder",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1631114": {
+            "name": "Jalen Williams",
+            "team": "Oklahoma City Thunder",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          }
+        },
+        "doubtful": {
+          "1631119": {
+            "name": "Jaylin Williams",
+            "team": "Oklahoma City Thunder",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          }
+        },
+        "updated_at": "2026-11-04T20:41:18+01:00",
+        "history": [
+          {
+            "at": "2026-11-04T20:41:18+01:00",
+            "out": [
+              1631096,
+              1631114,
+              1631212,
+              1641717,
+              1642260,
+              1642281,
+              1642850
+            ],
+            "doubtful": [
+              1631119
+            ],
+            "source": "espn"
+          }
+        ],
+        "auto": {
+          "source": "espn",
+          "fetched_at": "2026-11-04T23:55:42+01:00",
+          "unmatched": []
+        }
+      },
+      "2026-11-04|2026-11-05T01:30:00Z|Houston Rockets|Minnesota Timberwolves": {
+        "out": {
+          "203991": {
+            "name": "Clint Capela",
+            "team": "Houston Rockets",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "203500": {
+            "name": "Steven Adams",
+            "team": "Houston Rockets",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1630545": {
+            "name": "Terrence Shannon Jr",
+            "team": "Minnesota Timberwolves",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1630162": {
+            "name": "Anthony Edwards",
+            "team": "Minnesota Timberwolves",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1628978": {
+            "name": "Donte DiVincenzo",
+            "team": "Minnesota Timberwolves",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          }
+        },
+        "doubtful": {},
+        "updated_at": "2026-11-04T20:41:18+01:00",
+        "history": [
+          {
+            "at": "2026-11-04T20:41:18+01:00",
+            "out": [
+              203500,
+              203991,
+              1628978,
+              1630162,
+              1630545
+            ],
+            "doubtful": [],
+            "source": "espn"
+          }
+        ],
+        "auto": {
+          "source": "espn",
+          "fetched_at": "2026-11-04T23:55:42+01:00",
+          "unmatched": []
+        }
+      },
+      "2026-11-04|2026-11-05T02:00:00Z|Denver Nuggets|Toronto Raptors": {
+        "out": {
+          "1642461": {
+            "name": "Spencer Jones",
+            "team": "Denver Nuggets",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1631124": {
+            "name": "Julian Strawther",
+            "team": "Denver Nuggets",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "202695": {
+            "name": "Kawhi Leonard",
+            "team": "Toronto Raptors",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1642927": {
+            "name": "Nate Bittle",
+            "team": "Toronto Raptors",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          }
+        },
+        "doubtful": {
+          "1629661": {
+            "name": "Cameron Johnson",
+            "team": "Denver Nuggets",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1643813": {
+            "name": "Alpha Diallo",
+            "team": "Denver Nuggets",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1627751": {
+            "name": "Jakob Poeltl",
+            "team": "Toronto Raptors",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          }
+        },
+        "updated_at": "2026-11-04T20:41:18+01:00",
+        "history": [
+          {
+            "at": "2026-11-04T20:41:18+01:00",
+            "out": [
+              202695,
+              1631124,
+              1642461,
+              1642927
+            ],
+            "doubtful": [
+              1627751,
+              1629661,
+              1643813
+            ],
+            "source": "espn"
+          }
+        ],
+        "auto": {
+          "source": "espn",
+          "fetched_at": "2026-11-04T23:55:42+01:00",
+          "unmatched": []
+        }
+      },
+      "2026-11-04|2026-11-05T02:00:00Z|Phoenix Suns|Portland Trail Blazers": {
+        "out": {
+          "1642853": {
+            "name": "Rasheer Fleming",
+            "team": "Phoenix Suns",
+            "set_at": "2026-11-04T23:39:06+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1631109": {
+            "name": "Mark Williams",
+            "team": "Phoenix Suns",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1629630": {
+            "name": "Ja Morant",
+            "team": "Portland Trail Blazers",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1631101": {
+            "name": "Shaedon Sharpe",
+            "team": "Portland Trail Blazers",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          }
+        },
+        "doubtful": {
+          "1630692": {
+            "name": "Jordan Goodwin",
+            "team": "Phoenix Suns",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          }
+        },
+        "updated_at": "2026-11-04T23:39:06+01:00",
+        "history": [
+          {
+            "at": "2026-11-04T20:41:18+01:00",
+            "out": [
+              1629630,
+              1631101,
+              1631109
+            ],
+            "doubtful": [
+              1630692,
+              1642853
+            ],
+            "source": "espn"
+          },
+          {
+            "at": "2026-11-04T23:39:06+01:00",
+            "out": [
+              1629630,
+              1631101,
+              1631109,
+              1642853
+            ],
+            "doubtful": [
+              1630692
+            ],
+            "source": "espn"
+          }
+        ],
+        "auto": {
+          "source": "espn",
+          "fetched_at": "2026-11-04T23:55:42+01:00",
+          "unmatched": []
+        }
+      },
+      "2026-11-04|2026-11-05T02:30:00Z|San Antonio Spurs|Dallas Mavericks": {
+        "out": {
+          "1630583": {
+            "name": "Santi Aldama",
+            "team": "Dallas Mavericks",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1631108": {
+            "name": "Max Christie",
+            "team": "Dallas Mavericks",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1641844": {
+            "name": "Tarik Biberović",
+            "team": "Dallas Mavericks",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1641726": {
+            "name": "Dereck Lively II",
+            "team": "Dallas Mavericks",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1643547": {
+            "name": "Sergio de Larrea",
+            "team": "Dallas Mavericks",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "202699": {
+            "name": "Tobias Harris",
+            "team": "San Antonio Spurs",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1643519": {
+            "name": "Jayden Quaintance",
+            "team": "San Antonio Spurs",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          }
+        },
+        "doubtful": {},
+        "updated_at": "2026-11-04T20:41:18+01:00",
+        "history": [
+          {
+            "at": "2026-11-04T20:41:18+01:00",
+            "out": [
+              202699,
+              1630583,
+              1631108,
+              1641726,
+              1641844,
+              1643519,
+              1643547
+            ],
+            "doubtful": [],
+            "source": "espn"
+          }
+        ],
+        "auto": {
+          "source": "espn",
+          "fetched_at": "2026-11-04T23:55:42+01:00",
+          "unmatched": []
+        }
+      },
+      "2026-11-04|2026-11-05T03:00:00Z|Sacramento Kings|Los Angeles Lakers": {
+        "out": {
+          "1642876": {
+            "name": "Adou Thiero",
+            "team": "Los Angeles Lakers",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1631342": {
+            "name": "Daeqwon Plowden",
+            "team": "Sacramento Kings",
+            "set_at": "2026-11-04T23:39:06+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1642875": {
+            "name": "Maxime Raynaud",
+            "team": "Sacramento Kings",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1631099": {
+            "name": "Keegan Murray",
+            "team": "Sacramento Kings",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1627732": {
+            "name": "Ben Simmons",
+            "team": "Sacramento Kings",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          }
+        },
+        "doubtful": {},
+        "updated_at": "2026-11-04T23:39:06+01:00",
+        "history": [
+          {
+            "at": "2026-11-04T20:41:18+01:00",
+            "out": [
+              1627732,
+              1631099,
+              1642875,
+              1642876
+            ],
+            "doubtful": [
+              1630173
+            ],
+            "source": "espn"
+          },
+          {
+            "at": "2026-11-04T23:39:06+01:00",
+            "out": [
+              1627732,
+              1631099,
+              1631342,
+              1642875,
+              1642876
+            ],
+            "doubtful": [],
+            "source": "espn"
+          }
+        ],
+        "auto": {
+          "source": "espn",
+          "fetched_at": "2026-11-04T23:55:42+01:00",
+          "unmatched": []
+        }
+      },
+      "2026-11-04|2026-11-05T03:30:00Z|LA Clippers|Miami Heat": {
+        "out": {
+          "1642949": {
+            "name": "Yanic Konan Niederhäuser",
+            "team": "LA Clippers",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1627742": {
+            "name": "Brandon Ingram",
+            "team": "LA Clippers",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "203078": {
+            "name": "Bradley Beal",
+            "team": "LA Clippers",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "1641757": {
+            "name": "Jordan Miller",
+            "team": "LA Clippers",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          }
+        },
+        "doubtful": {
+          "1630543": {
+            "name": "Isaiah Jackson",
+            "team": "LA Clippers",
+            "set_at": "2026-11-04T23:39:06+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          },
+          "203507": {
+            "name": "Giannis Antetokounmpo",
+            "team": "Miami Heat",
+            "set_at": "2026-11-04T20:41:18+01:00",
+            "source": "espn",
+            "fetched_at": "2026-11-04T23:55:42+01:00"
+          }
+        },
+        "updated_at": "2026-11-04T23:39:06+01:00",
+        "history": [
+          {
+            "at": "2026-11-04T20:41:18+01:00",
+            "out": [
+              203078,
+              1627742,
+              1641757,
+              1642949
+            ],
+            "doubtful": [
+              203507
+            ],
+            "source": "espn"
+          },
+          {
+            "at": "2026-11-04T23:39:06+01:00",
+            "out": [
+              203078,
+              1627742,
+              1641757,
+              1642949
+            ],
+            "doubtful": [
+              203507,
+              1630543
+            ],
+            "source": "espn"
+          }
+        ],
+        "auto": {
+          "source": "espn",
+          "fetched_at": "2026-11-04T23:55:42+01:00",
           "unmatched": []
         }
       }

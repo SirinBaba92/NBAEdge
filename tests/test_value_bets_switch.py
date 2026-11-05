@@ -27,6 +27,25 @@ SPIELE = fake_net.SPIELE
 odds_markets_requested = fake_net.odds_markets_requested
 other_urls = []
 
+# Das Elo-Modell (data/elo_model.pkl) aendert sich taeglich; mit den festen Fake-Quoten (Gast 2.8) schwankt der EV der Wette im Spurs-Spiel
+# zwischen -1 % und +4 % und liegt oft unter MIN_EV_THRESHOLD. Nur in diesem Test: Gast-Quote der Softbooks (nicht Pinnacle) im Spurs-Spiel 3.6.
+_events_orig = fake_net.events
+def _events_hohe_gastquote(markets, spiele=fake_net.SPIELE):
+    out = _events_orig(markets, spiele)
+    for ev in out:
+        if ev["home_team"] != "San Antonio Spurs":
+            continue
+        for bm in ev["bookmakers"]:
+            if bm["key"] == "pinnacle":
+                continue
+            for m in bm["markets"]:
+                if m["key"] == "h2h":
+                    for o in m["outcomes"]:
+                        if o["name"] == ev["away_team"]:
+                            o["price"] = 3.6
+    return out
+fake_net.events = _events_hohe_gastquote
+
 # ---------------- 1. refresh_data aus app.py (echter Quelltext) ----------------
 src = (ROOT / "app.py").read_text()
 tree = ast.parse(src)

@@ -1,7 +1,7 @@
 {
   "version": 2,
   "format": "nbaedge-day-bets",
-  "updated_at": "2026-11-03T01:26:17+01:00",
+  "updated_at": "2026-11-05T00:46:35+01:00",
   "games": {
     "2026-10-22|2026-10-22T23:00:00Z|Philadelphia 76ers|Cleveland Cavaliers": {
       "game_date": "2026-10-22",
@@ -12817,6 +12817,1360 @@
           ],
           "placed_at": "2026-11-03T01:23:31+01:00",
           "updated_at": "2026-11-03T01:23:31+01:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      }
+    },
+    "2026-11-04|2026-11-05T00:30:00Z|Boston Celtics|Milwaukee Bucks": {
+      "game_date": "2026-11-04",
+      "start_utc": "2026-11-05T00:30:00Z",
+      "home": "Boston Celtics",
+      "away": "Milwaukee Bucks",
+      "bets": {
+        "winner": {
+          "market": "winner",
+          "active": true,
+          "side": "home",
+          "line": null,
+          "odds": 1.21,
+          "stake": 20.0,
+          "odds_source": "gespeichert",
+          "line_ref": null,
+          "categories": [
+            "team_1"
+          ],
+          "placed_at": "2026-11-05T00:02:04+01:00",
+          "updated_at": "2026-11-05T00:02:04+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "total": {
+          "market": "total",
+          "active": true,
+          "side": "over",
+          "line": 218.5,
+          "odds": 1.67,
+          "stake": 20.0,
+          "odds_source": "gespeichert",
+          "line_ref": {
+            "main_line": 221.5,
+            "chosen_line": 218.5,
+            "is_main": false,
+            "source": "eigene Eingabe",
+            "bookmaker": "Betano",
+            "at": "2026-11-04T23:51:59+01:00"
+          },
+          "categories": [
+            "team_1"
+          ],
+          "placed_at": "2026-11-05T00:18:46+01:00",
+          "updated_at": "2026-11-05T00:18:46+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "team_total_home": {
+          "market": "team_total_home",
+          "active": true,
+          "side": "over",
+          "line": 115.5,
+          "odds": 1.72,
+          "stake": 20.0,
+          "odds_source": "gespeichert",
+          "line_ref": {
+            "main_line": 116.5,
+            "chosen_line": 115.5,
+            "is_main": false,
+            "source": "eigene Eingabe",
+            "bookmaker": "Betano",
+            "at": "2026-11-04T23:51:59+01:00"
+          },
+          "categories": [
+            "team_1"
+          ],
+          "placed_at": "2026-11-05T00:27:25+01:00",
+          "updated_at": "2026-11-05T00:27:25+01:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      },
+      "player_bets": {
+        "1629639": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1629639,
+          "name": "Tyler Herro",
+          "team": "Milwaukee Bucks",
+          "milestone": 18,
+          "side": "over",
+          "odds": 1.55,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-11-04T23:51:59+01:00",
+            "milestone": 18
+          },
+          "categories": [
+            "player_raw"
+          ],
+          "model_p_roh": 0.6180273970105743,
+          "model_p_team": 0.5298992726001399,
+          "display_mode": null,
+          "model_version": "player-1",
+          "placed_at": "2026-11-05T00:35:08+01:00",
+          "updated_at": "2026-11-05T00:35:08+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1629674": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1629674,
+          "name": "Neemias Queta",
+          "team": "Boston Celtics",
+          "milestone": 9,
+          "side": "over",
+          "odds": 1.5,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-11-04T21:20:44+01:00",
+            "milestone": 9
+          },
+          "categories": [
+            "player_raw"
+          ],
+          "model_p_roh": 0.6309517026252793,
+          "model_p_team": 0.5380541283716843,
+          "display_mode": null,
+          "model_version": "player-1",
+          "placed_at": "2026-11-05T00:35:08+01:00",
+          "updated_at": "2026-11-05T00:35:08+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1631157": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1631157,
+          "name": "Ryan Rollins",
+          "team": "Milwaukee Bucks",
+          "milestone": 9,
+          "side": "over",
+          "odds": 1.45,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-11-04T22:23:09+01:00",
+            "milestone": 9
+          },
+          "categories": [
+            "player_raw"
+          ],
+          "model_p_roh": 0.8481240262537637,
+          "model_p_team": 0.8067916691386151,
+          "display_mode": null,
+          "model_version": "player-1",
+          "placed_at": "2026-11-05T00:35:08+01:00",
+          "updated_at": "2026-11-05T00:35:08+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1631170": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1631170,
+          "name": "Jaime Jaquez Jr.",
+          "team": "Milwaukee Bucks",
+          "milestone": 12,
+          "side": "over",
+          "odds": 1.44,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-11-04T23:51:59+01:00",
+            "milestone": 12
+          },
+          "categories": [
+            "player_raw"
+          ],
+          "model_p_roh": 0.7464528656446701,
+          "model_p_team": 0.7043247722387884,
+          "display_mode": null,
+          "model_version": "player-1",
+          "placed_at": "2026-11-05T00:35:08+01:00",
+          "updated_at": "2026-11-05T00:35:08+01:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      }
+    },
+    "2026-11-04|2026-11-05T00:30:00Z|New York Knicks|Chicago Bulls": {
+      "game_date": "2026-11-04",
+      "start_utc": "2026-11-05T00:30:00Z",
+      "home": "New York Knicks",
+      "away": "Chicago Bulls",
+      "bets": {
+        "winner": {
+          "market": "winner",
+          "active": true,
+          "side": "home",
+          "line": null,
+          "odds": 1.18,
+          "stake": 20.0,
+          "odds_source": "gespeichert",
+          "line_ref": null,
+          "categories": [
+            "team_1"
+          ],
+          "placed_at": "2026-11-05T00:02:17+01:00",
+          "updated_at": "2026-11-05T00:02:17+01:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      },
+      "player_bets": {
+        "1630200": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1630200,
+          "name": "Tre Jones",
+          "team": "Chicago Bulls",
+          "milestone": 8,
+          "side": "over",
+          "odds": 1.57,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-11-04T23:52:48+01:00",
+            "milestone": 8
+          },
+          "categories": [
+            "player_raw"
+          ],
+          "model_p_roh": 0.8850507749137035,
+          "model_p_team": 0.7219422524003261,
+          "display_mode": null,
+          "model_version": "player-1",
+          "placed_at": "2026-11-05T00:36:37+01:00",
+          "updated_at": "2026-11-05T00:36:37+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1641824": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1641824,
+          "name": "Matas Buzelis",
+          "team": "Chicago Bulls",
+          "milestone": 11,
+          "side": "over",
+          "odds": 1.44,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-11-04T19:15:51+01:00",
+            "milestone": 11
+          },
+          "categories": [
+            "player_raw"
+          ],
+          "model_p_roh": 0.7999654853468031,
+          "model_p_team": 0.7195469687560775,
+          "display_mode": null,
+          "model_version": "player-1",
+          "placed_at": "2026-11-05T00:36:37+01:00",
+          "updated_at": "2026-11-05T00:36:37+01:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      }
+    },
+    "2026-11-04|2026-11-05T01:00:00Z|New Orleans Pelicans|Utah Jazz": {
+      "game_date": "2026-11-04",
+      "start_utc": "2026-11-05T01:00:00Z",
+      "home": "New Orleans Pelicans",
+      "away": "Utah Jazz",
+      "bets": {
+        "winner": {
+          "market": "winner",
+          "active": true,
+          "side": "home",
+          "line": null,
+          "odds": 1.44,
+          "stake": 20.0,
+          "odds_source": "gespeichert",
+          "line_ref": null,
+          "categories": [
+            "team_1"
+          ],
+          "placed_at": "2026-11-05T00:02:32+01:00",
+          "updated_at": "2026-11-05T00:02:32+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "total": {
+          "market": "total",
+          "active": true,
+          "side": "over",
+          "line": 228.5,
+          "odds": 1.65,
+          "stake": 20.0,
+          "odds_source": "manuell",
+          "line_ref": {
+            "main_line": 232.5,
+            "chosen_line": 228.5,
+            "is_main": false,
+            "source": "eigene Eingabe",
+            "bookmaker": "Betano",
+            "at": "2026-11-04T23:53:30+01:00"
+          },
+          "categories": [
+            "team_1"
+          ],
+          "placed_at": "2026-11-05T00:19:12+01:00",
+          "updated_at": "2026-11-05T00:19:12+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "team_total_home": {
+          "market": "team_total_home",
+          "active": true,
+          "side": "over",
+          "line": 116.5,
+          "odds": 1.62,
+          "stake": 20.0,
+          "odds_source": "gespeichert",
+          "line_ref": {
+            "main_line": 118.5,
+            "chosen_line": 116.5,
+            "is_main": false,
+            "source": "eigene Eingabe",
+            "bookmaker": "Betano",
+            "at": "2026-11-04T23:53:30+01:00"
+          },
+          "categories": [
+            "team_1"
+          ],
+          "placed_at": "2026-11-05T00:27:44+01:00",
+          "updated_at": "2026-11-05T00:27:44+01:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      },
+      "player_bets": {
+        "1628374": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1628374,
+          "name": "Lauri Markkanen",
+          "team": "Utah Jazz",
+          "milestone": 19,
+          "side": "over",
+          "odds": 1.37,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-11-04T23:53:30+01:00",
+            "milestone": 19
+          },
+          "categories": [
+            "player_raw"
+          ],
+          "model_p_roh": 0.6071177054945237,
+          "model_p_team": 0.4275494083163386,
+          "display_mode": null,
+          "model_version": "player-1",
+          "placed_at": "2026-11-05T00:45:03+01:00",
+          "updated_at": "2026-11-05T00:45:03+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1629627": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1629627,
+          "name": "Zion Williamson",
+          "team": "New Orleans Pelicans",
+          "milestone": 18,
+          "side": "over",
+          "odds": 1.45,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-11-04T23:05:51+01:00",
+            "milestone": 18
+          },
+          "categories": [
+            "player_raw"
+          ],
+          "model_p_roh": 0.6953882217128854,
+          "model_p_team": 0.6698710515716675,
+          "display_mode": null,
+          "model_version": "player-1",
+          "placed_at": "2026-11-05T00:45:03+01:00",
+          "updated_at": "2026-11-05T00:45:03+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1630180": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1630180,
+          "name": "Saddiq Bey",
+          "team": "New Orleans Pelicans",
+          "milestone": 12,
+          "side": "over",
+          "odds": 1.52,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-11-04T23:53:30+01:00",
+            "milestone": 12
+          },
+          "categories": [
+            "player_raw"
+          ],
+          "model_p_roh": 0.8539660984950215,
+          "model_p_team": 0.841812945817747,
+          "display_mode": null,
+          "model_version": "player-1",
+          "placed_at": "2026-11-05T00:45:03+01:00",
+          "updated_at": "2026-11-05T00:45:03+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1641718": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1641718,
+          "name": "Keyonte George",
+          "team": "Utah Jazz",
+          "milestone": 18,
+          "side": "over",
+          "odds": 1.45,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-11-04T20:18:14+01:00",
+            "milestone": 18
+          },
+          "categories": [
+            "player_raw"
+          ],
+          "model_p_roh": 0.6650048729167066,
+          "model_p_team": 0.49159014680885194,
+          "display_mode": null,
+          "model_version": "player-1",
+          "placed_at": "2026-11-05T00:45:03+01:00",
+          "updated_at": "2026-11-05T00:45:03+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1641729": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1641729,
+          "name": "Brice Sensabaugh",
+          "team": "Utah Jazz",
+          "milestone": 7,
+          "side": "over",
+          "odds": 1.55,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-11-04T23:53:30+01:00",
+            "milestone": 7
+          },
+          "categories": [
+            "player_raw"
+          ],
+          "model_p_roh": 0.8837918584746294,
+          "model_p_team": 0.694017349169706,
+          "display_mode": null,
+          "model_version": "player-1",
+          "placed_at": "2026-11-05T00:45:03+01:00",
+          "updated_at": "2026-11-05T00:45:03+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1642846": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1642846,
+          "name": "Ace Bailey",
+          "team": "Utah Jazz",
+          "milestone": 11,
+          "side": "over",
+          "odds": 1.39,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-11-04T23:53:30+01:00",
+            "milestone": 11
+          },
+          "categories": [
+            "player_raw"
+          ],
+          "model_p_roh": 0.7204494735805161,
+          "model_p_team": 0.6049275009838073,
+          "display_mode": null,
+          "model_version": "player-1",
+          "placed_at": "2026-11-05T00:45:03+01:00",
+          "updated_at": "2026-11-05T00:45:03+01:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      }
+    },
+    "2026-11-04|2026-11-05T01:00:00Z|Memphis Grizzlies|Indiana Pacers": {
+      "game_date": "2026-11-04",
+      "start_utc": "2026-11-05T01:00:00Z",
+      "home": "Memphis Grizzlies",
+      "away": "Indiana Pacers",
+      "bets": {
+        "winner": {
+          "market": "winner",
+          "active": true,
+          "side": "home",
+          "line": null,
+          "odds": 1.4,
+          "stake": 20.0,
+          "odds_source": "gespeichert",
+          "line_ref": null,
+          "categories": [
+            "team_1"
+          ],
+          "placed_at": "2026-11-05T00:02:53+01:00",
+          "updated_at": "2026-11-05T00:02:53+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "total": {
+          "market": "total",
+          "active": true,
+          "side": "over",
+          "line": 225.5,
+          "odds": 1.7,
+          "stake": 20.0,
+          "odds_source": "gespeichert",
+          "line_ref": {
+            "main_line": 228.5,
+            "chosen_line": 225.5,
+            "is_main": false,
+            "source": "eigene Eingabe",
+            "bookmaker": "Betano",
+            "at": "2026-11-04T22:23:09+01:00"
+          },
+          "categories": [
+            "team_1"
+          ],
+          "placed_at": "2026-11-05T00:20:12+01:00",
+          "updated_at": "2026-11-05T00:20:12+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "team_total_home": {
+          "market": "team_total_home",
+          "active": true,
+          "side": "over",
+          "line": 115.5,
+          "odds": 1.62,
+          "stake": 20.0,
+          "odds_source": "gespeichert",
+          "line_ref": {
+            "main_line": 117.5,
+            "chosen_line": 115.5,
+            "is_main": false,
+            "source": "eigene Eingabe",
+            "bookmaker": "Betano",
+            "at": "2026-11-05T00:24:59+01:00"
+          },
+          "categories": [
+            "team_1"
+          ],
+          "placed_at": "2026-11-05T00:28:45+01:00",
+          "updated_at": "2026-11-05T00:28:45+01:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      },
+      "player_bets": {
+        "1627783": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1627783,
+          "name": "Pascal Siakam",
+          "team": "Indiana Pacers",
+          "milestone": 20,
+          "side": "over",
+          "odds": 1.35,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-11-04T23:53:06+01:00",
+            "milestone": 20
+          },
+          "categories": [
+            "player_raw"
+          ],
+          "model_p_roh": 0.6402887592500066,
+          "model_p_team": 0.5519674994134914,
+          "display_mode": null,
+          "model_version": "player-1",
+          "placed_at": "2026-11-05T00:42:02+01:00",
+          "updated_at": "2026-11-05T00:42:02+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1629614": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1629614,
+          "name": "Andrew Nembhard",
+          "team": "Indiana Pacers",
+          "milestone": 14,
+          "side": "over",
+          "odds": 1.3,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-11-04T23:05:41+01:00",
+            "milestone": 14
+          },
+          "categories": [
+            "player_raw"
+          ],
+          "model_p_roh": 0.7201648548581128,
+          "model_p_team": 0.6157055447109854,
+          "display_mode": null,
+          "model_version": "player-1",
+          "placed_at": "2026-11-05T00:42:02+01:00",
+          "updated_at": "2026-11-05T00:42:02+01:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      }
+    },
+    "2026-11-04|2026-11-05T01:30:00Z|Houston Rockets|Minnesota Timberwolves": {
+      "game_date": "2026-11-04",
+      "start_utc": "2026-11-05T01:30:00Z",
+      "home": "Houston Rockets",
+      "away": "Minnesota Timberwolves",
+      "bets": {
+        "winner": {
+          "market": "winner",
+          "active": true,
+          "side": "home",
+          "line": null,
+          "odds": 1.31,
+          "stake": 20.0,
+          "odds_source": "gespeichert",
+          "line_ref": null,
+          "categories": [
+            "team_1"
+          ],
+          "placed_at": "2026-11-05T00:03:16+01:00",
+          "updated_at": "2026-11-05T00:03:16+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "total": {
+          "market": "total",
+          "active": true,
+          "side": "over",
+          "line": 216.5,
+          "odds": 1.7,
+          "stake": 20.0,
+          "odds_source": "gespeichert",
+          "line_ref": {
+            "main_line": 219.5,
+            "chosen_line": 216.5,
+            "is_main": false,
+            "source": "Cache",
+            "bookmaker": null,
+            "at": "2026-11-04T22:00:00+01:00"
+          },
+          "categories": [
+            "team_1"
+          ],
+          "placed_at": "2026-11-05T00:20:38+01:00",
+          "updated_at": "2026-11-05T00:20:38+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "team_total_home": {
+          "market": "team_total_home",
+          "active": true,
+          "side": "over",
+          "line": 110.5,
+          "odds": 1.52,
+          "stake": 20.0,
+          "odds_source": "gespeichert",
+          "line_ref": {
+            "main_line": 113.5,
+            "chosen_line": 110.5,
+            "is_main": false,
+            "source": "eigene Eingabe",
+            "bookmaker": "Betano",
+            "at": "2026-11-04T23:24:33+01:00"
+          },
+          "categories": [
+            "team_1"
+          ],
+          "placed_at": "2026-11-05T00:29:11+01:00",
+          "updated_at": "2026-11-05T00:29:11+01:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      },
+      "player_bets": {
+        "1630578": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1630578,
+          "name": "Alperen Sengun",
+          "team": "Houston Rockets",
+          "milestone": 17,
+          "side": "over",
+          "odds": 1.42,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-11-04T20:18:14+01:00",
+            "milestone": 17
+          },
+          "categories": [
+            "player_raw"
+          ],
+          "model_p_roh": 0.7327365912444308,
+          "model_p_team": 0.6843929888364874,
+          "display_mode": null,
+          "model_version": "player-1",
+          "placed_at": "2026-11-05T00:46:35+01:00",
+          "updated_at": "2026-11-05T00:46:35+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1631095": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1631095,
+          "name": "Jabari Smith Jr.",
+          "team": "Houston Rockets",
+          "milestone": 12,
+          "side": "over",
+          "odds": 1.39,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-11-04T23:54:23+01:00",
+            "milestone": 12
+          },
+          "categories": [
+            "player_raw"
+          ],
+          "model_p_roh": 0.845789179497133,
+          "model_p_team": 0.810550705136401,
+          "display_mode": null,
+          "model_version": "player-1",
+          "placed_at": "2026-11-05T00:46:35+01:00",
+          "updated_at": "2026-11-05T00:46:35+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1641708": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1641708,
+          "name": "Amen Thompson",
+          "team": "Houston Rockets",
+          "milestone": 13,
+          "side": "over",
+          "odds": 1.42,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-11-04T23:24:33+01:00",
+            "milestone": 13
+          },
+          "categories": [
+            "player_raw"
+          ],
+          "model_p_roh": 0.8256495171884564,
+          "model_p_team": 0.7865554330710213,
+          "display_mode": null,
+          "model_version": "player-1",
+          "placed_at": "2026-11-05T00:46:35+01:00",
+          "updated_at": "2026-11-05T00:46:35+01:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      }
+    },
+    "2026-11-04|2026-11-05T02:30:00Z|San Antonio Spurs|Dallas Mavericks": {
+      "game_date": "2026-11-04",
+      "start_utc": "2026-11-05T02:30:00Z",
+      "home": "San Antonio Spurs",
+      "away": "Dallas Mavericks",
+      "bets": {
+        "winner": {
+          "market": "winner",
+          "active": true,
+          "side": "home",
+          "line": null,
+          "odds": 1.2,
+          "stake": 20.0,
+          "odds_source": "gespeichert",
+          "line_ref": null,
+          "categories": [
+            "team_1"
+          ],
+          "placed_at": "2026-11-05T00:03:31+01:00",
+          "updated_at": "2026-11-05T00:03:31+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "total": {
+          "market": "total",
+          "active": true,
+          "side": "over",
+          "line": 223.5,
+          "odds": 1.62,
+          "stake": 20.0,
+          "odds_source": "gespeichert",
+          "line_ref": {
+            "main_line": 226.5,
+            "chosen_line": 223.5,
+            "is_main": false,
+            "source": "eigene Eingabe",
+            "bookmaker": "Betano",
+            "at": "2026-11-04T23:55:05+01:00"
+          },
+          "categories": [
+            "team_1"
+          ],
+          "placed_at": "2026-11-05T00:21:29+01:00",
+          "updated_at": "2026-11-05T00:21:29+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "team_total_home": {
+          "market": "team_total_home",
+          "active": true,
+          "side": "over",
+          "line": 117.5,
+          "odds": 1.62,
+          "stake": 20.0,
+          "odds_source": "gespeichert",
+          "line_ref": {
+            "main_line": 119.5,
+            "chosen_line": 117.5,
+            "is_main": false,
+            "source": "eigene Eingabe",
+            "bookmaker": "Betano",
+            "at": "2026-11-04T23:55:05+01:00"
+          },
+          "categories": [
+            "team_1"
+          ],
+          "placed_at": "2026-11-05T00:29:30+01:00",
+          "updated_at": "2026-11-05T00:29:30+01:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      }
+    },
+    "2026-11-04|2026-11-05T03:00:00Z|Sacramento Kings|Los Angeles Lakers": {
+      "game_date": "2026-11-04",
+      "start_utc": "2026-11-05T03:00:00Z",
+      "home": "Sacramento Kings",
+      "away": "Los Angeles Lakers",
+      "bets": {
+        "winner": {
+          "market": "winner",
+          "active": true,
+          "side": "away",
+          "line": null,
+          "odds": 1.17,
+          "stake": 20.0,
+          "odds_source": "gespeichert",
+          "line_ref": null,
+          "categories": [
+            "team_1"
+          ],
+          "placed_at": "2026-11-05T00:03:42+01:00",
+          "updated_at": "2026-11-05T00:03:42+01:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      }
+    },
+    "2026-11-04|2026-11-05T01:00:00Z|Oklahoma City Thunder|Cleveland Cavaliers": {
+      "game_date": "2026-11-04",
+      "start_utc": "2026-11-05T01:00:00Z",
+      "home": "Oklahoma City Thunder",
+      "away": "Cleveland Cavaliers",
+      "bets": {
+        "total": {
+          "market": "total",
+          "active": true,
+          "side": "over",
+          "line": 223.5,
+          "odds": 1.67,
+          "stake": 20.0,
+          "odds_source": "manuell",
+          "line_ref": {
+            "main_line": 227.5,
+            "chosen_line": 223.5,
+            "is_main": false,
+            "source": "eigene Eingabe",
+            "bookmaker": "Betano",
+            "at": "2026-11-04T23:53:56+01:00"
+          },
+          "categories": [
+            "team_1"
+          ],
+          "placed_at": "2026-11-05T00:19:49+01:00",
+          "updated_at": "2026-11-05T00:19:49+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "team_total_home": {
+          "market": "team_total_home",
+          "active": true,
+          "side": "over",
+          "line": 112.5,
+          "odds": 1.53,
+          "stake": 20.0,
+          "odds_source": "gespeichert",
+          "line_ref": {
+            "main_line": 115.5,
+            "chosen_line": 112.5,
+            "is_main": false,
+            "source": "eigene Eingabe",
+            "bookmaker": "Betano",
+            "at": "2026-11-04T23:53:56+01:00"
+          },
+          "categories": [
+            "team_1"
+          ],
+          "placed_at": "2026-11-05T00:28:17+01:00",
+          "updated_at": "2026-11-05T00:28:17+01:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      },
+      "player_bets": {
+        "201935": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 201935,
+          "name": "James Harden",
+          "team": "Cleveland Cavaliers",
+          "milestone": 15,
+          "side": "over",
+          "odds": 1.53,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-11-04T23:53:56+01:00",
+            "milestone": 15
+          },
+          "categories": [
+            "player_raw"
+          ],
+          "model_p_roh": 0.7701906377910079,
+          "model_p_team": 0.5761625859141635,
+          "display_mode": null,
+          "model_version": "player-1",
+          "placed_at": "2026-11-05T00:40:05+01:00",
+          "updated_at": "2026-11-05T00:40:05+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1628378": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1628378,
+          "name": "Donovan Mitchell",
+          "team": "Cleveland Cavaliers",
+          "milestone": 20,
+          "side": "over",
+          "odds": 1.5,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-11-04T23:53:56+01:00",
+            "milestone": 20
+          },
+          "categories": [
+            "player_raw"
+          ],
+          "model_p_roh": 0.7071053066199704,
+          "model_p_team": 0.5101779368457098,
+          "display_mode": null,
+          "model_version": "player-1",
+          "placed_at": "2026-11-05T00:40:05+01:00",
+          "updated_at": "2026-11-05T00:40:05+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1628386": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1628386,
+          "name": "Jarrett Allen",
+          "team": "Cleveland Cavaliers",
+          "milestone": 10,
+          "side": "over",
+          "odds": 1.3,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-11-04T23:53:56+01:00",
+            "milestone": 10
+          },
+          "categories": [
+            "player_raw"
+          ],
+          "model_p_roh": 0.8421666107121576,
+          "model_p_team": 0.7440820185446065,
+          "display_mode": null,
+          "model_version": "player-1",
+          "placed_at": "2026-11-05T00:40:05+01:00",
+          "updated_at": "2026-11-05T00:40:05+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1630596": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1630596,
+          "name": "Evan Mobley",
+          "team": "Cleveland Cavaliers",
+          "milestone": 14,
+          "side": "over",
+          "odds": 1.45,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-11-04T23:53:56+01:00",
+            "milestone": 14
+          },
+          "categories": [
+            "player_raw"
+          ],
+          "model_p_roh": 0.7493925764288708,
+          "model_p_team": 0.5955724743632447,
+          "display_mode": null,
+          "model_version": "player-1",
+          "placed_at": "2026-11-05T00:40:05+01:00",
+          "updated_at": "2026-11-05T00:40:05+01:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      }
+    },
+    "2026-11-04|2026-11-05T02:00:00Z|Denver Nuggets|Toronto Raptors": {
+      "game_date": "2026-11-04",
+      "start_utc": "2026-11-05T02:00:00Z",
+      "home": "Denver Nuggets",
+      "away": "Toronto Raptors",
+      "bets": {
+        "total": {
+          "market": "total",
+          "active": true,
+          "side": "over",
+          "line": 228.5,
+          "odds": 1.72,
+          "stake": 20.0,
+          "odds_source": "gespeichert",
+          "line_ref": {
+            "main_line": 231.5,
+            "chosen_line": 228.5,
+            "is_main": false,
+            "source": "Cache",
+            "bookmaker": null,
+            "at": "2026-11-04T22:00:00+01:00"
+          },
+          "categories": [
+            "team_1"
+          ],
+          "placed_at": "2026-11-05T00:21:06+01:00",
+          "updated_at": "2026-11-05T00:21:06+01:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      }
+    },
+    "2026-11-04|2026-11-05T00:00:00Z|Detroit Pistons|Philadelphia 76ers": {
+      "game_date": "2026-11-04",
+      "start_utc": "2026-11-05T00:00:00Z",
+      "home": "Detroit Pistons",
+      "away": "Philadelphia 76ers",
+      "bets": {},
+      "player_bets": {
+        "2544": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 2544,
+          "name": "LeBron James",
+          "team": "Philadelphia 76ers",
+          "milestone": 12,
+          "side": "over",
+          "odds": 1.32,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-11-04T21:20:44+01:00",
+            "milestone": 12
+          },
+          "categories": [
+            "player_raw"
+          ],
+          "model_p_roh": 0.9114148410177682,
+          "model_p_team": 0.7455042254679923,
+          "display_mode": null,
+          "model_version": "player-1",
+          "placed_at": "2026-11-05T00:31:43+01:00",
+          "updated_at": "2026-11-05T00:31:43+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1629130": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1629130,
+          "name": "Duncan Robinson",
+          "team": "Detroit Pistons",
+          "milestone": 12,
+          "side": "over",
+          "odds": 1.45,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-11-04T22:56:17+01:00",
+            "milestone": 12
+          },
+          "categories": [
+            "player_raw"
+          ],
+          "model_p_roh": 0.7407193081638206,
+          "model_p_team": 0.6817206999114627,
+          "display_mode": null,
+          "model_version": "player-1",
+          "placed_at": "2026-11-05T00:31:43+01:00",
+          "updated_at": "2026-11-05T00:31:43+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1630178": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1630178,
+          "name": "Tyrese Maxey",
+          "team": "Philadelphia 76ers",
+          "milestone": 22,
+          "side": "over",
+          "odds": 1.38,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-11-04T22:56:17+01:00",
+            "milestone": 22
+          },
+          "categories": [
+            "player_raw"
+          ],
+          "model_p_roh": 0.8644453044942118,
+          "model_p_team": 0.5115424413385571,
+          "display_mode": null,
+          "model_version": "player-1",
+          "placed_at": "2026-11-05T00:31:43+01:00",
+          "updated_at": "2026-11-05T00:31:43+01:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      }
+    },
+    "2026-11-04|2026-11-05T00:00:00Z|Washington Wizards|Atlanta Hawks": {
+      "game_date": "2026-11-04",
+      "start_utc": "2026-11-05T00:00:00Z",
+      "home": "Washington Wizards",
+      "away": "Atlanta Hawks",
+      "bets": {},
+      "player_bets": {
+        "1643407": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1643407,
+          "name": "AJ Dybantsa",
+          "team": "Washington Wizards",
+          "milestone": 16,
+          "side": "over",
+          "odds": 1.37,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-11-04T23:51:31+01:00",
+            "milestone": 16
+          },
+          "categories": [
+            "player_raw"
+          ],
+          "model_p_roh": 0.8690968992099305,
+          "model_p_team": 0.7359690409085043,
+          "display_mode": null,
+          "model_version": "player-1",
+          "placed_at": "2026-11-05T00:33:24+01:00",
+          "updated_at": "2026-11-05T00:33:24+01:00",
+          "removed_at": null,
+          "revisions": []
+        }
+      }
+    },
+    "2026-11-04|2026-11-05T00:30:00Z|Brooklyn Nets|Charlotte Hornets": {
+      "game_date": "2026-11-04",
+      "start_utc": "2026-11-05T00:30:00Z",
+      "home": "Brooklyn Nets",
+      "away": "Charlotte Hornets",
+      "bets": {},
+      "player_bets": {
+        "203944": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 203944,
+          "name": "Julius Randle",
+          "team": "Brooklyn Nets",
+          "milestone": 18,
+          "side": "over",
+          "odds": 1.5,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-11-04T23:01:52+01:00",
+            "milestone": 18
+          },
+          "categories": [
+            "player_raw"
+          ],
+          "model_p_roh": 0.6583116713678291,
+          "model_p_team": 0.6252242749031153,
+          "display_mode": null,
+          "model_version": "player-1",
+          "placed_at": "2026-11-05T00:38:39+01:00",
+          "updated_at": "2026-11-05T00:38:39+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1628960": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1628960,
+          "name": "Grayson Allen",
+          "team": "Charlotte Hornets",
+          "milestone": 9,
+          "side": "over",
+          "odds": 1.5,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-11-04T17:11:55+01:00",
+            "milestone": 9
+          },
+          "categories": [
+            "player_raw"
+          ],
+          "model_p_roh": 0.8221302219199897,
+          "model_p_team": 0.8091815833987717,
+          "display_mode": null,
+          "model_version": "player-1",
+          "placed_at": "2026-11-05T00:38:39+01:00",
+          "updated_at": "2026-11-05T00:38:39+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1629008": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1629008,
+          "name": "Michael Porter Jr.",
+          "team": "Brooklyn Nets",
+          "milestone": 18,
+          "side": "over",
+          "odds": 1.38,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-11-04T23:01:52+01:00",
+            "milestone": 18
+          },
+          "categories": [
+            "player_raw"
+          ],
+          "model_p_roh": 0.7194625510002146,
+          "model_p_team": 0.6925403274062656,
+          "display_mode": null,
+          "model_version": "player-1",
+          "placed_at": "2026-11-05T00:38:39+01:00",
+          "updated_at": "2026-11-05T00:38:39+01:00",
+          "removed_at": null,
+          "revisions": []
+        },
+        "1642851": {
+          "market": "player_points",
+          "active": true,
+          "person_id": 1642851,
+          "name": "Kon Knueppel",
+          "team": "Charlotte Hornets",
+          "milestone": 10,
+          "side": "over",
+          "odds": 1.38,
+          "stake": 10.0,
+          "odds_source": "gespeichert",
+          "odds_ref": {
+            "bookmaker": "Betano",
+            "updated_at": "2026-11-04T23:52:20+01:00",
+            "milestone": 10
+          },
+          "categories": [
+            "player_raw"
+          ],
+          "model_p_roh": 0.887763181951253,
+          "model_p_team": 0.8696382290305927,
+          "display_mode": null,
+          "model_version": "player-1",
+          "placed_at": "2026-11-05T00:38:39+01:00",
+          "updated_at": "2026-11-05T00:38:39+01:00",
           "removed_at": null,
           "revisions": []
         }
