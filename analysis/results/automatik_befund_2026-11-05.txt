@@ -1,0 +1,75 @@
+Befund Betano-Automatik, Läufe 4./5.11.2026 (nur gelesen; keine Änderung an App, Tests, Daten, Plist; keine Netzabrufe)
+Quellen: data/automation.log, data/tracking/pre_match_entries.json (Revisionen je Linie mit saved_at/source), data/pre_match_store.py, eingabe.py, betano_auto.py.
+Hinweis: Betano-Rohwerte der einzelnen Läufe werden nirgends gespeichert. Welche Hauptlinie Betano um 00:24/01:26 hatte, ist daher NICHT direkt prüfbar (siehe Nachrechnung unter 1).
+
+======================================================================
+1) Nuggets-Raptors: "Total: höchstens 3 niedrigere Linien." (00:24, 01:26, 02:27)
+----------------------------------------------------------------------
+Regel: data/pre_match_store.py:89 (MAX_TOTAL_PER_DIRECTION = 3) und Prüfung in _validate_total, Zeilen 833-835. Zweck: je Richtung höchstens 3 Zusatzlinien
+(Hauptlinie + 3 höhere + 3 niedrigere = 7 Linien, entspricht der Leiter in eingabe.py:37). Dieselbe Grenze gilt auch bei Handeingabe (ui/pre_match_tab.py:40).
+Die Prüfung läuft in save_auto als Trockenlauf (pre_match_store.py:1541) vor dem Schreiben; Meldungstext bildet betano_auto.py:174-175.
+
+Stand der Total-Linien Nuggets-Raptors (aktiv): 7 Linien, alle ursprünglich von Betano (Quelle auto), Hauptlinie 230,5 (auto, letzte Revision 20:18).
+ niedriger: 227,5 (x9), 228,5 (x2), 229,5 (x3) -> alle drei haben seit 23:54:44 (Handabruf) eine Hand-Revision
+ höher:     231,5 (x10), 232,5 (x5), 233,5 (x6) -> nur auto
+Der Handabruf um 23:54 hat nur die geänderten Zeilen geschrieben; dadurch gehören genau die 3 niedrigeren Linien jetzt "der Hand".
+Hand-Linien darf die Automatik weder entfernen noch umdrehen (_auto_removals, _flip_rows, pre_match_store.py:1340ff/1377ff).
+
+Mechanismus: Wandert Betanos Hauptlinie, bringt die neue Leiter mindestens eine neue Linie in einer Richtung mit. Die 3 Hand-Linien bleiben stehen,
+dazu kommt die neue Linie = 4 niedrigere -> Prüfung lehnt das ganze Spiel ab. Bei Aufwärtsbewegung wird die alte Hauptlinie (230,5) zur neuen niedrigeren Linie,
+bei Abwärtsbewegung kommt unten eine neue Leiter-Linie dazu (Hand-Linien auf Leiter-Werten werden übersprungen, zählen aber mit).
+Nachrechnung im Speicher (Kopie des gespeicherten Stands, nichts geschrieben; Skript im Scratchpad): jede neue Hauptlinie von 227,5 bis 233,5 außer 230,5
+liefert genau diesen Fehler "höchstens 3 niedrigere Linien"; nur die unveränderte Hauptlinie 230,5 wäre speicherbar. Das passt zu allen drei Läufen
+(Betano-Hauptlinie war also ab 00:24 ungleich 230,5; welcher Wert genau: nicht geprüft/nicht ermittelbar).
+Vorgeschichte der wandernden Hauptlinie im selben Spiel: 19:15 Hauptlinie 231,5, 20:18 wieder 230,5 (Revisionen von main und x7/x8/x9/x10).
+Verwandtschaft mit 3.2i (wandernde Hauptlinie): wahrscheinlich dasselbe Thema, "3.2i" kommt im Repo aber in keiner Datei vor -> Zuordnung nicht geprüft.
+Neu ist hier die Kombination: Hand-Linien frieren die Leiter ein, danach kann die Hauptlinie nicht mehr wandern.
+
+======================================================================
+2) Grizzlies-Pacers, 01:26
+----------------------------------------------------------------------
+Vollständiger Text (Log-Zeile 295, Detail-Zeile 01:26): "Grizzlies-Pacers Fehler (Prüfung abgelehnt: Total: höchstens 3 höhere Linien.)"
+Der Text ist im Log nicht abgeschnitten, er steht komplett in der Detail-Zeile (die Zeilen sind nur umbrochen). Es ist dieselbe Prüfung wie bei 1, nur "höhere".
+Stand: niedrig 225,5 (Hand), 226,5 (auto), 227,5 (Hand); Hauptlinie 228,5 (auto); höher 229,5 (Hand, 23:05), 230,5, 231,5 (auto) -> 3 höhere schon belegt,
+davon 1 Hand. Nachrechnung: jede neue Hauptlinie 229,5 bis 231,5 ergibt "höchstens 3 höhere Linien", 225,5 bis 227,5 ergibt "niedrigere"; 228,5 ist ok.
+Also bewegte sich Betanos Hauptlinie zwischen 00:24 und 01:26 nach oben (genauer Wert: nicht geprüft). 00:24 lief noch sauber (letzte Auto-Revision Total 00:24:59).
+Um 02:27 war das Spiel (Anpfiff 02:00 MEZ) schon gestartet, daher kein weiterer Versuch.
+
+======================================================================
+3) Clippers-Heat: "übersprungen" um 22:23, danach "gespeichert"
+----------------------------------------------------------------------
+Warum 22:23 "übersprungen": execute_plan reicht nur GEÄNDERTE Zeilen an save_auto weiter (eingabe.py, with_main/changed). Hand-Teile werden herausgefiltert
+(_filter_rows). Blieb nichts übrig und wurde etwas gefiltert, meldet save_auto Status "skipped" (pre_match_store.py ~1530). Das heißt: um 22:23 war an den
+Nicht-Hand-Teilen nichts zu ändern; die Anzeige "übersprungen (Handeingabe hat Vorrang)" ist dann irreführend (eigentlich "nichts Neues").
+Das ist aus dem Code abgeleitet; die Betano-Quoten von 22:23 selbst sind nicht gespeichert, nicht prüfbar.
+Warum ab 00:24 "gespeichert": Betano-Quoten der Nicht-Hand-Linien haben sich geändert, es wurde nur der MARKT TOTAL geschrieben (Revisionen source=auto):
+ 00:24: 6 Revisionen, 01:26: 4, 02:27: 3 (dazu 03:28 und 04:28 nach Stand der Datei). Betroffen: Hauptlinie 233,5 und die Linien 230,5 / 231,5 / 232,5 / 235,5 / 236,5,
+ reine Quotenänderungen (z. B. Hauptlinie 1,91/1,90 -> 1,88/1,93 -> 1,90/1,91 ...). Kein Spread, kein Sieger, kein Team Total, kein Spieler geschrieben.
+Die "gehört der Hand"-Hinweise in der Detailzeile sind nur Meldungen über übersprungene Linien, keine Änderungen.
+Überschrieben? Nein. Prüfung über alle 14 Spiele des 4.11.: bei keiner Einheit (Sieger, Spread-/Total-/Team-Total-Linie, Spielerstufe) steht nach einer
+Hand-Revision eine Auto-Revision. Clippers-Heat Hand-Revisionen: 20:41 (Spread 7, Team Totals 14, Total x4 234,5, Sieger, 91 Spielerstufen) und 23:39
+(Sieger, 1 Team-Total-Hauptlinie, 54 Spielerstufen). Die genannten Zeiten ~20:00/~23:50 weichen von 20:41/23:39 ab; ein "Nichts geändert"-Speichern erzeugt keine Revision,
+passt also nicht zu 23:39 -> Zuordnung der Handaktionen zu den Zeitstempeln nicht eindeutig.
+
+======================================================================
+4) Vollständigkeit der Karten Nuggets-Raptors und Grizzlies-Pacers (aktueller Stand)
+----------------------------------------------------------------------
+Hand-Stand des 4.11. ist erhalten (keine Auto-Revision nach Hand, siehe 3). Aktive Einträge, jeweils volle Leiter:
+ Nuggets-Raptors:  Spread 5, Total 7, Team Totals 7+7, Spieler 14 Blöcke; letzte Hand-Änderung 23:54:44; letzte Auto-Änderung 22:23:09 (alle Märkte).
+ Grizzlies-Pacers: Spread 5, Total 7, Team Totals 7+7, Spieler 12 Blöcke; letzte Hand-Änderung 23:53:06; letzte Auto-Änderung Sieger/Total/Team Totals 00:24:59, Spieler/Spread 22:23:09.
+Fazit: vollständig, aber veraltet: Nuggets-Raptors bekam nach dem Handabruf (23:54) keine Auto-Aktualisierung mehr (drei verpasste Läufe, Anpfiff 03:00),
+Grizzlies-Pacers einen verpassten Lauf (01:26). Der 23:24-Lauf wurde wegen der Sperre (Handabruf lief) übersprungen, das ist gewollt.
+
+======================================================================
+5) Fehler oder gewollt?
+----------------------------------------------------------------------
+Gewollt: Hand hat Vorrang, Hand-Linien werden nie entfernt/überschrieben, Maximum 3 je Richtung.
+Konstruktionslücke (aus meiner Sicht ein Fehler der Automatik): Die Ablehnung im Total-Markt bricht das GANZE Spiel ab, obwohl nur der Total betroffen ist.
+Sieger, Spread, Team Totals und Spieler (die mit der Total-Leiter nichts zu tun haben) werden dadurch mit abgelehnt. Bei Spielern gibt es dafür schon eine
+Einzelbehandlung ("ein Spieler, der scheitert, fällt allein weg", save_auto), beim Total nicht.
+Auswirkung: keine falschen oder überschriebenen Daten, aber verpasste Aktualisierungen (Nuggets-Raptors drei Läufe, bis zum Anpfiff) und je Lauf eine WARN-Zeile.
+Die wandernde Hauptlinie bleibt bei eingefrorener Hand-Leiter im Total ungespeichert (veralteter Total, solange die Hand-Linien bestehen).
+Kleinster Reparaturvorschlag (NICHT ausgeführt): in save_auto (pre_match_store.py, vor dem Gesamt-Trockenlauf ca. Zeile 1541) die Total- und Team-Total-Zeilen
+je Markt einzeln mit _validate_total gegen active_total_lines(_entry_without(entry, removals)) prüfen. Scheitert ein Markt, diesen mit einem Hinweis in skipped_lines
+("Total übersprungen (…)") auf None setzen und den Rest speichern, analog zur Spielerlogik. Dazu ein Test (Hand-Leiter voll, Hauptlinie wandert -> Spread/Sieger werden trotzdem gespeichert).
+Zusätzlich optional: bei Status "skipped" ohne wirklich übersprungene Teile die Meldung zu "nichts Neues" ändern (Anzeige).

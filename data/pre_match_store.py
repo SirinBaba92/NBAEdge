@@ -1459,7 +1459,9 @@ def save_auto(game_date: str, start_utc: str, home: str, away: str, winner: dict
     remove: Linien, die nicht mehr zur Betano-Leiter gehoeren (('spread', id) | ('total', id) | ('team', side, id)); nur aktive Zusatzlinien OHNE Handrevision werden
     entfernt (Revision 'removed', source=auto), vorher wird alles geprueft (Trockenlauf). Dasselbe gilt fuer Linien, deren Richtung sich geaendert hat (neu anlegen).
     Rueckgabe wie save_card plus 'skipped_hand': Zahl uebersprungener Teile, 'skipped_lines': Meldungen zu einzeln uebersprungenen Linien, 'removed': entfernte Linien;
-    Status 'skipped' (Grund SKIP_HAND_PRIORITY), wenn nichts uebrig bleibt."""
+    Status 'skipped' (Grund SKIP_HAND_PRIORITY), wenn nichts uebrig bleibt.
+    Total und Team Totals (je Team) werden vorab einzeln geprueft: scheitert nur das Maximum je Richtung (Hand-Linien belegen die Leiter, "hoechstens 3 ... Linien"; andere Pruefungen bleiben Fehler), faellt nur dieser Markt
+    samt seinen Entfernungen weg (Hinweis "Total uebersprungen (...)" / "Team Totals uebersprungen (...)" in skipped_lines), der Rest des Spiels wird gespeichert."""
     now = now if now is not None else time.time()
     start_norm = _prepare_game(game_date, start_utc, now)
     key = game_key(game_date, start_norm, home, away)
@@ -1506,6 +1508,33 @@ def save_auto(game_date: str, start_utc: str, home: str, away: str, winner: dict
             skipped += len(player_blocks) - len(keep)
             player_blocks = keep or None
         removals = _auto_removals(mk, list(remove or []) + flips)
+        cur_chk = _entry_without(entry, removals)
+        errs = lambda e: list(getattr(e, "errors", None) or [str(e)])
+        only_cap = lambda e: all(f"höchstens {MAX_TOTAL_PER_DIRECTION} " in m for m in errs(e))      # nur das Maximum je Richtung; alle anderen Pruefungen bleiben Fehler
+        why = lambda e: " ".join(errs(e)).rstrip(".")
+        if total_rows:                                               # Total einzeln vorab pruefen (Hand-Linien belegen die Leiter, Hauptlinie wandert): nur dieser Markt faellt weg, samt seinen Entfernungen
+            try:
+                _validate_total(total_rows, active_total_lines(cur_chk))
+            except OddsInputError as e:
+                if not only_cap(e):
+                    raise
+                hits.append(f"Total übersprungen ({why(e)})")
+                total_rows, failed = None, failed + 1
+                removals = [r for r in removals if r[0] != "total"]
+        for side in TEAMS:                                           # ebenso Team Totals, je Team getrennt
+            if not (team_rows or {}).get(side):
+                continue
+            nm = (team_names or {}).get(side) or (away if side == "away" else home)
+            try:
+                _validate_total(team_rows[side], team_total_lines(cur_chk, side), parse=parse_team_total_input, name=f"Team Totals · {nm}", main_label=f"Team Totals · {nm}")
+            except OddsInputError as e:
+                if not only_cap(e):
+                    raise
+                hits.append(f"Team Totals übersprungen ({why(e)})")
+                team_rows, failed = {**team_rows, side: None}, failed + 1
+                removals = [r for r in removals if not (r[0] == "team" and r[1] == side)]
+        if team_rows and not any(team_rows.values()):
+            team_rows = None
         if player_blocks:                                            # je Spieler vorab pruefen (ohne zu schreiben): ein Spieler, der scheitert, faellt allein weg
             ok_blocks = []
             for b in player_blocks:

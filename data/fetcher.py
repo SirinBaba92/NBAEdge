@@ -11,9 +11,21 @@ CACHE.mkdir(parents=True, exist_ok=True)
 
 HEADERS = {"Authorization": API_KEY}
 
-def _get(endpoint, params=None, retries=5):
+def _get(endpoint, params=None, retries=5, timeout_retries=0):
+    """GET auf die BallDontLie-API. 429: Wartezeit und Wiederholung (bis retries).
+    timeout_retries: zusaetzliche Versuche nach Timeout/Verbindungsfehler (Wartezeit 10, 20, 30 s); Standard 0 = wie bisher sofort Fehler."""
+    timeouts = 0
     for attempt in range(retries):
-        r = requests.get(f"{BASE}/{endpoint}", headers=HEADERS, params=params, timeout=15)
+        try:
+            r = requests.get(f"{BASE}/{endpoint}", headers=HEADERS, params=params, timeout=15)
+        except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as e:
+            if timeouts >= timeout_retries:
+                raise
+            timeouts += 1
+            wait = 10 * timeouts
+            print(f"  {type(e).__name__}. Neuer Versuch {timeouts}/{timeout_retries} in {wait}s...")
+            time.sleep(wait)
+            continue
         if r.status_code == 429:
             wait = 10 * (attempt + 1)
             print(f"  Rate limited. Waiting {wait}s...")

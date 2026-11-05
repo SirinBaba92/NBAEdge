@@ -26,7 +26,7 @@ def fetch_final_games(start: date, end: date) -> list[dict]:
         params = {"start_date": start.isoformat(), "end_date": end.isoformat(), "per_page": 100}
         if cursor:
             params["cursor"] = cursor
-        data = _get("games", params)
+        data = _get("games", params, timeout_retries=3)   # Timeout: bis zu 3 neue Versuche (5.11.: ReadTimeout um 08:00)
         games.extend(g for g in data.get("data", []) if _is_finished(g))
         cursor = data.get("meta", {}).get("next_cursor")
         if not cursor:

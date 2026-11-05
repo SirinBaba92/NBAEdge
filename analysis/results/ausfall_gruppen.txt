@@ -1,15 +1,15 @@
 Spiele mit grossen Ausfaellen gegen Spiele ohne (UNGEPRÜFT, kleine Stichprobe; nur Beschreibung, keine Empfehlung).
 Grosser Ausfall = laut absences.json (Stand vor Anpfiff) 'fehlt' und erwartete Minuten >= 20; Gruppe A = mindestens ein Team mit >= 3 grossen Ausfaellen, B = alle anderen, unbekannt = kein Stand vor Anpfiff.
-Tage: 10-22, 10-23, 10-24, 10-25, 10-26, 10-27, 10-28, 10-29, 10-30, 10-31, 11-01, 11-02. Regeln wie analysis/info_value_test.py (Snapshot vor Anpfiff, Ergebnis vorhanden). Brier: kleiner ist besser; Verzerrung = Chance minus Trefferquote.
+Tage: 10-22, 10-23, 10-24, 10-25, 10-26, 10-27, 10-28, 10-29, 10-30, 10-31, 11-01, 11-02, 11-04. Regeln wie analysis/info_value_test.py (Snapshot vor Anpfiff, Ergebnis vorhanden). Brier: kleiner ist besser; Verzerrung = Chance minus Trefferquote.
 
 Gruppe     Spiele Sp.-Tage  Zeilen  Brier Betano     roh  Teamabgl.  Verz. Betano  Verz. roh
-A               9      101     795        0.2237  0.2710     0.2857         +1.7P     -12.4P
-B              65      826    6726        0.2217  0.2346     0.2432         +5.7P      +3.3P
+A              10      115     911        0.2218  0.2672     0.2825         +1.6P     -12.0P
+B              78      999    8159        0.2199  0.2325     0.2385         +5.8P      +3.5P
 unbekannt       3       39     338        0.2025  0.2596     0.2255        +10.2P     +13.4P
 
 Informationswert-Regression roh (b2 = Zusatz des Modells zu Betano; Intervall nach Spieler-Tagen):
-  A: zu wenig Daten (101 Spieler-Tage, Schwelle 150)
-  B: b2 +0.03 [-0.12; +0.20] (Intervall enthält 0)
+  A: zu wenig Daten (115 Spieler-Tage, Schwelle 150)
+  B: b2 +0.03 [-0.13; +0.22] (Intervall enthält 0)
   unbekannt: zu wenig Daten (39 Spieler-Tage, Schwelle 150)
 
 Spiele der Gruppe A (grosse Ausfaelle je Team):
@@ -22,6 +22,7 @@ Spiele der Gruppe A (grosse Ausfaelle je Team):
   2026-11-02 Atlanta Hawks @ Indiana Pacers: Atlanta Hawks 1 (Jalen Johnson); Indiana Pacers 5 (Pascal Siakam, Ivica Zubac, Andrew Nembhard, Tyrese Haliburton, Aaron Nesmith)
   2026-11-02 Washington Wizards @ Orlando Magic: Orlando Magic 3 (Jalen Suggs, Paolo Banchero, Anthony Black)
   2026-11-02 Toronto Raptors @ LA Clippers: LA Clippers 3 (Brandon Ingram, Derrick Jones Jr., Rui Hachimura); Toronto Raptors 1 (Kawhi Leonard)
+  2026-11-04 Cleveland Cavaliers @ Oklahoma City Thunder: Cleveland Cavaliers 1 (Peyton Watson); Oklahoma City Thunder 3 (Chet Holmgren, Jalen Williams, Cason Wallace)
 
 Gruppe unbekannt (kein Ausfall-Stand vor Anpfiff): 3 Spiele: 2026-10-22 Cleveland Cavaliers @ Philadelphia 76ers; 2026-10-22 Denver Nuggets @ Oklahoma City Thunder; 2026-10-23 Portland Trail Blazers @ Sacramento Kings
-Hinweis: 44 Ausgefallene ohne Minutenwert im Snapshot (zaehlen nicht als gross); 0 Ausfall-IDs ohne Name/Team (nicht zuordenbar).
+Hinweis: 48 Ausgefallene ohne Minutenwert im Snapshot (zaehlen nicht als gross); 0 Ausfall-IDs ohne Name/Team (nicht zuordenbar).

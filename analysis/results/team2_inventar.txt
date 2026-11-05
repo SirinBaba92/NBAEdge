@@ -1,0 +1,48 @@
+TEAM-2 INVENTAR (Punkt 3.5) - Stand 2026-11-05, nur gelesen (Code, projection_snapshots.json vom 05.11. 03:44). Nichts geaendert, nichts ausgefuehrt, was Daten schreibt.
+Hinweis: Roadmap_Archiv.md liegt nicht im Projekt (nur /Users/baranalturk/Roadmap.md); Abschnitt 3.2 daher nicht gegengelesen, Angaben stammen aus dem Code.
+
+1. CODE
+  engine/team_injury.py (156 Zeilen): Konstanten SLOPE = -14.4, FACTOR = 0.5 , MIN_TEAM_GAMES = 10, TOP_N = 8.
+  Mass je Team (compute, team_measure): Summe der Punkte-pro-Spiel-Anteile (Spielerpunkte pro Spiel / Teampunkte pro Spiel) der Spieler mit Status "fehlt" aus den Top 8 nach Minuten.
+  "fraglich" zaehlt nicht. Basis "Vorjahr" (Kader-Schnitt der Vorsaison), bis beide Teams >= 10 Spiele haben, danach "laufende Saison".
+  Abzug (apply): delta = FACTOR * SLOPE * (Mass Heim - Mass Gast) = 0,5 * (-14,4) * (...), auf den Heim-Spread (positiv = Heim staerker).
+  Punkte: Heim +delta/2, Gast -delta/2 (gerundet); das TOTAL BLEIBT GLEICH (exp_total unveraendert). Siegchance aus korrigiertem Spread (lp.win_prob_home).
+  => team-2 aendert real: Spread, Team Total (beide Teams, gegenlaeufig), Sieger. Das Total wird NICHT veraendert (anders als in der Aufgabenbeschreibung).
+  Anbindung: attach(), aufgerufen in app.py:639-644. Anzeige: ui/score_cards.py:242-245 (Schalter), ui/score_history.py:54-71.
+  Herkunft der Steigung: analysis/reports/winner_injuries_2025-26.txt (n = 1075 Spiele, Steigung -14,44 [95 %: -17,8; -11,1], Obergrenze, Wissen aus der Zukunft).
+
+2. SPEICHERUNG
+  data/projection_snapshots.py (Z. 18, 226-246) -> data/tracking/projection_snapshots.json. Je Version: "projection" (heutiges Modell, MIT Marktmischung) UND zusaetzlich Block "team2"
+  (measure_home/away, missing_home/away, delta_spread, exp_spread, exp_total, home_score, away_score, home_win_prob, away_win_prob, base). Es werden also BEIDE Werte gespeichert.
+  Erste Version mit team2-Block: saved_at 2026-10-27 07:19. Spiele mit Ergebnis ab 27.10.: 55, alle 55 haben den Block in der letzten Version (0 ohne).
+  Reines Modell ohne Marktanteil (model_total, model_spread, model_home/away_score): seit 30.10. in "projection"; fuer den team2-Block gibt es KEINE eigene reine Variante.
+  Der team2-Wert ist = (gemischter Spread) + delta, also auf dem Marktmischwert aufgebaut. Rein-Modell + delta laesst sich aus model_spread + team2.delta_spread nachrechnen (36 der 55 Spiele).
+  Alle 55 Spiele: base = "Vorjahr" (die 10-Spiele-Schwelle ist noch nicht erreicht).
+
+3. ABZUEGE (Spiele ab 22.10. mit Ergebnis: 93; davon 55 mit team2-Block, ab 27.10.; 38 Spiele vom 22.-26.10. ohne Block)
+  Abzug = |delta_spread| in Spread-Punkten (auf Team-Punkte je Haelfte, max. 1,8 je Team).
+  Spiele mit Abzug > 0: 52 von 55. Mittel ueber alle 55: 1,18 Pkt; Mittel der 52: 1,24 Pkt; Maximum 3,58 Pkt.
+  Abzug >= 1 Pkt: 28 Spiele; >= 2 Pkt: 11 Spiele. Beide Teams mit Mass > 0: 27 Spiele.
+  Verteilung nach Tag: 27.10 3, 28.10 12, 29.10 3, 30.10 9, 31.10 6, 01.11 4, 02.11 15 (Spiele mit Abzug > 0). Ab 03.11. kein Spiel mit Abzug > 0 (3 Spiele ohne Abzug).
+  Streuung der Mass-Differenz D (Heim - Gast): 0,20 (Saison 2025-26 im Backtest: 0,238).
+
+4. AUSWERTUNGSSKRIPTE (analysis/)
+  eval_snapshots.py: Kalibrierung Spread / Total / Team Total je Stufe aus den Schnappschuessen; nutzt "tables", NICHT den team2-Block. Sieger nicht enthalten.
+  backtest_team_round2.py (Teil 3 Star-Ausfaelle, Teil 6 --market-vs-model ab 22.10.), backtest_team_total.py (5b team-2 im Replay 2025-26), backtest_winner_injuries.py / _injuries2.py (Sieger,
+  Spread 2025-26), backtest_winner.py, backtest_spread.py, backtest_total.py, backtest_team_markets.py: alles Replay-Backtests auf Saisons bis 2025-26, nicht auf 2026-27.
+  Kein vorhandenes Skript bewertet den gespeicherten team2-Block gegen die 2026-27-Ergebnisse. Berichte: analysis/results/backtest_team_*.txt, analysis/reports/winner_injuries*_2025-26.txt.
+
+5. VERGLEICH "MIT" GEGEN "OHNE" GEGEN ERGEBNIS
+  Ja, fuer 55 Spiele rechenbar: Spread (exp_spread vs team2.exp_spread, Marktlinie aus markets), Team Total (home/away_score vs team2.home/away_score, Linien aus markets.team_total_*),
+  Sieger (home_win_prob vs team2.home_win_prob), Ergebnis aus "result". Total unveraendert, daher kein Unterschied.
+  Einschraenkungen / fehlt: (a) "ohne" ist der Marktmischwert, kein reines Modell; reiner Vergleich nur ueber model_spread (+ delta) fuer 36 Spiele. Wuenschenswert: team2-Variante auf Basis
+  model_spread / model_home_score / model_away_score mitspeichern. (b) Pro Spiel nur EIN Faktor (0,5) gespeichert; andere Faktoren (0,25 / 0,75) lassen sich aus Mass und SLOPE nachrechnen
+  (delta = f * -14,4 * (measure_home - measure_away)), aber die Siegchance muss neu aus lp.win_prob_home gerechnet werden. (c) Spiele vor 27.10. haben keinen Block.
+  (d) Unklar ist, ob "fehlt" zum Zeitpunkt der letzten Version dem tatsaechlichen Ausfall entsprach (Ausfallstatus-Verlauf liegt in data/tracking/absences.json, nur der letzte Stand).
+
+6. REICHT DAS FUER EINE KALIBRIERUNG DES FAKTORS? (grobe Schaetzung)
+  Nein, nicht belastbar. Mit n = 55, Streuung D = 0,20 und Modellfehler-Streuung ca. 14,9 Pkt (Backtest 2025-26) ist der Standardfehler der Steigung ca. 10 Pkt je 1,0 Mass,
+  das entspricht ca. 0,7 im Faktor (SLOPE -14,4 = Faktor 1,0). Unterschiede 0,25 / 0,5 / 0,75 (je 3,6 Pkt Steigung) liegen weit unter dem Standardfehler.
+  Zusatz: Mittlerer Abzug nur 1,2 Pkt gegen Spread-Streuung 13,2 -> die Brier-Wirkung ist klein. Alle Spiele mit Basis Vorjahr (Fruehphase), Status "fehlt" nur aus ESPN-/Meldedaten (Vorab-Unsicherheit).
+  Ein Anhaltspunkt: mit ca. 5- bis 10-facher Spielzahl (ca. 300-500 Spiele, etwa Ende Dezember) wird der Standardfehler ca. 0,25-0,3 im Faktor; erst dann waeren 0,25 / 0,5 / 0,75 unterscheidbar.
+  Die 1075 Spiele aus 2025-26 (Obergrenze) bleiben die bessere Datenbasis; die Live-Daten taugen jetzt nur als Plausibilitaetscheck (Vorzeichen, Gruppenvergleich).

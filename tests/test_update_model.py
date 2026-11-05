@@ -149,7 +149,7 @@ with tempfile.TemporaryDirectory() as tmp:
 seen = []
 pages = [{"data": [mk(1, "2026-01-01", "A", "B", 1, 2), mk(2, "2026-01-01", "C", "D", 1, 2, status="Q4")], "meta": {"next_cursor": 77}},
          {"data": [mk(3, "2026-01-02", "E", "F", 1, 2, postponed=True) | {"postponed": True}, mk(4, "2026-01-02", "G", "H", 3, 2)], "meta": {}}]
-def fake_get(endpoint, params=None, retries=5):
+def fake_get(endpoint, params=None, retries=5, **kw):
     seen.append((endpoint, dict(params))); return pages[len(seen) - 1]
 orig_get, orig_sleep = fetcher._get, gu.time.sleep
 fetcher._get, gu.time.sleep = fake_get, lambda *_: None
@@ -161,6 +161,36 @@ check("Abruf: start_date/end_date, Paginierung per Cursor", seen[0][1]["start_da
 check("Abruf: nur Final und nicht verschoben", [g["id"] for g in got] == [1, 4])
 utc = dt.datetime(2026, 10, 21, 2, 0, tzinfo=dt.timezone.utc)
 check("US-Datum: 02:00 UTC am 21.10. ist noch der 20.10. in New York (deutsche Zeit: 04:00 am 21.10.)", utc.astimezone(gu.US_TZ).date() == dt.date(2026, 10, 20))
+
+# _get: Wiederholung nach Timeout (ohne Netz, ohne echte Wartezeit)
+import requests
+class _Resp:
+    status_code = 200
+    def raise_for_status(self): pass
+    def json(self): return {"data": []}
+def _run_get(seq, **kw):
+    calls = []
+    def fake_req(*a, **k):
+        calls.append(1)
+        x = seq[len(calls) - 1]
+        if isinstance(x, Exception): raise x
+        return x
+    o_req, o_sl = fetcher.requests.get, fetcher.time.sleep
+    fetcher.requests.get, fetcher.time.sleep = fake_req, lambda *_: None
+    try:
+        try: return fetcher._get("games", {}, **kw), len(calls)
+        except Exception as e: return e, len(calls)
+    finally:
+        fetcher.requests.get, fetcher.time.sleep = o_req, o_sl
+T = requests.exceptions.ReadTimeout("x")
+res, n = _run_get([T, T, _Resp()], timeout_retries=3)
+check("_get: 2 Timeouts, dann Erfolg mit timeout_retries=3", res == {"data": []} and n == 3)
+res, n = _run_get([T, T, T, T, _Resp()], timeout_retries=3)
+check("_get: nach 3 Wiederholungen wird der Timeout weitergegeben", isinstance(res, requests.exceptions.ReadTimeout) and n == 4)
+res, n = _run_get([T, _Resp()])
+check("_get: Standard (timeout_retries=0) wie bisher sofort Fehler", isinstance(res, requests.exceptions.ReadTimeout) and n == 1)
+res, n = _run_get([requests.exceptions.ConnectionError("x"), _Resp()], timeout_retries=3)
+check("_get: Verbindungsfehler wird ebenfalls wiederholt", res == {"data": []} and n == 2)
 
 check("echtes Pickle data/elo_model.pkl unveraendert", sha(MODEL_PATH) == real_sha)
 print("\nErgebnis:", "ALLE TESTS BESTANDEN" if ok else "FEHLER")
