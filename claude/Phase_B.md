@@ -9,7 +9,7 @@ Stand: Do 5.11.2026, 22:00. Gemeinsame Regeln und Festlegungen: claude/Roadmap.m
 - Verlängerung ist im Spielerpunkte-Modell vorab nicht enthalten (engine/player_forecast.py, Minuten auf 0 bis 48 begrenzt): Spielerpunkte-Chancen sind bei Verlängerung tendenziell zu niedrig, vor allem bei Overs. Beispiele: Pelicans–Grizzlies 2.11., Jazz–Pelicans und Heat–Clippers 4.11. (Wembanyama 52 statt 25,8 Punkte, Keyonte George 43,6 statt 30,3 Min., Adebayo 40,5 statt 33,8 Min.; Zusammenhang mit der Verlängerung nicht geprüft).
 
 ## Offen
-- [ ] 5.7 Rollenwechsel-Korrektur EINBAUEN (Test positiv, Plan im Archiv 6.11. Schritt 4 und 5; Entscheidung Claude 6.11.: Sa 7.11. nach der Morgenroutine, nicht an einem Tag mit laufender Aufzeichnung). ERINNERUNG an Baran zu Beginn der nächsten Phase-B-Sitzung: Einbau (ROLE_CHANGE_BETA 0,565, Version player-2, neue Tests, 5 betroffene Tests) ist noch nicht gebaut; Baran gibt vorher Freigabe.
+- [ ] 5.7 Beobachten (eingebaut 6.11. abends, Version player-2): Gesamttestlauf durch Baran, Streamlit neu starten; nach einigen Spieltagen mit Version player-2 den Informationswert-Test ansehen (Rollenwechsel-Zeilen getrennt).
 - [ ] Ideen Phase B (Vorschläge Claude 6.11., Baran will sie am 7.11. nacheinander mit den anderen Punkten durchgehen; Empfehlung: 1 und 2 zuerst; vorher in den Archiven prüfen, ob 3 und 4 schon getestet wurden):
   - [ ] B1 Rollenwechsel verfeinern: Faktor 0,565 getrennt für "mehr Minuten" und "weniger Minuten", Schwelle 5 Min. prüfen, Gegenprobe mit Saison 2023-24.
   - [ ] B2 Rückkehr nach längerer Pause getrennt testen (aus Lücken zwischen den Spieldaten, ohne Startformation).
@@ -21,6 +21,7 @@ Stand: Do 5.11.2026, 22:00. Gemeinsame Regeln und Festlegungen: claude/Roadmap.m
 - [ ] Spielerpunkte-Streuung und Minutenverteilung (4.2b war negativ): bei neuen Daten 2026-27 erneut ansehen, nur wenn Zeit.
 
 ## Erledigt (Kurzfassung, Details in den Archiven)
+- 5.7 Rollenwechsel-Korrektur (6.11., positiv, eingebaut als player-2): Minutenmittel + 0,565 x (Mittel letzte 5 minus Mittel) bei Hinweis und mind. 10 Spielen; Brier der betroffenen Zeilen -0,0068 (beide Saisonhälften); Archiv Phase B.
 - 4.1 Zweite Vorsaison (6.11.): formal positiv (Brier -0,0007 bei 0 bis 4 Saisonspielen, Intervall ohne 0), aber vernachlässigbar klein (ca. 0,6 %), Minuten unverändert; nichts eingebaut (Entscheidung Claude, Baran "du entscheidest"; Archiv Phase B, 6.11. Schritte 1 bis 3).
 - 4.4 Verlängerung (negativ, 6.11.): Effekt real (Stammspieler bei Verlängerung +5,6 Min., +2,8 Punkte, 173 Spiele in 3 Saisons), aber vorab kaum vorhersagbar (Rate 4,7 %, aus Abstand Brier-Gewinn ca. 0,00006) und im Mittel nur ca. +0,13 Punkte; nichts eingebaut (Archiv Phase B, Schritte 1 bis 4).
 - 4.2a (Minutenkorrektur nach Abstand), 4.2b (empirische Minutenverteilung), 5.1 (Stufe 1 und 2), 2.3a: alle negativ, nichts eingebaut.
@@ -105,3 +106,7 @@ Kopie von engine/player_forecast.py mit der Korrektur (beta 0,565, ab 10 Spielen
 - Mit Hinweis (2979): Brier 0,1182 -> 0,1114 (Diff -0,0068 [-0,0083; -0,0053]); MAE Minuten 6,98 -> 5,86 (-1,12); MAE Punkte 4,67 -> 4,41 (-0,26).
 - 1. Hälfte (1513): Brier -0,0057 [-0,0077; -0,0037]; 2. Hälfte (1466): Brier -0,0080 [-0,0102; -0,0059].
 Ergebnis: bestätigt die Näherung (vorher -0,0066), Regel erfüllt. Einbau weiter nur nach Freigabe durch Baran.
+
+### 6.11. abends, Schritt 6 zu 5.7: Einbau (auf Wunsch von Baran schon am 6.11. 23:xx statt 7.11.)
+Geändert (nur diese Dateien): engine/player_forecast.py (PLAYER_MODEL_VERSION "player-2"; neue Konstanten ROLE_CHANGE_BETA = 0.565 und ROLE_CHANGE_MIN_GAMES = 10; nach mu0/sd0 Korrektur mu0 = mu0_orig + beta x (last5 - mu0_orig) bei mind. 10 Spielen und |last5 - mu0_orig| >= ROLE_CHANGE_MINUTES; Hinweis "Rollenwechsel" weiter mit mu0_orig, Warnung ergänzt um "Minuten korrigiert auf ..."; Docstring), tests/test_player_model_version.py (player-1 -> player-2), tests/test_player_forecast.py (6 neue Prüfungen: Formel, Hinweistext, Konstanten, Spieler ohne Rollenwechsel unverändert, unter 10 Spielen Hinweis aber keine Korrektur).
+Tests (einzeln, nur betroffene): test_player_forecast FAIL=0 (71 PASS), test_player_model_version FAIL=0 (17), test_player_cards FAIL=0 (35), test_player_tab FAIL=0 (40), test_player_cards_pregame FAIL=0 (18). Erste Fassung eines neuen Tests war falsch (Testdaten ohne Hinweis), korrigiert. Nicht gelaufen: Gesamttestlauf (Baran), andere Tests mit forecast_player-Zahlen (z. B. Snapshot-/Teamabgleich-Tests) nicht einzeln geprüft. Alte Snapshots und Wetten bleiben unverändert (player-1/player-0). Streamlit läuft noch mit altem Code und muss neu gestartet werden. Nicht geändert: Daten, Modelle, analysis/-Skripte.

@@ -34,12 +34,12 @@ K = ps.game_key(D, FUT, "Heim Falken", "Gast Baeren")
 GP = dict(game_date=D, start_utc=FUT, home="Heim Falken", away="Gast Baeren")
 
 # ------------------------------------------------------------ Versionsfeld im Snapshot
-check("Konstante an zentraler Stelle, Startwert player-1", pf.PLAYER_MODEL_VERSION == "player-1")
+check("Konstante an zentraler Stelle, Startwert player-2", pf.PLAYER_MODEL_VERSION == "player-2")
 res = {"players": [], "context": {}, "teams": {}}
 entry = psn.build_snapshot_entry(K, {}, res, datetime.now(timezone.utc))
-check("neuer Snapshot-Eintrag enthaelt model_version", entry.get("model_version") == "player-1", entry.get("model_version"))
+check("neuer Snapshot-Eintrag enthaelt model_version", entry.get("model_version") == "player-2", entry.get("model_version"))
 
-def write_snapshot(version="player-1"):
+def write_snapshot(version="player-2"):
     e = {"game_key": K, "created_at": "2026-10-22T10:00:00+02:00", "note": "vor Anpfiff erstellt", "players": [
         {"person_id": 1, "name": "Anna Alpha", "ok": True, "p_ge_raw": {"20": 0.41, "15": 0.7}, "p_ge_adjusted": {"20": 0.47, "15": 0.75}},
         {"person_id": 2, "name": "Berta Beta", "ok": False}]}
@@ -57,7 +57,7 @@ write_snapshot()
 r = pe.save_player_bet(K, options["players"][0], 20, "1,85", 10.0, options, now=NOW, categories=["player_ta"], display_mode="raw")
 b = PB()[1]
 check("neue Wette: Modell-Chance roh / Teamabgleich fuer diese Linie", r[0] and b["model_p_roh"] == 0.41 and b["model_p_team"] == 0.47)
-check("neue Wette: Anzeigemodus 'roh' und Modellversion", b["display_mode"] == "roh" and b["model_version"] == "player-1")
+check("neue Wette: Anzeigemodus 'roh' und Modellversion", b["display_mode"] == "roh" and b["model_version"] == "player-2")
 check("Kategorien unbeeintraechtigt", b["categories"] == ["player_ta"])
 r = pe.save_player_bet(K, options["players"][0], 15, "1,3", 10.0, options, now=NOW + 1, display_mode="team")
 b = PB()[1]
@@ -70,7 +70,7 @@ check("Spieler ohne Snapshot-Eintrag: Chancen null, Wette trotzdem gespeichert",
 b2 = None
 pe.save_player_bet(K, options["players"][1], 10, "1,5", 5.0, options, now=NOW + 2, display_mode="team")
 b2 = PB()[2]
-check("Spieler mit ok=False im Snapshot (keine Chancen): null, nicht blockiert", b2["model_p_roh"] is None and b2["model_p_team"] is None and b2["model_version"] == "player-1")
+check("Spieler mit ok=False im Snapshot (keine Chancen): null, nicht blockiert", b2["model_p_roh"] is None and b2["model_p_team"] is None and b2["model_version"] == "player-2")
 check("unbekannter Modus -> null", (pe.save_player_bet(K, options["players"][2], 20, "2,0", 6.0, options, now=NOW + 3, display_mode="quatsch")[0]) and PB()[3]["display_mode"] is None)
 
 # ------------------------------------------------------------ Snapshot ohne Versionsfeld (alt) und ohne Snapshot
@@ -82,7 +82,7 @@ ds.forecast_snapshot_path(D).unlink()
 ds.remove_player_bet(**GP, person_id=1, now=NOW + 6)
 r = pe.save_player_bet(K, options["players"][0], 20, "1,85", 10.0, options, now=NOW + 7, display_mode="raw")
 b = PB()[1]
-check("kein Snapshot: Wette wird gespeichert, Chancen null, Modus und aktuelle Version gesetzt", r[0] and b["model_p_roh"] is None and b["model_p_team"] is None and b["display_mode"] == "roh" and b["model_version"] == "player-1")
+check("kein Snapshot: Wette wird gespeichert, Chancen null, Modus und aktuelle Version gesetzt", r[0] and b["model_p_roh"] is None and b["model_p_team"] is None and b["display_mode"] == "roh" and b["model_version"] == "player-2")
 ds.forecast_snapshot_path(D).write_text("{kaputt")
 ds.remove_player_bet(**GP, person_id=1, now=NOW + 8)
 r = pe.save_player_bet(K, options["players"][0], 20, "1,85", 10.0, options, now=NOW + 9)
@@ -97,7 +97,7 @@ data["games"][K2] = {"game_date": D, "start_utc": iso(NOW - 3600), "home": "Zwei
 ds.store_path().write_text(json.dumps(data))
 old = ds.get_player_bets_by_key(K2)
 check("alte Wette ohne Felder laedt fehlerfrei", 11 in old and old[11]["milestone"] == 12 and old[11].get("model_p_roh") is None)
-check("alte Wette gilt als player-0", ds.bet_model_version(old[11]) == "player-0" and ds.bet_model_version(PB()[1]) == "player-1")
+check("alte Wette gilt als player-0", ds.bet_model_version(old[11]) == "player-0" and ds.bet_model_version(PB()[1]) == "player-2")
 check("alte Wette in Tagesliste und mit 'Ohne Kategorie'", ds.get_day_player_bets(D)[K2]["player_bets"][11]["categories"] == [])
 check("echte Dateien unveraendert", real_files() == real_before)
 print("\nALLES OK" if ok else "\nFEHLER")

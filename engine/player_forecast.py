@@ -9,6 +9,8 @@ Methode
    Schrumpfung nach Spielzahl: Anteil der laufenden Saison = n / (n + PRIOR_GAMES_K), der Rest gehoert der Vorsaison (n = Spiele des Spielers in der laufenden Saison;
    0 Spiele -> nur Vorsaison, 8 Spiele -> je 50 %, 24 Spiele -> 75 %).
 2. Minuten: gewichteter Mittelwert (Basis) und gewichtete Standardabweichung (zu MINUTES_SD_PRIOR geschrumpft, wenn die wirksame Stichprobe klein ist).
+   Rollenwechsel-Korrektur (player-2, ab 7.11.2026): mit mindestens ROLE_CHANGE_MIN_GAMES Spielen Verlauf und einer Abweichung des Mittels der letzten 5 Spiele um mindestens ROLE_CHANGE_MINUTES
+   wird das Minutenmittel um ROLE_CHANGE_BETA x (Mittel letzte 5 - Mittel) verschoben (vor dem Blowout-Abschlag). Alle anderen Spieler bleiben unveraendert.
 3. Blowout-Abschlag: Stammspieler und Rotationsspieler verlieren Minuten, wenn der Endabstand gross wird. Die Faktoren BLOWOUT_CURVE sind aus 2025-26 gemessen
    (26 651 Spielerzeilen, Verhaeltnis Minuten / Saisonmittel des Spielers, nach |Endabstand des Teams| gruppiert). Erwartungsfaktor = E[f(|M|)] mit M ~ Normal(erwarteter Spread
    aus Sicht des Teams, SPREAD_SIGMA 13,2) geteilt durch E[f(|M|)] ueber den typischen Abstand (Normal(0, BLOWOUT_REF_SIGMA)), weil die Basis-Minuten diese Mischung schon enthalten.
@@ -37,7 +39,7 @@ from data import player_history as ph
 from data import projection_snapshots as snaps
 from engine.line_probabilities import SPREAD_SIGMA
 
-PLAYER_MODEL_VERSION = "player-1"   # Version der Spieler-Prognose; steht in jedem neuen Prognose-Snapshot und in jeder neu gespeicherten Spieler-Wette. Ohne Feld gilt "player-0".
+PLAYER_MODEL_VERSION = "player-2"   # player-2 (ab 7.11.2026): Rollenwechsel-Korrektur der Minuten (ROLE_CHANGE_BETA). Version der Spieler-Prognose; steht in jedem neuen Prognose-Snapshot und in jeder neu gespeicherten Spieler-Wette. Ohne Feld gilt "player-0".
 UNVERIFIED = "UNGEPRÜFT"
 UNVERIFIED_TEXT = "UNGEPRÜFT: Modell noch nicht gegen Ergebnisse geprüft (kein Backtest). Gilt für den Fall, dass der Spieler spielt."
 
@@ -50,6 +52,8 @@ MINUTE_POINTS = 9
 MAX_MINUTES = 48.0
 MAX_N = 60
 FEW_GAMES = 10                    # unter so vielen Spielen insgesamt: Hinweis "wenige Spiele"
+ROLE_CHANGE_BETA = 0.565          # Rollenwechsel (ab ROLE_CHANGE_MIN_GAMES Spielen Verlauf): Minutenmittel = Mittel + beta x (Mittel letzte 5 - Mittel); beta aus 2024-25 bestimmt, getestet auf 2025-26 (Phase_B.md, 6.11.)
+ROLE_CHANGE_MIN_GAMES = 10
 ROLE_CHANGE_MINUTES = 5.0         # Minuten der letzten 5 weichen so weit vom gewichteten Mittel ab: Hinweis "Rollenwechsel"
 ROLE_STARTER_MIN, ROLE_ROTATION_MIN = 28.0, 20.0
 
@@ -167,6 +171,11 @@ def forecast_player(person_id: int, before_date, home: bool | None = None, exp_s
     weights = game_weights(games, season)
     minutes = [g["minutes"] for g in games]
     mu0, sd0 = weighted_mean_sd(minutes, weights)
+    mu0_orig = mu0                                                      # Mittel vor der Rollenwechsel-Korrektur (Hinweis wird mit diesem Wert entschieden)
+    last5 = sum(minutes[:5]) / len(minutes[:5])
+    role_corrected = len(games) >= ROLE_CHANGE_MIN_GAMES and abs(last5 - mu0_orig) >= ROLE_CHANGE_MINUTES
+    if role_corrected:
+        mu0 = mu0_orig + ROLE_CHANGE_BETA * (last5 - mu0_orig)
     ppm_idx = [i for i, g in enumerate(games) if g["minutes"] >= MIN_PPM_MINUTES]
     if not ppm_idx:
         return {**base, "ok": False, "reason": f"zu wenig Einsatzzeit (kein Spiel mit mindestens {MIN_PPM_MINUTES:g} Minuten)", "quality": ["kein Verlauf"], "warnings": []}
@@ -202,10 +211,9 @@ def forecast_player(person_id: int, before_date, home: bool | None = None, exp_s
         quality.append("wenige Spiele")
     if n_cur == 0:
         quality.append("nur Vorsaison")
-    last5 = sum(minutes[:5]) / len(minutes[:5])
-    if len(games) >= 5 and abs(last5 - mu0) >= ROLE_CHANGE_MINUTES:
+    if len(games) >= 5 and abs(last5 - mu0_orig) >= ROLE_CHANGE_MINUTES:
         quality.append("Rollenwechsel")
-        warnings.append(f"Minuten der letzten 5 Spiele ({last5:.1f}) weichen vom gewichteten Mittel ({mu0:.1f}) ab")
+        warnings.append(f"Minuten der letzten 5 Spiele ({last5:.1f}) weichen vom gewichteten Mittel ({mu0_orig:.1f}) ab" + (f"; Minuten korrigiert auf {mu0:.1f}" if role_corrected else ""))
     return {**base, "ok": True, "reason": None,
             "minutes": {"mean": mu, "sd": sd0, "low": max(0.0, mu - sd0), "high": min(MAX_MINUTES, mu + sd0), "base": mu0, "blowout_factor": factor, "role": role_for_minutes(mu0)},
             "expected_points": expected_points, "ppm": float((w_p * ppm).sum()), "p_ge": {int(n): float(v) for n, v in zip(ns, p)},

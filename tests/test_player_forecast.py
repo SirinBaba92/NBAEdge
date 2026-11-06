@@ -112,6 +112,23 @@ fr = pf.forecast_player(5, "2026-10-23", games=rolle)
 check("Rollenwechsel erkannt (letzte 5 Spiele 18 statt ~30 Min.)", "Rollenwechsel" in fr["quality"] and any("letzten 5" in x for x in fr["warnings"]), str(fr["quality"]))
 check("Spieler mit steigender Rolle bekommt hoehere Minuten als Vorsaison-Schnitt allein, aber unter dem alten Wert (Mischung)", 18 < fr["minutes"]["base"] < 32)
 
+# --- Rollenwechsel-Korrektur (player-2)
+orig_mu, _ = pf.weighted_mean_sd([x["minutes"] for x in rolle], pf.game_weights(sorted(rolle, key=lambda x: (x["date"], x["game_id"]), reverse=True), "2026-27"))
+l5 = sum(x["minutes"] for x in sorted(rolle, key=lambda x: (x["date"], x["game_id"]), reverse=True)[:5]) / 5
+check("Rollenwechsel: Minutenbasis = Mittel + beta x (letzte 5 - Mittel)", abs(fr["minutes"]["base"] - (orig_mu + pf.ROLE_CHANGE_BETA * (l5 - orig_mu))) < 1e-9, f"{fr['minutes']['base']:.3f}")
+check("Rollenwechsel: Hinweis nennt die Korrektur", any("Minuten korrigiert" in x for x in fr["warnings"]))
+check("Konstanten: beta 0,565, ab 10 Spielen", pf.ROLE_CHANGE_BETA == 0.565 and pf.ROLE_CHANGE_MIN_GAMES == 10)
+stabil = series(6, "2026-01-01", 35, "2025-26", lambda i: 30 + (i % 3) - 1, lambda i: 15)
+stabil.sort(key=lambda x: x["date"], reverse=True)
+fs = pf.forecast_player(6, "2026-10-23", games=stabil)
+mu_s, _ = pf.weighted_mean_sd([x["minutes"] for x in stabil], pf.game_weights(stabil, "2026-27"))
+check("ohne Rollenwechsel: Minuten unveraendert, kein Hinweis", "Rollenwechsel" not in fs["quality"] and abs(fs["minutes"]["base"] - mu_s) < 1e-9)
+kurz = series(7, "2026-09-01", 5, "2026-27", lambda i: 40, lambda i: 15) + series(7, "2026-10-15", 4, "2026-27", lambda i: 10, lambda i: 4)
+kurz.sort(key=lambda x: x["date"], reverse=True)
+fk = pf.forecast_player(7, "2026-10-23", games=kurz)
+mu_k, _ = pf.weighted_mean_sd([x["minutes"] for x in kurz], pf.game_weights(kurz, "2026-27"))
+check("unter 10 Spielen Verlauf: Hinweis ja, aber keine Korrektur", "Rollenwechsel" in fk["quality"] and abs(fk["minutes"]["base"] - mu_k) < 1e-9 and not any("korrigiert" in x for x in fk["warnings"]), f"{len(kurz)} Spiele")
+
 # --- Kontext und Spiel (Schnappschuss + Quoten im Temp-Ordner)
 key = "2026-10-22|2026-10-23T00:00:00Z|Heim Team|Gast Team"
 (T / "tracking").mkdir(parents=True, exist_ok=True)
