@@ -21,10 +21,16 @@ Ohne Spiele am US-Tag: keine Morgenroutine nötig (3.11.).
 - [x] Hash-Tests (test_player_tab, test_player_cards_pregame, test_betano_auto_sidebar) bleiben unverändert (Entscheidung 5.11. abends: Umbau teurer als der seltene Fehlalarm). Hinweis gilt weiter: bei rotem Test sofort einzeln wiederholen; die Automatik läuft wandernd (zuletzt 19:29, 20:29, 21:29 usw.).
 - [x] test_snapshots_helpers geklärt 5.11. abends: ist nur ein Hilfsmodul (make_proj), kein Test; ohne PYTHONPATH=. bricht der Import ab (ModuleNotFoundError), aber das zählt im Gesamtlauf nie als FAIL, weil keine Zeile mit FAIL ausgegeben wird. Der Gesamtlauf prüft damit hier nichts, ist aber harmlos. Nichts zu tun.
 - [x] Echtzustand-Tests: grobe Liste erstellt 5.11. abends (Archiv). Bleibt Merkregel: bei rotem Test zuerst einzeln wiederholen und prüfen, ob sich eine täglich neu geschriebene echte Datei geändert hat (Modelle 08:00, automation.log, pregame_lines.json). Kein Umbau geplant.
-- [ ] Gesamttestlauf nach der Änderung an data/fetcher.py (Punkt 14) am 5.11. abends von Baran gemacht: 12 Min. 48 s, komplett grün (nur FERTIG). Offen: nbabackup durch Baran. Bis dahin unversioniert: analysis/results/automatik_befund_2026-11-05.txt, value_bets_switch_befund.txt, team2_inventar.txt, analysis/ausfall_gruppen.py, tests/test_betano_total_konflikt.py, claude/, CLAUDE.md sowie die Änderungen an data/fetcher.py, data/game_updates.py, tests/test_update_model.py.
+- [x] Gesamttestlauf nach Punkt 14 (5.11. abends, 12 Min. 48 s, grün) und nbabackup 486314f durch Baran gemacht. Die zuvor unversionierten Dateien und Änderungen sind damit gesichert.
 - [ ] date.today-Reste (Befund 30.10.): now= in fetch_upcoming_games einführen; app.py:1775 durch rosters.season_string() ersetzen; Rückfälle in elo.predict und points_rating.predict absichern; app.py:423 (game_date statt us_today(), niedrige Priorität). Offene Designfrage: ab 1.10. gilt die neue Saison, aber drei Wochen ohne Spiele (Verhalten von team_injury nicht geprüft).
 - [ ] Audit-Vermutungen (Division durch null bei Quote 1,00, Teilwort-Treffer in _match_game, Aktualität der Ratings beim 08:00-Update).
 - [ ] Kleinkram (8 fehlende Odds-Credits, Region US/EU, Wachstum der Market-History).
+- [ ] Ideen Phase A (Vorschläge Claude 5.11. abends, Baran will sie nach der Morgenroutine am 6.11. angehen; erst besprechen, dann ändern; Empfehlung: 1 und 2 zuerst):
+  - [ ] I1 Prüfung "alle Spiele des Tages haben eine Prognose" vor dem ersten Anpfiff (Anlass: 2.11. nur 9 von 15), z. B. in aufzeichnen oder Sidebar.
+  - [ ] I2 Log-Checks in die morgenroutine einbauen (Suche nach "Total übersprungen", "Linie doppelt", ERROR von update_model).
+  - [ ] I3 Warnung bei veralteten Ratings: Sidebar zeigt "Ratings bis ...", rot bei Stand älter als 1 Tag (Anlass: Elo-Timeout 5.11.).
+  - [ ] I4 check_recordings.py meldet eingefrorene NBA-Feeds (Anlass: 3.11b, 2.11. ca. 20 Min.).
+  - [ ] I5 Tägliche Kurzzeile der Automatik (Betano-Automatik, Elo-Job, Recorder: OK oder Fehler) statt automation.log durchzusehen.
 - [ ] 14 Elo-Update-Job: Wiederholversuch nach Timeout ist eingebaut (5.11. abends, siehe Archiv). Offen: Beobachten, ob der Lauf am 6.11. um 08:00 normal durchläuft (Log data/automation.log, job=update_model).
 
 ## Erledigt (Kurzfassung, Details in den Archiven)
@@ -38,6 +44,8 @@ Ohne Spiele am US-Tag: keine Morgenroutine nötig (3.11.).
 - 3.11d (3.11.): zwei rote Tests repariert (test_value_bets_switch, test_betano_auto_sidebar), nur Tests geändert, App unverändert.
 - 3.11e und 3.12 (5.11.): Automatik-Lücke gefunden und repariert (Hand-Linien frieren die Total-Leiter ein, dann wurde das ganze Spiel abgelehnt; jetzt wird nur der Markt übersprungen); neuer Test tests/test_betano_total_konflikt.py (44 PASS); Gesamtlauf 5.11. (17 Min. 32 s) komplett grün; nbabackup danach von Baran gemacht.
 - Morgenroutinen 2.11., 3.11., 5.11.: Recorder jeweils sauber; Backups ba82a56, a65a65c, 69f89d5.
+- Negativ (Aufräumliste, aus Phase B): 4.4 Verlängerung im Spielerpunkte-Modell, negativ (6.11.), nichts eingebaut; Details Phase_B.md Archiv.
+- Nicht eingebaut (aus Phase B): 4.1 zweite Vorsaison, formal positiv aber vernachlässigbar klein (6.11.); Details Phase_B.md Archiv.
 
 ## Startnachricht für eine neue Sitzung dieser Phase
 Lies claude/Roadmap.md (Regeln) und claude/Phase_A.md (offene Punkte). Details nur bei Bedarf in claude/Roadmap_Archiv.md und claude/Roadmap_Archiv_2.md. Schreibe nur in claude/Phase_A.md. Beginne mit Schritt 1 und stelle mir dann die erste Frage.
