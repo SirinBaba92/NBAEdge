@@ -1,7 +1,7 @@
 {
  "version": 1,
  "format": "nbaedge-rosters",
- "fetched_at": "2026-11-04T23:49:43+01:00",
+ "fetched_at": "2026-11-06T23:59:32+01:00",
  "source": "nba_api.PlayerIndex",
  "season": "2026-27",
  "abrufe": 1,
@@ -810,18 +810,18 @@
     "team_abbreviation": "CLE"
    },
    {
-    "person_id": 1631212,
-    "name": "Peyton Watson",
-    "position": "G",
-    "jersey": "8",
+    "person_id": 1641807,
+    "name": "Norchad Omier",
+    "position": "F",
+    "jersey": "77",
     "team_id": 1610612739,
     "team_abbreviation": "CLE"
    },
    {
-    "person_id": 1642434,
-    "name": "Riley Minix",
-    "position": "F",
-    "jersey": "12",
+    "person_id": 1631212,
+    "name": "Peyton Watson",
+    "position": "G",
+    "jersey": "8",
     "team_id": 1610612739,
     "team_abbreviation": "CLE"
    },
@@ -1511,7 +1511,7 @@
     "person_id": 1641763,
     "name": "Julian Phillips",
     "position": "F",
-    "jersey": "4",
+    "jersey": "3",
     "team_id": 1610612745,
     "team_abbreviation": "HOU"
    },
@@ -1535,7 +1535,7 @@
     "person_id": 1631131,
     "name": "Oscar Tshiebwe",
     "position": "F-C",
-    "jersey": "34",
+    "jersey": "9",
     "team_id": 1610612745,
     "team_abbreviation": "HOU"
    },
@@ -2729,7 +2729,7 @@
     "person_id": 1642261,
     "name": "Dalton Knecht",
     "position": "F",
-    "jersey": "4",
+    "jersey": "1",
     "team_id": 1610612752,
     "team_abbreviation": "NYK"
    },
@@ -2915,7 +2915,7 @@
     "person_id": 1631207,
     "name": "Dalen Terry",
     "position": "F",
-    "jersey": "21",
+    "jersey": "77",
     "team_id": 1610612760,
     "team_abbreviation": "OKC"
    },
@@ -3427,7 +3427,7 @@
     "person_id": 1642959,
     "name": "Chris Youngblood",
     "position": "G",
-    "jersey": "3",
+    "jersey": "11",
     "team_id": 1610612757,
     "team_abbreviation": "POR"
    },
@@ -3475,7 +3475,7 @@
     "person_id": 1642910,
     "name": "John Tonje",
     "position": "G",
-    "jersey": "8",
+    "jersey": "2",
     "team_id": 1610612757,
     "team_abbreviation": "POR"
    },
@@ -3906,6 +3906,14 @@
     "name": "Kawhi Leonard",
     "position": "F",
     "jersey": "2",
+    "team_id": 1610612761,
+    "team_abbreviation": "TOR"
+   },
+   {
+    "person_id": 1641755,
+    "name": "Kevin McCullar Jr.",
+    "position": "G",
+    "jersey": "9",
     "team_id": 1610612761,
     "team_abbreviation": "TOR"
    },

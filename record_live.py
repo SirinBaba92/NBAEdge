@@ -569,6 +569,20 @@ class Recorder:
 
 
 # ----------------------------------------------------------------------------- Start
+def prognosen_hinweis(log=print) -> None:
+    """Eine Erinnerungszeile beim Start: haben alle Spiele des US-Tages eine Prognose? Nur lesend, bricht den Recorder nie ab."""
+    try:
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("check_prognosen", Path(__file__).resolve().parent / "analysis" / "check_prognosen.py")
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        from data.game_updates import us_today
+        day = us_today().isoformat()
+        log(mod.render(day, mod.check(day)))
+    except Exception as e:                       # Erinnerung darf den Start nie verhindern
+        log(f"Prognosen-Hinweis nicht moeglich ({type(e).__name__}).")
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="NBA-Live-Roh-Recorder")
     ap.add_argument("--einmal", action="store_true", help="ein Durchlauf, dann Ende")
@@ -588,6 +602,8 @@ def main(argv=None) -> int:
     try:
         rec = Recorder(root, until=parse_until(args.bis, time.time()) if args.bis else None)
         print(f"Recorder gestartet. Daten: {root}  (Beenden: Strg+C)  Chrome-UA: {rec.headers['User-Agent'].split('Chrome/')[1].split(' ')[0]}")
+        if not args.einmal:
+            prognosen_hinweis()
         rec.run(once=args.einmal)
     finally:
         lock.release()
